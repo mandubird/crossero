@@ -38,8 +38,11 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
           server-dir: ./
+          dangerous-clean-slate: false
           exclude: |
-            .git/
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
             .github/
             .venv/
             **/__pycache__/
