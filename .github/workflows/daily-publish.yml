@@ -50,5 +50,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./upload/
-          server-dir: ./
+          # 카페24 뉴아우토반 웹 루트는 www/. 다른 호스팅이면 Secrets에 FTP_SERVER_DIR 추가 후 아래를 ${{ secrets.FTP_SERVER_DIR }} 로 변경.
+          server-dir: www/
           dangerous-clean-slate: false
