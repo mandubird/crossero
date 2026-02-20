@@ -55,7 +55,6 @@ jobs:
             set ftp:ssl-allow no
             set ssl:verify-certificate no
             open -u $FTP_USER,$FTP_PASS $FTP_SERVER
-            cd www
             lcd .
             mirror --reverse --verbose .
             bye
