@@ -16,6 +16,23 @@
      crossorigin="anonymous"></script>
 
 <script src="data.js"></script>
+<script src="data_bible_extra.js"></script>
+<script>
+  // BIBLE.csv에서 추출한 추가 단어를 각 퀴즈 allWords에 병합 (퍼즐 풍성화)
+  if (typeof BIBLE_EXTRA_WORDS !== 'undefined' && typeof QUIZ_DATABASE !== 'undefined') {
+    for (var k in QUIZ_DATABASE) {
+      var arr = QUIZ_DATABASE[k].allWords;
+      var existing = {}; // 퀴즈마다 해당 퀴즈의 기존 allWords만으로 채움
+      for (var i = 0; i < arr.length; i++) { existing[arr[i].answer] = true; }
+      if (BIBLE_EXTRA_WORDS[k]) {
+        for (var j = 0; j < BIBLE_EXTRA_WORDS[k].length; j++) {
+          var w = BIBLE_EXTRA_WORDS[k][j];
+          if (!existing[w.answer]) { arr.push(w); existing[w.answer] = true; }
+        }
+      }
+    }
+  }
+</script>
 <script src="auth.js"></script>
 
 <script type="text/javascript">

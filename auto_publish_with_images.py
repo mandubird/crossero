@@ -27,9 +27,9 @@ DATA_JS = os.path.join(SCRIPT_DIR, 'data.js')
 POSTS_DIR = os.path.join(SCRIPT_DIR, 'posts')
 PUZZLES_IMG_DIR = os.path.join(SCRIPT_DIR, 'images', 'puzzles')
 
-# 예약 시작일, 하루 1~3개
+# 예약 시작일, 하루 1개
 START_DATE = datetime(2026, 2, 20)
-POSTS_PER_DAY = (1, 2, 3)
+POSTS_PER_DAY = (1, 1)
 
 try:
     from PIL import Image, ImageDraw, ImageFont
@@ -336,7 +336,7 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 
 
 def init_schedule():
-    """posts_schedule.json 생성: 287개 퍼즐을 날짜별 1~3개씩 배정"""
+    """posts_schedule.json 생성: 287개 퍼즐을 날짜별 1개씩 배정"""
     puzzles = parse_data_js(DATA_JS)
     seen = {}
     for p in puzzles:
