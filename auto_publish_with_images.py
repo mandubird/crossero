@@ -403,6 +403,13 @@ def rebuild_index_and_xml(manifest_entries):
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>게시판 | 십자가로세로</title>
+<meta name="description" content="발행된 성경 퀴즈·가로세로 퍼즐 소개 글 목록. 제목을 클릭하면 글로 이동하며, 퍼즐 목록에서 바로 플레이할 수 있습니다.">
+<meta name="keywords" content="성경퀴즈 게시판, 가로세로 퍼즐 소개, 십자가로세로 글 목록">
+<meta property="og:title" content="게시판 | 십자가로세로">
+<meta property="og:description" content="발행된 성경 퀴즈·가로세로 퍼즐 소개 글 목록입니다.">
+<meta property="og:image" content="{DOMAIN}/images/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{DOMAIN}/posts/">
 <link rel="canonical" href="{DOMAIN}/posts/">
 <style>
 * {{ box-sizing: border-box; }}

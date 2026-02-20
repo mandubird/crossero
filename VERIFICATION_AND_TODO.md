@@ -287,6 +287,7 @@ crossero.com이 **GitHub에 연동되어 있지 않고 FTP로 올리는 경우**
 | `FTP_SERVER` | 카페24 FTP 서버 주소 (예: `ftp.계정.cafe24.com`) |
 | `FTP_USERNAME` | FTP 계정 아이디 |
 | `FTP_PASSWORD` | FTP 비밀번호 |
+| `FTP_SERVER_DIR` | **(권장)** FTP 접속 후 웹 문서가 올라가는 폴더. 카페24 뉴아우토반은 보통 `www/` 또는 `public_html/`. `550 images: No such file or directory` 나오면 이 값을 웹 루트 경로로 설정(끝에 `/` 포함, 예: `www/`). |
 
 - 저장 후 워크플로우에서 `${{ secrets.FTP_SERVER }}` 등으로 사용됩니다.
 
@@ -310,3 +311,35 @@ crossero.com이 **GitHub에 연동되어 있지 않고 FTP로 올리는 경우**
 
 - 그날 예약이 없으면 새 글은 생성되지 않고, 기존 발행 목록만 유지된 채 FTP 업로드됩니다.
 - **수동 실행**: 저장소 **Actions** 탭 → **Daily publish and FTP deploy** → **Run workflow**.
+
+---
+
+## 7. SEO 가이드 대비 검토 요약 (SEO_GUIDE.md 기준)
+
+### 7.1 이미 적용된 항목
+
+| 항목 | 상태 |
+|------|------|
+| **robots.txt** | `Sitemap: sitemap.xml`, `Sitemap: posts.xml` 포함 ✅ |
+| **index.html** | description, keywords, og:title/description/image/url/type ✅ |
+| **list.html** | description, keywords, og (페이지별 제목·설명, 절대 URL og:image) ✅ |
+| **about.html** | description, keywords, og (절대 URL, canonical) ✅ |
+| **support.html** | description, keywords, og, canonical 추가 완료 ✅ |
+| **play.html / play2.html** | description, keywords, og, canonical(JS), Schema.org ✅ |
+| **블로그 글** (auto_publish) | title, description, keywords, og, canonical, Article 스키마, 키워드 섹션 ✅ |
+| **이미지 alt** | 로고·퍼즐 이미지에 한글 alt 적용 ✅ |
+
+### 7.2 이번에 반영한 수정
+
+- **support.html**: 메타 description, keywords, og:title/description/image/url/type, canonical 추가.
+- **index.html**: `<link rel="canonical" href="https://crossero.com/">` 추가.
+- **list.html**: og:image를 절대 URL로 통일, og:type/og:url, canonical 추가.
+- **about.html**: og:image 절대 URL, og:url, canonical 추가.
+- **posts/index.html** (스크립트 템플릿): description, keywords, og 메타 추가. → 다음 발행 시 재생성되면 반영.
+
+### 7.3 가이드에서 코드 외로 할 일 (수동)
+
+- Google Search Console 등록 후 sitemap.xml, posts.xml 제출.
+- Naver Search Advisor 등록 후 사이트맵 제출 및 수집 요청.
+- URL 검사로 주요 페이지 색인 요청.
+- (선택) og:image를 1200×630 비율로 제작·교체 시 SNS 미리보기 품질 향상.
