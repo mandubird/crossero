@@ -57,7 +57,9 @@ jobs:
             set ssl:verify-certificate no
             set ftp:passive on
             set net:timeout 60
-            set net:max-retries 2
+            set net:max-retries 5
+            set net:reconnect-interval-base 5
+            set net:reconnect-interval-multiplier 1
             open -u $FTP_USER,$FTP_PASS $FTP_SERVER
             lcd .
             mirror --reverse --verbose .
