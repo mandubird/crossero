@@ -83,62 +83,60 @@ main {
 }
 .intro a:hover { text-decoration: underline; }
 
-/* 게시글 카드 목록 */
+/* 게시글 목록 — 퍼즐목록(list.html) category 섹션 스타일 참고 */
+.board-section {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border: 1px solid #e5e5e5;
+}
 .board-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
 }
 .board-card {
-  display: block;
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
-  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px 18px;
   text-decoration: none;
   color: inherit;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: all 0.2s;
+  min-height: 80px;
 }
 .board-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,115,230,0.15);
   border-color: #0073e6;
-  box-shadow: 0 4px 14px rgba(0, 115, 230, 0.12);
-}
-.board-card-inner {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.board-date {
-  flex-shrink: 0;
-  font-size: 13px;
-  color: #888;
-  background: #f5f5f5;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-weight: 500;
+  background: #fff;
 }
 .board-title {
-  flex: 1;
-  min-width: 0;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
   color: #0073e6;
+  text-align: left;
+  margin: 0;
+  flex: 1;
 }
 .board-card:hover .board-title { color: #005bb5; }
-.board-arrow {
-  flex-shrink: 0;
-  font-size: 14px;
-  color: #bbb;
-  transition: transform 0.2s;
+.board-date {
+  font-size: 12px;
+  color: #888;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed #e0e0e0;
+  width: 100%;
 }
-.board-card:hover .board-arrow {
-  color: #0073e6;
-  transform: translateX(4px);
-}
+.board-card:hover .board-date { border-top-color: #e8eef5; }
 
 .empty-tip {
   text-align: center;
@@ -155,10 +153,11 @@ main {
   .nav-item { padding: 6px 10px; font-size: 12px; }
   main { padding: 24px 16px; }
   .page-title { font-size: 20px; }
+  .board-section { padding: 18px 16px; }
+  .board-list { grid-template-columns: 1fr; gap: 10px; }
   .board-card { padding: 14px 16px; }
-  .board-card-inner { gap: 12px; }
-  .board-date { font-size: 12px; padding: 5px 10px; }
-  .board-title { font-size: 15px; }
+  .board-title { font-size: 14px; }
+  .board-date { font-size: 11px; margin-top: 8px; padding-top: 6px; }
 }
 </style>
 </head>
@@ -177,26 +176,22 @@ main {
   <h1 class="page-title">게시판</h1>
   <p class="intro">발행된 성경 퀴즈·가로세로 퍼즐 소개 글입니다. 제목을 클릭하면 글로 이동합니다. <a href="../list.html">퍼즐 목록</a>에서 바로 플레이할 수 있습니다.</p>
 
-  <ul class="board-list">
-    <li>
-      <a href="사도행전-사도행전-성경퀴즈.html" class="board-card">
-        <span class="board-card-inner">
-          <span class="board-date">2026년 2월 21일</span>
+  <div class="board-section">
+    <ul class="board-list">
+      <li>
+        <a href="사도행전-사도행전-성경퀴즈.html" class="board-card">
           <span class="board-title">사도행전: 첫 순교자 스데반</span>
-          <span class="board-arrow" aria-hidden="true">→</span>
-        </span>
-      </a>
-    </li>
-    <li>
-      <a href="사도행전-사도행전-성경-퀴즈-문제.html" class="board-card">
-        <span class="board-card-inner">
           <span class="board-date">2026년 2월 21일</span>
+        </a>
+      </li>
+      <li>
+        <a href="사도행전-사도행전-성경-퀴즈-문제.html" class="board-card">
           <span class="board-title">사도행전: 바울의 회심</span>
-          <span class="board-arrow" aria-hidden="true">→</span>
-        </span>
-      </a>
-    </li>
-  </ul>
+          <span class="board-date">2026년 2월 21일</span>
+        </a>
+      </li>
+    </ul>
+  </div>
 </main>
 
 </body>

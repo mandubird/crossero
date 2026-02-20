@@ -262,8 +262,11 @@ def generate_post_html_with_image(puzzle, keyword, slug, publish_date, image_slu
 <style>
 * {{ box-sizing: border-box; }}
 body {{ margin: 0; font-family: -apple-system, "Pretendard", sans-serif; background: #f5f5f5; color: #333; line-height: 1.8; }}
-header {{ background: #fff; border-bottom: 2px solid #0073e6; padding: 20px; text-align: center; }}
-header a {{ color: #0073e6; text-decoration: none; font-weight: 700; font-size: 24px; }}
+.nav {{ display: flex; justify-content: center; gap: 10px; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 12px 0; }}
+.nav-item {{ padding: 8px 14px; font-size: 14px; color: #444; text-decoration: none; border-radius: 6px; }}
+.nav-item:hover {{ background: #f0f6ff; color: #0073e6; }}
+.nav-active {{ background: #0073e6; color: #fff !important; font-weight: 600; }}
+@media (max-width: 768px) {{ .nav {{ padding: 8px 6px; gap: 6px; }} .nav-item {{ padding: 6px 10px; font-size: 12px; }} }}
 main {{ max-width: 800px; margin: 40px auto; padding: 0 20px; }}
 article {{ background: #fff; border-radius: 12px; padding: 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }}
 h1 {{ font-size: 28px; font-weight: 800; color: #222; margin: 0 0 16px 0; }}
@@ -295,7 +298,14 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 </script>
 </head>
 <body>
-<header><a href="{DOMAIN}">✙ 십자가로세로</a></header>
+<nav class="nav">
+  <a href="../index.html" class="nav-item">홈</a>
+  <a href="../play.html" class="nav-item">퍼즐하기</a>
+  <a href="../list.html" class="nav-item">퍼즐목록</a>
+  <a href="index.html" class="nav-item nav-active">게시판</a>
+  <a href="../about.html" class="nav-item">소개</a>
+  <a href="../support.html" class="nav-item">후원</a>
+</nav>
 <main>
 <article>
 <h1>{escape(title)}</h1>
@@ -394,14 +404,16 @@ def rebuild_index_and_xml(manifest_entries):
         return d["date"]
 
     list_rows = "".join(
-        f'<tr><td class="col-date">{_date_str(e)}</td><td><a href="{escape(e["slug"])}.html">{escape(e["title"])}</a></td></tr>\n'
+        f'<li><a href="{escape(e["slug"])}.html" class="board-card">'
+        f'<span class="board-title">{escape(e["title"])}</span>'
+        f'<span class="board-date">{_date_str(e)}</span></a></li>\n'
         for e in entries
     )
     index_html = f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>게시판 | 십자가로세로</title>
 <meta name="description" content="발행된 성경 퀴즈·가로세로 퍼즐 소개 글 목록. 제목을 클릭하면 글로 이동하며, 퍼즐 목록에서 바로 플레이할 수 있습니다.">
 <meta name="keywords" content="성경퀴즈 게시판, 가로세로 퍼즐 소개, 십자가로세로 글 목록">
@@ -413,24 +425,25 @@ def rebuild_index_and_xml(manifest_entries):
 <link rel="canonical" href="{DOMAIN}/posts/">
 <style>
 * {{ box-sizing: border-box; }}
-body {{ font-family: -apple-system, "Pretendard", sans-serif; margin: 0; background: #f5f5f5; color: #333; }}
-.nav {{ display: flex; justify-content: center; gap: 10px; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 10px; }}
+body {{ font-family: -apple-system, Pretendard, sans-serif; margin: 0; background: #f5f5f5; color: #333; line-height: 1.6; }}
+.nav {{ display: flex; justify-content: center; gap: 10px; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 12px 0; }}
 .nav-item {{ padding: 8px 14px; font-size: 14px; color: #444; text-decoration: none; border-radius: 6px; }}
 .nav-item:hover {{ background: #f0f6ff; color: #0073e6; }}
 .nav-active {{ background: #0073e6; color: #fff !important; font-weight: 600; }}
-header {{ text-align: center; padding: 20px; border-bottom: 2px solid #0073e6; background: #fff; }}
-header a {{ color: #0073e6; text-decoration: none; font-size: 24px; font-weight: bold; }}
-main {{ max-width: 800px; margin: 24px auto; background: #fff; padding: 32px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }}
-h1 {{ font-size: 22px; margin: 0 0 20px 0; }}
-p.intro {{ color: #666; margin-bottom: 24px; }}
-.board-table {{ width: 100%; border-collapse: collapse; }}
-.board-table th {{ text-align: left; padding: 12px 16px; background: #f8f9fa; border-bottom: 2px solid #e1e4e8; font-size: 14px; color: #555; }}
-.board-table td {{ padding: 14px 16px; border-bottom: 1px solid #eee; }}
-.board-table tr:hover {{ background: #f8f9fa; }}
-.board-table .col-date {{ width: 120px; color: #666; font-size: 14px; }}
-.board-table a {{ color: #0073e6; text-decoration: none; font-weight: 500; }}
-.board-table a:hover {{ text-decoration: underline; }}
-@media (max-width: 600px) {{ .col-date {{ width: 90px; font-size: 13px; }} }}
+main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
+.page-title {{ font-size: 24px; margin: 0 0 8px 0; color: #222; font-weight: 700; }}
+.intro {{ color: #666; margin-bottom: 28px; font-size: 15px; }}
+.intro a {{ color: #0073e6; text-decoration: none; font-weight: 500; }}
+.intro a:hover {{ text-decoration: underline; }}
+.board-section {{ background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e5e5e5; }}
+.board-list {{ list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }}
+.board-card {{ display: flex; flex-direction: column; align-items: flex-start; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px 18px; text-decoration: none; color: inherit; transition: all 0.2s; min-height: 80px; }}
+.board-card:hover {{ transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,115,230,0.15); border-color: #0073e6; background: #fff; }}
+.board-title {{ font-size: 15px; font-weight: 600; color: #0073e6; text-align: left; margin: 0; flex: 1; }}
+.board-card:hover .board-title {{ color: #005bb5; }}
+.board-date {{ font-size: 12px; color: #888; margin-top: 10px; padding-top: 8px; border-top: 1px dashed #e0e0e0; width: 100%; }}
+.board-card:hover .board-date {{ border-top-color: #e8eef5; }}
+@media (max-width: 768px) {{ .nav {{ padding: 8px 6px; gap: 6px; }} .nav-item {{ padding: 6px 10px; font-size: 12px; }} main {{ padding: 24px 16px; }} .page-title {{ font-size: 20px; }} .board-section {{ padding: 18px 16px; }} .board-list {{ grid-template-columns: 1fr; }} .board-card {{ padding: 14px 16px; }} .board-title {{ font-size: 14px; }} .board-date {{ font-size: 11px; margin-top: 8px; padding-top: 6px; }} }}
 </style>
 </head>
 <body>
@@ -442,16 +455,14 @@ p.intro {{ color: #666; margin-bottom: 24px; }}
   <a href="../about.html" class="nav-item">소개</a>
   <a href="../support.html" class="nav-item">후원</a>
 </nav>
-<header><a href="{DOMAIN}">✙ 십자가로세로</a></header>
 <main>
-<h1>📋 게시판</h1>
+<h1 class="page-title">게시판</h1>
 <p class="intro">발행된 성경 퀴즈·가로세로 퍼즐 소개 글입니다. 제목을 클릭하면 글로 이동합니다. <a href="../list.html">퍼즐 목록</a>에서 바로 플레이할 수 있습니다.</p>
-<table class="board-table">
-<thead><tr><th class="col-date">발행일</th><th>제목</th></tr></thead>
-<tbody>
+<div class="board-section">
+<ul class="board-list">
 {list_rows}
-</tbody>
-</table>
+</ul>
+</div>
 </main>
 </body>
 </html>"""
