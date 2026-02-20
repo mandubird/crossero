@@ -43,13 +43,20 @@ jobs:
             --exclude='*.py' \
             ./ upload/
 
-      - name: FTP Deploy to Cafe24
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./upload/
-          # 카페24 뉴아우토반 웹 루트는 www/. 다른 호스팅이면 Secrets에 FTP_SERVER_DIR 추가 후 아래를 ${{ secrets.FTP_SERVER_DIR }} 로 변경.
-          server-dir: www/
-          dangerous-clean-slate: false
+      - name: FTP Deploy to Cafe24 (lftp)
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USER: ${{ secrets.FTP_USERNAME }}
+          FTP_PASS: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq lftp
+          cd upload
+          lftp -c "
+            set ftp:ssl-allow no
+            set ssl:verify-certificate no
+            open -u $FTP_USER,$FTP_PASS $FTP_SERVER
+            cd www
+            lcd .
+            mirror --reverse --verbose .
+            bye
+          "
