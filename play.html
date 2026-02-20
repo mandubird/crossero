@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>퍼즐 플레이 | 십자가로세로</title>
+  <meta name="description" content="지금 바로 성경 말씀을 퍼즐로 풀어보세요. 정답 확인과 인쇄 기능도 제공합니다.">
+  <meta name="keywords" content="온라인 성경퍼즐, 성경 퍼즐 무료, 성경 퍼즐 만들기">
+  <meta property="og:title" content="십자가로세로 | 말씀 가로세로 퍼즐">
+  <meta property="og:description" content="매주 새로운 말씀으로 즐기는 성경 퍼즐 게임">
+  <meta property="og:image" content="https://crossero.com/images/og-image.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://crossero.com">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0717185892763061"
+     crossorigin="anonymous"></script>
+
+<script src="data.js"></script>
+<script src="auth.js"></script>
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "vin36biyig");
+</script>
+
+<style>
+/* 1. 기본 배경 및 폰트 */
+body {
+  margin: 0;
+  font-family: -apple-system, Pretendard, sans-serif;
+  background: #f5f5f5;
+}
+
+/* 2. 네비게이션 및 헤더 */
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 12px 0;
+}
+.nav-item {
+  padding: 8px 14px;
+  font-size: 14px;
+  color: #444;
+  text-decoration: none;
+  border-radius: 6px;
+}
+.nav-item:hover { background: #f0f6ff; color: #0073e6; }
+.nav-active {
+  background: #0073e6;
+  color: #fff !important;
+  font-weight: 600;
+}
+header {
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  padding: 20px;
+}
+header img { max-width: 200px; width: 200px; }
+
+/* 3. 메인 레이아웃 */
+main {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 25px;
+  align-items: flex-start;
+}
+.game-area {
+  flex: 0 0 450px;
+}
+.panel-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.panel {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  height: 512px;
+  overflow-y: scroll; /* ⭐ auto → scroll로 변경하여 스크롤바 항상 표시 */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-top: 10px;
+}
+
+/* ⭐ 스크롤바 스타일링 (더 잘 보이게) */
+.panel::-webkit-scrollbar {
+  width: 12px;
+}
+.panel::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 8px;
+}
+.panel::-webkit-scrollbar-thumb {
+  background: #0073e6;
+  border-radius: 8px;
+}
+.panel::-webkit-scrollbar-thumb:hover {
+  background: #005bb7;
+}
+
+/* ⭐ 모바일 반응형: 퍼즐 아래에 힌트 배치 */
+@media (max-width: 768px) {
+  .nav { padding: 8px 6px; gap: 6px; }
+  .nav-item { padding: 6px 10px; font-size: 12px; }
+  header { padding: 16px 12px; }
+  header img { max-width: 160px; width: 160px; }
+  main {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 10px;
+    gap: 12px;
+    margin: 10px auto;
+  }
+  .game-area {
+    flex: none;
+    width: 100%;
+  }
+  .panel-container {
+    width: 100%;
+  }
+  /* 캔버스: 화면 꽉 채우기 (좌표 계산은 JS에서 보정) */
+  canvas#puzzle {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1 / 1;
+    touch-action: pan-y; /* 세로 스크롤은 허용, 가로만 차단 */
+  }
+  /* 힌트 패널: 고정 높이 제거, 자연스럽게 펼쳐짐 */
+  .panel {
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+  }
+  /* 가로/세로 힌트를 나란히 2열 배치 */
+  .panel-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 12px;
+  }
+  .hint-box-wrap {
+    grid-column: 1 / -1; /* 힌트박스는 전체 너비 */
+  }
+  /* 버튼 영역 */
+  .puzzle-info-panel {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .refresh-btn {
+    font-size: 12px;
+    padding: 7px 12px;
+  }
+  /* 상단 정답/인쇄 버튼 */
+  .top-btn-bar {
+    padding: 0 10px;
+  }
+  footer { padding: 0 12px; }
+}
+
+/* 4. 퍼즐 내부 요소 */
+canvas {
+  background: #fff;
+  border: 2px solid #333;
+  display: block;
+}
+.guide {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 8px;
+}
+.puzzle-info-panel {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+
+/* 5. 힌트 리스트 디자인 */
+.panel h3 {
+  margin: 20px 0 10px 0;
+  font-size: 16px;
+  border-bottom: 2px solid #0073e6;
+  padding-bottom: 5px;
+  color: #333;
+}
+.panel h3:first-child { margin-top: 0; }
+.question { 
+  margin-bottom: 10px; 
+  font-size: 14px; 
+  line-height: 1.5;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+.question:hover { background: #f0f6ff; }
+.hint-box {
+  background: #f0f6ff;
+  border-left: 4px solid #0073e6;
+  padding: 12px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 0 4px 4px 0;
+}
+
+/* 6. 버튼 스타일 */
+.refresh-btn {
+  padding: 8px 16px;
+  background: #0073e6;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 13px;
+}
+.refresh-btn:hover { background: #005bb7; }
+.level-btn {
+  padding: 6px 14px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.level-btn.active {
+  background: #0073e6 !important;
+  color: #fff !important;
+  border-color: #0073e6 !important;
+}
+
+/* 셀 위에 뜨는 한글 입력창 - opacity:0 이지만 실제 DOM 위치에 존재 */
+#cellInput {
+  position: absolute;
+  opacity: 0;
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  font-size: 16px; /* iOS 자동 줌 방지 */
+  background: transparent;
+  color: transparent;
+  caret-color: transparent;
+  z-index: 10;
+  pointer-events: none;
+}
+.game-area { position: relative; }
+
+footer {
+  max-width: 1100px;
+  margin: 60px auto 40px auto;
+  padding: 0 20px;
+  text-align: center;
+}
+.footer-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #ccc, transparent);
+  margin-bottom: 30px;
+}
+.footer-branding { font-size: 14px; color: #888; margin-bottom: 10px; }
+.footer-copyright { font-size: 12px; color: #aaa; }
+
+/* 기본 화면에서는 숨김 */
+.print-only { display: none !important; }
+#print-wrapper { display: none !important; }
+
+/* 인쇄 영역 내부 스타일 (미리보기/인쇄 시 공통) */
+#print-wrapper .print-logo-wrap { text-align: center; margin-bottom: 12px; }
+#print-wrapper .print-logo { max-width: 180px; height: auto; display: inline-block; }
+#print-wrapper .print-top-section { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 14px; }
+#print-wrapper .print-right-panel { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px; }
+#print-wrapper .print-info-block { display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; background: #f8f9fa; border: 1px solid #ddd; border-radius: 4px; }
+#print-wrapper .print-info-row { display: flex; align-items: baseline; gap: 8px; line-height: 1.5; }
+#print-wrapper .print-label { font-size: 11px; color: #666; font-weight: 600; min-width: 48px; flex-shrink: 0; }
+#print-wrapper #target-church-name { font-size: 16px; font-weight: bold; color: #111; }
+#print-wrapper #target-top-memo { font-size: 13px; color: #333; flex: 1; word-break: keep-all; line-height: 1.5; }
+#print-wrapper .print-qr-box { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid #999; border-radius: 4px; background: #f8f9fa; }
+#print-wrapper .print-qr-label { flex: 1; font-size: 10px; color: #444; line-height: 1.5; }
+#print-wrapper .print-qr-label strong { display: block; margin-bottom: 4px; font-size: 11px; color: #222; }
+#print-wrapper #print-clue-section { margin-top: 0; }
+#print-wrapper #print-clue-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+#print-wrapper .print-page-break { page-break-before: always; margin-top: 0; padding-top: 0; }
+#print-wrapper .print-answer-label { text-align: center; font-size: 18px; font-weight: bold; color: #0073e6; margin-bottom: 12px; }
+
+@media print {
+  /* ── 숨길 요소 ── */
+  .nav, header, main, footer, .guide, .puzzle-info-panel,
+  button, .no-print, #popupAnswer, #popupAuth, #adPopup, #premium-badge {
+    display: none !important;
+  }
+
+  /* ── 인쇄 영역 표시 ── */
+  .print-only { display: block !important; }
+  #print-wrapper { display: block !important; }
+
+  /* ── 페이지 설정 ── */
+  @page { size: A4 portrait; margin: 12mm 10mm; }
+
+  body {
+    background: white !important;
+    margin: 0 !important; padding: 0 !important;
+    font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif !important;
+  }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+  /* ── wrapper ── */
+  #print-wrapper {
+    width: 190mm !important;
+    margin: 0 auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ── 1. 로고 ── */
+  .print-logo-wrap {
+    text-align: center !important;
+    margin-bottom: 12px !important;
+  }
+  .print-logo {
+    max-width: 160px !important;
+    height: auto !important;
+    display: inline-block !important;
+  }
+
+  /* ── 2. 퍼즐 + 우측(교회/메모/정답확인) ── */
+  #print-top-section {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 14px !important;
+    align-items: flex-start !important;
+    margin-bottom: 14px !important;
+  }
+  #print-canvas-wrap { flex: 0 0 auto !important; }
+  #print-canvas {
+    width: 108mm !important;
+    height: 108mm !important;
+    border: 2px solid #222 !important;
+    display: block !important;
+    image-rendering: pixelated !important;
+  }
+  .print-right-panel {
+    flex: 1 !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+  .print-info-block {
+    padding: 10px 12px !important;
+    background: #f8f9fa !important;
+    border: 1px solid #ddd !important;
+    border-radius: 4px !important;
+  }
+  #target-church-name { font-size: 16px !important; font-weight: bold !important; color: #111 !important; }
+  #target-top-memo { font-size: 13px !important; color: #333 !important; }
+  #print-qr-box {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 8px 12px !important;
+    border: 1px solid #999 !important;
+    border-radius: 4px !important;
+    background: #f8f9fa !important;
+  }
+  #print-qr-label { font-size: 10px !important; color: #444 !important; line-height: 1.5 !important; }
+  #print-qr-label strong { font-size: 11px !important; color: #222 !important; display: block !important; margin-bottom: 4px !important; }
+  #qr-img {
+    width: 64px !important;
+    height: 64px !important;
+    flex: 0 0 64px !important;
+    border: 1px solid #ccc !important;
+    display: block !important;
+  }
+
+  /* ── 3. 가로/세로 힌트 (1+2 영역 아래, 남은 공간 배치) ── */
+  #print-clue-section {
+    margin-top: 0 !important;
+    break-inside: avoid !important;
+  }
+  #print-clue-columns {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+  #print-across-box,
+  #print-down-box {
+    border: 1px solid #999 !important;
+    border-radius: 4px !important;
+    padding: 8px 10px !important;
+    background: #fff !important;
+    break-inside: avoid !important;
+  }
+  #print-across-box h3,
+  #print-down-box h3 {
+    font-size: 11px !important;
+    color: #222 !important;
+    font-weight: bold !important;
+    margin: 0 0 5px 0 !important;
+    padding-bottom: 3px !important;
+    border-bottom: 2px solid #333 !important;
+  }
+  #print-across-list .question,
+  #print-down-list .question {
+    display: block !important;
+    font-size: 10px !important;
+    line-height: 1.6 !important;
+    padding: 2px 6px !important;
+    margin-bottom: 2px !important;
+    border-left: 3px solid #333 !important;
+    border-radius: 0 2px 2px 0 !important;
+    background: white !important;
+    word-break: keep-all !important;
+    break-inside: avoid !important;
+    color: #222 !important;
+  }
+  #print-across-list .question:nth-child(odd),
+  #print-down-list .question:nth-child(odd) {
+    background: #fafafa !important;
+  }
+
+  /* ── 2페이지: 정답 ── */
+  .print-page-break {
+    page-break-before: always !important;
+  }
+  .print-answer-label {
+    font-size: 18px !important;
+    font-weight: bold !important;
+    color: #0073e6 !important;
+    text-align: center !important;
+    margin-bottom: 12px !important;
+  }
+  #print-canvas-wrap-2 { flex: 0 0 auto !important; }
+  #print-canvas-answer {
+    width: 108mm !important;
+    height: 108mm !important;
+    border: 2px solid #222 !important;
+    display: block !important;
+    image-rendering: pixelated !important;
+  }
+  #print-across-list-2 .question,
+  #print-down-list-2 .question {
+    display: block !important;
+    font-size: 10px !important;
+    line-height: 1.6 !important;
+    padding: 2px 6px !important;
+    margin-bottom: 2px !important;
+    border-left: 3px solid #333 !important;
+    border-radius: 0 2px 2px 0 !important;
+    background: white !important;
+    word-break: keep-all !important;
+    break-inside: avoid !important;
+    color: #222 !important;
+  }
+}
+
+/* 토스트 메시지 스타일 */
+.toast-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 20px 30px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 10000;
+  animation: fadeInOut 2s ease-in-out;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+  15% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+}
+
+</style>
+
+</head>
+
+<body>
+  
+
+<nav class="nav">
+  <a href="index.html" class="nav-item">홈</a>
+  <a href="play.html" class="nav-item nav-active">퍼즐하기</a>
+  <a href="list.html" class="nav-item">퍼즐목록</a>
+  <a href="posts/index.html" class="nav-item">게시판</a>
+  <a href="about.html" class="nav-item">소개</a>
+  <a href="support.html" class="nav-item">후원</a>
+</nav>
+
+<header>
+  <a href="index.html" style="text-decoration: none; display: inline-block;">
+    <img src="images/crossero-logo.png" alt="십자가로세로">
+  </a>
+  <p id="dynamicTitle">말씀 가로세로 퍼즐</p>
+</header>
+
+<!-- 인쇄 전용 영역 -->
+<div id="print-wrapper" class="print-only" style="display:none;">
+
+  <!-- 1. 로고 -->
+  <div class="print-logo-wrap">
+    <img src="images/crossero-logo.png" alt="십자가로세로" class="print-logo">
+  </div>
+
+  <!-- 2. 퍼즐 + 우측(교회/메모/정답확인) -->
+  <div id="print-top-section" class="print-top-section">
+    <div id="print-canvas-wrap">
+      <canvas id="print-canvas" width="900" height="900"></canvas>
+    </div>
+    <div class="print-right-panel">
+      <div class="print-info-block">
+        <div class="print-info-row">
+          <span class="print-label">교회명</span>
+          <span id="target-church-name" class="print-church">교회명</span>
+        </div>
+        <div class="print-info-row">
+          <span class="print-label">메모</span>
+          <span id="target-top-memo" class="print-memo">메모</span>
+        </div>
+      </div>
+      <div id="print-qr-box" class="print-qr-box">
+        <div id="print-qr-label" class="print-qr-label">
+          <strong>더 많은 퍼즐이 궁금하다면?</strong>
+          crossero.com에서 확인하세요.
+        </div>
+        <img id="qr-img" src="" alt="crossero.com" width="64" height="64">
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 가로/세로 힌트 (1+2 영역 아래) -->
+  <div id="print-clue-section" class="print-clue-section">
+    <div id="print-clue-columns">
+      <div id="print-across-box">
+        <h3>가로</h3>
+        <div id="print-across-list"></div>
+      </div>
+      <div id="print-down-box">
+        <h3>세로</h3>
+        <div id="print-down-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 2페이지: 정답 (1페이지와 동일한 폼) ── -->
+  <div id="print-page-2" class="print-page-break">
+    <div class="print-answer-label">✽ 정답 ✽</div>
+    <div class="print-logo-wrap">
+      <img src="images/crossero-logo.png" alt="십자가로세로" class="print-logo">
+    </div>
+    <div id="print-top-section-2" class="print-top-section">
+      <div id="print-canvas-wrap-2" class="print-canvas-wrap">
+        <canvas id="print-canvas-answer" width="900" height="900"></canvas>
+      </div>
+      <div class="print-right-panel">
+        <div class="print-info-block">
+          <div class="print-info-row">
+            <span class="print-label">교회명</span>
+            <span id="target-church-name-2" class="print-church">교회명</span>
+          </div>
+          <div class="print-info-row">
+            <span class="print-label">메모</span>
+            <span id="target-top-memo-2" class="print-memo">메모</span>
+          </div>
+        </div>
+        <div id="print-qr-box-2" class="print-qr-box">
+          <div class="print-qr-label">
+            <strong>더 많은 퍼즐이 궁금하다면?</strong>
+            crossero.com에서 확인하세요.
+          </div>
+          <img id="qr-img-2" src="" alt="crossero.com" width="64" height="64">
+        </div>
+      </div>
+    </div>
+    <div id="print-clue-section-2" class="print-clue-section">
+      <div id="print-clue-columns">
+        <div id="print-across-box-2" class="print-across-box">
+          <h3>가로</h3>
+          <div id="print-across-list-2"></div>
+        </div>
+        <div id="print-down-box-2" class="print-down-box">
+          <h3>세로</h3>
+          <div id="print-down-list-2"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="max-width: 1100px; margin: 10px auto; padding: 0 20px; display: flex; gap: 10px; justify-content: flex-end;">
+  <button id="btnAnswer" onclick="handlePremiumFeature('answer')" style="padding: 10px 18px; background: #fff; border: 1.5px solid #0073e6; color: #0073e6; border-radius: 8px; font-weight: bold; cursor: pointer;">🔍 정답보기</button>
+  <button onclick="handlePremiumFeature('print')" style="padding: 10px 18px; background: #0073e6; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">🖨️ 인쇄하기</button>
+</div>
+
+<main>
+  <div class="game-area">
+    <!-- 셀 위 한글 입력창: 캔버스와 같은 부모에 absolute 배치 -->
+    <input id="cellInput" type="text" autocomplete="off" autocorrect="off"
+           autocapitalize="off" spellcheck="false" inputmode="text">
+    <div class="guide">✏️ 퍼즐 생성 가이드</div>
+    
+    <div class="puzzle-info-panel" style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; gap:10px;">
+        <button onclick="setupQuiz(3)" class="refresh-btn">🔄 낱말 새로 생성</button>
+      </div>
+      <div style="font-size:13px; color:#444; text-align:right;">
+        문항: <span id="qCountText">0</span>개 | 
+        소요예상: <span id="qTimeText">0분</span>
+      </div>
+    </div>
+
+    <div class="guide" style="display:flex; flex-direction:column; gap:4px; margin-bottom:8px;">
+      <span>✏️ 한 글자씩 입력 · 방향키 이동 · Backspace 수정</span>
+      <span id="actualDisplay" style="color:#0073e6; font-weight:bold;"></span>
+    </div>
+
+    <canvas id="puzzle" width="450" height="450"></canvas>
+  </div>
+
+
+  
+  <div class="panel-container">
+    <div class="panel">
+      <div class="hint-box-wrap">
+        <div class="hint-box" id="hintBox">👉 칸을 선택하면 힌트가 표시됩니다</div>
+      </div>
+      <div class="panel-inner">
+        <div class="panel-across">
+          <h3>가로</h3>
+          <div id="acrossList"></div>
+        </div>
+        <div class="panel-down">
+          <h3>세로</h3>
+          <div id="downList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-divider"></div>
+  
+  <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 30px;">
+      <a href="about.html" style="flex: 1; max-width: 180px; text-align: center; padding: 10px; background: #fff; border: 1px solid #ddd; color: #555; text-decoration: none; border-radius: 8px; font-size: 13px;">📖 만든 이유</a>
+      <a href="support.html" style="flex: 1; max-width: 180px; text-align: center; padding: 10px; background: #fff; border: 1px solid #0073e6; color: #0073e6; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold;">🙏 후원 응원</a>
+  </div>
+
+  <div class="footer-branding">
+    Crossero Puzzle <strong>Engine by PuzDuk.com</strong>
+  </div>
+  
+  <div class="footer-copyright">
+    © 2026 십자가로세로. All rights reserved.
+  </div>
+</footer>
+
+
+
+
+
+<script>
+/* =====================
+   1. 데이터 및 초기 설정
+===================== */
+const urlParams = new URLSearchParams(window.location.search);
+const quizId = urlParams.get('id') || "genesis_01";
+
+// [추가] 통합 데이터 풀 관리 변수
+let currentWordsPool = [];
+
+let QUIZ = { across: [], down: [] };
+const SIZE = 15;  
+const CELL = 30;  
+const canvas = document.getElementById("puzzle");
+const ctx = canvas.getContext("2d");
+const input = document.getElementById("cellInput");
+const hintBox = document.getElementById("hintBox");
+const acrossList = document.getElementById("acrossList");
+const downList = document.getElementById("downList");
+
+let solution = [...Array(SIZE)].map(()=>Array(SIZE).fill(null)); 
+let grid = [...Array(SIZE)].map(()=>Array(SIZE).fill(""));       
+let numberMap = [...Array(SIZE)].map(()=>Array(SIZE).fill(null)); 
+let cursor = {x:null,y:null}; 
+let composing = false;      
+let composingChar = "";     
+
+function showToast(html, duration = 2000) {
+  const el = document.createElement("div");
+  el.className = "toast-message";
+  el.innerHTML = html;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), duration);
+}
+
+// 퍼즐 정답 URL 인코딩 (QR용, 간결한 형식으로 URL 길이 절약)
+function encodePuzzleAnswerUrl() {
+  let sStr = '';
+  for (let y = 0; y < SIZE; y++) {
+    for (let x = 0; x < SIZE; x++) {
+      const c = solution[y][x];
+      sStr += c === null ? '.' : c;
+    }
+  }
+  const nParts = [];
+  for (let y = 0; y < SIZE; y++) {
+    for (let x = 0; x < SIZE; x++) {
+      if (numberMap[y][x] != null) nParts.push(numberMap[y][x] + ',' + y + ',' + x);
+    }
+  }
+  const str = sStr + '|' + nParts.join(';');
+  const b64 = btoa(unescape(encodeURIComponent(str)));
+  const base = window.location.origin + window.location.pathname;
+  return base + '?answer=1&g=' + encodeURIComponent(b64);
+}
+
+// 퍼즐 정답 URL 디코딩 및 복원
+function decodeAndRestorePuzzleAnswer(encoded) {
+  try {
+    const b64 = decodeURIComponent(encoded);
+    const str = decodeURIComponent(escape(atob(b64)));
+    const [sStr, nStr] = str.split('|');
+    if (!sStr || sStr.length !== SIZE * SIZE) return false;
+    for (let y = 0; y < SIZE; y++) {
+      for (let x = 0; x < SIZE; x++) {
+        const i = y * SIZE + x;
+        const c = sStr[i];
+        solution[y][x] = c === '.' ? null : c;
+        grid[y][x] = solution[y][x] !== null ? solution[y][x] : "";
+        numberMap[y][x] = null;
+      }
+    }
+    if (nStr) {
+      nStr.split(';').filter(Boolean).forEach(part => {
+        const arr = part.split(',').map(Number);
+        if (arr.length >= 3) {
+          const [num, y, x] = arr;
+          if (y >= 0 && y < SIZE && x >= 0 && x < SIZE) numberMap[y][x] = num;
+        }
+      });
+    }
+    return true;
+  } catch (e) {
+    console.warn('퍼즐 정답 디코딩 실패:', e);
+    return false;
+  }
+}
+
+/* =====================
+   새로 추가된 데이터 로드 및 번역 함수
+===================== */
+function loadAndTranslateData() {
+  const savedData = localStorage.getItem('gameData');
+  
+  if (savedData) {
+    const rawList = JSON.parse(savedData);
+    
+    // [추가] 필터링된 데이터인 경우 제목을 동적으로 변경
+    if (document.getElementById('dynamicTitle')) {
+      document.getElementById('dynamicTitle').innerText = "사용자 선택 단어 퍼즐";
+    }
+    currentWordsPool = rawList.map(item => {
+      // data.js의 전체 DB를 뒤져서 태그와 설명을 찾음 (자동 번역)
+      let sourceInfo = null;
+      for (const key in QUIZ_DATABASE) {
+        const found = QUIZ_DATABASE[key].allWords.find(w => w.answer === item.answer);
+        if (found) { sourceInfo = found; break; }
+      }
+      return {
+        answer: item.answer || item.name,
+        clue: item.clue || (sourceInfo ? sourceInfo.clue : "설명이 없습니다."),
+        tag: sourceInfo ? sourceInfo.tag : "미분류",
+        category: sourceInfo ? sourceInfo.category : "기본"
+      };
+    });
+  } else {
+    // ⭐ URL 파라미터 확인
+    const urlParams = new URLSearchParams(window.location.search);
+    const quizId = urlParams.get('id');
+    const category = urlParams.get('category'); // ⭐ 새로운 파라미터
+    
+    console.log('Loading quiz data - quizId:', quizId, 'category:', category);
+    
+    // ⭐ 1순위: 카테고리로 통합 로드
+    if (category) {
+      currentWordsPool = getCombinedWordsByCategory(category);
+      console.log(`✅ 카테고리 "${category}" 통합 로드: ${currentWordsPool.length}개`);
+    }
+    // ⭐ 2순위: 개별 퀴즈 로드
+    else if (quizId && QUIZ_DATABASE[quizId]) {
+      // quizId 접두어로 같은 그룹 찾기 (예: gen_001 → gen_으로 시작하는 모든 퀴즈)
+      const prefix = quizId.split('_')[0]; // "gen", "exo", "lev" 등
+      const combinedWords = getCombinedWordsByPrefix(prefix);
+      
+      if (combinedWords.length > QUIZ_DATABASE[quizId].allWords.length) {
+        // 같은 그룹의 다른 퀴즈가 있으면 통합
+        currentWordsPool = combinedWords;
+        console.log(`✅ "${prefix}" 그룹 통합 로드: ${currentWordsPool.length}개`);
+      } else {
+        // 단독 퀴즈
+        currentWordsPool = QUIZ_DATABASE[quizId].allWords;
+        console.log(`✅ 개별 퀴즈 로드: ${currentWordsPool.length}개`);
+      }
+    }
+    // ⭐ 3순위: 파라미터 없이 직접 접근 (메뉴 > 퍼즐하기)
+    else {
+      // 성경일반 전체 통합 로드 (가장 많은 단어)
+      currentWordsPool = getCombinedWordsByCategory('성경일반');
+      if (currentWordsPool.length === 0) {
+        // 성경일반이 없으면 구약+신약 전체
+        currentWordsPool = [
+          ...getCombinedWordsByCategory('구약성경'),
+          ...getCombinedWordsByCategory('신약성경')
+        ];
+      }
+      console.log(`✅ 기본 전체 로드: ${currentWordsPool.length}개`);
+    }
+  }
+}
+
+// ⭐ 새로운 함수: 접두어로 단어 통합
+function getCombinedWordsByPrefix(prefix) {
+  const combined = [];
+  const usedKeys = new Set(); // 중복 방지
+  
+  for (const key in QUIZ_DATABASE) {
+    if (key.startsWith(prefix + '_')) {
+      const quizData = QUIZ_DATABASE[key];
+      quizData.allWords.forEach(word => {
+        const uniqueKey = word.answer + '::' + word.clue;
+        if (!usedKeys.has(uniqueKey)) {
+          combined.push(word);
+          usedKeys.add(uniqueKey);
+        }
+      });
+    }
+  }
+  
+  return combined;
+}
+
+// ⭐ 새로운 함수: 카테고리로 단어 통합
+function getCombinedWordsByCategory(categoryKeyword) {
+  const combined = [];
+  const usedKeys = new Set(); // 중복 방지
+  
+  for (const key in QUIZ_DATABASE) {
+    const quizData = QUIZ_DATABASE[key];
+    
+    // category 문자열에 키워드가 포함되어 있는지 확인
+    if (quizData.category && quizData.category.includes(categoryKeyword)) {
+      quizData.allWords.forEach(word => {
+        const uniqueKey = word.answer + '::' + word.clue;
+        if (!usedKeys.has(uniqueKey)) {
+          combined.push(word);
+          usedKeys.add(uniqueKey);
+        }
+      });
+    }
+  }
+  
+  return combined;
+}
+
+/* =====================
+   2. 퍼즐 초기화 (setupQuiz)
+===================== */
+function setupQuiz(level) {
+  // config 설정값 로드
+  const dbEntry = QUIZ_DATABASE[quizId] || QUIZ_DATABASE["gen_001"];
+  const cfg = dbEntry.config ? dbEntry.config[3] : { time: "20분" };
+
+  // ⭐ 단어 풀이 비어있으면 먼저 다시 로드 (버튼 재생성 시 대비)
+  if (!currentWordsPool || currentWordsPool.length === 0) {
+    loadAndTranslateData();
+  }
+
+  // ⭐ 단어 풀 크기에 따라 목표 개수 자동 조정
+  const poolSize = currentWordsPool.length;
+  let targetCount;
+  
+  if (poolSize >= 50) {
+    targetCount = 35;
+  } else if (poolSize >= 30) {
+    targetCount = 20;
+  } else if (poolSize >= 15) {
+    targetCount = 12;
+  } else if (poolSize >= 8) {
+    targetCount = 8;
+  } else {
+    targetCount = Math.max(5, poolSize - 2);
+  }
+  
+  console.log(`📊 단어 풀: ${poolSize}개 → 목표: ${targetCount}개`);
+
+  if(document.getElementById('qCountText')) document.getElementById('qCountText').innerText = targetCount;
+  if(document.getElementById('qTimeText')) document.getElementById('qTimeText').innerText = cfg.time;
+  
+  QUIZ = { across: [], down: [] }; 
+  grid = [...Array(SIZE)].map(()=>Array(SIZE).fill("")); 
+  solution = [...Array(SIZE)].map(()=>Array(SIZE).fill(null)); 
+  numberMap = [...Array(SIZE)].map(()=>Array(SIZE).fill(null));
+  cursor = {x:null, y:null};
+  acrossList.innerHTML = ""; 
+  downList.innerHTML = "";
+  hintBox.innerHTML = "👉 칸을 선택하면 힌트가 표시됩니다";
+
+  // 번역된 데이터 풀에서 랜덤하게 섞음
+  const shuffled = [...currentWordsPool].sort(() => 0.5 - Math.random());
+  
+  buildSolution(shuffled, targetCount); // ⭐ cfg.qCount → targetCount 로 수정!
+  renderClues(); 
+  draw();        
+
+  const actualPlacedCount = QUIZ.across.length + QUIZ.down.length;
+  if(document.getElementById('actualDisplay')) {
+    document.getElementById('actualDisplay').innerText = `✅ 배치 성공: ${actualPlacedCount}개`;
+  }
+}
+
+/* =====================
+   3. 자동 교차 배치 알고리즘 - 교차율 강화
+===================== */
+function buildSolution(pool, targetCount) {
+  let num = 1;
+  const placedWords = [];
+  const usedAnswers = new Set();
+
+  // ⭐ 빈 공간 찾기 함수 (완전히 재작성)
+  function findEmptySpace(wordLength, direction) {
+    const attempts = 300;
+    
+    for (let attempt = 0; attempt < attempts; attempt++) {
+      let rx, ry;
+      
+      // 랜덤 위치 선택
+      if (direction === 'across') {
+        rx = Math.floor(Math.random() * Math.max(1, SIZE - wordLength));
+        ry = Math.floor(Math.random() * SIZE);
+      } else {
+        rx = Math.floor(Math.random() * SIZE);
+        ry = Math.floor(Math.random() * Math.max(1, SIZE - wordLength));
+      }
+      
+      // 단어가 들어갈 공간이 완전히 비어있는지 확인
+      let isEmpty = true;
+      
+      // 1. 단어 자체가 들어갈 칸 체크
+      for (let k = 0; k < wordLength; k++) {
+        const cx = direction === 'across' ? rx + k : rx;
+        const cy = direction === 'across' ? ry : ry + k;
+        
+        if (solution[cy][cx] !== null) {
+          isEmpty = false;
+          break;
+        }
+      }
+      
+      if (!isEmpty) continue;
+      
+      // 2. 앞뒤 1칸씩 비어있는지 체크 (단어가 붙지 않도록)
+      const beforeX = direction === 'across' ? rx - 1 : rx;
+      const beforeY = direction === 'across' ? ry : ry - 1;
+      const afterX = direction === 'across' ? rx + wordLength : rx;
+      const afterY = direction === 'across' ? ry : ry + wordLength;
+      
+      if (beforeX >= 0 && beforeY >= 0 && beforeX < SIZE && beforeY < SIZE) {
+        if (solution[beforeY][beforeX] !== null) {
+          isEmpty = false;
+          continue;
+        }
+      }
+      
+      if (afterX >= 0 && afterY >= 0 && afterX < SIZE && afterY < SIZE) {
+        if (solution[afterY][afterX] !== null) {
+          isEmpty = false;
+          continue;
+        }
+      }
+      
+      // 3. 양 옆(가로면 위아래, 세로면 좌우) 1칸씩 비어있는지 체크
+      for (let k = 0; k < wordLength; k++) {
+        const cx = direction === 'across' ? rx + k : rx;
+        const cy = direction === 'across' ? ry : ry + k;
+        
+        if (direction === 'across') {
+          // 가로면 위아래 체크
+          if (cy - 1 >= 0 && solution[cy - 1][cx] !== null) {
+            isEmpty = false;
+            break;
+          }
+          if (cy + 1 < SIZE && solution[cy + 1][cx] !== null) {
+            isEmpty = false;
+            break;
+          }
+        } else {
+          // 세로면 좌우 체크
+          if (cx - 1 >= 0 && solution[cy][cx - 1] !== null) {
+            isEmpty = false;
+            break;
+          }
+          if (cx + 1 < SIZE && solution[cy][cx + 1] !== null) {
+            isEmpty = false;
+            break;
+          }
+        }
+      }
+      
+      if (isEmpty) {
+        return { x: rx, y: ry };
+      }
+    }
+    
+    return null;
+  }
+
+  // 첫 단어 배치 (중앙에)
+  const first = pool.shift();
+  if (!first) return;
+  
+  first.dir = 'across';
+  first.x = Math.floor((SIZE - first.answer.length) / 2);
+  first.y = Math.floor(SIZE / 2);
+  
+  [...first.answer].forEach((c, i) => { 
+    solution[first.y][first.x + i] = c; 
+  });
+  
+  numberMap[first.y][first.x] = num++;
+  const firstData = {...first, num: numberMap[first.y][first.x]};
+  QUIZ.across.push(firstData);
+  placedWords.push(firstData);
+  usedAnswers.add(first.answer + '::' + first.clue);
+
+  // ⭐ 전체 단어 대상으로 교차점 후보를 모두 수집하는 함수
+  function findAllOverlaps(newWord) {
+    const candidates = [];
+    // 배치된 모든 단어를 대상으로 교차 시도 (최근순 우선)
+    const targets = [...placedWords].reverse();
+    for (const existingWord of targets) {
+      const newDir = existingWord.dir === 'across' ? 'down' : 'across';
+      for (let newIdx = 0; newIdx < newWord.answer.length; newIdx++) {
+        for (let existIdx = 0; existIdx < existingWord.answer.length; existIdx++) {
+          if (newWord.answer[newIdx] !== existingWord.answer[existIdx]) continue;
+          
+          let newX, newY;
+          if (newDir === 'across') {
+            newX = existingWord.x - newIdx;
+            newY = existingWord.y + existIdx;
+          } else {
+            newX = existingWord.x + existIdx;
+            newY = existingWord.y - newIdx;
+          }
+          
+          // 범위 체크
+          if (newDir === 'across') {
+            if (newX < 0 || newX + newWord.answer.length > SIZE) continue;
+            if (newY < 0 || newY >= SIZE) continue;
+          } else {
+            if (newX < 0 || newX >= SIZE) continue;
+            if (newY < 0 || newY + newWord.answer.length > SIZE) continue;
+          }
+          
+          // 배치 가능 체크
+          let canPlace = true;
+          for (let k = 0; k < newWord.answer.length; k++) {
+            const checkX = newDir === 'across' ? newX + k : newX;
+            const checkY = newDir === 'across' ? newY : newY + k;
+            const existing = solution[checkY][checkX];
+            
+            if (existing !== null && existing !== newWord.answer[k]) {
+              canPlace = false; break;
+            }
+            if (existing === null) {
+              for (let {dx, dy} of [{dx:1,dy:0},{dx:-1,dy:0},{dx:0,dy:1},{dx:0,dy:-1}]) {
+                const nx = checkX + dx, ny = checkY + dy;
+                if (nx < 0 || nx >= SIZE || ny < 0 || ny >= SIZE) continue;
+                const isCross = (nx === existingWord.x + (existingWord.dir==='across' ? existIdx : 0)) &&
+                                (ny === existingWord.y + (existingWord.dir==='down'   ? existIdx : 0));
+                if (!isCross && solution[ny][nx] !== null) { canPlace = false; break; }
+              }
+            }
+            if (!canPlace) break;
+          }
+          
+          if (canPlace) {
+            // ⭐ 교차 점수 계산 (이미 배치된 단어와 교차 수가 많을수록 높은 점수)
+            let crossScore = 0;
+            for (let k = 0; k < newWord.answer.length; k++) {
+              const cx = newDir === 'across' ? newX + k : newX;
+              const cy = newDir === 'across' ? newY : newY + k;
+              if (solution[cy][cx] !== null) crossScore++;
+            }
+            candidates.push({ x: newX, y: newY, dir: newDir, score: crossScore });
+          }
+        }
+      }
+    }
+    // ⭐ 교차 점수 높은 순으로 정렬 (더 많이 겹치는 위치 우선)
+    candidates.sort((a, b) => b.score - a.score);
+    return candidates;
+  }
+
+  // 단어를 실제로 배치하는 함수
+  function placeWord(q, pos) {
+    q.x = pos.x; q.y = pos.y; q.dir = pos.dir;
+    [...q.answer].forEach((char, k) => {
+      const cx = q.dir === 'across' ? q.x + k : q.x;
+      const cy = q.dir === 'across' ? q.y : q.y + k;
+      solution[cy][cx] = char;
+    });
+    if (!numberMap[q.y][q.x]) numberMap[q.y][q.x] = num++;
+    const finalWord = {...q, num: numberMap[q.y][q.x]};
+    if (q.dir === 'across') QUIZ.across.push(finalWord);
+    else QUIZ.down.push(finalWord);
+    placedWords.push(finalWord);
+    usedAnswers.add(q.answer + '::' + q.clue);
+    return true;
+  }
+
+  let attempts = 0;
+  const maxAttempts = 15000;
+  let retryPool = []; // 이번 라운드에 실패한 단어 보관
+
+  while ((pool.length > 0 || retryPool.length > 0) && placedWords.length < targetCount && attempts < maxAttempts) {
+    
+    // 풀이 비면 retryPool에서 다시 채움
+    if (pool.length === 0 && retryPool.length > 0) {
+      pool.push(...retryPool.splice(0));
+    }
+
+    const q = pool.shift();
+    const uniqueKey = q.answer + '::' + q.clue;
+    if (usedAnswers.has(uniqueKey)) { attempts++; continue; }
+
+    let placed = false;
+
+    // ⭐ 1단계: 교차 배치 - 항상 시도, 후보 중 최고 점수 위치에 배치
+    if (placedWords.length > 0) {
+      const candidates = findAllOverlaps(q);
+      if (candidates.length > 0) {
+        // 점수 상위 3개 중 랜덤 선택 (너무 같은 자리만 쓰지 않도록)
+        const topN = candidates.slice(0, Math.min(3, candidates.length));
+        const best = topN[Math.floor(Math.random() * topN.length)];
+        placed = placeWord(q, best);
+      }
+    }
+
+    // ⭐ 2단계: 교차 실패 시 독립 배치 (독립 배치 비율을 낮춤)
+    if (!placed) {
+      // 교차가 많이 됐을 때만 독립 배치 허용 (전체의 20% 이하)
+      const crossRatio = placedWords.length > 0
+        ? (placedWords.filter(w => {
+            return placedWords.some(other =>
+              other !== w && (
+                (w.dir === 'across' && other.dir === 'down' &&
+                  other.x >= w.x && other.x < w.x + w.answer.length &&
+                  w.y >= other.y && w.y < other.y + other.answer.length) ||
+                (w.dir === 'down' && other.dir === 'across' &&
+                  w.x >= other.x && w.x < other.x + other.answer.length &&
+                  other.y >= w.y && other.y < w.y + w.answer.length)
+              )
+            );
+          }).length / placedWords.length)
+        : 0;
+
+      // 교차율이 50% 이상이거나 아직 초반이면 독립 배치 허용
+      if (crossRatio >= 0.5 || placedWords.length < 5) {
+        const direction = Math.random() < 0.5 ? 'across' : 'down';
+        const emptyPos = findEmptySpace(q.answer.length, direction);
+        if (emptyPos) {
+          placed = placeWord(q, { ...emptyPos, dir: direction });
+        }
+      } else {
+        // 교차율이 낮으면 retry로 보내서 나중에 다시 시도
+        retryPool.push(q);
+        placed = true; // 무한루프 방지
+      }
+    }
+
+    if (!placed) retryPool.push(q);
+    attempts++;
+  }
+  
+  const crossCount = placedWords.filter(w =>
+    placedWords.some(other =>
+      other !== w && (
+        (w.dir === 'across' && other.dir === 'down' &&
+          other.x >= w.x && other.x < w.x + w.answer.length &&
+          w.y >= other.y && w.y < other.y + other.answer.length) ||
+        (w.dir === 'down' && other.dir === 'across' &&
+          w.x >= other.x && w.x < other.x + other.answer.length &&
+          other.y >= w.y && other.y < w.y + w.answer.length)
+      )
+    )
+  ).length;
+  console.log(`✅ 배치완료 가로:${QUIZ.across.length} 세로:${QUIZ.down.length} 교차율:${Math.round(crossCount/placedWords.length*100)}%`);
+  
+  console.log(`✅ 배치 완료 - 가로: ${QUIZ.across.length}개, 세로: ${QUIZ.down.length}개, 총: ${placedWords.length}개`);
+  
+  const totalCells = SIZE * SIZE;
+  const filledCells = solution.flat().filter(c => c !== null).length;
+  const density = ((filledCells / totalCells) * 100).toFixed(1);
+  console.log(`📊 칸 채움율: ${filledCells}/${totalCells} (${density}%)`);
+}
+
+
+/* =====================
+   4. UI 제어 및 이벤트 처리
+===================== */
+function renderClues(){
+  acrossList.innerHTML=""; downList.innerHTML="";
+  [...QUIZ.across].sort((a,b)=>a.num - b.num).forEach(q=>{
+    acrossList.innerHTML += `<div class="question" onclick="focusCell(${q.x}, ${q.y})">${q.num}. ${q.clue}</div>`;
+  });
+  [...QUIZ.down].sort((a,b)=>a.num - b.num).forEach(q=>{
+    downList.innerHTML += `<div class="question" onclick="focusCell(${q.x}, ${q.y})">${q.num}. ${q.clue}</div>`;
+  });
+}
+
+function focusCell(x, y) {
+  if (solution[y][x] === null) return;
+
+  // 조합 중이던 글자 확정
+  if (composingChar && cursor.x !== null && cursor.y !== null) {
+    grid[cursor.y][cursor.x] = composingChar;
+    composingChar = "";
+    composing = false;
+  }
+
+  cursor = { x, y };
+  updateHint(x, y);
+
+  // ★ cellInput을 선택된 셀 위에 정확히 위치시킴
+  // canvas의 CSS 표시 크기 기준으로 셀 위치 계산
+  const canvasRect = canvas.getBoundingClientRect();
+  const gameAreaRect = canvas.parentElement.getBoundingClientRect();
+  const cssScale = canvasRect.width / canvas.width; // CSS크기/실제해상도
+  const cellCSSSize = CELL * cssScale;
+
+  input.style.left = (canvasRect.left - gameAreaRect.left + x * cellCSSSize) + "px";
+  input.style.top  = (canvasRect.top  - gameAreaRect.top  + y * cellCSSSize) + "px";
+  input.style.width  = cellCSSSize + "px";
+  input.style.height = cellCSSSize + "px";
+  input.value = "";
+
+  // 포커스 (preventScroll로 화면 점프 방지)
+  input.focus({ preventScroll: true });
+  draw();
+}
+
+function updateHint(x,y){
+  let a="", d="";
+  QUIZ.across.forEach(q=>{ if(y===q.y && x>=q.x && x<q.x+q.answer.length) a=q.clue; });
+  QUIZ.down.forEach(q=>{ if(x===q.x && y>=q.y && y<q.y+q.answer.length) d=q.clue; });
+  hintBox.innerHTML=`👉 선택된 힌트
+${a?`가로: ${a}
+`:""}${d?`세로: ${d}`:""}`;
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let y=0;y<SIZE;y++){
+    for(let x=0;x<SIZE;x++){
+      const active = solution[y][x] !== null;
+      ctx.fillStyle = active ? "#fff" : "#666";
+      ctx.fillRect(x*CELL,y*CELL,CELL,CELL);
+      ctx.strokeStyle = "#ccc";
+      ctx.strokeRect(x*CELL,y*CELL,CELL,CELL);
+
+      if(active && numberMap[y][x]){
+        ctx.fillStyle = "rgba(255,255,255,0.9)";
+        ctx.fillRect(x*CELL+1, y*CELL+1, 10, 10);
+        ctx.fillStyle="#0073e6"; ctx.font="bold 10px sans-serif";
+        ctx.textAlign="left"; ctx.textBaseline="top";
+        ctx.fillText(numberMap[y][x], x*CELL+2, y*CELL+1);
+      }
+
+      if(cursor.x===x && cursor.y===y){
+        ctx.fillStyle="rgba(0,115,230,0.15)";
+        ctx.fillRect(x*CELL,y*CELL,CELL,CELL);
+      }
+
+      let char = grid[y][x];
+      if(cursor.x===x && cursor.y===y && composingChar) char = composingChar;
+
+      if(char){
+        ctx.fillStyle = char===solution[y][x] ? "#000" : "red";
+        ctx.font="bold 18px sans-serif";
+        ctx.textAlign="center";
+        ctx.textBaseline="middle";
+        ctx.fillText(char,x*CELL+15,y*CELL+15);
+      }
+    }
+  }
+}
+
+/* =====================
+   5. 이벤트 리스너
+===================== */
+// ⭐ 캔버스 실제 표시 크기 vs 내부 해상도 비율 계산 (모바일 대응 핵심)
+function getCanvasPos(e) {
+  const r = canvas.getBoundingClientRect();
+  const scaleX = canvas.width  / r.width;  // CSS 크기 대비 내부 해상도 비율
+  const scaleY = canvas.height / r.height;
+  
+  let clientX, clientY;
+  if (e.touches) {
+    clientX = e.touches[0].clientX;
+    clientY = e.touches[0].clientY;
+  } else {
+    clientX = e.clientX;
+    clientY = e.clientY;
+  }
+  
+  const x = Math.floor((clientX - r.left) * scaleX / CELL);
+  const y = Math.floor((clientY - r.top)  * scaleY / CELL);
+  return { x, y };
+}
+
+canvas.addEventListener("click", e => {
+  const { x, y } = getCanvasPos(e);
+  focusCell(x, y);
+});
+
+// ⭐ 모바일 터치: 탭은 셀 선택, 스와이프는 스크롤 허용
+let touchStartX = 0, touchStartY = 0;
+
+canvas.addEventListener("touchstart", e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+  // preventDefault 안 함 → 스크롤 허용
+}, { passive: true });
+
+canvas.addEventListener("touchend", e => {
+  const dx = Math.abs(e.changedTouches[0].clientX - touchStartX);
+  const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+
+  // 5px 이내 움직임만 탭으로 인식 (스와이프는 무시)
+  if (dx < 5 && dy < 5) {
+    const touch = e.changedTouches[0];
+    const fakeEvent = { clientX: touch.clientX, clientY: touch.clientY };
+    const { x, y } = getCanvasPos(fakeEvent);
+    focusCell(x, y);
+  }
+}, { passive: true });
+
+document.addEventListener("keydown",e=>{
+  if(cursor.x===null) return;
+  let {x,y}=cursor;
+  if(e.key==="ArrowRight") x++;
+  if(e.key==="ArrowLeft") x--;
+  if(e.key==="ArrowDown") y++;
+  if(e.key==="ArrowUp") y--;
+  if(solution[y] && solution[y][x]!==null){
+    cursor={x,y}; updateHint(x,y); draw();
+  }
+});
+
+// =====================
+// 한글 입력 - cellInput 방식
+// iOS/Android/PC 모두 동일하게 동작
+// 핵심: input.value를 절대 강제로 지우지 않음
+//       → 이전값과 현재값 비교로 새 글자 감지
+// =====================
+
+// iOS: input.value가 "ㄱㅏ"로 남을 때 자모를 완성형 한글로 조합 (유니코드 0xAC00 공식)
+function combineJamos(jamoStr) {
+  if (!jamoStr) return "";
+  const CHO = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+  const JUNG = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ";
+  const JONG = " ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ";
+  let result = "", cho = -1, jung = -1, jong = 0;
+  for (let i = 0; i < jamoStr.length; i++) {
+    const c = jamoStr[i];
+    const iCho = CHO.indexOf(c), iJung = JUNG.indexOf(c), iJong = JONG.indexOf(c);
+    if (iCho >= 0) {
+      if (cho >= 0 && jung >= 0 && jong > 0) {
+        result += String.fromCharCode(0xAC00 + ((cho * 21) + jung) * 28 + jong);
+        cho = iCho; jung = -1; jong = 0;
+      } else if (cho >= 0 && jung >= 0 && jong === 0 && iJong >= 0) {
+        jong = iJong;
+      } else { cho = iCho; jung = -1; jong = 0; }
+    } else if (iJung >= 0) {
+      if (cho >= 0) { jung = iJung; }
+      else { result += c; cho = -1; jung = -1; jong = 0; }
+    } else if (iJong >= 0 && cho >= 0 && jung >= 0) {
+      if (jong === 0) { jong = iJong; }
+      else {
+        result += String.fromCharCode(0xAC00 + ((cho * 21) + jung) * 28 + jong);
+        cho = iCho >= 0 ? iCho : -1; jung = -1; jong = 0;
+      }
+    } else { result += c; cho = -1; jung = -1; jong = 0; }
+  }
+  if (cho >= 0 && jung >= 0) result += String.fromCharCode(0xAC00 + ((cho * 21) + jung) * 28 + jong);
+  return result;
+}
+
+// 받침 추가: "가" + "ㄴ" → "간", "갑" + "ㅅ" → "값" (복합받침 포함)
+function addJongToSyllable(syllable, jongJamo) {
+  const code = syllable.charCodeAt(0);
+  if (code < 0xAC00 || code > 0xD7A3) return null;
+  const JONG = " ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ";
+  const newIdx = JONG.indexOf(jongJamo);
+  if (newIdx <= 0) return null;
+  const temp = code - 0xAC00;
+  const curJong = temp % 28;
+  const jung = Math.floor(temp / 28) % 21;
+  const cho = Math.floor(temp / 28 / 21);
+  let finalJong = 0;
+  if (curJong === 0) {
+    finalJong = newIdx;
+  } else {
+    // 복합받침: ㄱ+ㅅ=ㄳ, ㄴ+ㅈ=ㄵ, ㄴ+ㅎ=ㄶ, ㄹ+ㄱ=ㄺ, ㄹ+ㅁ=ㄻ, ㄹ+ㅂ=ㄼ, ㄹ+ㅅ=ㄽ, ㄹ+ㅌ=ㄾ, ㄹ+ㅍ=ㄿ, ㄹ+ㅎ=ㅀ, ㅂ+ㅅ=ㅄ
+    const compound = { "1,19": 3, "4,22": 5, "4,27": 6, "8,1": 9, "8,16": 10, "8,17": 11, "8,19": 12, "8,25": 13, "8,26": 14, "8,27": 15, "17,19": 18 };
+    const key = curJong + "," + newIdx;
+    finalJong = compound[key] || 0;
+  }
+  if (finalJong === 0) return null;
+  return String.fromCharCode(0xAC00 + ((cho * 21) + jung) * 28 + finalJong);
+}
+
+function extractKorean(str) {
+  if (!str) return "";
+  // 완성형 한글 우선
+  const full = str.match(/[가-힣]/g);
+  if (full) return full[full.length - 1];
+  // 자모만 있는 경우: iOS에서 "ㄱㅏ"가 "가"로 안 바뀔 때 직접 조합
+  const jamo = str.match(/[ㄱ-ㅎㅏ-ㅣ]/g);
+  if (jamo) {
+    const combined = combineJamos(jamo.join(""));
+    if (combined) return combined[combined.length - 1];
+    return jamo[jamo.length - 1];
+  }
+  return "";
+}
+
+let prevVal = ""; // 직전 input.value
+let justFinishedComposition = false; // 모바일: compositionend에서 지연 처리할 때 input 이벤트 스킵용
+
+input.addEventListener("compositionstart", () => {
+  composing = true;
+  composingChar = "";
+});
+
+input.addEventListener("compositionupdate", () => {
+  // input.value로 미리보기 (e.data는 iOS에서 믿을 수 없음)
+  const ch = extractKorean(input.value);
+  if (ch) { composingChar = ch; draw(); }
+});
+
+input.addEventListener("compositionend", () => {
+  composing = false;
+  // 모바일: input.value가 "ㄱㅏ"→"가"로 갱신되기 전에 input 이벤트가 오면
+  // extractKorean이 마지막 자모 "ㅏ"만 반환하는 버그 방지
+  // → setTimeout으로 다음 틱에 처리 (브라우저가 값 갱신 완료 후)
+  justFinishedComposition = true;
+  setTimeout(() => {
+    if (cursor.x === null || cursor.y === null) {
+      justFinishedComposition = false;
+      return;
+    }
+    const val = input.value;
+    const curCell = grid[cursor.y][cursor.x];
+    const singleJamo = val.length === 1 && /[ㄱ-ㅎ]/.test(val);
+    if (singleJamo && curCell && /[가-힣]/.test(curCell)) {
+      const withJong = addJongToSyllable(curCell, val);
+      if (withJong) {
+        grid[cursor.y][cursor.x] = withJong;
+        composingChar = "";
+        input.value = "";
+        prevVal = "";
+        draw();
+        justFinishedComposition = false;
+        return;
+      }
+    }
+    const ch = extractKorean(val);
+    if (ch) {
+      grid[cursor.y][cursor.x] = ch;
+      composingChar = "";
+      input.value = "";
+      prevVal = "";
+      draw();
+    }
+    justFinishedComposition = false;
+  }, 10);
+});
+
+input.addEventListener("input", () => {
+  if (cursor.x === null || cursor.y === null) return;
+  // 모바일 한글 조합: compositionend의 setTimeout에서 처리하므로 여기서 스킵
+  if (justFinishedComposition) return;
+
+  const val = input.value;
+
+  if (composing) {
+    // 조합 중: 미리보기만
+    composingChar = extractKorean(val) || "";
+    draw();
+    prevVal = val;
+    return;
+  }
+
+  // ── 조합 완료 or 단타 입력 ──
+
+  // 새로 추가된 부분 계산 (prevVal과의 차이)
+  let newPart = val;
+  if (val.startsWith(prevVal) && prevVal.length > 0) {
+    newPart = val.slice(prevVal.length);
+  }
+
+  prevVal = val;
+
+  if (!newPart && !val) return;
+
+  // 실제 저장할 글자: 새 부분 우선, 없으면 전체 마지막 글자
+  const target = newPart || val;
+
+  // 영문/숫자 입력 시 경고 (PC 한글 모드가 아닐 때)
+  if (target && /[a-zA-Z0-9]/.test(target[0])) {
+    showToast("⚠️ 한글로 입력해주세요!<br>키보드를 한글 모드로 변경해주세요.");
+    input.value = ""; prevVal = "";
+    return;
+  }
+
+  const ch = extractKorean(target);
+  if (!ch) return;
+
+  // iOS Chrome: "가" + "ㄴ" → "간" (받침 추가)
+  // 현재 셀에 받침 없는 한글이 있고, 새로 들어온 게 받침 가능한 자음 한 글자일 때
+  const curCell = grid[cursor.y][cursor.x];
+  const singleJamo = val.length === 1 && /[ㄱ-ㅎ]/.test(val);
+  if (singleJamo && curCell && /[가-힣]/.test(curCell)) {
+    const withJong = addJongToSyllable(curCell, val);
+    if (withJong) {
+      grid[cursor.y][cursor.x] = withJong;
+      composingChar = "";
+      input.value = "";
+      prevVal = "";
+      draw();
+      return;
+    }
+  }
+
+  // iOS Chrome: 자모만 있고 완성형 음절이 아니면 아직 커밋하지 않음
+  // "ㄱ" 입력 후 "ㅏ"가 올 때까지 대기 → "ㄱㅏ"가 되면 "가"로 조합해서 커밋
+  const jamo = val.match(/[ㄱ-ㅎㅏ-ㅣ]/g);
+  const hasComplete = /[가-힣]/.test(val);
+  const combined = jamo ? combineJamos(jamo.join("")) : "";
+  const hasCompleteSyllable = hasComplete || (combined && combined.length > 0);
+  if (!hasCompleteSyllable && jamo && jamo.length > 0) {
+    // 조합 중인 자모만 있음 → 미리보기만, 커밋/초기화 안 함 (다음 키 입력 대기)
+    composingChar = ch;
+    draw();
+    return;
+  }
+
+  grid[cursor.y][cursor.x] = ch;
+  composingChar = "";
+
+  // ★ input.value 초기화는 조합이 완전히 끝났을 때만
+  if (!composing) {
+    input.value = "";
+    prevVal = "";
+  }
+
+  draw();
+});
+
+input.addEventListener("keydown", e => {
+  if (e.key === "Backspace") {
+    e.preventDefault();
+    if (cursor.x !== null) {
+      grid[cursor.y][cursor.x] = "";
+      composingChar = "";
+      composing = false;
+      input.value = "";
+      prevVal = "";
+      draw();
+    }
+  }
+});
+
+/* =====================
+   6. [중요] auth.js 통합 기능 제어
+===================== */
+
+let isCountingDown = false; 
+
+function handlePremiumFeature(type) {
+  // [auth.js 활용] 현재 사용자 상태 확인
+  const user = checkAuthStatus();
+
+  // 1. 인쇄 기능
+  if (type === 'print') {
+    if (!user) {
+      if (confirm("🖨️ 인쇄 기능은 후원자 전용입니다.\n후원 페이지로 이동하시겠습니까?")) {
+        window.location.href = 'support.html';
+      }
+      return;
+    }
+    
+    // 수량 체크 및 프로세스 시작
+    if (user.printCount <= 0) {
+      alert("사용 가능한 인쇄 수량을 모두 소진하셨습니다.");
+      return;
+    }
+    
+    // 실제 인쇄 입력창 띄우기 (기존 함수 호출)
+    processPrint();
+    return;
+  }
+
+  // 2. 정답 보기 기능
+  if (type === 'answer') {
+    if (user) {
+      showAllAnswers(); // 후원자는 즉시 공개
+    } else {
+      const adPopup = document.getElementById('adPopup');
+      if (adPopup) {
+        adPopup.style.display = 'flex';
+        document.getElementById('popupChoice').style.display = 'block';
+        document.getElementById('popupTimerArea').style.display = 'none';
+      } else {
+        startWaitingTimer();
+      }
+    }
+  }
+}
+
+// 팝업 내 [30초 대기 후 무료 보기] 클릭 시 실행되는 함수
+function startWaitingTimer() {
+  if (isCountingDown) return;
+
+  const choiceArea = document.getElementById('popupChoice');
+  const timerArea = document.getElementById('popupTimerArea');
+  const adTimerText = document.getElementById('adTimerText');
+  const closeAdBtn = document.getElementById('closeAdBtn');
+  const mainBtn = document.getElementById('btnAnswer') || document.querySelector("button[onclick*='answer']");
+
+  if (choiceArea) choiceArea.style.display = 'none';
+  if (timerArea) timerArea.style.display = 'block';
+  
+  let timeLeft = 30;
+  isCountingDown = true;
+  if (mainBtn) {
+    mainBtn.disabled = true;
+    mainBtn.style.opacity = "0.6";
+  }
+
+  
+
+  const timer = setInterval(() => {
+    if (adTimerText) adTimerText.innerText = `${timeLeft}초 후 정답이 공개됩니다`;
+    if (mainBtn) mainBtn.innerText = `⏳ ${timeLeft}초...`;
+    
+    if (timeLeft <= 0) {
+      clearInterval(timer);
+      isCountingDown = false;
+      
+      if (adTimerText) adTimerText.innerText = "✨ 정답이 준비되었습니다!";
+      if (closeAdBtn) closeAdBtn.style.display = 'block';
+      
+      if (mainBtn) {
+        mainBtn.disabled = false;
+        mainBtn.style.opacity = "1";
+        mainBtn.innerText = "🔍 정답보기";
+      }
+      
+      showAllAnswers();
+    }
+    timeLeft--;
+  }, 1000);
+}
+
+// 팝업 닫기 함수
+function closeAdPopup() {
+  if (isCountingDown) {
+    alert("아직 정답을 준비 중입니다. 잠시만 기다려 주세요!");
+    return;
+  }
+  document.getElementById('adPopup').style.display = 'none';
+  if (document.getElementById('closeAdBtn')) {
+    document.getElementById('closeAdBtn').style.display = 'none';
+  }
+}
+
+// [실제 정답 주입 함수]
+function showAllAnswers() {
+  if (!solution || solution.length === 0) {
+    alert("퍼즐 데이터가 없습니다.");
+    return;
+  }
+  for (let y = 0; y < SIZE; y++) {
+    for (let x = 0; x < SIZE; x++) {
+      if (solution[y][x] !== null) {
+        grid[y][x] = solution[y][x]; 
+      }
+    }
+  }
+  if (typeof draw === 'function') {
+    draw(); 
+    alert("✨ 모든 정답이 채워졌습니다!");
+  }
+}
+
+/* =====================
+   7. 인쇄 로직 및 통계 전송
+===================== */
+function sendPrintLogToGoogle(church, memo) {
+  const now = new Date().toLocaleString('ko-KR', {
+    year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', hour12: false
+  });
+  const puzzleTitle = document.getElementById('dynamicTitle')?.innerText
+                   || document.title
+                   || '성경 퍼즐';
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 방법 1: Google Apps Script 웹앱 (권장 - 스프레드시트에 확실히 기록됨)
+  //   스프레드시트에서 확장 프로그램 → Apps Script → 아래 코드 붙여넣고
+  //   "웹 앱으로 배포" → URL 복사 후 아래에 붙여넣기
+  const PRINT_LOG_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzm9FOz5JX8Zl2Tfk9FV9cQltjODToRyykUdLoBpVevn0b_47Y8WgLLuyR0u4oDIoDS/exec";
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  if (PRINT_LOG_WEB_APP_URL) {
+    // 웹앱으로 전송 (폼 POST → 스프레드시트에 바로 한 행 추가)
+    let iframe = document.getElementById('google-form-iframe');
+    if (!iframe) {
+      iframe = document.createElement('iframe');
+      iframe.id = 'google-form-iframe';
+      iframe.name = 'google-form-iframe';
+      iframe.style.cssText = 'position:absolute;width:0;height:0;border:0;visibility:hidden';
+      document.body.appendChild(iframe);
+    }
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = PRINT_LOG_WEB_APP_URL;
+    form.target = 'google-form-iframe';
+    form.style.display = 'none';
+    [
+      ['church', church],
+      ['memo', memo],
+      ['date', now],
+      ['puzzle', puzzleTitle]
+    ].forEach(([name, value]) => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = name;
+      input.value = value || '';
+      form.appendChild(input);
+    });
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+    console.log("✅ 웹앱 전송 시도:", { church, memo, now, puzzleTitle });
+    return Promise.resolve(true);
+  }
+
+  // 방법 2: 구글폼 formResponse (폼에서 "로그인 없이 응답" 허용 필요)
+  const FORM_ID      = "1FAIpQLScBklbfEP5ynC55J7-J5lGw6Ilmysol2AGzCRFF4K4PdV8rUg";
+  const ENTRY_CHURCH = "entry.1456386806";
+  const ENTRY_MEMO   = "entry.1011687614";
+  const ENTRY_DATE   = "entry.1586908192";
+  const ENTRY_PUZZLE = "entry.1902615179";
+  const formUrl = `https://docs.google.com/forms/d/e/${FORM_ID}/formResponse`;
+
+  let iframe = document.getElementById('google-form-iframe');
+  if (!iframe) {
+    iframe = document.createElement('iframe');
+    iframe.id = 'google-form-iframe';
+    iframe.name = 'google-form-iframe';
+    iframe.style.cssText = 'position:absolute;width:0;height:0;border:0;visibility:hidden';
+    document.body.appendChild(iframe);
+  }
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = formUrl;
+  form.target = 'google-form-iframe';
+  form.style.display = 'none';
+  [
+    [ENTRY_CHURCH, church],
+    [ENTRY_MEMO, memo],
+    [ENTRY_DATE, now],
+    [ENTRY_PUZZLE, puzzleTitle]
+  ].forEach(([name, value]) => {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = name;
+    input.value = value || '';
+    form.appendChild(input);
+  });
+  document.body.appendChild(form);
+  form.submit();
+  document.body.removeChild(form);
+  console.log("✅ 구글폼 전송 시도:", { church, memo, now, puzzleTitle });
+  return Promise.resolve(true);
+}
+
+async function processPrint() {
+  const church = prompt("교회명을 입력하세요.", "로세로교회") || "미지정교회";
+  const memo = prompt("메모를 입력하세요", "초등 1부 주일학교 교재") || "";
+
+  console.log("📋 입력된 정보:", { church, memo });
+
+  // 1. 프린트 영역 표시
+  const printWrapper = document.getElementById('print-wrapper');
+  if (!printWrapper) { alert("프린트 영역을 찾을 수 없습니다."); return; }
+  printWrapper.style.display = 'block';
+
+  // 2. 헤더 텍스트 채우기
+  document.getElementById('target-church-name').innerText = church || '미지정교회';
+  document.getElementById('target-top-memo').innerText = memo || '—';
+
+  // 3. 퍼즐 캔버스 복사 (고해상도 - 900x900)
+  const printCanvas = document.getElementById('print-canvas');
+  const printCtx = printCanvas.getContext('2d');
+  const PCELL = 60; // 900 / 15 = 60px per cell
+
+  printCanvas.width = SIZE * PCELL;
+  printCanvas.height = SIZE * PCELL;
+
+  for (let y = 0; y < SIZE; y++) {
+    for (let x = 0; x < SIZE; x++) {
+      const active = solution[y][x] !== null;
+      // 배경
+      printCtx.fillStyle = active ? "#ffffff" : "#555555";
+      printCtx.fillRect(x*PCELL, y*PCELL, PCELL, PCELL);
+      // 테두리
+      printCtx.strokeStyle = active ? "#aaaaaa" : "#444444";
+      printCtx.lineWidth = 0.5;
+      printCtx.strokeRect(x*PCELL, y*PCELL, PCELL, PCELL);
+
+      if (active && numberMap[y][x]) {
+        // 번호 배경
+        printCtx.fillStyle = "rgba(255,255,255,0.95)";
+        printCtx.fillRect(x*PCELL+1, y*PCELL+1, 18, 16);
+        // 번호
+        printCtx.fillStyle = "#0073e6";
+        printCtx.font = "bold 13px sans-serif";
+        printCtx.textAlign = "left";
+        printCtx.textBaseline = "top";
+        printCtx.fillText(numberMap[y][x], x*PCELL+2, y*PCELL+2);
+      }
+
+      // 입력된 글자
+      const char = grid[y][x];
+      if (char) {
+        printCtx.fillStyle = (char === solution[y][x]) ? "#000000" : "#cc0000";
+        printCtx.font = "bold 28px sans-serif";
+        printCtx.textAlign = "center";
+        printCtx.textBaseline = "middle";
+        printCtx.fillText(char, x*PCELL + PCELL/2, y*PCELL + PCELL/2);
+      }
+    }
+  }
+
+  // 4. 힌트 복사
+  document.getElementById('print-across-list').innerHTML = document.getElementById('acrossList').innerHTML;
+  document.getElementById('print-down-list').innerHTML = document.getElementById('downList').innerHTML;
+
+  // 4-2. 2페이지: 정답 캔버스 (solution으로 채움)
+  const ansCanvas = document.getElementById('print-canvas-answer');
+  const ansCtx = ansCanvas.getContext('2d');
+  ansCanvas.width = SIZE * PCELL;
+  ansCanvas.height = SIZE * PCELL;
+  for (let y = 0; y < SIZE; y++) {
+    for (let x = 0; x < SIZE; x++) {
+      const active = solution[y][x] !== null;
+      ansCtx.fillStyle = active ? "#ffffff" : "#555555";
+      ansCtx.fillRect(x*PCELL, y*PCELL, PCELL, PCELL);
+      ansCtx.strokeStyle = active ? "#aaaaaa" : "#444444";
+      ansCtx.lineWidth = 0.5;
+      ansCtx.strokeRect(x*PCELL, y*PCELL, PCELL, PCELL);
+      if (active && numberMap[y][x]) {
+        ansCtx.fillStyle = "rgba(255,255,255,0.95)";
+        ansCtx.fillRect(x*PCELL+1, y*PCELL+1, 18, 16);
+        ansCtx.fillStyle = "#0073e6";
+        ansCtx.font = "bold 13px sans-serif";
+        ansCtx.textAlign = "left";
+        ansCtx.textBaseline = "top";
+        ansCtx.fillText(numberMap[y][x], x*PCELL+2, y*PCELL+2);
+      }
+      const char = solution[y][x];
+      if (char) {
+        ansCtx.fillStyle = "#000000";
+        ansCtx.font = "bold 28px sans-serif";
+        ansCtx.textAlign = "center";
+        ansCtx.textBaseline = "middle";
+        ansCtx.fillText(char, x*PCELL + PCELL/2, y*PCELL + PCELL/2);
+      }
+    }
+  }
+
+  // 5. QR 코드 (메인페이지 링크)
+  const qrImg = document.getElementById('qr-img');
+  const mainUrl = 'https://crossero.com';
+  const qrApiUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&margin=1&data=' + encodeURIComponent(mainUrl);
+  qrImg.src = qrApiUrl;
+
+  // 5-2. 2페이지: 교회/메모, 힌트, QR
+  document.getElementById('target-church-name-2').innerText = church || '미지정교회';
+  document.getElementById('target-top-memo-2').innerText = memo || '—';
+  document.getElementById('print-across-list-2').innerHTML = document.getElementById('acrossList').innerHTML;
+  document.getElementById('print-down-list-2').innerHTML = document.getElementById('downList').innerHTML;
+  document.getElementById('qr-img-2').src = qrApiUrl;
+
+  // 6. 구글폼 통계 전송 (백그라운드)
+  sendPrintLogToGoogle(church, memo).catch(() => {});
+
+  // 7. 인쇄 카운트 차감
+  deductPrintCount();
+
+  // 8. QR 로드 + 렌더링 완료 후 인쇄
+  const originalTitle = document.title;
+  const d = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const dateStr = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+  const timeStr = `${pad(d.getHours())}-${pad(d.getMinutes())}-${pad(d.getSeconds())}`;
+  document.title = `십자가로세로_${church}_${dateStr}_${timeStr}`;
+  const doPrint = () => {
+    setTimeout(() => {
+      window.print();
+      document.title = originalTitle;
+      printWrapper.style.display = 'none';
+    }, 300);
+  };
+  if (qrImg.complete && qrImg.naturalWidth) {
+    doPrint();
+  } else {
+    qrImg.onload = doPrint;
+    qrImg.onerror = doPrint; // 실패 시에도 인쇄 진행
+  }
+}
+
+/* =====================
+   8. 초기화 및 SEO
+===================== */
+window.addEventListener('load', () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const quizId = urlParams.get('id');
+  const query = urlParams.get('query');
+  const answerParam = urlParams.get('answer');
+  const gParam = urlParams.get('g');
+
+  // ⭐ QR 정답 페이지: g= 파라미터로 퍼즐 상태 복원
+  if (answerParam === '1' && gParam) {
+    if (decodeAndRestorePuzzleAnswer(gParam)) {
+      cursor = { x: null, y: null };
+      if (acrossList) acrossList.innerHTML = '';
+      if (downList) downList.innerHTML = '';
+      if (hintBox) hintBox.innerHTML = '📱 인쇄물 QR로 열린 정답 보기';
+      draw();
+      if (document.getElementById('dynamicTitle')) {
+        document.getElementById('dynamicTitle').innerText = '정답 보기 (인쇄 퍼즐)';
+      }
+      return;
+    }
+  }
+
+  // ⭐ 1순위: quizId가 있으면 data.js에서 제목 가져오기
+  if (quizId && QUIZ_DATABASE[quizId]) {
+    const quizData = QUIZ_DATABASE[quizId];
+    
+    // 페이지 헤더 제목 변경
+    if (document.getElementById('dynamicTitle')) {
+      document.getElementById('dynamicTitle').innerText = quizData.title;
+    }
+    
+    // 브라우저 탭 제목 변경 (SEO)
+    document.title = `${quizData.title} | 십자가로세로`;
+    
+    // 검색 로봇을 위한 description 메타태그 변경 (SEO)
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute("content", `${quizData.title} - ${quizData.category} 성경 낱말 퍼즐을 풀어보세요. ${quizData.meta}`);
+    }
+    
+    // 검색 로봇을 위한 keywords 메타태그 변경 (SEO)
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) {
+      metaKeywords.setAttribute("content", `${quizData.title}, ${quizData.category}, 성경 퍼즐, 십자가로세로`);
+    }
+    
+    // structured data 추가 (SEO)
+    injectStructuredData(quizData.title);
+    
+    console.log('✅ SEO 설정 완료:', quizData.title);
+  } 
+  // ⭐ 2순위: query 파라미터가 있으면 (검색어 기반)
+  else if (query) {
+    const finalTitle = `성경 ${query} 관련 말씀 퍼즐`;
+    if (document.getElementById('dynamicTitle')) {
+      document.getElementById('dynamicTitle').innerText = finalTitle;
+    }
+    document.title = `${finalTitle} | 십자가로세로`;
+    injectStructuredData(finalTitle);
+  }
+  // ⭐ 3순위: 아무것도 없으면 기본 제목
+  else {
+    if (document.getElementById('dynamicTitle')) {
+      document.getElementById('dynamicTitle').innerText = '말씀 가로세로 퍼즐';
+    }
+  }
+
+  loadAndTranslateData(); 
+  setupQuiz(3); 
+});
+
+const canonicalLink = document.createElement('link');
+canonicalLink.rel = 'canonical';
+canonicalLink.href = window.location.origin + window.location.pathname + window.location.search;
+document.head.appendChild(canonicalLink);
+
+function injectStructuredData(title) {
+  const existingScript = document.getElementById('jsonLdData');
+  if (existingScript) existingScript.remove();
+  const script = document.createElement('script');
+  script.id = 'jsonLdData';
+  script.type = 'application/ld+json';
+  const puzzleData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": title || "성경 말씀 가로세로 퍼즐",
+    "description": `${title} 주제의 성경 단어를 활용한 온라인 가로세로 낱말 맞추기 게임입니다.`,
+    "applicationCategory": "GameApplication",
+    "operatingSystem": "Web",
+    "author": { "@type": "Organization", "name": "십자가로세로" },
+    "url": window.location.href
+  };
+  script.text = JSON.stringify(puzzleData);
+  document.head.appendChild(script);
+}
+</script>
+
+<!-- 정답보기 팝업 -->
+<div id="adPopup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;">
+  <div style="background: white; padding: 30px; border-radius: 15px; text-align: center; max-width: 420px; width: 90%; box-shadow: 0 10px 25px rgba(0,0,0,0.3);">
+    <h2 style="margin-top: 0; color: #0073e6;">🔍 정답을 확인하시겠습니까?</h2>
+    <p style="font-size: 15px; line-height: 1.6; color: #333; margin-bottom: 20px;">
+      정답 보기는 후원자 전용 기능입니다.<br>
+      후원자가 아니시면 <b>30초 광고 대기</b> 후 확인 가능합니다.
+    </p>
+    <div id="popupChoice" style="display: flex; flex-direction: column; gap: 10px;">
+      <button onclick="location.href='support.html'" style="padding: 15px; background: #0073e6; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">☕ 후원하고 바로 보기</button>
+      <button onclick="startWaitingTimer()" style="padding: 15px; background: #f0f0f0; color: #555; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">⏳ 30초 대기 후 무료 보기</button>
+    </div>
+    <div id="popupTimerArea" style="display: none; margin-top: 10px;">
+      <div style="background: #fff9e6; padding: 20px; border-radius: 10px; border: 1px dashed #ffd43b; margin-bottom: 15px;">
+        <p style="margin: 0; color: #856404; font-size: 14px;">"기다리는 동안 말씀 구절을 묵상해 보세요."</p>
+      </div>
+      <p id="adTimerText" style="font-size: 18px; font-weight: bold; color: #e63946;">30초 후 정답이 공개됩니다</p>
+    </div>
+    <button onclick="closeAdPopup()" id="closeAdBtn" style="display: none; margin-top: 15px; width: 100%; background: #0073e6; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold;">확인 완료 (닫기)</button>
+  </div>
+</div>
+</body>
+</html>

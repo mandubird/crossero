@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>게시판 | 십자가로세로</title>
+<link rel="canonical" href="https://crossero.com/posts/">
+<style>
+* { box-sizing: border-box; }
+body { font-family: -apple-system, "Pretendard", sans-serif; margin: 0; background: #f5f5f5; color: #333; }
+.nav { display: flex; justify-content: center; gap: 10px; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 10px; }
+.nav-item { padding: 8px 14px; font-size: 14px; color: #444; text-decoration: none; border-radius: 6px; }
+.nav-item:hover { background: #f0f6ff; color: #0073e6; }
+.nav-active { background: #0073e6; color: #fff !important; font-weight: 600; }
+header { text-align: center; padding: 20px; border-bottom: 2px solid #0073e6; background: #fff; }
+header a { color: #0073e6; text-decoration: none; font-size: 24px; font-weight: bold; }
+main { max-width: 800px; margin: 24px auto; background: #fff; padding: 32px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+h1 { font-size: 22px; margin: 0 0 20px 0; }
+p.intro { color: #666; margin-bottom: 24px; }
+.board-table { width: 100%; border-collapse: collapse; }
+.board-table th { text-align: left; padding: 12px 16px; background: #f8f9fa; border-bottom: 2px solid #e1e4e8; font-size: 14px; color: #555; }
+.board-table td { padding: 14px 16px; border-bottom: 1px solid #eee; }
+.board-table tr:hover { background: #f8f9fa; }
+.board-table .col-date { width: 120px; color: #666; font-size: 14px; }
+.board-table a { color: #0073e6; text-decoration: none; font-weight: 500; }
+.board-table a:hover { text-decoration: underline; }
+@media (max-width: 600px) { .col-date { width: 90px; font-size: 13px; } }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="../index.html" class="nav-item">홈</a>
+  <a href="../play.html" class="nav-item">퍼즐하기</a>
+  <a href="../list.html" class="nav-item">퍼즐목록</a>
+  <a href="index.html" class="nav-item nav-active">게시판</a>
+  <a href="../about.html" class="nav-item">소개</a>
+  <a href="../support.html" class="nav-item">후원</a>
+</nav>
+<header><a href="https://crossero.com">✙ 십자가로세로</a></header>
+<main>
+<h1>📋 게시판</h1>
+<p class="intro">발행된 성경 퀴즈·가로세로 퍼즐 소개 글입니다. 제목을 클릭하면 글로 이동합니다. <a href="../list.html">퍼즐 목록</a>에서 바로 플레이할 수 있습니다.</p>
+<table class="board-table">
+<thead><tr><th class="col-date">발행일</th><th>제목</th></tr></thead>
+<tbody>
+<tr><td class="col-date">2026년 2월 21일</td><td><a href="사도행전-사도행전-성경퀴즈.html">사도행전: 첫 순교자 스데반</a></td></tr>
+<tr><td class="col-date">2026년 2월 21일</td><td><a href="사도행전-사도행전-성경-퀴즈-문제.html">사도행전: 바울의 회심</a></td></tr>
+
+</tbody>
+</table>
+</main>
+</body>
+</html>

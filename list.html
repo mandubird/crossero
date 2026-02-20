@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>퍼즐 목록 | 십자가로세로</title>
+  <meta name="description" content="창세기부터 요한계시록까지, 다양한 성경 주제별 가로세로 퍼즐 목록을 확인하세요.">
+  <meta name="keywords" content="성경공부 자료, 주일학교 퀴즈 목록, 성경 낱말 찾기">
+  <meta property="og:title" content="십자가로세로 | 말씀 가로세로 퍼즐">
+  <meta property="og:description" content="매주 새로운 말씀으로 즐기는 성경 퍼즐 게임">
+  <meta property="og:image" content="images/crossero-logo.png">
+
+<script src="data.js"></script>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0717185892763061"
+     crossorigin="anonymous"></script>
+
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "vin36biyig");
+</script>     
+ 
+
+<style>
+body {
+  margin:0;
+  font-family:-apple-system, Pretendard, sans-serif;
+  background:#f5f5f5;
+}
+
+/* 네비 */
+.nav {
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  background:#fff;
+  border-bottom:1px solid #e5e5e5;
+  padding:12px 0;
+}
+.nav-item {
+  padding:8px 14px;
+  font-size:14px;
+  color:#444;
+  text-decoration:none;
+  border-radius:6px;
+}
+.nav-item:hover {
+  background:#f0f6ff;
+  color:#0073e6;
+}
+.nav-active {
+  background: #0073e6;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+main {
+  max-width:1100px;
+  margin:auto;
+  padding:30px 20px;
+}
+
+h2 {
+  margin-bottom:20px;
+  font-size: 24px;
+  color: #333;
+}
+
+/* ⭐ 통합 퍼즐 섹션 */
+.mega-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 30px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.mega-title {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0 0 20px 0;
+  text-align: center;
+}
+
+.mega-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.mega-btn {
+  padding: 16px 20px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 12px;
+  text-align: center;
+  text-decoration: none;
+  color: #667eea;
+  font-weight: bold;
+  font-size: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.mega-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  border-color: white;
+  background: white;
+}
+
+.mega-tip {
+  text-align: center;
+  color: rgba(255,255,255,0.95);
+  font-size: 13px;
+  margin: 20px 0 0 0;
+  line-height: 1.6;
+}
+
+/* ⭐ 카테고리 섹션 */
+.category-section {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  border: 1px solid #e5e5e5;
+}
+
+.category-header {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #0073e6;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.category-card {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.category-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,115,230,0.15);
+  border-color: #0073e6;
+  background: white;
+}
+
+.category-icon {
+  font-size: 24px;
+}
+
+/* 필터 섹션 */
+.filter-section {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-label {
+  font-size: 13px;
+  font-weight: bold;
+  color: #666;
+  min-width: 80px;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-btn {
+  padding: 6px 15px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #555;
+  transition: all 0.2s;
+}
+.filter-btn:hover {
+  background: #f8f9fa;
+}
+.filter-btn.active {
+  background: #0073e6;
+  color: #fff;
+  border-color: #0073e6;
+}
+
+.filter-select {
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  font-size: 13px;
+  color: #555;
+  outline: none;
+  cursor: pointer;
+  background: #fff;
+}
+
+/* 카드 */
+.list {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:16px;
+}
+
+.card {
+  background:#fff;
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:20px 16px;
+  display:flex;
+  flex-direction:column;
+  align-items: center;
+  gap:12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+  color: inherit;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  border-color: #0073e6;
+}
+
+.card h4 {
+  margin:0;
+  font-size:16px;
+  color: #333;
+}
+
+.card .icon {
+  font-size: 28px;
+}
+
+/* 푸터 */
+footer {
+  max-width: 1100px;
+  margin: 60px auto 40px auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.footer-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #ccc, transparent);
+  margin-bottom: 30px;
+}
+
+.footer-branding {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.footer-branding strong {
+  color: #444;
+  letter-spacing: 0.5px;
+}
+
+.footer-copyright {
+  font-size: 12px;
+  color: #aaa;
+}
+
+/* 모바일 가독성 (play와 동일) */
+@media (max-width: 768px) {
+  .nav { padding: 8px 6px; gap: 6px; }
+  .nav-item { padding: 6px 10px; font-size: 12px; }
+  main { padding: 12px 10px; }
+  h2 { font-size: 19px !important; }
+  .mega-section { padding: 20px 16px; margin-bottom: 20px; }
+  .mega-title { font-size: 17px !important; }
+  .mega-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .mega-btn { padding: 12px 14px; font-size: 13px; }
+  .mega-tip { font-size: 12px; margin-top: 15px; }
+  .category-section { padding: 18px 14px; margin-bottom: 18px; }
+  .category-header { font-size: 16px !important; }
+  .category-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .category-card { padding: 12px; font-size: 13px; }
+  .category-icon { font-size: 20px; }
+  .filter-section { padding: 14px 12px; }
+  .filter-group { flex-direction: column; align-items: flex-start; }
+  .list { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .card { padding: 14px 12px; }
+  .card h4 { font-size: 14px; }
+  .card .icon { font-size: 24px; }
+  footer { padding: 0 12px; }
+}
+</style>
+
+<script src="auth.js"></script>
+
+</head>
+
+<body>
+
+
+
+<nav class="nav">
+  <a href="index.html" class="nav-item">홈</a>
+  <a href="play.html" class="nav-item">퍼즐하기</a>
+  <a href="list.html" class="nav-item nav-active">퍼즐목록</a>
+  <a href="posts/index.html" class="nav-item">게시판</a>
+  <a href="about.html" class="nav-item">소개</a>
+  <a href="support.html" class="nav-item">후원</a>
+</nav>
+
+<main>
+  <h2>📚 성경 말씀 퍼즐 모음</h2>
+
+  <!-- ⭐ 메가 통합 퍼즐 섹션 -->
+  <div class="mega-section">
+    <h3 class="mega-title">🌟 인기 통합 퍼즐 (풍성한 단어로 더 재미있게!)</h3>
+    <div class="mega-grid">
+      <a href="play.html?category=창세기" class="mega-btn">📘 창세기 전체</a>
+      <a href="play.html?category=출애굽기" class="mega-btn">📗 출애굽기 전체</a>
+      <a href="play.html?category=모세오경" class="mega-btn">📚 모세오경 전체</a>
+      <a href="play.html?category=역사서" class="mega-btn">📜 역사서 전체</a>
+      <a href="play.html?category=시가서" class="mega-btn">📖 시가서 전체</a>
+      <a href="play.html?category=예언서" class="mega-btn">✨ 예언서 전체</a>
+      <a href="play.html?category=복음서" class="mega-btn">✝️ 복음서 전체</a>
+      <a href="play.html?category=서신서" class="mega-btn">📬 서신서 전체</a>
+    </div>
+    <p class="mega-tip">💡 같은 주제의 모든 이야기를 통합하여 20~50개 단어로 더 풍성한 퍼즐을 만들어요!</p>
+  </div>
+
+  <!-- ⭐ 대상별 퍼즐 -->
+  <div class="category-section">
+    <h3 class="category-header">👨‍👩‍👧‍👦 대상별 맞춤 퍼즐</h3>
+    <div class="category-grid">
+      <a href="play.html?category=주일학교용" class="category-card">
+        <span class="category-icon">👶</span>
+        <span>주일학교용</span>
+      </a>
+      <a href="play.html?category=새신자용" class="category-card">
+        <span class="category-icon">🌱</span>
+        <span>새신자용</span>
+      </a>
+      <a href="play.html?category=중고등부용" class="category-card">
+        <span class="category-icon">🎓</span>
+        <span>중고등부용</span>
+      </a>
+      <a href="play.html?category=리더용" class="category-card">
+        <span class="category-icon">👔</span>
+        <span>리더용</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ⭐ 성경 권별 -->
+  <div class="category-section">
+    <h3 class="category-header">📖 구약성경 - 모세오경</h3>
+    <div class="category-grid">
+      <a href="play.html?category=창세기" class="category-card">
+        <span class="category-icon">📘</span>
+        <span>창세기</span>
+      </a>
+      <a href="play.html?category=출애굽기" class="category-card">
+        <span class="category-icon">📗</span>
+        <span>출애굽기</span>
+      </a>
+      <a href="play.html?category=레위기" class="category-card">
+        <span class="category-icon">📙</span>
+        <span>레위기</span>
+      </a>
+      <a href="play.html?category=민수기" class="category-card">
+        <span class="category-icon">📕</span>
+        <span>민수기</span>
+      </a>
+      <a href="play.html?category=신명기" class="category-card">
+        <span class="category-icon">📔</span>
+        <span>신명기</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <h3 class="category-header">📜 구약성경 - 역사서</h3>
+    <div class="category-grid">
+      <a href="play.html?category=여호수아" class="category-card">
+        <span class="category-icon">🏹</span>
+        <span>여호수아</span>
+      </a>
+      <a href="play.html?category=사사기" class="category-card">
+        <span class="category-icon">⚔️</span>
+        <span>사사기</span>
+      </a>
+      <a href="play.html?category=룻기" class="category-card">
+        <span class="category-icon">🌾</span>
+        <span>룻기</span>
+      </a>
+      <a href="play.html?category=사무엘상" class="category-card">
+        <span class="category-icon">👑</span>
+        <span>사무엘상</span>
+      </a>
+      <a href="play.html?category=사무엘하" class="category-card">
+        <span class="category-icon">👑</span>
+        <span>사무엘하</span>
+      </a>
+      <a href="play.html?category=열왕기상" class="category-card">
+        <span class="category-icon">🏛️</span>
+        <span>열왕기상</span>
+      </a>
+      <a href="play.html?category=열왕기하" class="category-card">
+        <span class="category-icon">🏛️</span>
+        <span>열왕기하</span>
+      </a>
+      <a href="play.html?category=역대상" class="category-card">
+        <span class="category-icon">📜</span>
+        <span>역대상</span>
+      </a>
+      <a href="play.html?category=역대하" class="category-card">
+        <span class="category-icon">📜</span>
+        <span>역대하</span>
+      </a>
+      <a href="play.html?category=에스라" class="category-card">
+        <span class="category-icon">🏛️</span>
+        <span>에스라</span>
+      </a>
+      <a href="play.html?category=에스더" class="category-card">
+        <span class="category-icon">👸</span>
+        <span>에스더</span>
+      </a>
+      <a href="play.html?category=느헤미야" class="category-card">
+        <span class="category-icon">🧱</span>
+        <span>느헤미야</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <h3 class="category-header">📖 구약성경 - 시가서</h3>
+    <div class="category-grid">
+      <a href="play.html?category=욥기" class="category-card">
+        <span class="category-icon">🙏</span>
+        <span>욥기</span>
+      </a>
+      <a href="play.html?category=시편" class="category-card">
+        <span class="category-icon">🎵</span>
+        <span>시편</span>
+      </a>
+      <a href="play.html?category=잠언" class="category-card">
+        <span class="category-icon">💡</span>
+        <span>잠언</span>
+      </a>
+      <a href="play.html?category=전도서" class="category-card">
+        <span class="category-icon">🤔</span>
+        <span>전도서</span>
+      </a>
+      <a href="play.html?category=아가" class="category-card">
+        <span class="category-icon">💝</span>
+        <span>아가</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <h3 class="category-header">✨ 구약성경 - 대선지서</h3>
+    <div class="category-grid">
+      <a href="play.html?category=이사야" class="category-card">
+        <span class="category-icon">📯</span>
+        <span>이사야</span>
+      </a>
+      <a href="play.html?category=예레미야" class="category-card">
+        <span class="category-icon">💧</span>
+        <span>예레미야</span>
+      </a>
+      <a href="play.html?category=예레미야애가" class="category-card">
+        <span class="category-icon">💧</span>
+        <span>예레미야애가</span>
+      </a>
+      <a href="play.html?category=에스겔" class="category-card">
+        <span class="category-icon">👁️</span>
+        <span>에스겔</span>
+      </a>
+      <a href="play.html?category=다니엘" class="category-card">
+        <span class="category-icon">🦁</span>
+        <span>다니엘</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <h3 class="category-header">🌟 구약성경 - 소선지서</h3>
+    <div class="category-grid">
+      <a href="play.html?category=호세아" class="category-card">
+        <span class="category-icon">❤️</span>
+        <span>호세아</span>
+      </a>
+      <a href="play.html?category=요엘" class="category-card">
+        <span class="category-icon">🦗</span>
+        <span>요엘</span>
+      </a>
+      <a href="play.html?category=아모스" class="category-card">
+        <span class="category-icon">⚖️</span>
+        <span>아모스</span>
+      </a>
+      <a href="play.html?category=오바댜" class="category-card">
+        <span class="category-icon">⛰️</span>
+        <span>오바댜</span>
+      </a>
+      <a href="play.html?category=요나" class="category-card">
+        <span class="category-icon">🐋</span>
+        <span>요나</span>
+      </a>
+      <a href="play.html?category=미가" class="category-card">
+        <span class="category-icon">⚖️</span>
+        <span>미가</span>
+      </a>
+      <a href="play.html?category=나훔" class="category-card">
+        <span class="category-icon">🔥</span>
+        <span>나훔</span>
+      </a>
+      <a href="play.html?category=하박국" class="category-card">
+        <span class="category-icon">⛰️</span>
+        <span>하박국</span>
+      </a>
+      <a href="play.html?category=스바냐" class="category-card">
+        <span class="category-icon">🌑</span>
+        <span>스바냐</span>
+      </a>
+      <a href="play.html?category=학개" class="category-card">
+        <span class="category-icon">🏛️</span>
+        <span>학개</span>
+      </a>
+      <a href="play.html?category=스가랴" class="category-card">
+        <span class="category-icon">🕊️</span>
+        <span>스가랴</span>
+      </a>
+      <a href="play.html?category=말라기" class="category-card">
+        <span class="category-icon">💬</span>
+        <span>말라기</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <h3 class="category-header">✝️ 신약성경 - 복음서</h3>
+    <div class="category-grid">
+      <a href="play.html?category=마태복음" class="category-card">
+        <span class="category-icon">📖</span>
+        <span>마태복음</span>
+      </a>
+      <a href="play.html?category=마가복음" class="category-card">
+        <span class="category-icon">📖</span>
+        <span>마가복음</span>
+      </a>
+      <a href="play.html?category=누가복음" class="category-card">
+        <span class="category-icon">📖</span>
+        <span>누가복음</span>
+      </a>
+      <a href="play.html?category=요한복음" class="category-card">
+        <span class="category-icon">📖</span>
+        <span>요한복음</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <h3 class="category-header">🕊️ 신약성경 - 사도행전 & 서신서</h3>
+    <div class="category-grid">
+      <a href="play.html?category=사도행전" class="category-card">
+        <span class="category-icon">🔥</span>
+        <span>사도행전</span>
+      </a>
+      <a href="play.html?category=로마서" class="category-card">
+        <span class="category-icon">📜</span>
+        <span>로마서</span>
+      </a>
+      <a href="play.html?category=고린도전서" class="category-card">
+        <span class="category-icon">💌</span>
+        <span>고린도전서</span>
+      </a>
+      <a href="play.html?category=에베소서" class="category-card">
+        <span class="category-icon">💌</span>
+        <span>에베소서</span>
+      </a>
+      <a href="play.html?category=옥중서신" class="category-card">
+        <span class="category-icon">⛓️</span>
+        <span>옥중서신</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="category-section">
+    <h3 class="category-header">🔮 신약성경 - 요한계시록</h3>
+    <div class="category-grid">
+      <a href="play.html?category=요한계시록" class="category-card">
+        <span class="category-icon">📯</span>
+        <span>요한계시록</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ⭐ 주제별 퍼즐 -->
+  <div class="category-section">
+    <h3 class="category-header">🎯 주제별 퍼즐</h3>
+    <div class="category-grid">
+      <a href="play.html?category=인물중심" class="category-card">
+        <span class="category-icon">👤</span>
+        <span>성경 인물</span>
+      </a>
+      <a href="play.html?category=지명중심" class="category-card">
+        <span class="category-icon">📍</span>
+        <span>성경 지명</span>
+      </a>
+      <a href="play.html?category=지혜" class="category-card">
+        <span class="category-icon">🧠</span>
+        <span>지혜</span>
+      </a>
+      <a href="play.html?category=믿음" class="category-card">
+        <span class="category-icon">✨</span>
+        <span>믿음</span>
+      </a>
+      <a href="play.html?category=사랑" class="category-card">
+        <span class="category-icon">❤️</span>
+        <span>사랑</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ⭐ 기초 학습용 -->
+  <div class="category-section">
+    <h3 class="category-header">📚 성경 기초 학습</h3>
+    <div class="category-grid">
+      <a href="play.html?category=기초" class="category-card">
+        <span class="category-icon">📖</span>
+        <span>성경 기초</span>
+      </a>
+      <a href="play.html?category=상식" class="category-card">
+        <span class="category-icon">💭</span>
+        <span>성경 상식</span>
+      </a>
+      <a href="play.html?category=성경일반" class="category-card">
+        <span class="category-icon">📜</span>
+        <span>성경 일반</span>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-divider"></div>
+  <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 30px;">
+      <a href="about.html" style="flex: 1; max-width: 180px; text-align: center; padding: 10px; background: #fff; border: 1px solid #ddd; color: #555; text-decoration: none; border-radius: 8px; font-size: 13px;">📖 만든 이유</a>
+      <a href="support.html" style="flex: 1; max-width: 180px; text-align: center; padding: 10px; background: #fff; border: 1px solid #0073e6; color: #0073e6; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold;">🙏 후원 응원</a>
+  </div>
+  <div class="footer-branding">
+    Crossero Puzzle <strong>Engine by PuzDuk.com</strong>
+  </div>
+  <div class="footer-copyright">
+    &copy; 2026 십자가로세로. All rights reserved.
+  </div>
+</footer>
+
+</body>
+</html>

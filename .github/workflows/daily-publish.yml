@@ -1,0 +1,47 @@
+# 매일 예약 발행 + 카페24 FTP 자동 업로드
+# - Playwright로 퍼즐 이미지·글 생성 후 FTP로 카페24에 업로드
+name: Daily publish and FTP deploy
+
+on:
+  schedule:
+    # 매일 00:00 UTC = 한국시간 09:00 (필요 시 수정)
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    # 수동 실행 가능
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Playwright and Chromium
+        run: |
+          pip install playwright
+          playwright install chromium
+          playwright install-deps
+
+      - name: Run publish script
+        run: python3 auto_publish_with_images.py
+
+      - name: FTP Deploy to Cafe24
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./
+          server-dir: ./
+          exclude: |
+            .git/
+            .github/
+            .venv/
+            **/__pycache__/
+            logs/
+            *.py

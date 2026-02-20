@@ -1,0 +1,33 @@
+# 십자가로세로(crossero.com) - 검색엔진 크롤링 규칙
+# Google, Naver, Daum(다음), Bing 등 공통
+
+User-agent: *
+Allow: /
+Disallow: /backup/
+
+# Google
+User-agent: Googlebot
+Allow: /
+Disallow: /backup/
+
+User-agent: Googlebot-Image
+Allow: /
+
+# Naver
+User-agent: Yeti
+Allow: /
+Disallow: /backup/
+
+# Daum(다음)
+User-agent: Daum
+Allow: /
+Disallow: /backup/
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Disallow: /backup/
+
+# 사이트맵 (검색엔진이 수집할 URL 목록)
+Sitemap: https://crossero.com/sitemap.xml
+Sitemap: https://crossero.com/posts.xml

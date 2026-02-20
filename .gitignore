@@ -1,0 +1,13 @@
+# 가상환경 (Actions에서 매번 새로 설치)
+.venv/
+venv/
+# 로그 (로컬/서버용, 배포 불필요)
+logs/
+# Python (스크립트 .py는 저장소에 포함, 캐시만 제외)
+__pycache__/
+*.pyc
+*.pyo
+.Python
+# OS
+.DS_Store
+Thumbs.db

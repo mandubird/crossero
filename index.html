@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>십자가로세로 | 성경퍼즐</title>
+  <meta name="description" content="성경 인물, 지명, 비유를 주제로 한 온라인 가로세로 낱말 퀴즈. 주일학교, 소그룹, 개인 묵상용 무료 말씀 퍼즐 서비스.">
+  <meta name="keywords" content="성경퀴즈, 가로세로낱말퀴즈, 성경퍼즐, 십자가로세로, 주일학교교재">
+  <meta property="og:title" content="십자가로세로 | 말씀 가로세로 퍼즐">
+  <meta property="og:description" content="매주 새로운 말씀으로 즐기는 성경 퍼즐 게임">
+  <meta property="og:image" content="https://crossero.com/images/og-image.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://crossero.com">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0717185892763061"
+     crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "vin36biyig");
+</script>
+
+<style>
+body {
+  margin:0;
+  font-family:-apple-system, Pretendard, sans-serif;
+  background:#f5f5f5;
+}
+
+/* 네비 */
+.nav {
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  background:#fff;
+  border-bottom:1px solid #e5e5e5;
+  padding:12px 0;
+}
+.nav-item {
+  padding:8px 14px;
+  font-size:14px;
+  color:#444;
+  text-decoration:none;
+  border-radius:6px;
+}
+.nav-item:hover {
+  background:#f0f6ff;
+  color:#0073e6;
+}
+/* 기존 .nav-play를 .nav-active로 변경 */
+.nav-active {
+  background: #0073e6;
+  color: #fff !important; /* 글자색 강제 */
+  font-weight: 600;
+}
+
+header {
+  text-align:center;
+  padding:40px 20px 20px;
+}
+header img {
+  max-width: 200px;
+  width: 200px;
+}
+header p {
+  color:#666;
+  font-size:14px;
+}
+
+main {
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+
+/* 태그 */
+.tags {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+  margin:30px 0;
+}
+.tag {
+  padding:8px 14px;
+  border-radius:20px;
+  background:#fff;
+  border:1px solid #ddd;
+  font-size:13px;
+  cursor:pointer;
+}
+.tag:hover {
+  background:#f0f6ff;
+  border-color:#0073e6;
+  color:#0073e6;
+}
+
+/* 시작 버튼 */
+.start-box {
+  text-align:center;
+  margin-top:40px;
+}
+.start-btn {
+  display:inline-block;
+  background:#0073e6;
+  color:#fff;
+  padding:14px 32px;
+  border-radius:8px;
+  text-decoration:none;
+  font-size:16px;
+  font-weight:600;
+}
+.start-btn:hover {
+  background:#005bb5;
+}
+
+/* 공통 푸터 스타일 */
+footer {
+  max-width: 1100px;
+  margin: 60px auto 40px auto;
+  padding: 0 20px;
+  text-align: center;
+}
+
+.footer-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, #ccc, transparent);
+  margin-bottom: 30px;
+}
+
+.footer-branding {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+.footer-branding strong {
+  color: #444;
+  letter-spacing: 0.5px;
+}
+
+.footer-copyright {
+  font-size: 12px;
+  color: #aaa;
+}
+
+/* 모바일 가독성 (play와 동일) */
+@media (max-width: 768px) {
+  .nav { padding: 8px 6px; gap: 6px; }
+  .nav-item { padding: 6px 10px; font-size: 12px; }
+  header { padding: 20px 12px 15px; }
+  header img { max-width: 160px; width: 160px; }
+  header h1 { font-size: 13px !important; }
+  main { padding: 12px 10px; }
+  .tags { gap: 8px; margin: 20px 0; }
+  .tag { padding: 6px 12px; font-size: 12px; }
+  .start-box { margin-top: 24px; }
+  #weekly-recommendation { padding: 20px 16px !important; margin-top: 24px !important; }
+  #recommend-title { font-size: 17px !important; }
+  .start-btn { padding: 12px 24px; font-size: 14px; }
+  footer { padding: 0 12px; }
+}
+</style>
+
+<script src="auth.js"></script>
+
+</head>
+
+<body>
+
+
+
+<nav class="nav">
+  <a href="index.html" class="nav-item nav-active">홈</a>
+  <a href="play.html" class="nav-item">퍼즐하기</a>
+  <a href="list.html" class="nav-item">퍼즐목록</a>
+  <a href="posts/index.html" class="nav-item">게시판</a>
+  <a href="about.html" class="nav-item">소개</a>
+  <a href="support.html" class="nav-item">후원</a>
+</nav>
+
+<header>
+  <a href="index.html" style="text-decoration: none; display: inline-block;">
+    <img src="images/crossero-logo.png" alt="십자가로세로 - 온라인 성경 가로세로 낱말 퀴즈" style="cursor: pointer;">
+  </a>
+  <h1 style="font-size: 16px; color: #666; font-weight: normal; margin: 5px 0 0 0;">
+    무료 온라인 성경 가로세로 낱말 퀴즈 - 십자가로세로
+  </h1>
+</header>
+
+<main>
+  <h2 style="text-align:center;">어떤 말씀으로 풀어볼까요?</h2>
+
+<div class="tags">
+  <a href="list.html?tag=인물" class="tag" style="text-decoration:none; color:inherit;">👤 성경 인물</a>
+  <a href="list.html?tag=지명" class="tag" style="text-decoration:none; color:inherit;">📍 성경 지명</a>
+  <a href="list.html?tag=예수님" class="tag" style="text-decoration:none; color:inherit;">✨ 예수님</a>
+  <a href="list.html?tag=사복음서" class="tag" style="text-decoration:none; color:inherit;">📖 사복음서</a>
+  <a href="list.html?tag=비유" class="tag" style="text-decoration:none; color:inherit;">🌱 비유</a>
+  <a href="list.html?tag=초등부" class="tag" style="text-decoration:none; color:inherit;">🎒 초등부</a>
+  <a href="list.html?tag=주보용" class="tag" style="text-decoration:none; color:inherit;">📰 주보용</a>
+  <a href="list.html" class="tag" style="text-decoration:none; background:#f0f6ff; border-color:#0073e6; color:#0073e6;">전체보기 +</a>
+</div>
+
+ <div class="start-box" id="weekly-recommendation" style="margin-top: 40px; padding: 30px; background: #fff; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); text-align: center;">
+  <p style="color: #0073e6; font-weight: bold; margin-bottom: 8px; font-size: 14px;">🌟 이번 주 추천 퍼즐</p>
+  <h3 id="recommend-title" style="margin: 0 0 20px 0; font-size: 20px; color: #333;">불러오는 중...</h3>
+  <a id="recommend-link" href="list.html" class="start-btn" style="display: inline-block; padding: 14px 40px; background: #0073e6; color: white; text-decoration: none; border-radius: 30px; font-weight: bold;">
+    ▶ 바로 퍼즐 풀기
+  </a>
+</div>
+</main>
+
+<footer>
+  <div class="footer-divider"></div>
+  
+  <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 30px;">
+      <a href="about.html" style="flex: 1; max-width: 180px; text-align: center; padding: 10px; background: #fff; border: 1px solid #ddd; color: #555; text-decoration: none; border-radius: 8px; font-size: 13px;">📖 만든 이유</a>
+      <a href="support.html" style="flex: 1; max-width: 180px; text-align: center; padding: 10px; background: #fff; border: 1px solid #0073e6; color: #0073e6; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold;">🙏 후원 응원</a>
+  </div>
+
+  <div class="footer-branding">
+    Crossero Puzzle <strong>Engine by PuzDuk.com</strong>
+  </div>
+  
+  <div class="footer-copyright">
+    &copy; 2026 십자가로세로. All rights reserved.
+  </div>
+</footer>
+
+<script src="data.js"></script>
+
+<script>
+
+
+window.addEventListener('load', () => {
+    try {
+        if (typeof QUIZ_DATABASE === 'undefined') {
+            console.error("data.js를 찾을 수 없습니다.");
+            return;
+        }
+
+        const keys = Object.keys(QUIZ_DATABASE);
+        if (keys.length === 0) return;
+
+        // 2. 35개 꽉 찬 퍼즐만 추천 (단어 풀 50개 이상)
+        const MIN_WORDS = 50;
+        let pool = keys;
+        if (typeof getWordPoolSizeForQuiz === 'function') {
+            const fullKeys = keys.filter(id => getWordPoolSizeForQuiz(id) >= MIN_WORDS);
+            if (fullKeys.length > 0) pool = fullKeys;
+        }
+
+        const randomKey = pool[Math.floor(Math.random() * pool.length)];
+        const selectedQuiz = QUIZ_DATABASE[randomKey];
+        if (!selectedQuiz) return;
+
+        // 3. 화면 UI 업데이트
+        const titleEl = document.getElementById('recommend-title');
+        const linkEl = document.getElementById('recommend-link');
+
+        if (titleEl && linkEl) {
+            titleEl.innerText = `"${selectedQuiz.title || randomKey}"`;
+            linkEl.href = `play.html?id=${randomKey}`;
+        }
+    } catch (e) {
+        console.error("추천 퍼즐 로드 오류:", e);
+        const titleEl = document.getElementById('recommend-title');
+        const linkEl = document.getElementById('recommend-link');
+        if (titleEl) titleEl.innerText = '"말씀 가로세로 퍼즐"';
+        if (linkEl) linkEl.href = 'play.html';
+    }
+});
+</script>
+
+</body>
+</html>
