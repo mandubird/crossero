@@ -7,7 +7,11 @@ on:
     # 매일 00:00 UTC = 한국시간 09:00 (필요 시 수정)
     - cron: '0 0 * * *'
   workflow_dispatch:
-    # 수동 실행 가능
+    inputs:
+      test_date:
+        description: '테스트용 발행일 (YYYY-MM-DD). 비우면 오늘 날짜로 실행'
+        required: false
+        type: string
 
 jobs:
   publish:
@@ -29,7 +33,20 @@ jobs:
           playwright install-deps
 
       - name: Run publish script
-        run: python3 auto_publish_with_images.py
+        run: |
+          if [ -n "${{ inputs.test_date }}" ]; then
+            echo "🧪 테스트 모드: 발행일 ${{ inputs.test_date }}"
+            python3 auto_publish_with_images.py --date=${{ inputs.test_date }}
+          else
+            python3 auto_publish_with_images.py
+          fi
+
+      - name: List generated files (이미지/글 생성 확인)
+        run: |
+          echo "=== posts/ ==="
+          ls -la posts/ 2>/dev/null || true
+          echo "=== images/puzzles/ ==="
+          ls -la images/puzzles/ 2>/dev/null || true
 
       - name: Prepare upload folder (no .git)
         run: |

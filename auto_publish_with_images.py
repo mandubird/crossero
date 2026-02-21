@@ -64,6 +64,14 @@ def make_slug_korean(book, keyword):
     return s or 'puzzle'
 
 
+def make_slug_from_title(display_title):
+    """data.js 퍼즐 title로 URL 슬러그 생성. 예: '사도행전: 첫 순교자 스데반' → '사도행전-첫-순교자-스데반'"""
+    s = (display_title or '퍼즐').replace(':', ' ').strip()
+    s = re.sub(r'[^\w\s\-가-힣]', '', s)
+    s = s.replace(' ', '-').strip('-')[:60]
+    return s or 'puzzle'
+
+
 def make_image_slug(puzzle):
     """이미지 파일명: 제목명과 동일한 이름-십자가로세로 (예: 출애굽기-모세의-소명-십자가로세로)"""
     title = (puzzle.get('title') or '퍼즐').replace(':', ' ').strip()
@@ -187,6 +195,7 @@ def split_hints(hints):
 
 
 def generate_post_html_with_image(puzzle, keyword, slug, publish_date, image_slug, has_puzzle_image=True,
+                                  display_title=None,
                                    export_across=None, export_down=None, answer_link_override=None,
                                    export_hints_with_num=None):
     """블로그 글 HTML. export_hints_with_num 있으면 그리드와 동일한 번호(가로 1,4 / 세로 2,3 등)로 표기."""
@@ -207,7 +216,7 @@ def generate_post_html_with_image(puzzle, keyword, slug, publish_date, image_slu
         hint_count = len(hints) if hints else 0
         use_num_for_display = False
     intro = random.choice(INTRO_TEMPLATES).format(book=book, keyword=keyword, hint_count=hint_count)
-    title = f"{book} {keyword} - 십자가로세로"
+    title = (display_title or puzzle.get('title') or f"{book} {keyword}").strip()
     date_iso = publish_date.strftime('%Y-%m-%d')
     date_str = publish_date.strftime('%Y년 %m월 %d일')
     cat_esc = escape((puzzle.get('category') or '성경')[:50])
@@ -228,7 +237,7 @@ def generate_post_html_with_image(puzzle, keyword, slug, publish_date, image_slu
     else:
         img_rel = "../images/og-image.png"
         og_img = f"{DOMAIN}/images/og-image.png"
-    img_alt = f"{book} {keyword} - 무료 온라인 가로세로 낱말퍼즐"
+    img_alt = f"{escape(title)} - 무료 온라인 가로세로 낱말퍼즐"
     if use_num_for_display and across_list and isinstance(across_list[0], dict):
         def _num(d):
             return d.get('n') if d.get('n') is not None else d.get('num')
@@ -291,7 +300,11 @@ h1 {{ font-size: 28px; font-weight: 800; color: #222; margin: 0 0 16px 0; }}
 .related-link {{ display: block; padding: 14px; background: #f8f9fa; border: 1px solid #e1e4e8; border-radius: 8px; text-decoration: none; color: #0073e6; font-weight: 600; }}
 footer {{ max-width: 800px; margin: 60px auto 40px; padding: 30px 20px; text-align: center; color: #888; font-size: 13px; }}
 footer a {{ color: #0073e6; text-decoration: none; }}
-@media (max-width: 768px) {{ article {{ padding: 24px 20px; }} h1 {{ font-size: 24px; }} .intro {{ padding: 16px; }} .puzzle-image {{ max-width: 100%; }} }}
+.footer-divider {{ height: 1px; background: linear-gradient(to right, transparent, #ccc, transparent); margin-bottom: 30px; }}
+.footer-branding {{ font-size: 14px; color: #888; margin-bottom: 10px; }}
+.footer-branding strong {{ color: #444; letter-spacing: 0.5px; }}
+.footer-copyright {{ font-size: 12px; color: #aaa; }}
+@media (max-width: 768px) {{ article {{ padding: 24px 20px; }} h1 {{ font-size: 24px; }} .intro {{ padding: 16px; }} .puzzle-image {{ max-width: 100%; }} footer {{ padding: 0 12px; }} }}
 </style>
 <script type="application/ld+json">
 {{"@context":"https://schema.org","@type":"Article","headline":"{escape(title)}","datePublished":"{date_iso}","author":{{"@type":"Organization","name":"십자가로세로"}},"publisher":{{"@type":"Organization","name":"십자가로세로"}},"mainEntityOfPage":"{DOMAIN}/posts/{slug}.html","image":"{og_img}"}}
@@ -340,7 +353,15 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 </div>
 </article>
 </main>
-<footer><p><strong>십자가로세로</strong> - 무료 성경 가로세로 낱말 퍼즐</p><p><a href="{DOMAIN}">홈</a> · <a href="../about.html">소개</a> · <a href="../support.html">후원</a></p><p>&copy; 2026 십자가로세로</p></footer>
+<footer>
+  <div class="footer-divider"></div>
+  <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 30px;">
+    <a href="../about.html" style="flex: 1; max-width: 180px; text-align: center; padding: 10px; background: #fff; border: 1px solid #ddd; color: #555; text-decoration: none; border-radius: 8px; font-size: 13px;">📖 만든 이유</a>
+    <a href="../support.html" style="flex: 1; max-width: 180px; text-align: center; padding: 10px; background: #fff; border: 1px solid #0073e6; color: #0073e6; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold;">🙏 후원 응원</a>
+  </div>
+  <div class="footer-branding">Crossero Puzzle <strong>Engine by PuzDuk.com</strong></div>
+  <div class="footer-copyright">&copy; 2026 십자가로세로. All rights reserved.</div>
+</footer>
 </body>
 </html>"""
 
@@ -443,6 +464,10 @@ main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
 .board-card:hover .board-title {{ color: #005bb5; }}
 .board-date {{ font-size: 12px; color: #888; margin-top: 10px; padding-top: 8px; border-top: 1px dashed #e0e0e0; width: 100%; }}
 .board-card:hover .board-date {{ border-top-color: #e8eef5; }}
+.footer-divider {{ height: 1px; background: linear-gradient(to right, transparent, #ccc, transparent); margin-bottom: 30px; }}
+.footer-branding {{ font-size: 14px; color: #888; margin-bottom: 10px; }}
+.footer-branding strong {{ color: #444; }}
+.footer-copyright {{ font-size: 12px; color: #aaa; }}
 @media (max-width: 768px) {{ .nav {{ padding: 8px 6px; gap: 6px; }} .nav-item {{ padding: 6px 10px; font-size: 12px; }} main {{ padding: 24px 16px; }} .page-title {{ font-size: 20px; }} .board-section {{ padding: 18px 16px; }} .board-list {{ grid-template-columns: 1fr; }} .board-card {{ padding: 14px 16px; }} .board-title {{ font-size: 14px; }} .board-date {{ font-size: 11px; margin-top: 8px; padding-top: 6px; }} }}
 </style>
 </head>
@@ -464,6 +489,15 @@ main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
 </ul>
 </div>
 </main>
+<footer>
+  <div class="footer-divider"></div>
+  <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 30px;">
+    <a href="../about.html" style="flex: 1; max-width: 180px; text-align: center; padding: 10px; background: #fff; border: 1px solid #ddd; color: #555; text-decoration: none; border-radius: 8px; font-size: 13px;">📖 만든 이유</a>
+    <a href="../support.html" style="flex: 1; max-width: 180px; text-align: center; padding: 10px; background: #fff; border: 1px solid #0073e6; color: #0073e6; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold;">🙏 후원 응원</a>
+  </div>
+  <div class="footer-branding">Crossero Puzzle <strong>Engine by PuzDuk.com</strong></div>
+  <div class="footer-copyright">&copy; 2026 십자가로세로. All rights reserved.</div>
+</footer>
 </body>
 </html>"""
     with open(os.path.join(POSTS_DIR, 'index.html'), 'w', encoding='utf-8') as f:
@@ -510,7 +544,8 @@ def publish_today(force_date=None):
             continue
         keyword = get_keyword_for_puzzle(puzzle)
         book = puzzle['title'].split(':')[0].strip() if ':' in puzzle['title'] else puzzle['title'].split()[0]
-        slug = make_slug_korean(book, keyword)
+        display_title = (puzzle.get('title') or '').strip() or f"{book} 퀴즈"
+        slug = make_slug_from_title(display_title)
         if not slug:
             slug = f"puzzle-{pid}"
         if slug in published_slugs:
@@ -540,6 +575,7 @@ def publish_today(force_date=None):
             print(f"  ⚠️ Playwright/Pillow 미설치 → og 이미지 사용")
         html = generate_post_html_with_image(
             puzzle, keyword, slug, publish_date, image_slug, has_puzzle_image=has_img,
+            display_title=display_title,
             export_across=export_across, export_down=export_down, answer_link_override=answer_url or None,
             export_hints_with_num=export_hints_with_num
         )
@@ -553,7 +589,7 @@ def publish_today(force_date=None):
             'slug': slug,
             'date': today,
             'id': pid,
-            'title': puzzle['title'],
+            'title': display_title,
         })
 
     save_manifest(manifest)
