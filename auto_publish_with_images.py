@@ -301,9 +301,9 @@ h1 {{ font-size: 28px; font-weight: 800; color: #222; margin: 0 0 16px 0; }}
 footer {{ max-width: 800px; margin: 60px auto 40px; padding: 30px 20px; text-align: center; color: #888; font-size: 13px; }}
 footer a {{ color: #0073e6; text-decoration: none; }}
 .footer-divider {{ height: 1px; background: linear-gradient(to right, transparent, #ccc, transparent); margin-bottom: 30px; }}
-.footer-branding {{ font-size: 14px; color: #888; margin-bottom: 10px; }}
+.footer-branding {{ font-size: 14px; color: #888; margin-bottom: 10px; text-align: center; }}
 .footer-branding strong {{ color: #444; letter-spacing: 0.5px; }}
-.footer-copyright {{ font-size: 12px; color: #aaa; }}
+.footer-copyright {{ font-size: 12px; color: #aaa; text-align: center; }}
 @media (max-width: 768px) {{ article {{ padding: 24px 20px; }} h1 {{ font-size: 24px; }} .intro {{ padding: 16px; }} .puzzle-image {{ max-width: 100%; }} footer {{ padding: 0 12px; }} }}
 </style>
 <script type="application/ld+json">
@@ -465,9 +465,9 @@ main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
 .board-date {{ font-size: 12px; color: #888; margin-top: 10px; padding-top: 8px; border-top: 1px dashed #e0e0e0; width: 100%; }}
 .board-card:hover .board-date {{ border-top-color: #e8eef5; }}
 .footer-divider {{ height: 1px; background: linear-gradient(to right, transparent, #ccc, transparent); margin-bottom: 30px; }}
-.footer-branding {{ font-size: 14px; color: #888; margin-bottom: 10px; }}
+.footer-branding {{ font-size: 14px; color: #888; margin-bottom: 10px; text-align: center; }}
 .footer-branding strong {{ color: #444; }}
-.footer-copyright {{ font-size: 12px; color: #aaa; }}
+.footer-copyright {{ font-size: 12px; color: #aaa; text-align: center; }}
 @media (max-width: 768px) {{ .nav {{ padding: 8px 6px; gap: 6px; }} .nav-item {{ padding: 6px 10px; font-size: 12px; }} main {{ padding: 24px 16px; }} .page-title {{ font-size: 20px; }} .board-section {{ padding: 18px 16px; }} .board-list {{ grid-template-columns: 1fr; }} .board-card {{ padding: 14px 16px; }} .board-title {{ font-size: 14px; }} .board-date {{ font-size: 11px; margin-top: 8px; padding-top: 6px; }} }}
 </style>
 </head>
