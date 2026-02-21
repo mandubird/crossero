@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       test_date:
-        description: '테스트용 발행일 (YYYY-MM-DD). 비우면 오늘 날짜로 실행'
+        description: '테스트용 발행일 (YYYY-MM-DD). 비우면 오늘 날짜. SEO 위해 테스트 시 과거 날짜 권장'
         required: false
         type: string
 
