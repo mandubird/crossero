@@ -1,5 +1,20 @@
 # SEO 블로그 글 검증 결과 & 할일
 
+## 0. 매일 발행 & 로컬–서버 동기화 (요약)
+
+| 질문 | 답변 |
+|------|------|
+| **매일 9시 글 발행** | ✅ GitHub Actions가 **매일 00:00 UTC(= 한국 09:00)**에 워크플로 실행. `posts_schedule.json`의 그날 예약만 발행. |
+| **이미지도 잘 불러오나요?** | ✅ 같은 워크플로에서 **Playwright**로 퍼즐 PNG 생성 → `images/puzzles/` 저장 → FTP 업로드. 글이 올라갈 때 이미지도 함께 반영. |
+| **바울의 회심 22일** | ✅ `published_manifest.json`에서 act_086 날짜 **2026-02-22**, 글 HTML도 2/22·퍼즐 이미지 경로로 이미 반영. **추가로 바꿀 것 없음.** |
+| **로컬 ↔ 서버 동기화** | ✅ **push to main** 시에도 같은 워크플로가 돌아서 FTP 배포됨. → 로컬에서 수정 후 `git push origin main` 하면 서버에 반영. |
+
+**할 일**: GitHub 저장소에 **Secrets**(`FTP_SERVER`, `FTP_USERNAME`, `FTP_PASSWORD`) 설정되어 있어야 매일 9시·푸시 시 FTP 배포가 성공합니다. 한 번 푸시해서 Actions 로그에서 FTP 단계 성공 여부만 확인하면 됩니다.
+
+**로컬–서버 동기화 절차**: (1) 이 폴더를 Git 저장소로 쓰려면 `git init` 후 `git remote add origin <GitHub 저장소 URL>` 로 연결. (2) 작업 후 `git add .` → `git commit -m "메시지"` → `git push -u origin main` 하면 푸시와 동시에 워크플로가 돌아 서버(FTP)에 반영됩니다.
+
+---
+
 ## 1. 요청하신 블로그 글 구조 (목표)
 
 ```
