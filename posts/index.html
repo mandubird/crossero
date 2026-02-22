@@ -4,171 +4,42 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>게시판 | 십자가로세로</title>
-<meta name="description" content="발행된 성경 퀴즈·가로세로 퍼즐 소개 글. 제목을 클릭해 읽고, 퍼즐 목록에서 바로 플레이하세요.">
-<meta name="keywords" content="성경 퀴즈 게시판, 말씀 퍼즐 소개, 십자가로세로 발행">
+<meta name="description" content="발행된 성경 퀴즈·가로세로 퍼즐 소개 글 목록. 제목을 클릭하면 글로 이동하며, 퍼즐 목록에서 바로 플레이할 수 있습니다.">
+<meta name="keywords" content="성경퀴즈 게시판, 가로세로 퍼즐 소개, 십자가로세로 글 목록">
 <meta property="og:title" content="게시판 | 십자가로세로">
-<meta property="og:description" content="발행된 성경 퀴즈·가로세로 퍼즐 소개 글입니다.">
+<meta property="og:description" content="발행된 성경 퀴즈·가로세로 퍼즐 소개 글 목록입니다.">
 <meta property="og:image" content="https://crossero.com/images/og-image.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://crossero.com/posts/">
 <link rel="canonical" href="https://crossero.com/posts/">
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0717185892763061"
-     crossorigin="anonymous"></script>
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "vin36biyig");
-</script>
-
 <style>
 * { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: -apple-system, Pretendard, sans-serif;
-  background: #f5f5f5;
-  color: #333;
-  line-height: 1.6;
-}
-
-.nav {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  background: #fff;
-  border-bottom: 1px solid #e5e5e5;
-  padding: 12px 0;
-}
-.nav-item {
-  padding: 8px 14px;
-  font-size: 14px;
-  color: #444;
-  text-decoration: none;
-  border-radius: 6px;
-}
-.nav-item:hover {
-  background: #f0f6ff;
-  color: #0073e6;
-}
-.nav-active {
-  background: #0073e6;
-  color: #fff !important;
-  font-weight: 600;
-}
-
-main {
-  max-width: 820px;
-  margin: 0 auto;
-  padding: 40px 20px;
-}
-
-.page-title {
-  font-size: 24px;
-  margin: 0 0 8px 0;
-  color: #222;
-  font-weight: 700;
-}
-.intro {
-  color: #666;
-  margin-bottom: 28px;
-  font-size: 15px;
-}
-.intro a {
-  color: #0073e6;
-  text-decoration: none;
-  font-weight: 500;
-}
+body { font-family: -apple-system, Pretendard, sans-serif; margin: 0; background: #f5f5f5; color: #333; line-height: 1.6; }
+.nav { display: flex; justify-content: center; gap: 10px; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 12px 0; }
+.nav-item { padding: 8px 14px; font-size: 14px; color: #444; text-decoration: none; border-radius: 6px; }
+.nav-item:hover { background: #f0f6ff; color: #0073e6; }
+.nav-active { background: #0073e6; color: #fff !important; font-weight: 600; }
+main { max-width: 820px; margin: 0 auto; padding: 40px 20px; }
+.page-title { font-size: 24px; margin: 0 0 8px 0; color: #222; font-weight: 700; }
+.intro { color: #666; margin-bottom: 28px; font-size: 15px; }
+.intro a { color: #0073e6; text-decoration: none; font-weight: 500; }
 .intro a:hover { text-decoration: underline; }
-
-.board-section {
-  background: #fff;
-  padding: 25px;
-  border-radius: 12px;
-  margin-bottom: 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  border: 1px solid #e5e5e5;
-}
-.board-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 12px;
-}
-.board-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  background: #f8f9fa;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 15px 18px;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.2s;
-  min-height: 80px;
-}
-.board-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0,115,230,0.15);
-  border-color: #0073e6;
-  background: #fff;
-}
-.board-title {
-  font-size: 15px;
-  font-weight: 600;
-  color: #0073e6;
-  text-align: left;
-  margin: 0;
-  flex: 1;
-}
+.board-section { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #e5e5e5; }
+.board-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.board-card { display: flex; flex-direction: column; align-items: flex-start; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px 18px; text-decoration: none; color: inherit; transition: all 0.2s; min-height: 80px; }
+.board-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,115,230,0.15); border-color: #0073e6; background: #fff; }
+.board-title { font-size: 15px; font-weight: 600; color: #0073e6; text-align: left; margin: 0; flex: 1; }
 .board-card:hover .board-title { color: #005bb5; }
-.board-date {
-  font-size: 12px;
-  color: #888;
-  margin-top: 10px;
-  padding-top: 8px;
-  border-top: 1px dashed #e0e0e0;
-  width: 100%;
-}
+.board-date { font-size: 12px; color: #888; margin-top: 10px; padding-top: 8px; border-top: 1px dashed #e0e0e0; width: 100%; }
 .board-card:hover .board-date { border-top-color: #e8eef5; }
-
-footer {
-  max-width: 820px;
-  margin: 0 auto;
-  padding: 30px 20px;
-  text-align: center;
-  color: #888;
-  font-size: 13px;
-}
-footer a { color: #0073e6; text-decoration: none; }
-.footer-divider {
-  height: 1px;
-  background: linear-gradient(to right, transparent, #ccc, transparent);
-  margin-bottom: 30px;
-}
+.footer-divider { height: 1px; background: linear-gradient(to right, transparent, #ccc, transparent); margin-bottom: 30px; }
 .footer-branding { font-size: 14px; color: #888; margin-bottom: 10px; text-align: center; }
 .footer-branding strong { color: #444; }
 .footer-copyright { font-size: 12px; color: #aaa; text-align: center; }
-
-@media (max-width: 768px) {
-  .nav { padding: 8px 6px; gap: 6px; }
-  .nav-item { padding: 6px 10px; font-size: 12px; }
-  main { padding: 24px 16px; }
-  .page-title { font-size: 20px; }
-  .board-section { padding: 18px 16px; }
-  .board-list { grid-template-columns: 1fr; gap: 10px; }
-  .board-card { padding: 14px 16px; }
-  .board-title { font-size: 14px; }
-  .board-date { font-size: 11px; margin-top: 8px; padding-top: 6px; }
-}
+@media (max-width: 768px) { .nav { padding: 8px 6px; gap: 6px; } .nav-item { padding: 6px 10px; font-size: 12px; } main { padding: 24px 16px; } .page-title { font-size: 20px; } .board-section { padding: 18px 16px; } .board-list { grid-template-columns: 1fr; } .board-card { padding: 14px 16px; } .board-title { font-size: 14px; } .board-date { font-size: 11px; margin-top: 8px; padding-top: 6px; } }
 </style>
 </head>
 <body>
-
 <nav class="nav">
   <a href="../index.html" class="nav-item">홈</a>
   <a href="../play.html" class="nav-item">퍼즐하기</a>
@@ -177,29 +48,17 @@ footer a { color: #0073e6; text-decoration: none; }
   <a href="../about.html" class="nav-item">소개</a>
   <a href="../support.html" class="nav-item">후원</a>
 </nav>
-
 <main>
-  <h1 class="page-title">게시판</h1>
-  <p class="intro">발행된 성경 퀴즈·가로세로 퍼즐 소개 글입니다. 제목을 클릭하면 글로 이동합니다. <a href="../list.html">퍼즐 목록</a>에서 바로 플레이할 수 있습니다.</p>
+<h1 class="page-title">게시판</h1>
+<p class="intro">발행된 성경 퀴즈·가로세로 퍼즐 소개 글입니다. 제목을 클릭하면 글로 이동합니다. <a href="../list.html">퍼즐 목록</a>에서 바로 플레이할 수 있습니다.</p>
+<div class="board-section">
+<ul class="board-list">
+<li><a href="사도행전-바울의-회심.html" class="board-card"><span class="board-title">사도행전: 바울의 회심</span><span class="board-date">2026년 2월 22일</span></a></li>
+<li><a href="사도행전-첫-순교자-스데반.html" class="board-card"><span class="board-title">사도행전: 첫 순교자 스데반</span><span class="board-date">2026년 2월 21일</span></a></li>
 
-  <div class="board-section">
-    <ul class="board-list">
-      <li>
-        <a href="사도행전-바울의-회심.html" class="board-card">
-          <span class="board-title">사도행전: 바울의 회심</span>
-          <span class="board-date">2026년 2월 22일</span>
-        </a>
-      </li>
-      <li>
-        <a href="사도행전-첫-순교자-스데반.html" class="board-card">
-          <span class="board-title">사도행전: 첫 순교자 스데반</span>
-          <span class="board-date">2026년 2월 21일</span>
-        </a>
-      </li>
-    </ul>
-  </div>
+</ul>
+</div>
 </main>
-
 <footer>
   <div class="footer-divider"></div>
   <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 30px;">
@@ -209,6 +68,5 @@ footer a { color: #0073e6; text-decoration: none; }
   <div class="footer-branding">Crossero Puzzle <strong>Engine by PuzDuk.com</strong></div>
   <div class="footer-copyright">&copy; 2026 십자가로세로. All rights reserved.</div>
 </footer>
-
 </body>
 </html>
