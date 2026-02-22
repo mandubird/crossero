@@ -2043,7 +2043,7 @@ window.addEventListener('load', () => {
 
 const canonicalLink = document.createElement('link');
 canonicalLink.rel = 'canonical';
-canonicalLink.href = window.location.origin + window.location.pathname + window.location.search;
+canonicalLink.href = window.location.origin + window.location.pathname;
 document.head.appendChild(canonicalLink);
 
 function injectStructuredData(title) {
