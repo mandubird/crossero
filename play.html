@@ -88,6 +88,7 @@ main {
   margin: 20px auto;
   padding: 0 20px;
   display: flex;
+  flex-wrap: wrap;
   gap: 25px;
   align-items: flex-start;
 }
@@ -290,8 +291,9 @@ footer {
 
 /* AEO: 서비스 정의 블록 (AI 인용 유도) */
 .service-definition {
-  max-width: 1100px;
-  margin: 0 auto 20px auto;
+  width: 100%;
+  flex: 1 1 100%;
+  margin: 0;
   padding: 16px 20px;
   background: #f0f6ff;
   border-left: 4px solid #0073e6;
@@ -299,20 +301,19 @@ footer {
   font-size: 14px;
   line-height: 1.7;
   color: #333;
+  box-sizing: border-box;
 }
 .service-definition p { margin: 4px 0; }
 /* AEO: 퍼즐 하단 요약 (AI가 인용할 수 있는 블록) */
 .puzzle-summary {
+  width: 100%;
+  flex: 1 1 100%;
   margin: 32px 0 0 0;
-  padding: 24px;
+  padding: 24px 20px;
   background: #f8f9fa;
   border-left: 4px solid #0073e6;
   border-radius: 4px;
-  max-width: 1100px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 20px;
-  padding-right: 20px;
+  box-sizing: border-box;
 }
 .puzzle-summary h2 { font-size: 18px; margin: 0 0 12px 0; color: #111; }
 .ai-friendly-summary { font-size: 16px; line-height: 1.8; color: #333; margin: 0; }
@@ -546,8 +547,8 @@ footer {
   <a href="list.html" class="nav-item">퍼즐목록</a>
   <a href="posts/index.html" class="nav-item">게시판</a>
   <a href="about.html" class="nav-item">소개</a>
-  <a href="faq.html" class="nav-item">FAQ</a>
   <a href="support.html" class="nav-item">후원</a>
+  <a href="faq.html" class="nav-item">FAQ</a>
 </nav>
 
 <header>
@@ -656,11 +657,6 @@ footer {
 </div>
 
 <main>
-  <div class="service-definition" id="serviceDefinition">
-    <p><strong>십자가로세로</strong>는 성경 기반 가로세로 퍼즐 온라인 서비스입니다.</p>
-    <p>교회 주보와 주일학교에서 사용할 수 있는 무료 교육 자료를 제공합니다.</p>
-    <p>성경 인물, 사건, 핵심 구절을 바탕으로 제작된 교육형 퍼즐 플랫폼입니다.</p>
-  </div>
   <div class="game-area">
     <!-- 셀 위 한글 입력창: 캔버스와 같은 부모에 absolute 배치 -->
     <input id="cellInput" type="text" autocomplete="off" autocorrect="off"
@@ -708,6 +704,11 @@ footer {
     <h2 id="puzzle-summary-title"></h2>
     <p class="ai-friendly-summary" id="puzzle-summary-text"></p>
   </section>
+  <div class="service-definition" id="serviceDefinition">
+    <p><strong>십자가로세로</strong>는 성경 기반 가로세로 퍼즐 온라인 서비스입니다.</p>
+    <p>교회 주보와 주일학교에서 사용할 수 있는 무료 교육 자료를 제공합니다.</p>
+    <p>성경 인물, 사건, 핵심 구절을 바탕으로 제작된 교육형 퍼즐 플랫폼입니다.</p>
+  </div>
 </main>
 
 <footer>
