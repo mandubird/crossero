@@ -34,6 +34,7 @@
   }
 </script>
 <script src="auth.js"></script>
+<script src="aeo_summaries.js"></script>
 
 <script type="text/javascript">
     (function(c,l,a,r,i,t,y){
@@ -286,6 +287,35 @@ footer {
 }
 .footer-branding { font-size: 14px; color: #888; margin-bottom: 10px; }
 .footer-copyright { font-size: 12px; color: #aaa; }
+
+/* AEO: 서비스 정의 블록 (AI 인용 유도) */
+.service-definition {
+  max-width: 1100px;
+  margin: 0 auto 20px auto;
+  padding: 16px 20px;
+  background: #f0f6ff;
+  border-left: 4px solid #0073e6;
+  border-radius: 0 8px 8px 0;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #333;
+}
+.service-definition p { margin: 4px 0; }
+/* AEO: 퍼즐 하단 요약 (AI가 인용할 수 있는 블록) */
+.puzzle-summary {
+  margin: 32px 0 0 0;
+  padding: 24px;
+  background: #f8f9fa;
+  border-left: 4px solid #0073e6;
+  border-radius: 4px;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.puzzle-summary h2 { font-size: 18px; margin: 0 0 12px 0; color: #111; }
+.ai-friendly-summary { font-size: 16px; line-height: 1.8; color: #333; margin: 0; }
 
 /* 기본 화면에서는 숨김 */
 .print-only { display: none !important; }
@@ -625,6 +655,11 @@ footer {
 </div>
 
 <main>
+  <div class="service-definition" id="serviceDefinition">
+    <p><strong>십자가로세로</strong>는 성경 기반 가로세로 퍼즐 온라인 서비스입니다.</p>
+    <p>교회 주보와 주일학교에서 사용할 수 있는 무료 교육 자료를 제공합니다.</p>
+    <p>성경 인물, 사건, 핵심 구절을 바탕으로 제작된 교육형 퍼즐 플랫폼입니다.</p>
+  </div>
   <div class="game-area">
     <!-- 셀 위 한글 입력창: 캔버스와 같은 부모에 absolute 배치 -->
     <input id="cellInput" type="text" autocomplete="off" autocorrect="off"
@@ -668,6 +703,10 @@ footer {
       </div>
     </div>
   </div>
+  <section id="puzzle-summary" class="puzzle-summary" style="display: none;" aria-label="이 퍼즐 주제 소개">
+    <h2 id="puzzle-summary-title"></h2>
+    <p class="ai-friendly-summary" id="puzzle-summary-text"></p>
+  </section>
 </main>
 
 <footer>
@@ -2016,8 +2055,9 @@ window.addEventListener('load', () => {
       metaKeywords.setAttribute("content", `${quizData.title}, ${quizData.category}, 성경 퍼즐, 십자가로세로`);
     }
     
-    // structured data 추가 (SEO)
-    injectStructuredData(quizData.title);
+    // AEO: 구조화 데이터 (Dataset, Quiz) + 퍼즐 하단 요약
+    injectAeoStructuredData(quizData, quizId);
+    updatePuzzleSummary(quizId, quizData.title);
     
     console.log('✅ SEO 설정 완료:', quizData.title);
   } 
@@ -2030,7 +2070,7 @@ window.addEventListener('load', () => {
     document.title = `${finalTitle} | 십자가로세로`;
     injectStructuredData(finalTitle);
   }
-  // ⭐ 3순위: 아무것도 없으면 기본 제목
+  // ⭐ 3순위: 아무것도 없으면 기본 제목 (structured data만 기본형)
   else {
     if (document.getElementById('dynamicTitle')) {
       document.getElementById('dynamicTitle').innerText = '말씀 가로세로 퍼즐';
@@ -2064,6 +2104,100 @@ function injectStructuredData(title) {
   };
   script.text = JSON.stringify(puzzleData);
   document.head.appendChild(script);
+}
+
+/** AEO: 퍼즐별 Dataset + Quiz Schema 주입 (AI 검색 엔진 인용 유도) */
+function injectAeoStructuredData(quizData, quizId) {
+  if (!quizData || !quizData.allWords) return;
+  var baseUrl = 'https://crossero.com';
+  var puzzleId = quizId || getQuizIdFromUrl();
+  var puzzleUrl = baseUrl + '/play.html?id=' + encodeURIComponent(puzzleId);
+  var words = quizData.allWords;
+  var sampleWords = words.slice(0, 10);
+  var questions = sampleWords.map(function(w) {
+    return {
+      "@type": "Question",
+      "name": w.clue,
+      "acceptedAnswer": { "@type": "Answer", "text": w.answer }
+    };
+  });
+  var datasetSchema = {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": quizData.title + " 성경 가로세로 퍼즐 데이터셋",
+    "description": quizData.title + "의 핵심 내용을 기반으로 제작된 교육용 가로세로 퍼즐",
+    "creator": { "@type": "Organization", "name": "십자가로세로", "url": baseUrl },
+    "keywords": [quizData.title, "성경 퀴즈", "가로세로 퍼즐", "주일학교 자료"],
+    "license": baseUrl + "/about.html",
+    "url": puzzleUrl,
+    "temporalCoverage": "2024/2026",
+    "spatialCoverage": "대한민국",
+    "hasPart": questions.slice(0, 5)
+  };
+  var quizSchema = {
+    "@context": "https://schema.org",
+    "@type": "Quiz",
+    "about": { "@type": "Thing", "name": quizData.title },
+    "educationalAlignment": {
+      "@type": "AlignmentObject",
+      "alignmentType": "educationalSubject",
+      "targetName": "성경 교육"
+    },
+    "hasPart": sampleWords.slice(0, 5).map(function(w) {
+      var others = words.filter(function(x) { return x.answer !== w.answer; }).slice(0, 3).map(function(x) { return x.answer; });
+      return {
+        "@type": "Question",
+        "eduQuestionType": "Short answer",
+        "text": w.clue,
+        "acceptedAnswer": { "@type": "Answer", "text": w.answer },
+        "suggestedAnswer": [w.answer].concat(others).slice(0, 4).map(function(t) { return { "@type": "Answer", "text": t }; })
+      };
+    })
+  };
+  function appendLd(id, obj) {
+    var ex = document.getElementById(id);
+    if (ex) ex.remove();
+    var script = document.createElement('script');
+    script.id = id;
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify(obj);
+    document.head.appendChild(script);
+  }
+  appendLd('jsonLdDataset', datasetSchema);
+  appendLd('jsonLdQuiz', quizSchema);
+  injectStructuredData(quizData.title);
+}
+function getQuizIdFromUrl() {
+  var p = new URLSearchParams(window.location.search);
+  return p.get('id') || '';
+}
+
+/** AEO: 성경 권별 요약 (퍼즐 하단 블록용, AI 인용 유도) */
+var PUZZLE_SUMMARIES = {
+  gen: "창세기는 성경의 첫 번째 권으로, 하나님이 세상을 창조하신 이야기로 시작합니다. 아담과 하와, 노아의 방주, 아브라함과 이삭, 야곱과 요셉의 이야기를 포함하며 이스라엘 민족의 기원을 다룹니다. 창세기는 총 50장으로 구성되어 있으며, 천지창조부터 요셉의 이집트 생애까지를 기록합니다.",
+  exo: "출애굽기는 이스라엘 민족이 이집트의 노예 생활에서 해방되는 과정을 기록합니다. 모세의 리더십, 열 가지 재앙, 홍해를 건너는 기적, 시내산에서 십계명을 받는 사건이 핵심입니다. 출애굽기는 총 40장으로 구성되어 있습니다.",
+  lev: "레위기는 제사와 제물, 제사장의 역할, 정결법과 거룩한 생활에 대한 하나님의 말씀을 담고 있습니다. 이스라엘 백성이 거룩한 민족으로 살아가기 위한 율법이 기록되어 있으며 총 27장입니다.",
+  num: "민수기는 시내산을 출발한 이스라엘이 가나안 입성 직전까지 겪은 광야 40년의 여정을 기록합니다. 인구 조사, 지파별 역할, 불순종과 심판, 그리고 새 세대의 준비가 핵심 내용입니다. 총 36장입니다.",
+  deu: "신명기는 모세가 요단 동편에서 새 세대에게 전한 설교와 율법의 재해석입니다. 출애굽의 기적을 기억하고, 가나안에서 지켜야 할 계명과 축복과 저주를 담고 있으며 총 34장입니다.",
+  joh: "요한복음은 예수 그리스도를 하나님의 아들이자 생명의 주로 소개합니다. 표적과 말씀을 통해 믿음으로 영생을 얻게 하는 목적이 밝혀져 있으며, 사랑과 진리의 메시지가 두드러집니다. 총 21장입니다.",
+  act: "사도행전은 부활하신 예수님의 명령에 따라 예루살렘에서 시작된 교회의 탄생과 바울의 선교 여정을 기록합니다. 성령 강림, 초대 교회의 성장, 이방인 선교가 핵심이며 총 28장입니다.",
+  rom: "로마서는 복음의 핵심인 의롭다 하심과 성령의 삶을 체계적으로 설명하는 바울의 서신입니다. 믿음으로 의롭다 하심을 받고, 그리스도 안에서 새 생명을 살아가는 내용을 담고 있으며 총 16장입니다."
+};
+if (typeof window.PUZZLE_SUMMARIES_EXTRA === 'object') {
+  for (var _k in window.PUZZLE_SUMMARIES_EXTRA) { PUZZLE_SUMMARIES[_k] = window.PUZZLE_SUMMARIES_EXTRA[_k]; }
+}
+
+function updatePuzzleSummary(quizId, title) {
+  var el = document.getElementById('puzzle-summary');
+  var titleEl = document.getElementById('puzzle-summary-title');
+  var textEl = document.getElementById('puzzle-summary-text');
+  if (!el || !titleEl || !textEl) return;
+  var prefix = (quizId || '').split('_')[0].slice(0, 3);
+  var summary = PUZZLE_SUMMARIES[prefix];
+  if (!summary) { el.style.display = 'none'; return; }
+  titleEl.textContent = title + '란?';
+  textEl.textContent = summary;
+  el.style.display = 'block';
 }
 </script>
 
