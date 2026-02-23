@@ -76,8 +76,9 @@
 - [x] `posts/index.html`: **발행된 글만** 링크 목록 (최신순)
 
 ### SEO·수동
-- [ ] Google Search Console 등록, sitemap 제출, URL 검사
-- [ ] Naver Search Advisor 등록, sitemap 제출
+- [x] Google Search Console 등록, sitemap 제출 (완료)
+- [ ] Google URL 검사로 주요 URL 색인 요청 (선택)
+- [x] Naver Search Advisor 등록, sitemap 제출 (완료)
 - [ ] 각 게시글: 한글 URL(슬러그), 키워드 자연스럽게, Schema.org, 고유 텍스트
 
 ### 노출 위치 (결정 후 진행)

@@ -28,6 +28,6 @@ User-agent: Bingbot
 Allow: /
 Disallow: /backup/
 
-# 사이트맵 (검색엔진이 수집할 URL 목록)
-Sitemap: https://crossero.com/sitemap.xml
-Sitemap: https://crossero.com/posts.xml
+# 사이트맵 (검색엔진이 수집할 URL 목록) — www 통일 (네이버/구글 도메인 일치)
+Sitemap: https://www.crossero.com/sitemap.xml
+Sitemap: https://www.crossero.com/posts.xml

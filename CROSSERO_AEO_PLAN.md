@@ -21,6 +21,25 @@ ChatGPT, Perplexity, Gemini 등 AI 검색 엔진에서 crossero.com이 **직접 
 
 ---
 
+## 1-2. 당신이 할 일 (수동 등록·제출)
+
+AEO/SEO 효과를 보려면 **한 번만** 아래 작업을 해 두는 것이 좋습니다. (코드/자동화와 별개)
+
+| 순서 | 할 일 | 링크/비고 |
+|------|--------|-----------|
+| 1 | ~~**Google Search Console** 사이트 등록~~ | ✅ 완료 (crossero.com 등록됨) |
+| 2 | ~~**Google** sitemap 제출~~ | ✅ 완료 ([sitemap.xml](https://crossero.com/sitemap.xml) 구글콘솔에 제출됨) |
+| 3 | ~~**Naver Search Advisor** 사이트 등록~~ | ✅ 완료 |
+| 4 | ~~**네이버** 사이트맵 제출~~ | ✅ 완료 |
+| 5 | **Bing Webmaster Tools** 사이트 등록 (선택) | [bing.com/webmasters](https://www.bing.com/webmasters) → 사이트 추가. Bing Chat/Copilot 인용에 도움 됨 |
+| 6 | **Bing** sitemap 제출 (선택) | Webmaster Tools 내 **Sitemaps**에 sitemap.xml, posts.xml 제출 |
+
+**추가(선택):**
+- GSC/네이버에서 **URL 검사**로 메인 URL(홈, list, play?id=gen_001 등) 색인 요청
+- 나중에 **Semantic URL**로 바꿀 경우: GSC **URL 변경 도구**로 이전 주소 → 새 주소 이동 신고
+
+---
+
 ## 2. 구조화 데이터 확장 전략
 
 ### 2-1. Dataset Schema 고도화 ⭐⭐⭐
