@@ -34,6 +34,8 @@ AEO/SEO 효과를 보려면 **한 번만** 아래 작업을 해 두는 것이 �
 | 5 | **Bing Webmaster Tools** 사이트 등록 (선택) | [bing.com/webmasters](https://www.bing.com/webmasters) → 사이트 추가. Bing Chat/Copilot 인용에 도움 됨 |
 | 6 | **Bing** sitemap 제출 (선택) | Webmaster Tools 내 **Sitemaps**에 sitemap.xml, posts.xml 제출 |
 
+**※ 도메인 통일**: 301 설정 없이 적용하기 쉽도록 **non-www(https://crossero.com) 기준**으로 통일함. 구글·네이버에 **https://crossero.com** 으로 등록해 사용하면 됨.
+
 **추가(선택):**
 - GSC/네이버에서 **URL 검사**로 메인 URL(홈, list, play?id=gen_001 등) 색인 요청
 - 나중에 **Semantic URL**로 바꿀 경우: GSC **URL 변경 도구**로 이전 주소 → 새 주소 이동 신고
