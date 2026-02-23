@@ -318,6 +318,7 @@ footer a {{ color: #0073e6; text-decoration: none; }}
   <a href="index.html" class="nav-item nav-active">게시판</a>
   <a href="../about.html" class="nav-item">소개</a>
   <a href="../support.html" class="nav-item">후원</a>
+  <a href="../faq.html" class="nav-item">FAQ</a>
 </nav>
 <main>
 <article>
@@ -479,6 +480,7 @@ main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
   <a href="index.html" class="nav-item nav-active">게시판</a>
   <a href="../about.html" class="nav-item">소개</a>
   <a href="../support.html" class="nav-item">후원</a>
+  <a href="../faq.html" class="nav-item">FAQ</a>
 </nav>
 <main>
 <h1 class="page-title">게시판</h1>
