@@ -8,10 +8,13 @@ ChatGPT, Perplexity, Gemini 등 AI 검색 엔진에서 crossero.com이 **직접 
 ## 1. 현재 상황
 
 ### 구현 완료 ✅
-- FAQ 페이지 기본 구조
-- FAQPage Schema 적용
-- Dataset Schema 기본형
-- HowTo Schema 기본형
+- **Dataset Schema** — play.html 퍼즐별 Dataset + Quiz Schema 적용
+- **FAQ 페이지** — faq.html 생성, 전 페이지 네비에 FAQ 링크 추가
+- **FAQPage Schema** — faq.html에 JSON-LD 적용
+- 서비스 정의 블록, 퍼즐 하단 요약(aeo_summaries.js), SoftwareApplication Schema
+
+### 미구현 ❌
+- **HowTo Schema** — 미적용
 
 ### 문제점 ❌
 - AI가 인용할 만한 콘텐츠 부족

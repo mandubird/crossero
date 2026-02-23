@@ -26,6 +26,12 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://crossero.com/faq.html</loc>
+    <lastmod>2026-02-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <!-- 퍼즐 플레이 페이지 (data.js 기준 자동 반영) -->
   <url>
     <loc>https://crossero.com/play.html?id=act_084</loc>
