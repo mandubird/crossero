@@ -599,11 +599,40 @@ def publish_today(force_date=None):
     print(f"\n🎉 완료! 오늘 {len(today_ids)}개 발행 (총 발행 {len(manifest)}개)")
 
 
+def publish_catchup():
+    """놓친 과거 날짜를 한꺼번에 발행 (스케줄에 있지만 아직 manifest에 없는 날짜)"""
+    if not os.path.exists(SCHEDULE_PATH):
+        print("❌ posts_schedule.json 없음. 먼저 실행: python3 auto_publish_with_images.py init")
+        return
+    with open(SCHEDULE_PATH, 'r', encoding='utf-8') as f:
+        schedule = json.load(f)
+    manifest = load_manifest()
+    published_dates = {e['date'] for e in manifest}
+    today = datetime.now().strftime('%Y-%m-%d')
+    to_publish = sorted(
+        d for d in schedule.keys()
+        if d <= today and d not in published_dates
+    )
+    if not to_publish:
+        print("놓친 날짜 없음. 완료.")
+        return
+    print(f"📅 놓친 날짜 {len(to_publish)}일 발행 예정: {to_publish[0]} ~ {to_publish[-1]}")
+    for d in to_publish:
+        print(f"\n--- {d} ---")
+        publish_today(force_date=d)
+    print(f"\n🎉 캐치업 완료: {len(to_publish)}일 발행됨")
+
+
 def main():
     import sys
-    if len(sys.argv) > 1 and sys.argv[1].strip().lower() == 'init':
-        init_schedule()
-        return
+    if len(sys.argv) > 1:
+        arg1 = sys.argv[1].strip().lower()
+        if arg1 == 'init':
+            init_schedule()
+            return
+        if arg1 == 'catchup':
+            publish_catchup()
+            return
     # 테스트: python3 auto_publish_with_images.py --date=2026-02-20
     force = None
     for arg in sys.argv[1:]:

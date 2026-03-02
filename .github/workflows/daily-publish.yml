@@ -20,6 +20,8 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      contents: write   # manifest·posts 커밋 후 푸시용
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,7 +43,9 @@ jobs:
             echo "🧪 테스트 모드: 발행일 ${{ inputs.test_date }}"
             python3 auto_publish_with_images.py --date=${{ inputs.test_date }}
           else
-            python3 auto_publish_with_images.py
+            # 매일: 놓친 날짜까지 모두 발행(catchup) → 실행이 빠진 날도 다음 실행 시 채워짐
+            echo "📅 catchup 모드: 오늘까지 미발행 날짜 모두 발행"
+            python3 auto_publish_with_images.py catchup
           fi
 
       - name: List generated files (이미지/글 생성 확인)
@@ -50,6 +54,19 @@ jobs:
           ls -la posts/ 2>/dev/null || true
           echo "=== images/puzzles/ ==="
           ls -la images/puzzles/ 2>/dev/null || true
+
+      - name: Commit and push manifest + posts (다음 실행 시 전체 목록 유지)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add published_manifest.json posts/ posts.xml images/puzzles/ 2>/dev/null || true
+          git status
+          if git diff --staged --quiet; then
+            echo "변경 없음, 푸시 생략"
+          else
+            git commit -m "chore: 자동 발행 manifest·posts 반영"
+            git push
+          fi
 
       - name: Prepare upload folder (no .git)
         run: |
