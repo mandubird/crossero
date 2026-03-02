@@ -118,6 +118,42 @@ main {
   background:#005bb5;
 }
 
+/* 서비스 소개 섹션 */
+.intro-section {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 28px 30px;
+  margin-top: 40px;
+  line-height: 1.8;
+}
+.intro-section h2 {
+  font-size: 17px;
+  color: #0073e6;
+  margin: 0 0 12px 0;
+}
+.intro-section p {
+  font-size: 15px;
+  color: #444;
+  margin: 0 0 10px 0;
+}
+.intro-section p:last-child { margin-bottom: 0; }
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+.feature-item {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 14px;
+  color: #444;
+  border: 1px solid #e8e8e8;
+}
+.feature-item strong { display: block; color: #333; margin-bottom: 4px; font-size: 15px; }
+
 /* 공통 푸터 스타일 */
 footer {
   max-width: 1100px;
@@ -214,20 +250,55 @@ footer {
     ▶ 바로 퍼즐 풀기
   </a>
 </div>
+
+<div class="intro-section">
+  <h2>십자가로세로란?</h2>
+  <p>
+    십자가로세로(Crossero)는 성경 말씀을 기반으로 만든 온라인 가로세로 낱말 퍼즐 서비스입니다. 창세기부터 요한계시록까지 성경 66권의 인물, 지명, 사건, 핵심 구절을 퍼즐로 구성하여 교회 주보, 주일학교, 소그룹 모임에서 자유롭게 활용할 수 있습니다.
+  </p>
+  <p>
+    설교를 듣고도 금방 잊어버리거나, 성경을 읽어도 오래 기억하기 어렵다는 고민에서 시작되었습니다. 십자가로세로는 말씀을 "듣는 것"에서 "직접 풀어보는 것"으로 바꾸는 참여형 학습 도구입니다. 퍼즐을 풀면서 자연스럽게 성경 단어를 반복하고 문맥을 이해하게 됩니다.
+  </p>
+  <div class="feature-grid">
+    <div class="feature-item">
+      <strong>성경 66권 수록</strong>
+      구약·신약 전체 주제 퍼즐 제공
+    </div>
+    <div class="feature-item">
+      <strong>다양한 난이도</strong>
+      초등부부터 성인까지 선택 가능
+    </div>
+    <div class="feature-item">
+      <strong>인쇄 지원</strong>
+      주보·소그룹 자료로 출력 가능
+    </div>
+    <div class="feature-item">
+      <strong>무료 이용</strong>
+      회원가입 없이 즉시 퍼즐 풀기
+    </div>
+  </div>
+</div>
 </main>
 
 <footer>
   <div class="footer-divider"></div>
-  
-  <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 30px;">
+
+  <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 20px;">
       <a href="about.html" style="flex: 1; max-width: 180px; text-align: center; padding: 10px; background: #fff; border: 1px solid #ddd; color: #555; text-decoration: none; border-radius: 8px; font-size: 13px;">📖 만든 이유</a>
       <a href="support.html" style="flex: 1; max-width: 180px; text-align: center; padding: 10px; background: #fff; border: 1px solid #0073e6; color: #0073e6; text-decoration: none; border-radius: 8px; font-size: 13px; font-weight: bold;">🙏 후원 응원</a>
+  </div>
+
+  <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px;">
+    <a href="terms.html" style="font-size: 13px; color: #666; text-decoration: none;">이용약관</a>
+    <a href="privacy.html" style="font-size: 13px; color: #666; text-decoration: none;">개인정보처리방침</a>
+    <a href="faq.html" style="font-size: 13px; color: #666; text-decoration: none;">FAQ</a>
+    <a href="mailto:mandubird@naver.com" style="font-size: 13px; color: #666; text-decoration: none;">문의</a>
   </div>
 
   <div class="footer-branding">
     Crossero Puzzle <strong>Engine by PuzDuk.com</strong>
   </div>
-  
+
   <div class="footer-copyright">
     &copy; 2026 십자가로세로. All rights reserved.
   </div>
