@@ -306,6 +306,7 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 .footer-copyright {{ font-size: 12px; color: #aaa; text-align: center; }}
 @media (max-width: 768px) {{ article {{ padding: 24px 20px; }} h1 {{ font-size: 24px; }} .intro {{ padding: 16px; }} .puzzle-image {{ max-width: 100%; }} footer {{ padding: 0 12px; }} }}
 </style>
+<link rel="stylesheet" href="../banner.css">
 <script type="application/ld+json">
 {{"@context":"https://schema.org","@type":"Article","headline":"{escape(title)}","datePublished":"{date_iso}","author":{{"@type":"Organization","name":"십자가로세로"}},"publisher":{{"@type":"Organization","name":"십자가로세로"}},"mainEntityOfPage":"{DOMAIN}/posts/{slug}.html","image":"{og_img}"}}
 </script>
@@ -320,6 +321,10 @@ footer a {{ color: #0073e6; text-decoration: none; }}
   <a href="../support.html" class="nav-item">후원</a>
   <a href="../faq.html" class="nav-item">FAQ</a>
 </nav>
+<div class="top-banner-wrap">
+  <div id="top-banner-pc" class="top-banner top-banner-pc" aria-label="배너"></div>
+  <div id="top-banner-mobile" class="top-banner top-banner-mobile" aria-label="배너"></div>
+</div>
 <main>
 <article>
 <h1>{escape(title)}</h1>
@@ -366,9 +371,11 @@ footer a {{ color: #0073e6; text-decoration: none; }}
     <a href="../faq.html" style="font-size: 13px; color: #666; text-decoration: none;">FAQ</a>
     <a href="mailto:mandubird@naver.com" style="font-size: 13px; color: #666; text-decoration: none;">문의</a>
   </div>
+  <p class="footer-coupang-disclaimer" style="font-size: 11px; color: #999; margin: 0 0 16px 0; line-height: 1.4;">이 사이트는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>
   <div class="footer-branding">Crossero Puzzle <strong>Engine by PuzDuk.com</strong></div>
   <div class="footer-copyright">&copy; 2026 십자가로세로. All rights reserved.</div>
 </footer>
+<script src="../coupang-partner.js"></script>
 </body>
 </html>"""
 
@@ -477,6 +484,7 @@ main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
 .footer-copyright {{ font-size: 12px; color: #aaa; text-align: center; }}
 @media (max-width: 768px) {{ .nav {{ padding: 8px 6px; gap: 6px; }} .nav-item {{ padding: 6px 10px; font-size: 12px; }} main {{ padding: 24px 16px; }} .page-title {{ font-size: 20px; }} .board-section {{ padding: 18px 16px; }} .board-list {{ grid-template-columns: 1fr; }} .board-card {{ padding: 14px 16px; }} .board-title {{ font-size: 14px; }} .board-date {{ font-size: 11px; margin-top: 8px; padding-top: 6px; }} }}
 </style>
+<link rel="stylesheet" href="../banner.css">
 </head>
 <body>
 <nav class="nav">
@@ -488,6 +496,10 @@ main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
   <a href="../support.html" class="nav-item">후원</a>
   <a href="../faq.html" class="nav-item">FAQ</a>
 </nav>
+<div class="top-banner-wrap">
+  <div id="top-banner-pc" class="top-banner top-banner-pc" aria-label="배너"></div>
+  <div id="top-banner-mobile" class="top-banner top-banner-mobile" aria-label="배너"></div>
+</div>
 <main>
 <h1 class="page-title">게시판</h1>
 <p class="intro">발행된 성경 퀴즈·가로세로 퍼즐 소개 글입니다. 제목을 클릭하면 글로 이동합니다. <a href="../list.html">퍼즐 목록</a>에서 바로 플레이할 수 있습니다.</p>
@@ -509,9 +521,11 @@ main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
     <a href="../faq.html" style="font-size: 13px; color: #666; text-decoration: none;">FAQ</a>
     <a href="mailto:mandubird@naver.com" style="font-size: 13px; color: #666; text-decoration: none;">문의</a>
   </div>
+  <p class="footer-coupang-disclaimer" style="font-size: 11px; color: #999; margin: 0 0 16px 0; line-height: 1.4;">이 사이트는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>
   <div class="footer-branding">Crossero Puzzle <strong>Engine by PuzDuk.com</strong></div>
   <div class="footer-copyright">&copy; 2026 십자가로세로. All rights reserved.</div>
 </footer>
+<script src="../coupang-partner.js"></script>
 </body>
 </html>"""
     with open(os.path.join(POSTS_DIR, 'index.html'), 'w', encoding='utf-8') as f:

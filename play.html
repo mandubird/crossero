@@ -535,6 +535,7 @@ footer {
 }
 
 </style>
+<link rel="stylesheet" href="banner.css">
 
 </head>
 
@@ -550,7 +551,10 @@ footer {
   <a href="support.html" class="nav-item">후원</a>
   <a href="faq.html" class="nav-item">FAQ</a>
 </nav>
-
+<div class="top-banner-wrap">
+  <div id="top-banner-pc" class="top-banner top-banner-pc" aria-label="배너"></div>
+  <div id="top-banner-mobile" class="top-banner top-banner-mobile" aria-label="배너"></div>
+</div>
 <header>
   <a href="index.html" style="text-decoration: none; display: inline-block;">
     <img src="images/crossero-logo.png" alt="십자가로세로">
@@ -725,7 +729,7 @@ footer {
     <a href="faq.html" style="font-size: 13px; color: #666; text-decoration: none;">FAQ</a>
     <a href="mailto:mandubird@naver.com" style="font-size: 13px; color: #666; text-decoration: none;">문의</a>
   </div>
-
+  <p class="footer-coupang-disclaimer" style="font-size: 11px; color: #999; margin: 0 0 16px 0; line-height: 1.4;">이 사이트는 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.</p>
   <div class="footer-branding">
     Crossero Puzzle <strong>Engine by PuzDuk.com</strong>
   </div>
@@ -2222,6 +2226,8 @@ function updatePuzzleSummary(quizId, title) {
       <button onclick="location.href='support.html'" style="padding: 15px; background: #0073e6; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">☕ 후원하고 바로 보기</button>
       <button onclick="startWaitingTimer()" style="padding: 15px; background: #f0f0f0; color: #555; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">⏳ 30초 대기 후 무료 보기</button>
     </div>
+    <div id="popup-banner-pc" class="popup-banner popup-banner-pc" aria-label="배너"></div>
+    <div id="popup-banner-mobile" class="popup-banner popup-banner-mobile" aria-label="배너"></div>
     <div id="popupTimerArea" style="display: none; margin-top: 10px;">
       <div style="background: #fff9e6; padding: 20px; border-radius: 10px; border: 1px dashed #ffd43b; margin-bottom: 15px;">
         <p style="margin: 0; color: #856404; font-size: 14px;">"기다리는 동안 말씀 구절을 묵상해 보세요."</p>
@@ -2231,5 +2237,6 @@ function updatePuzzleSummary(quizId, title) {
     <button onclick="closeAdPopup()" id="closeAdBtn" style="display: none; margin-top: 15px; width: 100%; background: #0073e6; color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold;">확인 완료 (닫기)</button>
   </div>
 </div>
+<script src="coupang-partner.js"></script>
 </body>
 </html>

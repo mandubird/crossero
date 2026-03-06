@@ -1,0 +1,22 @@
+/* 메뉴 아래 배너 영역 (PC/모바일 구분) */
+.top-banner-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 8px 20px;
+  text-align: center;
+}
+.top-banner-pc { display: block; min-height: 0; }
+.top-banner-mobile { display: none; min-height: 0; }
+@media (max-width: 768px) {
+  .top-banner-wrap { padding: 6px 12px; }
+  .top-banner-pc { display: none; }
+  .top-banner-mobile { display: block; }
+}
+
+/* 30초 대기 팝업 내부 배너 (play/play2) */
+.popup-banner-pc { display: block; margin: 12px 0; min-height: 90px; text-align: center; width: 100%; }
+.popup-banner-mobile { display: none; margin: 12px 0; min-height: 90px; text-align: center; width: 100%; }
+@media (max-width: 768px) {
+  .popup-banner-pc { display: none; }
+  .popup-banner-mobile { display: block; }
+}
