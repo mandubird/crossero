@@ -11,60 +11,54 @@
 
   if (!window.COUPANG_TRACKING_CODE) return;
 
-  var BANNER_IDS = ['top-banner-pc', 'top-banner-mobile', 'popup-banner-pc', 'popup-banner-mobile'];
-  var containers = BANNER_IDS.map(function (id) {
-    var el = document.getElementById(id);
-    return el ? { id: id, el: el } : null;
-  }).filter(Boolean);
-  if (containers.length === 0) return;
-
   var pcId = String(window.COUPANG_BANNER_ID_PC || window.COUPANG_TRACKING_CODE);
   var mobileId = String(window.COUPANG_BANNER_ID_MOBILE || pcId);
+  var idNumPc = parseInt(pcId, 10);
+  var idNumMobile = parseInt(mobileId, 10);
+  var argPc     = isNaN(idNumPc)     ? pcId     : idNumPc;
+  var argMobile = isNaN(idNumMobile) ? mobileId : idNumMobile;
+
+  // 현재 페이지에 존재하는 컨테이너만 순서대로 수집
+  // G() 호출 순서와 정확히 일치해야 함
+  var SLOTS = [
+    { id: 'top-banner-pc',      arg: argPc },
+    { id: 'popup-banner-pc',    arg: argPc },
+    { id: 'top-banner-mobile',  arg: argMobile },
+    { id: 'popup-banner-mobile',arg: argMobile },
+  ].filter(function (s) { return !!document.getElementById(s.id); });
+
+  if (SLOTS.length === 0) return;
 
   function run() {
     if (typeof window.PartnersCoupang === 'undefined' || !window.PartnersCoupang.G) {
       setTimeout(run, 150);
       return;
     }
-    var idNumPc = parseInt(pcId, 10);
-    var idNumMobile = parseInt(mobileId, 10);
 
-    // G() 호출 전 body 자식 스냅샷
-    var beforePc = [].slice.call(document.body.children);
-    try {
-      window.PartnersCoupang.G({ id: isNaN(idNumPc) ? pcId : idNumPc, subId: null });
-    } catch (e) { console.warn('Coupang G (pc1):', e); }
+    // G() 호출 전 body 스냅샷 (1회)
+    var before = [].slice.call(document.body.children);
 
-    var beforePc2 = [].slice.call(document.body.children);
-    try {
-      window.PartnersCoupang.G({ id: isNaN(idNumPc) ? pcId : idNumPc, subId: null });
-    } catch (e) { console.warn('Coupang G (pc2):', e); }
+    // new 키워드로 생성자 호출 (필수)
+    SLOTS.forEach(function (s) {
+      try {
+        new window.PartnersCoupang.G({
+          id: s.arg,
+          subId: null,
+          trackingCode: window.COUPANG_TRACKING_CODE
+        });
+      } catch (e) { console.warn('Coupang G:', e); }
+    });
 
-    var beforeMobile = [].slice.call(document.body.children);
-    try {
-      window.PartnersCoupang.G({ id: isNaN(idNumMobile) ? mobileId : idNumMobile, subId: null });
-    } catch (e) { console.warn('Coupang G (m1):', e); }
-
-    var beforeMobile2 = [].slice.call(document.body.children);
-    try {
-      window.PartnersCoupang.G({ id: isNaN(idNumMobile) ? mobileId : idNumMobile, subId: null });
-    } catch (e) { console.warn('Coupang G (m2):', e); }
-
+    // G()가 비동기이므로 충분히 대기 후 새 요소 이동
     setTimeout(function () {
-      var afterAll = [].slice.call(document.body.children);
-      function newEls(before, after) {
-        return after.filter(function (el) { return before.indexOf(el) === -1; });
-      }
-      var pcEl1    = newEls(beforePc,     beforePc2)[0]     || null;
-      var pcEl2    = newEls(beforePc2,    beforeMobile)[0]  || null;
-      var mobileEl1 = newEls(beforeMobile, beforeMobile2)[0] || null;
-      var mobileEl2 = newEls(beforeMobile2, afterAll)[0]    || null;
-
-      if (containers[0] && pcEl1)    containers[0].el.appendChild(pcEl1);
-      if (containers[2] && pcEl2)    containers[2].el.appendChild(pcEl2);
-      if (containers[1] && mobileEl1) containers[1].el.appendChild(mobileEl1);
-      if (containers[3] && mobileEl2) containers[3].el.appendChild(mobileEl2);
-    }, 1500);
+      var newEls = [].slice.call(document.body.children).filter(function (el) {
+        return before.indexOf(el) === -1;
+      });
+      SLOTS.forEach(function (s, i) {
+        var container = document.getElementById(s.id);
+        if (container && newEls[i]) container.appendChild(newEls[i]);
+      });
+    }, 2500);
   }
 
   var s = document.createElement('script');
