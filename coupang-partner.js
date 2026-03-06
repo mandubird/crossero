@@ -4,83 +4,66 @@
  */
 (function () {
   // ========== 여기만 수정 ==========
-  // 쿠팡 파트너스 > 링크/배너 만들기 > 다이나믹 배너에서 생성한 값
-  window.COUPANG_TRACKING_CODE = 'AF2423892';  // 예: 'AF1234567'
-  window.COUPANG_BANNER_ID_PC = '970232';   // PC용 배너 ID (숫자 문자열)
-  window.COUPANG_BANNER_ID_MOBILE = '970233'; // 모바일용 배너 ID (비우면 PC와 동일)
+  window.COUPANG_TRACKING_CODE = 'AF2423892';
+  window.COUPANG_BANNER_ID_PC = '970232';
+  window.COUPANG_BANNER_ID_MOBILE = '970233';
   // ================================
 
   if (!window.COUPANG_TRACKING_CODE) return;
 
-  var BANNER_IDS = [
-    'top-banner-pc',
-    'top-banner-mobile',
-    'popup-banner-pc',
-    'popup-banner-mobile'
-  ];
-
+  var BANNER_IDS = ['top-banner-pc', 'top-banner-mobile', 'popup-banner-pc', 'popup-banner-mobile'];
   var containers = BANNER_IDS.map(function (id) {
     var el = document.getElementById(id);
     return el ? { id: id, el: el } : null;
   }).filter(Boolean);
-
   if (containers.length === 0) return;
 
   var pcId = String(window.COUPANG_BANNER_ID_PC || window.COUPANG_TRACKING_CODE);
   var mobileId = String(window.COUPANG_BANNER_ID_MOBILE || pcId);
-  var assignOrder = [];
-  containers.forEach(function (c) {
-    if (c.id.indexOf('mobile') !== -1) assignOrder.push({ container: c.el, bannerId: mobileId });
-    else assignOrder.push({ container: c.el, bannerId: pcId });
-  });
-
-  var appended = 0;
-  function isCoupangIframe(node) {
-    if (!node || node.nodeType !== 1 || node.tagName !== 'IFRAME') return false;
-    var src = (node.src || '') + (node.getAttribute('src') || '');
-    var id = (node.id || '');
-    return src.indexOf('coupang') !== -1 || src.indexOf('partners') !== -1 ||
-           id.indexOf(pcId) === 0 || id.indexOf(mobileId) === 0;
-  }
-  function assignIframe(iframe) {
-    if (!iframe || iframe.getAttribute('data-coupang-assigned')) return;
-    if (appended >= assignOrder.length) return;
-    var target = assignOrder[appended].container;
-    if (target && !target.querySelector('iframe')) {
-      iframe.setAttribute('data-coupang-assigned', '1');
-      target.appendChild(iframe);
-      appended++;
-    }
-  }
-
-  var observer = new MutationObserver(function (mutations) {
-    mutations.forEach(function (m) {
-      m.addedNodes.forEach(function (node) {
-        if (isCoupangIframe(node)) assignIframe(node);
-      });
-    });
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
 
   function run() {
     if (typeof window.PartnersCoupang === 'undefined' || !window.PartnersCoupang.G) {
-      setTimeout(run, 100);
+      setTimeout(run, 150);
       return;
     }
-    assignOrder.forEach(function (item) {
-      try {
-        var idNum = parseInt(item.bannerId, 10);
-        var opts = isNaN(idNum) ? { id: item.bannerId } : { id: idNum };
-        if (window.COUPANG_TRACKING_CODE) opts.trackingCode = window.COUPANG_TRACKING_CODE;
-        opts.subId = null;
-        window.PartnersCoupang.G(opts);
-      } catch (e) { console.warn('Coupang G:', e); }
-    });
+    var idNumPc = parseInt(pcId, 10);
+    var idNumMobile = parseInt(mobileId, 10);
+
+    // G() 호출 전 body 자식 스냅샷
+    var beforePc = [].slice.call(document.body.children);
+    try {
+      window.PartnersCoupang.G({ id: isNaN(idNumPc) ? pcId : idNumPc, subId: null });
+    } catch (e) { console.warn('Coupang G (pc1):', e); }
+
+    var beforePc2 = [].slice.call(document.body.children);
+    try {
+      window.PartnersCoupang.G({ id: isNaN(idNumPc) ? pcId : idNumPc, subId: null });
+    } catch (e) { console.warn('Coupang G (pc2):', e); }
+
+    var beforeMobile = [].slice.call(document.body.children);
+    try {
+      window.PartnersCoupang.G({ id: isNaN(idNumMobile) ? mobileId : idNumMobile, subId: null });
+    } catch (e) { console.warn('Coupang G (m1):', e); }
+
+    var beforeMobile2 = [].slice.call(document.body.children);
+    try {
+      window.PartnersCoupang.G({ id: isNaN(idNumMobile) ? mobileId : idNumMobile, subId: null });
+    } catch (e) { console.warn('Coupang G (m2):', e); }
+
     setTimeout(function () {
-      var all = document.querySelectorAll('iframe[src*="coupang"], iframe[src*="partners"], iframe[id^="' + pcId + '"], iframe[id^="' + mobileId + '"]');
-      for (var i = 0; i < all.length && appended < assignOrder.length; i++) {
-        assignIframe(all[i]);
+      var afterAll = [].slice.call(document.body.children);
+      function newEls(before, after) {
+        return after.filter(function (el) { return before.indexOf(el) === -1; });
       }
+      var pcEl1    = newEls(beforePc,     beforePc2)[0]     || null;
+      var pcEl2    = newEls(beforePc2,    beforeMobile)[0]  || null;
+      var mobileEl1 = newEls(beforeMobile, beforeMobile2)[0] || null;
+      var mobileEl2 = newEls(beforeMobile2, afterAll)[0]    || null;
+
+      if (containers[0] && pcEl1)    containers[0].el.appendChild(pcEl1);
+      if (containers[2] && pcEl2)    containers[2].el.appendChild(pcEl2);
+      if (containers[1] && mobileEl1) containers[1].el.appendChild(mobileEl1);
+      if (containers[3] && mobileEl2) containers[3].el.appendChild(mobileEl2);
     }, 1500);
   }
 
