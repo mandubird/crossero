@@ -19,7 +19,7 @@
   var argMobile = isNaN(idNumMobile) ? mobileId : idNumMobile;
 
   // 현재 페이지에 존재하는 컨테이너만 순서대로 수집
-  // G() 호출 순서와 정확히 일치해야 함
+  // G() 호출 순서와 정확히 일치해야 함 (배너 크기는 쿠팡에서 만든 970232·970233 그대로 사용)
   var SLOTS = [
     { id: 'top-banner-pc',      arg: argPc },
     { id: 'popup-banner-pc',    arg: argPc },
@@ -31,14 +31,12 @@
 
   function run() {
     if (typeof window.PartnersCoupang === 'undefined' || !window.PartnersCoupang.G) {
-      setTimeout(run, 150);
+      setTimeout(run, 80);
       return;
     }
 
-    // G() 호출 전 body 스냅샷 (1회)
     var before = [].slice.call(document.body.children);
 
-    // new 키워드로 생성자 호출 (필수)
     SLOTS.forEach(function (s) {
       try {
         new window.PartnersCoupang.G({
@@ -49,21 +47,42 @@
       } catch (e) { console.warn('Coupang G:', e); }
     });
 
-    // G()가 비동기이므로 충분히 대기 후 새 요소 이동
-    setTimeout(function () {
+    function moveNewToSlots() {
       var newEls = [].slice.call(document.body.children).filter(function (el) {
         return before.indexOf(el) === -1;
       });
+      if (newEls.length < SLOTS.length) return false;
       SLOTS.forEach(function (s, i) {
         var container = document.getElementById(s.id);
         if (container && newEls[i]) container.appendChild(newEls[i]);
       });
+      return true;
+    }
+
+    // 새 요소가 생기면 바로 이동 (MutationObserver), 최대 2.5초까지 대기
+    var moved = false;
+    var timeoutId = setTimeout(function () {
+      if (!moved) {
+        moved = true;
+        observer.disconnect();
+        moveNewToSlots();
+      }
     }, 2500);
+
+    var observer = new MutationObserver(function () {
+      if (moved) return;
+      if (moveNewToSlots()) {
+        moved = true;
+        clearTimeout(timeoutId);
+        observer.disconnect();
+      }
+    });
+    observer.observe(document.body, { childList: true });
   }
 
   var s = document.createElement('script');
   s.src = 'https://ads-partners.coupang.com/g.js';
-  s.async = false;
+  s.async = true;
   s.onload = run;
   document.head.appendChild(s);
 })();

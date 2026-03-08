@@ -13,6 +13,17 @@
   .top-banner-mobile { display: block; }
 }
 
+/* 페이지별 인라인 배너 슬롯 (PC·모바일 동일 위치, 슬롯은 항상 표시) */
+.banner-mobile-slot {
+  display: block;
+  text-align: center;
+  margin: 12px auto;
+  max-width: 1100px;
+}
+@media (max-width: 768px) {
+  .banner-mobile-slot { padding: 0 12px; }
+}
+
 /* 30초 대기 팝업 내부 배너 (play/play2) */
 .popup-banner-pc { display: block; margin: 12px 0; min-height: 90px; text-align: center; width: 100%; }
 .popup-banner-mobile { display: none; margin: 12px 0; min-height: 90px; text-align: center; width: 100%; }

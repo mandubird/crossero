@@ -321,11 +321,8 @@ footer a {{ color: #0073e6; text-decoration: none; }}
   <a href="../support.html" class="nav-item">후원</a>
   <a href="../faq.html" class="nav-item">FAQ</a>
 </nav>
-<div class="top-banner-wrap">
-  <div id="top-banner-pc" class="top-banner top-banner-pc" aria-label="배너"></div>
-  <div id="top-banner-mobile" class="top-banner top-banner-mobile" aria-label="배너"></div>
-</div>
 <main>
+<div class="banner-mobile-slot"><div id="top-banner-pc" class="top-banner top-banner-pc" aria-label="배너"></div><div id="top-banner-mobile" class="top-banner top-banner-mobile" aria-label="배너"></div></div>
 <article>
 <h1>{escape(title)}</h1>
 <div class="meta">📅 {date_str} · 📁 {cat_esc} · 🧩 {hint_count}개 힌트</div>
