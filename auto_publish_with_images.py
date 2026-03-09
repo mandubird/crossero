@@ -193,6 +193,64 @@ def split_hints(hints):
     mid = (n + 1) // 2
     return hints[:mid], hints[mid:]
 
+def get_book_slug_ko(book):
+    mapping = {
+        "창세기": "genesis", "출애굽기": "exodus", "레위기": "leviticus", "민수기": "numbers", "신명기": "deuteronomy",
+        "여호수아": "joshua", "사사기": "judges", "사무엘상": "1-samuel", "사무엘하": "2-samuel",
+        "열왕기상": "1-kings", "열왕기하": "2-kings", "역대상": "1-chronicles", "역대하": "2-chronicles",
+        "에스라": "ezra", "느헤미야": "nehemiah", "에스더": "esther", "욥기": "job", "시편": "psalms",
+        "잠언": "proverbs", "전도서": "ecclesiastes", "아가": "song-of-songs", "이사야": "isaiah",
+        "예레미야": "jeremiah", "에스겔": "ezekiel", "다니엘": "daniel", "호세아": "hosea", "요엘": "joel",
+        "아모스": "amos", "오바댜": "obadiah", "요나": "jonah", "미가": "micah", "나훔": "nahum",
+        "하박국": "habakkuk", "스바냐": "zephaniah", "학개": "haggai", "스가랴": "zechariah", "말라기": "malachi",
+        "마태복음": "matthew", "마가복음": "mark", "누가복음": "luke", "요한복음": "john",
+        "사도행전": "acts", "로마서": "romans", "고린도전서": "1-corinthians", "고린도후서": "2-corinthians",
+        "갈라디아서": "galatians", "에베소서": "ephesians", "빌립보서": "philippians", "골로새서": "colossians",
+        "데살로니가전서": "1-thessalonians", "데살로니가후서": "2-thessalonians", "디모데전서": "1-timothy",
+        "디모데후서": "2-timothy", "디도서": "titus", "빌레몬서": "philemon", "히브리서": "hebrews",
+        "야고보서": "james", "베드로전서": "1-peter", "베드로후서": "2-peter", "요한일서": "1-john",
+        "요한이서": "2-john", "요한삼서": "3-john", "유다서": "jude", "요한계시록": "revelation"
+    }
+    if book in mapping:
+        return mapping[book]
+    s = re.sub(r'[^a-zA-Z0-9]+', '-', book.lower()).strip('-')
+    return s or "bible-quiz"
+
+def get_semantic_quiz_url(book, pid):
+    slug = get_book_slug_ko(book)
+    return f"{DOMAIN}/bible-quiz/{slug}?id={pid}"
+
+def extract_quiz_qa_from_data_js(pid, max_items=8):
+    """data.js에서 특정 퍼즐의 clue/answer 쌍을 직접 추출."""
+    try:
+        with open(DATA_JS, 'r', encoding='utf-8') as f:
+            content = f.read()
+        pat = re.compile(r'"' + re.escape(pid) + r'"\s*:\s*\{')
+        m = pat.search(content)
+        if not m:
+            return []
+        start = m.end() - 1
+        end = find_matching_brace(content, start, '{', '}')
+        if end == -1:
+            return []
+        block = content[start:end + 1]
+        aw = re.search(r'allWords:\s*\[', block)
+        if not aw:
+            return []
+        arr_start = aw.end() - 1
+        arr_end = find_matching_brace(block, arr_start, '[', ']')
+        if arr_end == -1:
+            return []
+        arr = block[arr_start:arr_end + 1]
+        pairs = re.findall(r'clue:\s*"([^"]*)"\s*,\s*answer:\s*"([^"]*)"', arr)
+        out = []
+        for clue, answer in pairs[:max_items]:
+            if clue and answer:
+                out.append({"clue": clue, "answer": answer})
+        return out
+    except Exception:
+        return []
+
 
 def generate_post_html_with_image(puzzle, keyword, slug, publish_date, image_slug, has_puzzle_image=True,
                                   display_title=None,
@@ -217,6 +275,34 @@ def generate_post_html_with_image(puzzle, keyword, slug, publish_date, image_slu
         use_num_for_display = False
     intro = random.choice(INTRO_TEMPLATES).format(book=book, keyword=keyword, hint_count=hint_count)
     title = (display_title or puzzle.get('title') or f"{book} {keyword}").strip()
+    semantic_url = get_semantic_quiz_url(book, pid)
+    qa_items = extract_quiz_qa_from_data_js(pid, max_items=8)
+
+    dataset_schema = {
+        "@context": "https://schema.org",
+        "@type": "Dataset",
+        "name": f"{title} Bible Crossword Dataset",
+        "description": f"{title} 퍼즐의 단서와 정답을 포함한 성경 퀴즈 데이터셋",
+        "creator": {"@type": "Organization", "name": "십자가로세로", "url": DOMAIN},
+        "url": f"{DOMAIN}/posts/{slug}.html",
+        "keywords": [book, "Bible crossword puzzle", "Sunday school material", "교회 주보", "주일학교 교안"]
+    }
+    quiz_schema = {
+        "@context": "https://schema.org",
+        "@type": "Quiz",
+        "name": f"{title} Quiz",
+        "about": {"@type": "Thing", "name": book},
+        "url": semantic_url,
+        "hasPart": [
+            {
+                "@type": "Question",
+                "name": qa["clue"],
+                "acceptedAnswer": {"@type": "Answer", "text": qa["answer"]}
+            } for qa in qa_items
+        ]
+    }
+    dataset_schema_json = json.dumps(dataset_schema, ensure_ascii=False)
+    quiz_schema_json = json.dumps(quiz_schema, ensure_ascii=False)
     date_iso = publish_date.strftime('%Y-%m-%d')
     date_str = publish_date.strftime('%Y년 %m월 %d일')
     cat_esc = escape((puzzle.get('category') or '성경')[:50])
@@ -313,6 +399,8 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 <script type="application/ld+json">
 {{"@context":"https://schema.org","@type":"Article","headline":"{escape(title)}","datePublished":"{date_iso}","author":{{"@type":"Organization","name":"십자가로세로"}},"publisher":{{"@type":"Organization","name":"십자가로세로"}},"mainEntityOfPage":"{DOMAIN}/posts/{slug}.html","image":"{og_img}"}}
 </script>
+<script type="application/ld+json">{dataset_schema_json}</script>
+<script type="application/ld+json">{quiz_schema_json}</script>
 </head>
 <body>
 <nav class="nav">
@@ -330,6 +418,10 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 <article>
 <h1>{escape(title)}</h1>
 <div class="meta">📅 {date_str} · 📁 {cat_esc} · 🧩 {hint_count}개 힌트</div>
+<div class="edu-section" style="margin-top: 0;">
+<h3>📌 서비스 정의</h3>
+<p>십자가로세로는 교회 주보와 주일학교에서 사용할 수 있는 성경 기반 가로세로 퍼즐 서비스입니다. 성경 인물, 사건, 핵심 구절을 바탕으로 제작되었습니다. 온라인 풀이 및 인쇄 기능을 제공합니다.</p>
+</div>
 <div class="intro">{intro}</div>
 <img src="{img_rel}" alt="{escape(img_alt)}" class="puzzle-image" width="420" height="420" loading="lazy">
 <div class="hints-section">
@@ -359,6 +451,7 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 <a href="../list.html" class="related-link">📋 전체 목록</a>
 <a href="index.html" class="related-link">📋 게시판</a>
 <a href="../sunday-school-materials.html" class="related-link">🧑‍🏫 주일학교 자료 모음</a>
+<a href="{semantic_url}" class="related-link">🔗 Semantic URL 보기</a>
 <a href="../index.html" class="related-link">🏠 홈</a>
 <a href="../about.html" class="related-link">소개</a>
 </div>

@@ -82,6 +82,10 @@ def sanitize_name(s: str, max_len: int = 60) -> str:
     s = re.sub(r"\s+", "-", s).strip("-")
     return (s or "puzzle")[:max_len]
 
+def seo_image_base(title: str, puzzle_id: str) -> str:
+    base = sanitize_name(f"{title}-{puzzle_id}", max_len=50).lower()
+    return base.replace("_", "-")
+
 
 def pick_font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont:
     if bold:
@@ -454,11 +458,12 @@ def render_hint_card(across: List[PlacedWord], down: List[PlacedWord], title: st
     return base
 
 
-def save_bundle(built: BuiltPuzzle, out_dir: Path) -> None:
+def save_bundle(built: BuiltPuzzle, out_dir: Path, puzzle_id: str) -> None:
     logo = Image.open(LOGO_PATH).convert("RGBA") if LOGO_PATH.exists() else None
 
     puzzle_board = render_board(built.solution, built.number_map, show_answer=False)
     answer_board = render_board(built.solution, built.number_map, show_answer=True)
+    seo_base = seo_image_base(built.title, puzzle_id)
 
     for ratio_name, size in RATIOS.items():
         ratio_dir = out_dir / ratio_name
@@ -471,6 +476,27 @@ def save_bundle(built: BuiltPuzzle, out_dir: Path) -> None:
         puzzle_img.save(ratio_dir / "puzzle.png", format="PNG")
         hint_img.save(ratio_dir / "hint.png", format="PNG")
         answer_img.save(ratio_dir / "answer.png", format="PNG")
+
+        # Pinterest/멀티모달 SEO 파일명 버전도 함께 생성
+        puzzle_img.save(ratio_dir / f"{seo_base}-bible-crossword-puzzle-{ratio_name}.png", format="PNG")
+        hint_img.save(ratio_dir / f"{seo_base}-sunday-school-material-{ratio_name}.png", format="PNG")
+        answer_img.save(ratio_dir / f"{seo_base}-church-activity-answer-{ratio_name}.png", format="PNG")
+
+    # Pinterest 설명/ALT 복붙 템플릿
+    caption = (
+        f"{built.title} Bible crossword puzzle. "
+        "Sunday school material and printable church activity. "
+        "Use on church bulletin and class handout. Crossero.com"
+    )
+    alt_lines = [
+        f"Puzzle ALT: Crossero Bible Crossword Puzzle for {built.title} - Sunday School Material",
+        f"Hint ALT: {built.title} Bible Crossword Hints - Printable Church Activity",
+        f"Answer ALT: {built.title} Bible Crossword Answer Sheet - Church Bulletin Puzzle",
+    ]
+    with (out_dir / "pinterest_caption.txt").open("w", encoding="utf-8") as f:
+        f.write(caption + "\n")
+    with (out_dir / "image_alt_templates.txt").open("w", encoding="utf-8") as f:
+        f.write("\n".join(alt_lines) + "\n")
 
 
 def collect_queue_files() -> List[Path]:
@@ -490,7 +516,7 @@ def process_one(queue_file: Path) -> bool:
         ts = datetime.now().strftime("%Y%m%d_%H%M%S")
         safe_title = sanitize_name(data.title)
         out_dir = OUTPUT_DIR / f"{ts}_{puzzle_id}_{safe_title}"
-        save_bundle(built, out_dir)
+        save_bundle(built, out_dir, puzzle_id)
         write_log(f"OK {puzzle_id} -> {out_dir}")
         return True
     except Exception as e:
