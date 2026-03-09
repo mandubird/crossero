@@ -653,6 +653,7 @@ footer {
 
 <div style="max-width: 1100px; margin: 10px auto; padding: 0 20px; display: flex; gap: 10px; justify-content: flex-end;">
   <button id="btnAnswer" onclick="handlePremiumFeature('answer')" style="padding: 10px 18px; background: #fff; border: 1.5px solid #0073e6; color: #0073e6; border-radius: 8px; font-weight: bold; cursor: pointer;">🔍 정답보기</button>
+  <button onclick="exportSocialImages()" style="padding: 10px 18px; background: #0f9d58; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">📥 SNS 3종 저장</button>
   <button onclick="handlePremiumFeature('print')" style="padding: 10px 18px; background: #0073e6; color: #fff; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">🖨️ 인쇄하기</button>
 </div>
 
@@ -662,9 +663,9 @@ footer {
     <!-- 셀 위 한글 입력창: 캔버스와 같은 부모에 absolute 배치 -->
     <input id="cellInput" type="text" autocomplete="off" autocorrect="off"
            autocapitalize="off" spellcheck="false" inputmode="text">
-    <div class="guide">✏️ 퍼즐 생성 가이드</div>
     
-    <div class="puzzle-info-panel" style="display:flex; justify-content:space-between; align-items:center;">
+    <div class="puzzle-info-panel" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+      <div style="width:100%; font-size:13px; color:#666;">✏️ 퍼즐 생성 가이드</div>
       <div style="display:flex; gap:10px;">
         <button onclick="setupQuiz(3)" class="refresh-btn">🔄 낱말 새로 생성</button>
       </div>
@@ -2011,6 +2012,195 @@ async function processPrint() {
     qrImg.onload = doPrint;
     qrImg.onerror = doPrint; // 실패 시에도 인쇄 진행
   }
+}
+
+function getExportTitle() {
+  const t = document.getElementById('dynamicTitle')?.innerText?.trim();
+  return t || '말씀 가로세로 퍼즐';
+}
+
+function sanitizeFileName(name) {
+  return (name || 'puzzle')
+    .replace(/[\\/:*?"<>|]/g, '')
+    .replace(/\s+/g, '-')
+    .slice(0, 60);
+}
+
+function truncateTextForWidth(ctx, text, maxWidth) {
+  if (!text) return '';
+  if (ctx.measureText(text).width <= maxWidth) return text;
+  let result = text;
+  while (result.length > 0 && ctx.measureText(result + '...').width > maxWidth) {
+    result = result.slice(0, -1);
+  }
+  return result + '...';
+}
+
+function drawSocialHeader(ctx, title, subtitle, width) {
+  const grad = ctx.createLinearGradient(0, 0, width, 0);
+  grad.addColorStop(0, '#e8f3ff');
+  grad.addColorStop(1, '#f7fbff');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, width, 140);
+  ctx.fillStyle = '#0f172a';
+  ctx.font = 'bold 52px sans-serif';
+  const safeTitle = truncateTextForWidth(ctx, title, width - 120);
+  ctx.fillText(safeTitle, 60, 82);
+  ctx.fillStyle = '#334155';
+  ctx.font = '26px sans-serif';
+  const safeSubtitle = truncateTextForWidth(ctx, subtitle, width - 120);
+  ctx.fillText(safeSubtitle, 60, 120);
+}
+
+function drawPuzzleBoard(ctx, boardX, boardY, boardSize, showAnswer) {
+  const cell = boardSize / SIZE;
+  for (let y = 0; y < SIZE; y++) {
+    for (let x = 0; x < SIZE; x++) {
+      const active = solution[y][x] !== null;
+      ctx.fillStyle = active ? '#ffffff' : '#64748b';
+      ctx.fillRect(boardX + x * cell, boardY + y * cell, cell, cell);
+
+      ctx.strokeStyle = active ? '#cbd5e1' : '#475569';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(boardX + x * cell, boardY + y * cell, cell, cell);
+
+      if (active && numberMap[y][x]) {
+        ctx.fillStyle = 'rgba(255,255,255,0.95)';
+        ctx.fillRect(boardX + x * cell + 2, boardY + y * cell + 2, cell * 0.3, cell * 0.24);
+        ctx.fillStyle = '#0369a1';
+        ctx.font = `bold ${Math.max(11, Math.floor(cell * 0.18))}px sans-serif`;
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+        ctx.fillText(numberMap[y][x], boardX + x * cell + 4, boardY + y * cell + 2);
+      }
+
+      if (showAnswer && active && solution[y][x]) {
+        ctx.fillStyle = '#111827';
+        ctx.font = `bold ${Math.max(18, Math.floor(cell * 0.48))}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(solution[y][x], boardX + x * cell + cell / 2, boardY + y * cell + cell / 2);
+      }
+    }
+  }
+}
+
+function createPuzzleOrAnswerCanvas(showAnswer) {
+  const W = 1080;
+  const H = 1350;
+  const c = document.createElement('canvas');
+  c.width = W;
+  c.height = H;
+  const cctx = c.getContext('2d');
+  cctx.fillStyle = '#f8fafc';
+  cctx.fillRect(0, 0, W, H);
+
+  const title = getExportTitle();
+  const subtitle = showAnswer ? '정답 이미지' : '퍼즐 이미지';
+  drawSocialHeader(cctx, title, subtitle, W);
+
+  const boardSize = 920;
+  const bx = Math.floor((W - boardSize) / 2);
+  const by = 200;
+  drawPuzzleBoard(cctx, bx, by, boardSize, showAnswer);
+
+  cctx.fillStyle = '#475569';
+  cctx.font = '24px sans-serif';
+  cctx.textAlign = 'center';
+  cctx.textBaseline = 'middle';
+  cctx.fillText('crossero.com', W / 2, H - 48);
+  return c;
+}
+
+function createHintCanvas() {
+  const W = 1080;
+  const H = 1350;
+  const c = document.createElement('canvas');
+  c.width = W;
+  c.height = H;
+  const cctx = c.getContext('2d');
+  cctx.fillStyle = '#f8fafc';
+  cctx.fillRect(0, 0, W, H);
+
+  drawSocialHeader(cctx, getExportTitle(), '힌트 이미지', W);
+
+  cctx.fillStyle = '#ffffff';
+  cctx.strokeStyle = '#dbeafe';
+  cctx.lineWidth = 2;
+  cctx.fillRect(40, 170, W - 80, H - 250);
+  cctx.strokeRect(40, 170, W - 80, H - 250);
+
+  const colGap = 36;
+  const leftX = 74;
+  const topY = 220;
+  const colW = (W - 80 - 68 - colGap) / 2;
+  const rightX = leftX + colW + colGap;
+
+  cctx.fillStyle = '#0f172a';
+  cctx.font = 'bold 34px sans-serif';
+  cctx.textAlign = 'left';
+  cctx.textBaseline = 'top';
+  cctx.fillText('가로', leftX, topY);
+  cctx.fillText('세로', rightX, topY);
+
+  const lineHeight = 28;
+  const startY = topY + 52;
+  const maxLines = Math.floor((H - 300 - startY) / lineHeight) + 2;
+
+  cctx.font = '20px sans-serif';
+  cctx.fillStyle = '#1e293b';
+
+  const acrossSorted = [...QUIZ.across].sort((a, b) => a.num - b.num);
+  const downSorted = [...QUIZ.down].sort((a, b) => a.num - b.num);
+
+  acrossSorted.slice(0, maxLines).forEach((q, i) => {
+    const text = truncateTextForWidth(cctx, `${q.num}. ${q.clue}`, colW - 8);
+    cctx.fillText(text, leftX, startY + i * lineHeight);
+  });
+  downSorted.slice(0, maxLines).forEach((q, i) => {
+    const text = truncateTextForWidth(cctx, `${q.num}. ${q.clue}`, colW - 8);
+    cctx.fillText(text, rightX, startY + i * lineHeight);
+  });
+
+  cctx.fillStyle = '#64748b';
+  cctx.font = '20px sans-serif';
+  cctx.textAlign = 'center';
+  cctx.fillText('힌트가 많을 경우 한 줄 요약으로 일부 축약됩니다', W / 2, H - 92);
+  cctx.fillText('crossero.com', W / 2, H - 58);
+
+  return c;
+}
+
+function downloadCanvasAsPng(canvasEl, filename) {
+  const a = document.createElement('a');
+  a.href = canvasEl.toDataURL('image/png');
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function exportSocialImages() {
+  if (!solution || !numberMap || !QUIZ) {
+    alert('퍼즐 데이터가 아직 준비되지 않았습니다.');
+    return;
+  }
+  const user = checkAuthStatus();
+  if (!user) {
+    if (confirm("📥 SNS 이미지 저장은 후원자 전용 기능입니다.\n후원 페이지로 이동하시겠습니까?")) {
+      window.location.href = 'support.html';
+    }
+    return;
+  }
+
+  const base = sanitizeFileName(getExportTitle());
+  const puzzleCanvas = createPuzzleOrAnswerCanvas(false);
+  const hintCanvas = createHintCanvas();
+  const answerCanvas = createPuzzleOrAnswerCanvas(true);
+
+  downloadCanvasAsPng(puzzleCanvas, `${base}_퍼즐.png`);
+  setTimeout(() => downloadCanvasAsPng(hintCanvas, `${base}_힌트.png`), 180);
+  setTimeout(() => downloadCanvasAsPng(answerCanvas, `${base}_정답.png`), 360);
 }
 
 /* =====================
