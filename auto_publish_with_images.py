@@ -259,8 +259,8 @@ def generate_post_html_with_image(puzzle, keyword, slug, publish_date, image_slu
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{escape(title)}</title>
-<meta name="description" content="{escape(book)}를 주제로 한 {escape(keyword)}입니다. {hint_count}개의 힌트로 구성된 무료 가로세로 낱말 퍼즐.">
-<meta name="keywords" content="{escape(keyword)}, {escape(book)}, 십자가로세로, 성경퀴즈, 말씀퀴즈, 가로세로퍼즐">
+<meta name="description" content="{escape(book)}를 주제로 한 {escape(keyword)}입니다. {hint_count}개의 힌트로 구성된 무료 가로세로 낱말 퍼즐. 주일학교 교재 추천, 주일학교 주보, 주일학교 교안, 주일학교 공과교재로 활용할 수 있습니다.">
+<meta name="keywords" content="{escape(keyword)}, {escape(book)}, 십자가로세로, 성경퀴즈, 말씀퀴즈, 가로세로퍼즐, 주일학교 교재 추천, 주일학교 주보, 주일학교 교안, 주일학교 공과교재">
 <meta property="og:title" content="{escape(title)}">
 <meta property="og:description" content="{escape(book)} {escape(keyword)} - 무료 퀴즈">
 <meta property="og:image" content="{og_img}">
@@ -294,6 +294,9 @@ h1 {{ font-size: 28px; font-weight: 800; color: #222; margin: 0 0 16px 0; }}
 .keywords-section {{ margin-top: 32px; padding: 20px; background: #f8f9fa; border-radius: 8px; border: 1px solid #e1e4e8; }}
 .keywords-section h3 {{ font-size: 16px; margin: 0 0 10px 0; color: #555; }}
 .keywords-section p {{ margin: 0; font-size: 14px; color: #666; line-height: 1.7; }}
+.edu-section {{ margin-top: 20px; padding: 18px; background: #f6fbff; border: 1px solid #dbeafe; border-radius: 8px; }}
+.edu-section h3 {{ margin: 0 0 8px 0; font-size: 16px; color: #0f172a; }}
+.edu-section p {{ margin: 0; font-size: 14px; color: #334155; line-height: 1.7; }}
 .related {{ margin-top: 40px; padding-top: 32px; border-top: 2px solid #eee; }}
 .related h3 {{ font-size: 20px; margin: 0 0 16px 0; }}
 .related-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }}
@@ -317,6 +320,7 @@ footer a {{ color: #0073e6; text-decoration: none; }}
   <a href="../play.html" class="nav-item">퍼즐하기</a>
   <a href="../list.html" class="nav-item">퍼즐목록</a>
   <a href="index.html" class="nav-item nav-active">게시판</a>
+  <a href="../sunday-school-materials.html" class="nav-item">주일학교 자료</a>
   <a href="../about.html" class="nav-item">소개</a>
   <a href="../support.html" class="nav-item">후원</a>
   <a href="../faq.html" class="nav-item">FAQ</a>
@@ -341,15 +345,20 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 <p>{section_desc}</p>
 <a href="{answer_link}" target="_blank" rel="noopener noreferrer" class="answer-btn">{btn_text}</a>
 </div>
+<div class="edu-section">
+<h3>🧑‍🏫 교회 교육 자료 활용</h3>
+<p>이 퍼즐은 <strong>주일학교 교재 추천</strong> 자료로 활용할 수 있고, <strong>주일학교 주보</strong>에 넣기 좋은 분량으로 구성되어 있습니다. 수업용 <strong>주일학교 교안</strong>에 활동지로 붙이거나, 예배 후 복습용 <strong>주일학교 공과교재</strong>로 바로 사용할 수 있습니다.</p>
+</div>
 <div class="keywords-section">
 <h3>🏷️ 키워드</h3>
-<p>{escape(keyword)}, {escape(book)}, 십자가로세로, 성경퀴즈, 말씀퀴즈, 가로세로퍼즐</p>
+<p>{escape(keyword)}, {escape(book)}, 십자가로세로, 성경퀴즈, 말씀퀴즈, 가로세로퍼즐, 주일학교 교재 추천, 주일학교 주보, 주일학교 교안, 주일학교 공과교재</p>
 </div>
 <div class="related">
 <h3>📚 더 많은 퍼즐</h3>
 <div class="related-grid">
 <a href="../list.html" class="related-link">📋 전체 목록</a>
 <a href="index.html" class="related-link">📋 게시판</a>
+<a href="../sunday-school-materials.html" class="related-link">🧑‍🏫 주일학교 자료 모음</a>
 <a href="../index.html" class="related-link">🏠 홈</a>
 <a href="../about.html" class="related-link">소개</a>
 </div>
@@ -446,11 +455,11 @@ def rebuild_index_and_xml(manifest_entries):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>게시판 | 십자가로세로</title>
-<meta name="description" content="발행된 성경 퀴즈·가로세로 퍼즐 소개 글 목록. 제목을 클릭하면 글로 이동하며, 퍼즐 목록에서 바로 플레이할 수 있습니다.">
-<meta name="keywords" content="성경퀴즈 게시판, 가로세로 퍼즐 소개, 십자가로세로 글 목록">
-<meta property="og:title" content="게시판 | 십자가로세로">
-<meta property="og:description" content="발행된 성경 퀴즈·가로세로 퍼즐 소개 글 목록입니다.">
+<title>주일학교 자료 게시판 | 십자가로세로</title>
+<meta name="description" content="주일학교 교재 추천, 주일학교 주보, 주일학교 교안, 주일학교 공과교재로 활용 가능한 성경 퍼즐 게시판입니다.">
+<meta name="keywords" content="주일학교 교재 추천, 주일학교 주보, 주일학교 교안, 주일학교 공과교재, 성경퀴즈 게시판">
+<meta property="og:title" content="주일학교 자료 게시판 | 십자가로세로">
+<meta property="og:description" content="주일학교/교회 교육에 바로 쓸 수 있는 성경 퍼즐 자료 게시판입니다.">
 <meta property="og:image" content="{DOMAIN}/images/og-image.png">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{DOMAIN}/posts/">
@@ -489,6 +498,7 @@ main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
   <a href="../play.html" class="nav-item">퍼즐하기</a>
   <a href="../list.html" class="nav-item">퍼즐목록</a>
   <a href="index.html" class="nav-item nav-active">게시판</a>
+  <a href="../sunday-school-materials.html" class="nav-item">주일학교 자료</a>
   <a href="../about.html" class="nav-item">소개</a>
   <a href="../support.html" class="nav-item">후원</a>
   <a href="../faq.html" class="nav-item">FAQ</a>
@@ -498,8 +508,8 @@ main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
   <div id="top-banner-mobile" class="top-banner top-banner-mobile" aria-label="배너"></div>
 </div>
 <main>
-<h1 class="page-title">게시판</h1>
-<p class="intro">발행된 성경 퀴즈·가로세로 퍼즐 소개 글입니다. 제목을 클릭하면 글로 이동합니다. <a href="../list.html">퍼즐 목록</a>에서 바로 플레이할 수 있습니다.</p>
+<h1 class="page-title">주일학교 자료 게시판</h1>
+<p class="intro">매일 발행되는 성경 퍼즐 자료입니다. <strong>주일학교 교재 추천</strong>, <strong>주일학교 주보</strong>, <strong>주일학교 교안</strong>, <strong>주일학교 공과교재</strong> 용도로 활용할 수 있습니다. <a href="../sunday-school-materials.html">주일학교 자료 모음</a>도 함께 보세요.</p>
 <div class="board-section">
 <ul class="board-list">
 {list_rows}
