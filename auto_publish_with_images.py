@@ -451,7 +451,6 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 <a href="../list.html" class="related-link">📋 전체 목록</a>
 <a href="index.html" class="related-link">📋 게시판</a>
 <a href="../sunday-school-materials.html" class="related-link">🧑‍🏫 주일학교 자료 모음</a>
-<a href="{semantic_url}" class="related-link">🔗 Semantic URL 보기</a>
 <a href="../index.html" class="related-link">🏠 홈</a>
 <a href="../about.html" class="related-link">소개</a>
 </div>
