@@ -3,6 +3,9 @@
  * 사용법: 아래 COUPANG_* 값만 쿠팡 파트너스에서 발급한 값으로 바꾸면 됨.
  */
 (function () {
+  // 쿠팡 배너 비활성화: HTML에서 스크립트를 제거했더라도
+  // 남아 있는 참조가 있을 수 있어 안전하게 즉시 종료한다.
+  return;
   // ========== 여기만 수정 ==========
   window.COUPANG_TRACKING_CODE = 'AF2423892';
   window.COUPANG_BANNER_ID_PC = '970232';
