@@ -38,7 +38,7 @@
 - [ ] `crossero.com` → 새 도메인 (og:image, sitemap, QR 등)
 - [ ] 로고: `images/crossero-logo.png` → `images/로고파일명.png`
 - [ ] og 이미지: `images/og-image.png` 및 meta `og:image` URL
-- [ ] 푸터: "Crossero Puzzle Engine by PuzDuk.com" 등 문구
+- [ ] 푸터: "Crossero Puzzle Engine by PuzDuk" 등 문구
 - [ ] copyright 연도·사이트명 (예: index.html `© 2026 십자가로세로`)
 
 ### 2.2 데이터·콘텐츠
