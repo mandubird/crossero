@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>후원자 명단 | 십자가로세로</title>
+<meta name="description" content="십자가로세로 사역을 함께 응원해 주신 후원자분들을 소개합니다.">
+<meta property="og:title" content="후원자 명단 | 십자가로세로">
+<meta property="og:description" content="십자가로세로 사역을 함께 응원해 주신 후원자분들을 소개합니다.">
+<meta property="og:image" content="https://crossero.com/images/og-image.png">
+<link rel="icon" href="images/favicon.png" type="image/png">
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; background: #f8f9fa; color: #333; }
+
+/* ---- NAV ---- */
+.nav { display: flex; justify-content: center; gap: 10px; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 12px 0; flex-wrap: wrap; }
+.nav-item { padding: 8px 14px; font-size: 14px; color: #444; text-decoration: none; border-radius: 6px; }
+.nav-item:hover { background: #f0f6ff; color: #0073e6; }
+.nav-active { background: #0073e6; color: #fff !important; font-weight: 600; }
+
+/* ---- PAGE HEADER ---- */
+.page-header {
+  text-align: center;
+  padding: 48px 20px 32px;
+  background: linear-gradient(135deg, #f0f6ff 0%, #fff 100%);
+  border-bottom: 1px solid #e5e5e5;
+}
+.page-header h1 { font-size: 26px; color: #0073e6; font-weight: 700; margin-bottom: 8px; }
+.page-header p { font-size: 15px; color: #666; line-height: 1.7; }
+
+/* ---- SECTION COMMON ---- */
+.section { max-width: 860px; margin: 0 auto; padding: 48px 20px; }
+.section-title { font-size: 18px; font-weight: 700; color: #333; margin-bottom: 28px; display: flex; align-items: center; gap: 8px; }
+.section-title::after { content: ''; flex: 1; height: 1px; background: #e5e5e5; }
+
+/* ---- FOUNDER CARD ---- */
+.founder-card {
+  background: linear-gradient(135deg, #fffbea, #fff9d6);
+  border: 2px solid #ffd43b;
+  border-radius: 20px;
+  padding: 36px 32px;
+  text-align: center;
+  box-shadow: 0 0 24px rgba(255, 212, 59, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+.founder-card::before {
+  content: '';
+  position: absolute;
+  top: -30px; right: -30px;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, rgba(255,212,59,0.2), transparent 70%);
+  border-radius: 50%;
+}
+.founder-badge {
+  display: inline-block;
+  background: #ffd43b;
+  color: #7a4f00;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+.founder-number { font-size: 13px; color: #999; margin-bottom: 6px; }
+.founder-name { font-size: 28px; font-weight: 700; color: #222; margin-bottom: 10px; }
+.founder-message { font-size: 14px; color: #856404; font-style: italic; line-height: 1.6; }
+.founder-star { font-size: 40px; margin-bottom: 12px; }
+
+/* ---- SUPPORTERS GRID ---- */
+.supporters-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.supporter-card {
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 18px 12px;
+  text-align: center;
+  transition: transform 0.15s, box-shadow 0.15s;
+  cursor: default;
+  position: relative;
+}
+.supporter-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.09);
+  border-color: #0073e6;
+}
+.supporter-card .s-name { font-size: 15px; font-weight: 600; color: #333; margin-bottom: 4px; }
+.supporter-card .s-label { font-size: 11px; color: #aaa; }
+.supporter-card.first-supporter { border-color: #ffd43b; background: #fffef5; }
+.supporter-card.first-supporter .s-name { color: #856404; }
+
+/* ---- TIMELINE ---- */
+.timeline { display: flex; flex-direction: column; gap: 28px; }
+.timeline-month { }
+.timeline-month-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0073e6;
+  margin-bottom: 12px;
+  padding-left: 14px;
+  border-left: 3px solid #0073e6;
+}
+.timeline-items { display: flex; flex-direction: column; gap: 8px; padding-left: 14px; }
+.timeline-item {
+  font-size: 14px;
+  color: #555;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.timeline-item .badge-first {
+  font-size: 10px;
+  background: #ffd43b;
+  color: #7a4f00;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+/* ---- CTA ---- */
+.cta-section {
+  background: linear-gradient(135deg, #0073e6, #0052cc);
+  color: white;
+  text-align: center;
+  padding: 56px 20px;
+}
+.cta-section h2 { font-size: 22px; margin-bottom: 10px; }
+.cta-section p { font-size: 15px; opacity: 0.85; margin-bottom: 28px; line-height: 1.7; }
+.cta-btn {
+  display: inline-block;
+  background: #fff;
+  color: #0073e6;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 14px 36px;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  transition: transform 0.15s;
+}
+.cta-btn:hover { transform: translateY(-2px); }
+
+/* ---- FOOTER ---- */
+footer {
+  text-align: center;
+  padding: 32px 20px;
+  background: #fff;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* ---- RESPONSIVE ---- */
+@media (max-width: 700px) {
+  .nav { padding: 8px 6px; gap: 6px; }
+  .nav-item { padding: 6px 10px; font-size: 12px; }
+  .supporters-grid { grid-template-columns: repeat(2, 1fr); }
+  .founder-name { font-size: 22px; }
+  .page-header h1 { font-size: 22px; }
+}
+@media (max-width: 480px) {
+  .supporters-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-item">홈</a>
+  <a href="play.html" class="nav-item">퍼즐하기</a>
+  <a href="list.html" class="nav-item">퍼즐목록</a>
+  <a href="posts/index.html" class="nav-item">게시판</a>
+  <a href="about.html" class="nav-item">소개</a>
+  <a href="supporters.html" class="nav-item nav-active">⭐ 후원자</a>
+  <a href="support.html" class="nav-item">후원하기</a>
+  <a href="faq.html" class="nav-item">FAQ</a>
+</nav>
+
+<div class="page-header">
+  <h1>🙏 후원자 명단</h1>
+  <p>이 사역을 함께 응원해 주신 분들입니다.<br>한 분 한 분의 후원이 말씀 퍼즐을 이어가게 합니다.</p>
+</div>
+
+<!-- ===== SECTION 1: FOUNDER ===== -->
+<div class="section">
+  <div class="section-title">⭐ 첫 후원자</div>
+  <div class="founder-card">
+    <div class="founder-star">⭐</div>
+    <div class="founder-badge">FIRST SUPPORTER</div>
+    <div class="founder-number">#001</div>
+    <div class="founder-name" id="founder-name">첫 후원자</div>
+    <div class="founder-message">"이 사역의 첫 빛이 되어주신 분"</div>
+  </div>
+</div>
+
+<!-- ===== SECTION 2: SUPPORTERS WALL ===== -->
+<div class="section" style="padding-top: 0;">
+  <div class="section-title">🧱 후원자 명단</div>
+  <div class="supporters-grid" id="supporters-grid">
+    <!-- JS로 렌더링 -->
+  </div>
+</div>
+
+<!-- ===== SECTION 3: TIMELINE ===== -->
+<div class="section" style="padding-top: 0;">
+  <div class="section-title">📅 후원 기록</div>
+  <div class="timeline" id="timeline">
+    <!-- JS로 렌더링 -->
+  </div>
+</div>
+
+<!-- ===== SECTION 4: CTA ===== -->
+<div class="cta-section">
+  <h2>🙏 함께하기</h2>
+  <p>이 사역을 응원해 주시면<br>정답 보기와 인쇄 기능을 바로 사용하실 수 있습니다.</p>
+  <a href="support.html" class="cta-btn">후원하고 함께하기</a>
+</div>
+
+<footer>
+  <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 16px;">
+    <a href="terms.html" style="font-size: 13px; color: #666; text-decoration: none;">이용약관</a>
+    <a href="privacy.html" style="font-size: 13px; color: #666; text-decoration: none;">개인정보처리방침</a>
+    <a href="faq.html" style="font-size: 13px; color: #666; text-decoration: none;">FAQ</a>
+    <a href="mailto:mandubird@naver.com" style="font-size: 13px; color: #666; text-decoration: none;">문의</a>
+  </div>
+  <p style="font-size: 12px; color: #aaa;">© 2025 십자가로세로. All rights reserved.</p>
+</footer>
+
+<script>
+/* =====================================================
+   후원자 데이터 — 새 후원자 추가 시 이 배열만 수정하세요
+   ===================================================== */
+const SUPPORTERS_DATA = [
+  {
+    id: '001',
+    name: '첫 후원자',       // 표시 이름 (익명 원하면 '익명' 으로)
+    isFirst: true,
+    date: '2026-04',
+    message: ''
+  },
+  // 아래에 추가 예시:
+  // { id: '002', name: '김OO', isFirst: false, date: '2026-04', message: '' },
+];
+
+/* =====================================================
+   렌더링 (수정 불필요)
+   ===================================================== */
+function render() {
+  // 첫 후원자 이름 업데이트
+  const first = SUPPORTERS_DATA.find(s => s.isFirst);
+  if (first) document.getElementById('founder-name').textContent = first.name;
+
+  // 후원자 벽
+  const grid = document.getElementById('supporters-grid');
+  grid.innerHTML = SUPPORTERS_DATA.map(s => `
+    <div class="supporter-card ${s.isFirst ? 'first-supporter' : ''}">
+      <div class="s-name">${s.isFirst ? '⭐ ' : ''}${s.name}</div>
+      <div class="s-label">Supporter</div>
+    </div>
+  `).join('');
+
+  // 타임라인 (월별 그룹핑)
+  const byMonth = {};
+  SUPPORTERS_DATA.forEach(s => {
+    if (!byMonth[s.date]) byMonth[s.date] = [];
+    byMonth[s.date].push(s);
+  });
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = Object.keys(byMonth).sort().map(month => {
+    const [y, m] = month.split('-');
+    const label = `${y}.${m}`;
+    const items = byMonth[month].map(s => `
+      <div class="timeline-item">
+        - ${s.name}
+        ${s.isFirst ? '<span class="badge-first">첫 후원자 ⭐</span>' : ''}
+      </div>
+    `).join('');
+    return `
+      <div class="timeline-month">
+        <div class="timeline-month-label">${label}</div>
+        <div class="timeline-items">${items}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+render();
+</script>
+
+</body>
+</html>
