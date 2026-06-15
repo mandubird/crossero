@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 from html import escape
 from urllib.parse import quote
 from bible_book_info import BOOK_INFO
+from topic_info import TOPIC_INFO
 
 # generate_seo_posts와 동일한 파싱·템플릿
 from generate_seo_posts import (
@@ -335,15 +336,19 @@ def generate_post_html_with_image(puzzle, keyword, slug, publish_date, image_slu
     else:
         across_html = "".join(f'<div class="hint-item">{i}. {escape(h)}</div>' for i, h in enumerate(across_list[:20], 1))
         down_html = "".join(f'<div class="hint-item">{i}. {escape(h)}</div>' for i, h in enumerate(down_list[:20], 1))
-    book_info = BOOK_INFO.get(book)
+    book_info = BOOK_INFO.get(book) or TOPIC_INFO.get(title)
     if book_info:
         events_html = " · ".join(escape(e) for e in book_info["events"])
+        if book in BOOK_INFO:
+            bi_title1, bi_title2 = f"📖 {escape(book)}란?", f"📚 {escape(book)}의 주요 사건·주제"
+        else:
+            bi_title1, bi_title2 = "📖 이 글은 어떤 내용인가요?", "📚 핵심 포인트"
         book_info_html = f"""<div class="edu-section book-info-section">
-<h3>📖 {escape(book)}란?</h3>
+<h3>{bi_title1}</h3>
 <p>{escape(book_info["desc"])}</p>
 </div>
 <div class="edu-section">
-<h3>📚 {escape(book)}의 주요 사건·주제</h3>
+<h3>{bi_title2}</h3>
 <p>{events_html}</p>
 </div>
 """

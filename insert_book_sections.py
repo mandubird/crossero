@@ -10,6 +10,7 @@ import re
 import glob
 from html import escape
 from bible_book_info import BOOK_INFO
+from topic_info import TOPIC_INFO
 
 POSTS_DIR = os.path.join(os.path.dirname(__file__), "posts")
 
@@ -17,17 +18,21 @@ H1_RE = re.compile(r"<h1>(.*?)</h1>")
 INTRO_RE = re.compile(r'<div class="intro">')
 
 
-def build_block(book):
-    info = BOOK_INFO.get(book)
+def build_block(book, title):
+    info = BOOK_INFO.get(book) or TOPIC_INFO.get(title)
     if not info:
         return None
     events_html = " · ".join(escape(e) for e in info["events"])
+    if book in BOOK_INFO:
+        title1, title2 = f"📖 {escape(book)}란?", f"📚 {escape(book)}의 주요 사건·주제"
+    else:
+        title1, title2 = "📖 이 글은 어떤 내용인가요?", "📚 핵심 포인트"
     return f"""<div class="edu-section book-info-section">
-<h3>📖 {escape(book)}란?</h3>
+<h3>{title1}</h3>
 <p>{escape(info["desc"])}</p>
 </div>
 <div class="edu-section">
-<h3>📚 {escape(book)}의 주요 사건·주제</h3>
+<h3>{title2}</h3>
 <p>{events_html}</p>
 </div>
 """
@@ -51,10 +56,10 @@ def main():
         title = m.group(1)
         book = title.split(":")[0].strip() if ":" in title else title.split()[0]
 
-        block = build_block(book)
+        block = build_block(book, title)
         if block is None:
             no_book += 1
-            print(f"  (책 정보 없음: {book}) {os.path.basename(path)}")
+            print(f"  (정보 없음: {title}) {os.path.basename(path)}")
             continue
 
         new_html, n = INTRO_RE.subn(block + '<div class="intro">', html, count=1)
