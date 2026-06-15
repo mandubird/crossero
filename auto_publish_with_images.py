@@ -11,6 +11,7 @@ import random
 from datetime import datetime, timedelta
 from html import escape
 from urllib.parse import quote
+from bible_book_info import BOOK_INFO
 
 # generate_seo_posts와 동일한 파싱·템플릿
 from generate_seo_posts import (
@@ -334,6 +335,21 @@ def generate_post_html_with_image(puzzle, keyword, slug, publish_date, image_slu
     else:
         across_html = "".join(f'<div class="hint-item">{i}. {escape(h)}</div>' for i, h in enumerate(across_list[:20], 1))
         down_html = "".join(f'<div class="hint-item">{i}. {escape(h)}</div>' for i, h in enumerate(down_list[:20], 1))
+    book_info = BOOK_INFO.get(book)
+    if book_info:
+        events_html = " · ".join(escape(e) for e in book_info["events"])
+        book_info_html = f"""<div class="edu-section book-info-section">
+<h3>📖 {escape(book)}란?</h3>
+<p>{escape(book_info["desc"])}</p>
+</div>
+<div class="edu-section">
+<h3>📚 {escape(book)}의 주요 사건·주제</h3>
+<p>{events_html}</p>
+</div>
+"""
+    else:
+        book_info_html = ""
+
     if not across_html:
         across_html = '<div class="hint-item">(가로 힌트는 퍼즐 플레이에서 확인하세요)</div>'
     if not down_html:
@@ -422,7 +438,7 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 <h3>📌 서비스 정의</h3>
 <p>십자가로세로는 교회 주보와 주일학교에서 사용할 수 있는 성경 기반 가로세로 퍼즐 서비스입니다. 성경 인물, 사건, 핵심 구절을 바탕으로 제작되었습니다. 온라인 풀이 및 인쇄 기능을 제공합니다.</p>
 </div>
-<div class="intro">{intro}</div>
+{book_info_html}<div class="intro">{intro}</div>
 <img src="{img_rel}" alt="{escape(img_alt)}" class="puzzle-image" width="420" height="420" loading="lazy">
 <div class="hints-section">
 <h2 class="hints-title">📝 가로 힌트</h2>
