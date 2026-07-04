@@ -453,6 +453,10 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 <h2 class="hints-title">📝 세로 힌트</h2>
 <div class="hints-list">{down_html}</div>
 </div>
+<section class="puzzle-learning">
+<h3>🧩 이 퍼즐에서 배우는 내용</h3>
+<p>이 퍼즐은 {escape(title)}의 핵심 단어와 개념을 자연스럽게 복습할 수 있도록 구성되었습니다. 주일학교 수업이나 개인 성경공부에서 학습 내용을 점검하는 용도로 바로 활용할 수 있습니다.</p>
+</section>
 <div class="answer-section">
 <h3>🧩 {section_heading}</h3>
 <p>{section_desc}</p>
