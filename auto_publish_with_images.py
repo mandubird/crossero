@@ -379,7 +379,7 @@ def generate_post_html_with_image(puzzle, keyword, slug, publish_date, image_slu
 * {{ box-sizing: border-box; }}
 body {{ margin: 0; font-family: -apple-system, "Pretendard", sans-serif; background: #f5f5f5; color: #333; line-height: 1.8; }}
 .nav {{ display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 12px 0; }}
-.nav-item {{ padding: 8px 14px; font-size: 14px; color: #444; text-decoration: none; border-radius: 6px; }}
+.nav-item {{ padding: 8px 14px; font-size: 14px; color: #444; text-decoration: none; border-radius: 6px; white-space: nowrap; }}
 .nav-item:hover {{ background: #f0f6ff; color: #0073e6; }}
 .nav-active {{ background: #0073e6; color: #fff !important; font-weight: 600; }}
 @media (max-width: 768px) {{ .nav {{ padding: 8px 6px; gap: 6px; }} .nav-item {{ padding: 6px 10px; font-size: 12px; }} }}
@@ -584,8 +584,8 @@ def rebuild_index_and_xml(manifest_entries):
 <style>
 * {{ box-sizing: border-box; }}
 body {{ font-family: -apple-system, Pretendard, sans-serif; margin: 0; background: #f5f5f5; color: #333; line-height: 1.6; }}
-.nav {{ display: flex; justify-content: center; gap: 10px; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 12px 0; }}
-.nav-item {{ padding: 8px 14px; font-size: 14px; color: #444; text-decoration: none; border-radius: 6px; }}
+.nav {{ display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; background: #fff; border-bottom: 1px solid #e5e5e5; padding: 12px 0; }}
+.nav-item {{ padding: 8px 14px; font-size: 14px; color: #444; text-decoration: none; border-radius: 6px; white-space: nowrap; }}
 .nav-item:hover {{ background: #f0f6ff; color: #0073e6; }}
 .nav-active {{ background: #0073e6; color: #fff !important; font-weight: 600; }}
 main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
