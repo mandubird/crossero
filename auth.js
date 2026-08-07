@@ -97,7 +97,7 @@ const VALID_CODES_D1 = [
 
 const VALID_CODES_D7 = [
   "CRS-W7-SGJQ",  // [발송] 2026-08-07
-  "CRS-W7-9WRF",
+  "CRS-W7-9WRF",  // [발송] 2026-08-07 강*미
   "CRS-W7-8DCV",
   "CRS-W7-CR93",
   "CRS-W7-928D",
