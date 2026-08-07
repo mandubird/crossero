@@ -119,7 +119,7 @@ const VALID_CODES_D7 = [
 ]; // 7일권
 
 const VALID_CODES_M1 = [
-  "CRS-M1-JZ9B",
+  "CRS-M1-JZ9B",  // [관리자 테스트용] 민규 사용
   "CRS-M1-RUPT",
   "CRS-M1-GYWE",
   "CRS-M1-M3WZ",
