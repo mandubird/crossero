@@ -248,6 +248,8 @@ const SUPPORTERS_DATA = [
   {
     id: '002',
     name: '강선미님',
+    displayName: '강<span style="filter:blur(4px);user-select:none">선</span>미님',
+    star: true,
     isFirst: false,
     date: '2026-08',
     message: ''
@@ -264,12 +266,15 @@ function render() {
 
   // 후원자 벽
   const grid = document.getElementById('supporters-grid');
-  grid.innerHTML = SUPPORTERS_DATA.map(s => `
+  grid.innerHTML = SUPPORTERS_DATA.map(s => {
+    const label = s.isFirst ? '⭐ ' : (s.star ? '⭐ ' : '');
+    const name = s.displayName || s.name;
+    return `
     <div class="supporter-card ${s.isFirst ? 'first-supporter' : ''}">
-      <div class="s-name">${s.isFirst ? '⭐ ' : ''}${s.name}</div>
+      <div class="s-name">${label}${name}</div>
       <div class="s-label">Supporter</div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 
   // 타임라인 (월별 그룹핑)
   const byMonth = {};
