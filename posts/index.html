@@ -32,6 +32,10 @@ main { max-width: 820px; margin: 0 auto; padding: 40px 20px; }
 .board-card:hover .board-title { color: #005bb5; }
 .board-date { font-size: 12px; color: #888; margin-top: 10px; padding-top: 8px; border-top: 1px dashed #e0e0e0; width: 100%; }
 .board-card:hover .board-date { border-top-color: #e8eef5; }
+.board-search-wrap { margin-bottom: 18px; }
+.board-search { width: 100%; box-sizing: border-box; padding: 12px 16px; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; font-family: inherit; }
+.board-search:focus { outline: none; border-color: #0073e6; }
+.board-empty { display: none; text-align: center; color: #888; padding: 30px 0; font-size: 14px; }
 .footer-divider { height: 1px; background: linear-gradient(to right, transparent, #ccc, transparent); margin-bottom: 30px; }
 .footer-branding { font-size: 14px; color: #888; margin-bottom: 10px; text-align: center; }
 .footer-branding strong { color: #444; }
@@ -59,6 +63,10 @@ main { max-width: 820px; margin: 0 auto; padding: 40px 20px; }
 <h1 class="page-title">주일학교 자료 게시판</h1>
 <p class="intro">매일 발행되는 성경 퍼즐 자료입니다. <strong>주일학교 교재 추천</strong>, <strong>주일학교 주보</strong>, <strong>주일학교 교안</strong>, <strong>주일학교 공과교재</strong> 용도로 활용할 수 있습니다. <a href="../sunday-school-materials.html">주일학교 자료 모음</a>도 함께 보세요.</p>
 <div class="board-section">
+<div class="board-search-wrap">
+  <input type="text" id="boardSearch" class="board-search" placeholder="퍼즐 제목으로 검색 (예: 창세기, 이사야, 성령)" autocomplete="off">
+</div>
+<p class="board-empty" id="boardEmpty">검색 결과가 없습니다.</p>
 <ul class="board-list">
 <li><a href="이사야-마스터-100-22.html" class="board-card"><span class="board-title">이사야 마스터 100 (2/2)</span><span class="board-date">2026년 8월 8일</span></a></li>
 <li><a href="이사야-마스터-100-12.html" class="board-card"><span class="board-title">이사야 마스터 100 (1/2)</span><span class="board-date">2026년 8월 7일</span></a></li>
@@ -251,5 +259,24 @@ main { max-width: 820px; margin: 0 auto; padding: 40px 20px; }
   <div class="footer-copyright">&copy; 2026 십자가로세로. All rights reserved.</div>
 </footer>
 <script src="../coupang-partner.js"></script>
+<script>
+(function(){
+  var input = document.getElementById('boardSearch');
+  var empty = document.getElementById('boardEmpty');
+  var items = document.querySelectorAll('.board-list > li');
+  if (!input) return;
+  input.addEventListener('input', function(){
+    var q = input.value.trim().toLowerCase();
+    var visible = 0;
+    items.forEach(function(li){
+      var title = li.querySelector('.board-title').textContent.toLowerCase();
+      var match = !q || title.indexOf(q) !== -1;
+      li.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+    empty.style.display = visible === 0 ? 'block' : 'none';
+  });
+})();
+</script>
 </body>
 </html>
