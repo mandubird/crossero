@@ -114,9 +114,9 @@ def draw_centered_text(draw, text, y, font, fill="white", max_width=W - 120, lin
     return y
 
 
-def draw_badge(draw, text, cy, fill=GOLD, text_color="#111"):
+def draw_badge(draw, text, cy, fill=GOLD, text_color="#111", font_size=44):
     """이모지 대신 알약 모양 배지로 라벨을 표시 (폰트에 이모지 글리프 없어 깨지는 문제 방지)."""
-    font = get_font(44)
+    font = get_font(font_size)
     bbox = draw.textbbox((0, 0), text, font=font)
     tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
     pad_x, pad_y = 36, 18
@@ -156,21 +156,21 @@ def frame_intro(clue):
     img = new_canvas()
     draw = ImageDraw.Draw(img)
 
-    draw_badge(draw, "성경 퀴즈", 200)
+    draw_badge(draw, "성경 퀴즈", 220, font_size=64)
 
-    y = 340
-    y = draw_centered_text(draw, "가로 힌트", y, get_font(40), fill="#94a3b8")
-    y += 40
-    draw_centered_text(draw, clue, y, get_font(58), fill="white")
+    y = 400
+    y = draw_centered_text(draw, "가로 힌트", y, get_font(46), fill="#94a3b8", max_width=W - 80)
+    y += 44
+    draw_centered_text(draw, clue, y, get_font(78), fill="white", max_width=W - 80)
 
-    # 십자가로세로 캐릭터 (첫 화면 하단 - 브랜드 각인용)
+    # 십자가로세로 캐릭터 (하단 쪽에 배치하되, 쇼츠 UI에 잘리지 않도록 여백 확보)
     if os.path.exists(CHARACTER_PATH):
         char = Image.open(CHARACTER_PATH).convert("RGBA")
-        target_h = 400
+        target_h = 380
         ratio = target_h / char.height
         char = char.resize((int(char.width * ratio), target_h))
         cx = (W - char.width) // 2
-        cy = H - char.height - 140
+        cy = 1080
         img.paste(char, (cx, cy), char)
 
     return apply_brand_watermark(img)
@@ -236,6 +236,7 @@ def frame_puzzle_reveal(puzzle_img_path, title, recap_clue=None, recap_answer=No
 
     draw.text((W / 2, py + puzzle.height + 80), "직접 풀어보세요", font=get_font(48), fill=BLUE, anchor="ma")
     draw.text((W / 2, py + puzzle.height + 150), BRAND_URL, font=get_font(38), fill="#64748b", anchor="ma")
+    draw.text((W / 2, py + puzzle.height + 210), '검색창에 "십자가로세로"', font=get_font(34), fill="#94a3b8", anchor="ma")
 
     return apply_brand_watermark(img)
 
