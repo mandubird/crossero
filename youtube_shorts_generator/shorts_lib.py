@@ -64,8 +64,13 @@ def load_quiz(quiz_id):
     if not word_pairs:
         raise ValueError(f"'{quiz_id}'에서 allWords(clue/answer)를 찾지 못했습니다.")
 
-    clue, answer = word_pairs[0]
-    return {"id": quiz_id, "title": title, "category": category, "clue": clue, "answer": answer}
+    pairs = word_pairs[:3]  # 영상 한 편에 최대 3문제
+    clue, answer = pairs[0]
+    return {
+        "id": quiz_id, "title": title, "category": category,
+        "clue": clue, "answer": answer,  # 하위 호환(유튜브 메타 등에서 사용)
+        "pairs": pairs,
+    }
 
 
 def blank_clue(clue, answer):
@@ -152,9 +157,12 @@ def apply_brand_watermark(img):
     return out.convert("RGB")
 
 
-def frame_intro(clue):
+def frame_intro(clue, question_num=None, total=None):
     img = new_canvas()
     draw = ImageDraw.Draw(img)
+
+    if question_num and total and total > 1:
+        draw_centered_text(draw, f"질문 {question_num} / {total}", 130, get_font(36), fill="#64748b")
 
     draw_badge(draw, "성경 퀴즈", 220, font_size=64)
 
@@ -216,15 +224,33 @@ def frame_answer(answer):
     return apply_brand_watermark(img)
 
 
-def frame_puzzle_reveal(puzzle_img_path, title, recap_clue=None, recap_answer=None):
+def frame_transition(text):
+    """다음 장면(퍼즐 이미지) 전 짧게 보여주는 전환 텍스트 화면."""
+    img = new_canvas()
+    draw = ImageDraw.Draw(img)
+
+    cy = H / 2 - 60
+    lines = text.split("\n")
+    total_h = len(lines) * 90
+    y = cy - total_h / 2
+    for line in lines:
+        y = draw_centered_text(draw, line, y, get_font(64), fill="white", max_width=W - 140)
+
+    return apply_brand_watermark(img)
+
+
+def frame_puzzle_reveal(puzzle_img_path, title, recap_pairs=None):
     img = new_canvas(bg=(255, 255, 255))
     draw = ImageDraw.Draw(img)
 
-    y = draw_centered_text(draw, title, 100, get_font(44), fill="#1e293b", max_width=W - 160)
+    y = draw_centered_text(draw, title, 90, get_font(44), fill="#1e293b", max_width=W - 160)
 
-    if recap_clue and recap_answer:
-        recap = f"Q. {recap_clue}   →   A. {recap_answer}"
-        y = draw_centered_text(draw, recap, y + 6, get_font(34), fill=BLUE, max_width=W - 160, line_gap=8)
+    if recap_pairs:
+        y += 10
+        for clue, answer in recap_pairs:
+            recap = f"Q. {clue}   →   A. {answer}"
+            y = draw_centered_text(draw, recap, y, get_font(30), fill=BLUE, max_width=W - 160, line_gap=6)
+            y += 6
 
     puzzle = Image.open(puzzle_img_path).convert("RGBA")
     target_w = W - 160
@@ -242,23 +268,34 @@ def frame_puzzle_reveal(puzzle_img_path, title, recap_clue=None, recap_answer=No
 
 
 def build_frame_sequence(quiz):
-    """(PIL.Image, 노출초) 리스트 생성. 카운트다운은 애니메이션이라 서브프레임 여러 장."""
-    blanked = blank_clue(quiz["clue"], quiz["answer"])
+    """(PIL.Image, 노출초) 리스트 생성. 문제 최대 3개를 순서대로 반복 후 퍼즐 이미지로 마무리."""
     puzzle_img_path = find_puzzle_image(quiz["title"])
     if not puzzle_img_path:
         raise FileNotFoundError(f"퍼즐 이미지를 찾지 못했습니다: {quiz['title']}")
 
-    sequence = [(frame_intro(blanked), 3.0)]
+    pairs = quiz.get("pairs") or [(quiz["clue"], quiz["answer"])]
+    total = len(pairs)
 
+    sequence = []
+    recap_pairs = []
     SUBFRAMES = 10
-    for n in (3, 2, 1):
-        for i in range(SUBFRAMES):
-            progress = i / SUBFRAMES
-            sequence.append((frame_countdown(n, progress), 1.0 / SUBFRAMES))
 
-    sequence.append((frame_answer(quiz["answer"]), 2.0))
+    for idx, (clue, answer) in enumerate(pairs, start=1):
+        blanked = blank_clue(clue, answer)
+        recap_pairs.append((blanked, answer))
+
+        sequence.append((frame_intro(blanked, question_num=idx, total=total), 3.0))
+
+        for n in (3, 2, 1):
+            for i in range(SUBFRAMES):
+                progress = i / SUBFRAMES
+                sequence.append((frame_countdown(n, progress), 1.0 / SUBFRAMES))
+
+        sequence.append((frame_answer(answer), 2.0))
+
+    sequence.append((frame_transition("더 많은 퍼즐이\n보고 싶다면"), 2.0))
     sequence.append((
-        frame_puzzle_reveal(puzzle_img_path, quiz["title"], recap_clue=blanked, recap_answer=quiz["answer"]),
+        frame_puzzle_reveal(puzzle_img_path, quiz["title"], recap_pairs=recap_pairs),
         5.0,
     ))
     return sequence
@@ -306,11 +343,15 @@ def book_hashtag(category):
 
 def make_youtube_meta(quiz):
     book = book_hashtag(quiz["category"])
-    title = f"『{quiz['title']}』 성경 퀴즈 | 정답 공개 #Shorts"
+    pairs = quiz.get("pairs") or [(quiz["clue"], quiz["answer"])]
+    q_count = len(pairs)
+
+    title = f"『{quiz['title']}』 성경 퀴즈 {q_count}문제 | 정답 공개 #Shorts"
+
+    qa_lines = "\n".join(f"Q{idx}. {clue} → {answer}" for idx, (clue, answer) in enumerate(pairs, start=1))
     description = (
-        f"오늘의 성경 퀴즈!\n"
-        f"'{quiz['clue']}'\n\n"
-        f"정답: {quiz['answer']}\n\n"
+        f"오늘의 성경 퀴즈! 모두 맞혀보세요.\n\n"
+        f"{qa_lines}\n\n"
         f"📖 {quiz['title']} 전체 퍼즐은 십자가로세로에서 무료로 풀어보세요.\n"
         f"👉 https://crossero.com\n\n"
         f"#성경퀴즈 #주일학교 #교회학교 #성경가로세로 #십자가로세로"
