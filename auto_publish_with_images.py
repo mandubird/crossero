@@ -365,11 +365,11 @@ def generate_post_html_with_image(puzzle, keyword, slug, publish_date, image_slu
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{escape(title)}</title>
+<title>{escape(title)} | 십자가로세로</title>
 <meta name="description" content="{escape(book)}를 주제로 한 {escape(keyword)}입니다. {hint_count}개의 힌트로 구성된 무료 가로세로 낱말 퍼즐. 주일학교 교재 추천, 주일학교 주보, 주일학교 교안, 주일학교 공과교재로 활용할 수 있습니다.">
 <meta name="keywords" content="{escape(keyword)}, {escape(book)}, 십자가로세로, 성경퀴즈, 말씀퀴즈, 가로세로퍼즐, 주일학교 교재 추천, 주일학교 주보, 주일학교 교안, 주일학교 공과교재">
-<meta property="og:title" content="{escape(title)}">
-<meta property="og:description" content="{escape(book)} {escape(keyword)} - 무료 퀴즈">
+<meta property="og:title" content="{escape(title)} | 십자가로세로">
+<meta property="og:description" content="{escape(book)} {escape(keyword)} — {hint_count}개 힌트 무료 성경 가로세로 퍼즐. 주일학교 교재·교안·주보에 바로 활용할 수 있습니다.">
 <meta property="og:image" content="{og_img}">
 <meta property="og:type" content="article">
 <meta property="og:url" content="{DOMAIN}/posts/{slug}.html">
