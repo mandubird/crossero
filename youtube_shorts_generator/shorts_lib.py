@@ -157,12 +157,9 @@ def apply_brand_watermark(img):
     return out.convert("RGB")
 
 
-def frame_intro(clue, question_num=None, total=None):
+def frame_intro(clue):
     img = new_canvas()
     draw = ImageDraw.Draw(img)
-
-    if question_num and total and total > 1:
-        draw_centered_text(draw, f"질문 {question_num} / {total}", 130, get_font(36), fill="#64748b")
 
     draw_badge(draw, "성경 퀴즈", 220, font_size=64)
 
@@ -260,19 +257,25 @@ def frame_puzzle_reveal(puzzle_img_path, title, recap_pairs=None):
     py = y + 36
     img.paste(puzzle, (px, py), puzzle)
 
-    # CTA를 퍼즐 이미지 하단에 반투명 배너로 크게 겹쳐서 표시
-    # (이미지 밖 작은 텍스트는 잘 안 보인다는 피드백 반영)
+    # CTA를 퍼즐 이미지 위에 떠 있는 반투명 카드로 표시
+    # (퍼즐 폭에 딱 맞춘 띠 모양 대신, 좌우 여백을 둔 카드로 + 하단에 딱 붙지 않게 위로 배치)
     img = img.convert("RGBA")
     overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
     odraw = ImageDraw.Draw(overlay)
 
-    banner_h = 260
-    banner_top = py + puzzle.height - banner_h
-    odraw.rectangle([px, banner_top, px + puzzle.width, py + puzzle.height], fill=(0, 40, 100, 220))
+    banner_h = 250
+    inset = 70  # 퍼즐 좌우보다 안쪽으로 들여서 "카드"처럼 보이게
+    bottom_margin = 130  # 퍼즐 맨 아래에 딱 붙지 않도록 여백 확보(위로 띄움)
+    banner_left = px + inset
+    banner_right = px + puzzle.width - inset
+    banner_bottom = py + puzzle.height - bottom_margin
+    banner_top = banner_bottom - banner_h
 
-    odraw.text((W / 2, banner_top + 62), "직접 풀어보세요", font=get_font(66), fill=(255, 255, 255, 255), anchor="mm")
-    odraw.text((W / 2, banner_top + 148), BRAND_URL, font=get_font(50), fill=(255, 255, 255, 255), anchor="mm")
-    odraw.text((W / 2, banner_top + 214), '검색창에 "십자가로세로"', font=get_font(36), fill=(210, 225, 255, 255), anchor="mm")
+    odraw.rounded_rectangle([banner_left, banner_top, banner_right, banner_bottom], radius=28, fill=(0, 40, 100, 225))
+
+    odraw.text((W / 2, banner_top + 60), "직접 풀어보세요", font=get_font(62), fill=(255, 255, 255, 255), anchor="mm")
+    odraw.text((W / 2, banner_top + 140), BRAND_URL, font=get_font(48), fill=(255, 255, 255, 255), anchor="mm")
+    odraw.text((W / 2, banner_top + 204), '검색창에 "십자가로세로"', font=get_font(34), fill=(210, 225, 255, 255), anchor="mm")
 
     img = Image.alpha_composite(img, overlay).convert("RGB")
 
@@ -296,7 +299,7 @@ def build_frame_sequence(quiz):
         blanked = blank_clue(clue, answer)
         recap_pairs.append((blanked, answer))
 
-        sequence.append((frame_intro(blanked, question_num=idx, total=total), 3.0))
+        sequence.append((frame_intro(blanked), 3.0))
 
         for n in (3, 2, 1):
             for i in range(SUBFRAMES):
