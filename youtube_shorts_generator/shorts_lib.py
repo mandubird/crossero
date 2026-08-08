@@ -260,9 +260,21 @@ def frame_puzzle_reveal(puzzle_img_path, title, recap_pairs=None):
     py = y + 36
     img.paste(puzzle, (px, py), puzzle)
 
-    draw.text((W / 2, py + puzzle.height + 80), "직접 풀어보세요", font=get_font(48), fill=BLUE, anchor="ma")
-    draw.text((W / 2, py + puzzle.height + 150), BRAND_URL, font=get_font(38), fill="#64748b", anchor="ma")
-    draw.text((W / 2, py + puzzle.height + 210), '검색창에 "십자가로세로"', font=get_font(34), fill="#94a3b8", anchor="ma")
+    # CTA를 퍼즐 이미지 하단에 반투명 배너로 크게 겹쳐서 표시
+    # (이미지 밖 작은 텍스트는 잘 안 보인다는 피드백 반영)
+    img = img.convert("RGBA")
+    overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    odraw = ImageDraw.Draw(overlay)
+
+    banner_h = 260
+    banner_top = py + puzzle.height - banner_h
+    odraw.rectangle([px, banner_top, px + puzzle.width, py + puzzle.height], fill=(0, 40, 100, 220))
+
+    odraw.text((W / 2, banner_top + 62), "직접 풀어보세요", font=get_font(66), fill=(255, 255, 255, 255), anchor="mm")
+    odraw.text((W / 2, banner_top + 148), BRAND_URL, font=get_font(50), fill=(255, 255, 255, 255), anchor="mm")
+    odraw.text((W / 2, banner_top + 214), '검색창에 "십자가로세로"', font=get_font(36), fill=(210, 225, 255, 255), anchor="mm")
+
+    img = Image.alpha_composite(img, overlay).convert("RGB")
 
     return apply_brand_watermark(img)
 
