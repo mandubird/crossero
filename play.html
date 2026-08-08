@@ -706,6 +706,9 @@ footer {
     <h2 id="puzzle-summary-title"></h2>
     <p class="ai-friendly-summary" id="puzzle-summary-text"></p>
   </section>
+  <div id="factCorrectionNotice" style="display:none; max-width: 800px; margin: 0 auto 20px; padding: 12px 16px; background: #fffbea; border: 1px solid #ffe08a; border-radius: 8px; font-size: 13px; color: #856404; text-align: center;">
+    ℹ️ 이 퍼즐의 인물·역사 정보에 오류가 있다면 알려주세요 → <a href="mailto:eunhaebleu@naver.com" style="color:#0073e6; font-weight:600; text-decoration:none;">eunhaebleu@naver.com</a>
+  </div>
   <div class="service-definition" id="serviceDefinition">
     <p><strong>십자가로세로</strong>는 성경 기반 가로세로 퍼즐 온라인 서비스입니다.</p>
     <p>교회 주보와 주일학교에서 사용할 수 있는 무료 교육 자료를 제공합니다.</p>
@@ -869,6 +872,11 @@ function loadAndTranslateData() {
     if (category) {
       currentWordsPool = getCombinedWordsByCategory(category);
       console.log(`✅ 카테고리 "${category}" 통합 로드: ${currentWordsPool.length}개`);
+
+      if (['기독교인물', '종교개혁', '선교사', '한국기독교', '부흥운동', '신학자'].includes(category)) {
+        var factNoticeC = document.getElementById('factCorrectionNotice');
+        if (factNoticeC) factNoticeC.style.display = 'block';
+      }
     }
     // ⭐ 2순위: 개별 퀴즈 로드
     else if (quizId && QUIZ_DATABASE[quizId]) {
@@ -2286,9 +2294,15 @@ window.addEventListener('load', () => {
     // AEO: 구조화 데이터 (Dataset, Quiz) + 퍼즐 하단 요약
     injectAeoStructuredData(quizData, quizId);
     updatePuzzleSummary(quizId, quizData.title);
-    
+
+    // 기독교 인물 퍼즐: 사실 오류 제보 안내 노출
+    if (quizData.category && quizData.category.includes('기독교인물')) {
+      var factNotice = document.getElementById('factCorrectionNotice');
+      if (factNotice) factNotice.style.display = 'block';
+    }
+
     console.log('✅ SEO 설정 완료:', quizData.title);
-  } 
+  }
   // ⭐ 2순위: query 파라미터가 있으면 (검색어 기반)
   else if (query) {
     const finalTitle = `성경 ${query} 관련 말씀 퍼즐`;
