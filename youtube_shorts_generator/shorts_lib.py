@@ -156,25 +156,22 @@ def frame_intro(clue):
     img = new_canvas()
     draw = ImageDraw.Draw(img)
 
-    # 십자가로세로 캐릭터 (첫 화면에만 노출 - 브랜드 각인용)
-    if os.path.exists(CHARACTER_PATH):
-        char = Image.open(CHARACTER_PATH).convert("RGBA")
-        target_h = 340
-        ratio = target_h / char.height
-        char = char.resize((int(char.width * ratio), target_h))
-        cx = (W - char.width) // 2
-        cy = 140
-        img.paste(char, (cx, cy), char)
-        badge_y = cy + char.height + 90
-    else:
-        badge_y = 420
+    draw_badge(draw, "성경 퀴즈", 200)
 
-    draw_badge(draw, "성경 퀴즈", badge_y)
-
-    y = badge_y + 140
+    y = 340
     y = draw_centered_text(draw, "가로 힌트", y, get_font(40), fill="#94a3b8")
     y += 40
     draw_centered_text(draw, clue, y, get_font(58), fill="white")
+
+    # 십자가로세로 캐릭터 (첫 화면 하단 - 브랜드 각인용)
+    if os.path.exists(CHARACTER_PATH):
+        char = Image.open(CHARACTER_PATH).convert("RGBA")
+        target_h = 400
+        ratio = target_h / char.height
+        char = char.resize((int(char.width * ratio), target_h))
+        cx = (W - char.width) // 2
+        cy = H - char.height - 140
+        img.paste(char, (cx, cy), char)
 
     return apply_brand_watermark(img)
 
@@ -219,19 +216,23 @@ def frame_answer(answer):
     return apply_brand_watermark(img)
 
 
-def frame_puzzle_reveal(puzzle_img_path, title):
+def frame_puzzle_reveal(puzzle_img_path, title, recap_clue=None, recap_answer=None):
     img = new_canvas(bg=(255, 255, 255))
     draw = ImageDraw.Draw(img)
+
+    y = draw_centered_text(draw, title, 100, get_font(44), fill="#1e293b", max_width=W - 160)
+
+    if recap_clue and recap_answer:
+        recap = f"Q. {recap_clue}   →   A. {recap_answer}"
+        y = draw_centered_text(draw, recap, y + 6, get_font(34), fill=BLUE, max_width=W - 160, line_gap=8)
 
     puzzle = Image.open(puzzle_img_path).convert("RGBA")
     target_w = W - 160
     ratio = target_w / puzzle.width
     puzzle = puzzle.resize((target_w, int(puzzle.height * ratio)))
     px = (W - puzzle.width) // 2
-    py = 260
+    py = y + 36
     img.paste(puzzle, (px, py), puzzle)
-
-    draw_centered_text(draw, title, 120, get_font(44), fill="#1e293b", max_width=W - 160)
 
     draw.text((W / 2, py + puzzle.height + 80), "직접 풀어보세요", font=get_font(48), fill=BLUE, anchor="ma")
     draw.text((W / 2, py + puzzle.height + 150), BRAND_URL, font=get_font(38), fill="#64748b", anchor="ma")
@@ -255,7 +256,10 @@ def build_frame_sequence(quiz):
             sequence.append((frame_countdown(n, progress), 1.0 / SUBFRAMES))
 
     sequence.append((frame_answer(quiz["answer"]), 2.0))
-    sequence.append((frame_puzzle_reveal(puzzle_img_path, quiz["title"]), 4.0))
+    sequence.append((
+        frame_puzzle_reveal(puzzle_img_path, quiz["title"], recap_clue=blanked, recap_answer=quiz["answer"]),
+        5.0,
+    ))
     return sequence
 
 
