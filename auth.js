@@ -22,10 +22,10 @@ function checkAuthStatus() {
     }
 }
 
-// 2. 우측 상단 후원자 배지 UI 업데이트
+// 2. 우측 하단 후원자 배지 UI 업데이트
 function updatePremiumUI() {
     const user = checkAuthStatus();
-    
+
     // 기존 배지가 있다면 일단 제거 (중복 방지)
     const existingBadge = document.getElementById('premium-badge');
     if (existingBadge) existingBadge.remove();
@@ -36,11 +36,11 @@ function updatePremiumUI() {
         // 마스터 관리자인 경우와 일반 후원자 구분 표시 가능
         const printLabel = user.printCount === -1 ? "무제한" : `${user.printCount}회`;
         badge.innerHTML = `🙏 ${user.typeName} (인쇄: ${printLabel})`;
-        
-        // 스타일 적용
+
+        // 스타일 적용 (우측 하단 고정 — nav 메뉴 클릭을 가리지 않도록 상단 배치 지양)
         Object.assign(badge.style, {
             position: 'fixed',
-            top: '15px',
+            bottom: '15px',
             right: '15px',
             background: '#ffd700',
             color: '#000',
@@ -48,11 +48,12 @@ function updatePremiumUI() {
             borderRadius: '20px',
             fontSize: '12px',
             fontWeight: 'bold',
-            zIndex: '10000',
+            zIndex: '9000',
             boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-            border: '1px solid #e6be00'
+            border: '1px solid #e6be00',
+            pointerEvents: 'none'
         });
-        
+
         document.body.appendChild(badge);
     }
 }

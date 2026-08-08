@@ -1,0 +1,32 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "tour-puzzle",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-c",
+        "cd \"/Users/gimmingyu/Desktop/2025/88. 공모전/01. 관광데이터활용공모전/tourduck\" && node scripts/dev-server.js"
+      ],
+      "port": 3300
+    },
+    {
+      "name": "terraceface-next",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-c",
+        "cd \"/Users/gimmingyu/Desktop/2025/10. 테라스페이스/terraceface-next\" && npm run dev -- -p 3400"
+      ],
+      "port": 3400
+    },
+    {
+      "name": "crossero-www",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": [
+        "-c",
+        "cd \"/Users/gimmingyu/Desktop/2025/15. 십자가로세로/crossero/www\" && python3 -m http.server 8899"
+      ],
+      "port": 8899
+    }
+  ]
+}
