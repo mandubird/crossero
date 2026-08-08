@@ -16,6 +16,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_JS = os.path.join(BASE_DIR, "data.js")
 PUZZLES_IMG_DIR = os.path.join(BASE_DIR, "images", "puzzles")
 LOGO_PATH = os.path.join(BASE_DIR, "images", "crossero-logo.png")
+CHARACTER_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "character.png")
 
 W, H = 1080, 1920
 FONT_PATH = "/System/Library/Fonts/AppleSDGothicNeo.ttc"
@@ -127,7 +128,9 @@ def draw_badge(draw, text, cy, fill=GOLD, text_color="#111"):
 
 
 def apply_brand_watermark(img):
-    """오른쪽 하단에 항상 채널명이 보이도록 워터마크 삽입 (내용 가리지 않게 여백 확보)."""
+    """오른쪽 상단에 항상 채널명이 보이도록 워터마크 삽입.
+    쇼츠 UI(좋아요/댓글/공유 버튼, 자막)가 하단~우측 하단을 가리는 경우가 많아
+    항상 비어있는 상단 여백에 배치."""
     img = img.convert("RGBA")
     overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
@@ -138,9 +141,9 @@ def apply_brand_watermark(img):
     tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
     pad_x, pad_y = 22, 14
     box_w, box_h = tw + pad_x * 2, th + pad_y * 2
-    margin = 36
-    x0 = W - box_w - margin
-    y0 = H - box_h - margin
+    margin_top, margin_right = 56, 36
+    x0 = W - box_w - margin_right
+    y0 = margin_top
 
     draw.rounded_rectangle([x0, y0, x0 + box_w, y0 + box_h], radius=box_h / 2, fill=(0, 0, 0, 140))
     draw.text((x0 + pad_x, y0 + pad_y - 4), text, font=font, fill=(255, 255, 255, 235))
@@ -153,9 +156,22 @@ def frame_intro(clue):
     img = new_canvas()
     draw = ImageDraw.Draw(img)
 
-    draw_badge(draw, "성경 퀴즈", 420)
+    # 십자가로세로 캐릭터 (첫 화면에만 노출 - 브랜드 각인용)
+    if os.path.exists(CHARACTER_PATH):
+        char = Image.open(CHARACTER_PATH).convert("RGBA")
+        target_h = 340
+        ratio = target_h / char.height
+        char = char.resize((int(char.width * ratio), target_h))
+        cx = (W - char.width) // 2
+        cy = 140
+        img.paste(char, (cx, cy), char)
+        badge_y = cy + char.height + 90
+    else:
+        badge_y = 420
 
-    y = 560
+    draw_badge(draw, "성경 퀴즈", badge_y)
+
+    y = badge_y + 140
     y = draw_centered_text(draw, "가로 힌트", y, get_font(40), fill="#94a3b8")
     y += 40
     draw_centered_text(draw, clue, y, get_font(58), fill="white")
