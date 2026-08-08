@@ -70,6 +70,62 @@ const CHRISTIAN_FIGURES_DATABASE = {
       { clue: "유관순이 만세운동을 이끈 지역은?", answer: "아우내" },
       { clue: "유관순이 다닌 기독교 계열 학교는?", answer: "이화학당" }
     ]
+  },
+
+  "cpl_004": {
+    title: "기독교 인물: 부흥운동가",
+    category: "기독교인물, 부흥운동, 교회사, 중고등부용, 전체",
+    meta: "보통 · 부흥운동",
+    config: { 1: { label: "가볍게", density: 0.15, qCount: 5, time: "5분" }, 2: { label: "보통", density: 0.35, qCount: 12, time: "10분" }, 3: { label: "어렵게", density: 0.60, qCount: 25, time: "25분" } },
+    allWords: [
+      { clue: "18세기 대각성운동의 유명한 설교자는?", answer: "휫필드" },
+      { clue: "휫필드가 유명했던 사역은?", answer: "설교" },
+      { clue: "휫필드가 자주 활용한 야외 설교 방식은?", answer: "야외설교" },
+      { clue: "미국 제1차 대각성운동을 대표하는 설교자는?", answer: "에드워즈" },
+      { clue: "에드워즈가 활동한 나라는?", answer: "미국" },
+      { clue: "에드워즈와 관련된 대표적인 종교 운동은?", answer: "대각성운동" },
+      { clue: "19세기 미국의 유명한 복음전도자는?", answer: "무디" },
+      { clue: "무디가 설립한 교육기관으로 유명한 곳은?", answer: "무디성경학교" },
+      { clue: "20세기 세계적인 복음전도자로 활동한 미국의 목회자는?", answer: "그레이엄" },
+      { clue: "빌리 그레이엄이 활용한 대중 매체 가운데 하나는?", answer: "라디오" }
+    ]
+  },
+
+  "cpl_005": {
+    title: "기독교 인물: 신학자와 작가",
+    category: "기독교인물, 신학자, 교회사, 중고등부용, 전체",
+    meta: "보통 · 신학자",
+    config: { 1: { label: "가볍게", density: 0.15, qCount: 5, time: "5분" }, 2: { label: "보통", density: 0.35, qCount: 12, time: "10분" }, 3: { label: "어렵게", density: 0.60, qCount: 25, time: "25분" } },
+    allWords: [
+      { clue: "《고백록》을 쓴 대표적인 고대 기독교 사상가는?", answer: "아우구스티누스" },
+      { clue: "아우구스티누스의 대표 저서는?", answer: "고백록" },
+      { clue: "아우구스티누스가 주교로 활동한 북아프리카 도시는?", answer: "히포" },
+      { clue: "20세기 영국 복음주의 지도자로 알려진 신학자는?", answer: "스토트" },
+      { clue: "존 스토트가 오랜 기간 사역한 영국의 도시는?", answer: "런던" },
+      { clue: "《나니아 연대기》를 쓴 기독교 작가는?", answer: "루이스" },
+      { clue: "C. S. 루이스의 대표적인 판타지 작품은?", answer: "나니아연대기" },
+      { clue: "나치 정권에 저항한 독일의 신학자는?", answer: "본회퍼" },
+      { clue: "본회퍼가 신학적 신념으로 저항한 정권은?", answer: "나치" }
+    ]
+  },
+
+  "cpl_006": {
+    title: "기독교 인물: 한국 기독교 역사 2",
+    category: "기독교인물, 한국기독교, 교회사, 중고등부용, 전체",
+    meta: "보통 · 한국교회사",
+    config: { 1: { label: "가볍게", density: 0.15, qCount: 5, time: "5분" }, 2: { label: "보통", density: 0.35, qCount: 12, time: "10분" }, 3: { label: "어렵게", density: 0.60, qCount: 25, time: "25분" } },
+    allWords: [
+      { clue: "평양대부흥운동의 중심 인물로 알려진 한국 목회자는?", answer: "길선주" },
+      { clue: "길선주와 관련된 대표적인 부흥운동은?", answer: "평양대부흥" },
+      { clue: "영락교회를 설립한 한국의 목회자는?", answer: "한경직" },
+      { clue: "한경직 목사가 세운 대표적인 교회는?", answer: "영락교회" },
+      { clue: "오산학교를 세우고 3·1운동에 참여한 민족운동가는?", answer: "이승훈" },
+      { clue: "이승훈이 세운 학교는?", answer: "오산학교" },
+      { clue: "한국에서 간호와 선교 활동을 펼친 선교사는?", answer: "서서평" },
+      { clue: "서서평의 주요 전문 분야는?", answer: "간호" },
+      { clue: "《성서조선》을 중심으로 활동한 한국의 기독교 사상가는?", answer: "김교신" },
+      { clue: "김교신과 관련된 잡지는?", answer: "성서조선" }
+    ]
   }
 };
 
