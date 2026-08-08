@@ -11,3 +11,8 @@ __pycache__/
 # OS
 .DS_Store
 Thumbs.db
+
+# 유튜브 쇼츠 생성 산출물 (영상/프레임, 로컬에서만 관리)
+youtube_shorts_generator/output/
+youtube_shorts_generator/_frames/
+youtube_shorts_generator/_check/
