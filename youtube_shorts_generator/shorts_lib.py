@@ -157,13 +157,16 @@ def apply_brand_watermark(img):
     return out.convert("RGB")
 
 
-def frame_intro(clue):
+def frame_intro(clue, topic=None):
     img = new_canvas()
     draw = ImageDraw.Draw(img)
 
-    draw_badge(draw, "성경 퀴즈", 220, font_size=64)
+    draw_badge(draw, "성경 퀴즈", 240, font_size=76)
 
-    y = 400
+    y = 440
+    if topic:
+        y = draw_centered_text(draw, topic, y, get_font(50), fill=GOLD, max_width=W - 80)
+        y += 26
     y = draw_centered_text(draw, "가로 힌트", y, get_font(46), fill="#94a3b8", max_width=W - 80)
     y += 44
     draw_centered_text(draw, clue, y, get_font(78), fill="white", max_width=W - 80)
@@ -263,7 +266,7 @@ def frame_puzzle_reveal(puzzle_img_path, title, recap_pairs=None):
     overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
     odraw = ImageDraw.Draw(overlay)
 
-    banner_h = 250
+    banner_h = 260
     inset = 70  # 퍼즐 좌우보다 안쪽으로 들여서 "카드"처럼 보이게
     bottom_margin = 130  # 퍼즐 맨 아래에 딱 붙지 않도록 여백 확보(위로 띄움)
     banner_left = px + inset
@@ -274,8 +277,8 @@ def frame_puzzle_reveal(puzzle_img_path, title, recap_pairs=None):
     odraw.rounded_rectangle([banner_left, banner_top, banner_right, banner_bottom], radius=28, fill=(0, 40, 100, 225))
 
     odraw.text((W / 2, banner_top + 60), "직접 풀어보세요", font=get_font(62), fill=(255, 255, 255, 255), anchor="mm")
-    odraw.text((W / 2, banner_top + 140), BRAND_URL, font=get_font(48), fill=(255, 255, 255, 255), anchor="mm")
-    odraw.text((W / 2, banner_top + 204), '검색창에 "십자가로세로"', font=get_font(34), fill=(210, 225, 255, 255), anchor="mm")
+    odraw.text((W / 2, banner_top + 144), BRAND_URL, font=get_font(56), fill=(255, 255, 255, 255), anchor="mm")
+    odraw.text((W / 2, banner_top + 214), '검색창에 "십자가로세로"', font=get_font(34), fill=(210, 225, 255, 255), anchor="mm")
 
     img = Image.alpha_composite(img, overlay).convert("RGB")
 
@@ -290,6 +293,7 @@ def build_frame_sequence(quiz):
 
     pairs = quiz.get("pairs") or [(quiz["clue"], quiz["answer"])]
     total = len(pairs)
+    topic = book_hashtag(quiz.get("category", ""))
 
     sequence = []
     recap_pairs = []
@@ -299,7 +303,7 @@ def build_frame_sequence(quiz):
         blanked = blank_clue(clue, answer)
         recap_pairs.append((blanked, answer))
 
-        sequence.append((frame_intro(blanked), 3.0))
+        sequence.append((frame_intro(blanked, topic=topic), 3.0))
 
         for n in (3, 2, 1):
             for i in range(SUBFRAMES):
@@ -347,9 +351,17 @@ def render_video(quiz_id, out_path, frames_dir):
 
 
 def book_hashtag(category):
-    """category(예: '신약성경, 서신서, 갈라디아서, 중고등부용, 전체')에서 대표 책 이름 추출."""
+    """category(예: '신약성경, 서신서, 갈라디아서, 중고등부용, 전체')에서 대표 책 이름 추출.
+    구약성경/신약성경 대분류와 모세오경/역사서/시가서/대선지서/소선지서/복음서/서신서 같은
+    중분류, 대상·속성 태그를 모두 건너뛰고 실제 책 이름만 남긴다.
+    (책 이름과 중분류의 등장 순서가 항목마다 달라 순서만으로는 구분 불가)"""
     parts = [p.strip() for p in category.split(",")]
-    skip = {"전체", "주일학교용", "중고등부용", "유아부용", "구약성경", "신약성경"}
+    skip = {
+        "전체", "주일학교용", "중고등부용", "유아부용", "새신자용", "리더용",
+        "구약성경", "신약성경",
+        "모세오경", "역사서", "시가서", "대선지서", "소선지서", "예언서", "복음서", "서신서",
+        "주제별", "인물중심", "지명중심",
+    }
     for p in parts:
         if p and p not in skip:
             return p
@@ -361,7 +373,8 @@ def make_youtube_meta(quiz):
     pairs = quiz.get("pairs") or [(quiz["clue"], quiz["answer"])]
     q_count = len(pairs)
 
-    title = f"『{quiz['title']}』 성경 퀴즈 {q_count}문제 | 정답 공개 #Shorts"
+    topic_prefix = f"[{book}] " if book else ""
+    title = f"{topic_prefix}『{quiz['title']}』 성경 퀴즈 {q_count}문제 | 정답 공개 #Shorts"
 
     qa_lines = "\n".join(f"Q{idx}. {clue} → {answer}" for idx, (clue, answer) in enumerate(pairs, start=1))
     description = (
