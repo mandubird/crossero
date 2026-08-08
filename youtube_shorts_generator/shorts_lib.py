@@ -239,6 +239,26 @@ def frame_transition(text):
     return apply_brand_watermark(img)
 
 
+def frame_subscribe():
+    """구독 유도 화면. 퍼즐 이미지가 정지된 채로 너무 길게 이어진다는 피드백 반영해
+    영상 후반부에 장면 전환 + 구독 유도를 동시에 처리."""
+    img = new_canvas()
+    draw = ImageDraw.Draw(img)
+
+    y = 640
+    y = draw_centered_text(draw, "구독하고", y, get_font(72), fill="white")
+    y += 20
+
+    draw_badge(draw, "구독", y + 90, fill=(230, 30, 30), text_color="white", font_size=64)
+    y += 190
+
+    y2 = y + 40
+    y2 = draw_centered_text(draw, "다음 성경 퀴즈도", y2, get_font(40), fill="#94a3b8")
+    draw_centered_text(draw, "놓치지 마세요", y2, get_font(40), fill="#94a3b8")
+
+    return apply_brand_watermark(img)
+
+
 def frame_puzzle_reveal(puzzle_img_path, title, recap_pairs=None):
     img = new_canvas(bg=(255, 255, 255))
     draw = ImageDraw.Draw(img)
@@ -315,8 +335,9 @@ def build_frame_sequence(quiz):
     sequence.append((frame_transition("더 많은 퍼즐이\n보고 싶다면"), 2.0))
     sequence.append((
         frame_puzzle_reveal(puzzle_img_path, quiz["title"], recap_pairs=recap_pairs),
-        5.0,
+        3.0,
     ))
+    sequence.append((frame_subscribe(), 2.5))
     return sequence
 
 
