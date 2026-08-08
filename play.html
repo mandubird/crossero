@@ -34,6 +34,7 @@
   }
 </script>
 <script src="auth.js"></script>
+<script src="badges.js"></script>
 <script src="aeo_summaries.js"></script>
 
 <script type="text/javascript">
@@ -1808,8 +1809,11 @@ function showAllAnswers() {
     }
   }
   if (typeof draw === 'function') {
-    draw(); 
+    draw();
     alert("✨ 모든 정답이 채워졌습니다!");
+  }
+  if (typeof recordPuzzleCompletion === 'function') {
+    recordPuzzleCompletion(quizId);
   }
 }
 
