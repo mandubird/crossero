@@ -25,6 +25,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(HERE)
 SCHEDULE_PATH = os.path.join(BASE_DIR, "posts_schedule.json")
 STATE_PATH = os.path.join(HERE, "shorts_state.json")
+PRIORITY_PATH = os.path.join(HERE, "priority_topics.json")
 OUT_ROOT = os.path.join(HERE, "output")
 FRAMES_DIR = os.path.join(HERE, "_frames")
 
@@ -41,15 +42,30 @@ def save_state(state):
         json.dump(state, f, ensure_ascii=False, indent=2)
 
 
-def next_candidates(count, used_ids):
-    with open(SCHEDULE_PATH, "r", encoding="utf-8") as f:
-        schedule = json.load(f)
+def load_priority():
+    if os.path.exists(PRIORITY_PATH):
+        with open(PRIORITY_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
 
+
+def next_candidates(count, used_ids):
     used = set(used_ids)
     candidates = []
+
+    # 1순위: priority_topics.json (인지도 높은 성경 소재, 초기 2~3주 우선 노출)
+    for qid in load_priority():
+        if qid not in used and qid not in candidates:
+            candidates.append(qid)
+        if len(candidates) >= count:
+            return candidates
+
+    # 2순위: posts_schedule.json 순서대로 나머지 채움
+    with open(SCHEDULE_PATH, "r", encoding="utf-8") as f:
+        schedule = json.load(f)
     for d in sorted(schedule.keys()):
         for qid in schedule[d]:
-            if qid not in used:
+            if qid not in used and qid not in candidates:
                 candidates.append(qid)
             if len(candidates) >= count:
                 return candidates
