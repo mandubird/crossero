@@ -133,9 +133,9 @@ def draw_badge(draw, text, cy, fill=GOLD, text_color="#111", font_size=44):
 
 
 def apply_brand_watermark(img):
-    """오른쪽 상단에 항상 채널명이 보이도록 워터마크 삽입.
-    쇼츠 UI(좋아요/댓글/공유 버튼, 자막)가 하단~우측 하단을 가리는 경우가 많아
-    항상 비어있는 상단 여백에 배치."""
+    """오른쪽 가장자리, 유튜브 쇼츠 우측 아이콘 열(좋아요/댓글/공유/저장/마이크) 아래
+    빈 공간에 채널명 워터마크 삽입. 상단은 노래 제목 오버레이, 우측 아이콘 열 높이
+    안쪽은 실제 아이콘들에 가려지므로 그 아래(화면 세로 기준 약 60% 지점)에 배치."""
     img = img.convert("RGBA")
     overlay = Image.new("RGBA", img.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(overlay)
@@ -146,9 +146,9 @@ def apply_brand_watermark(img):
     tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
     pad_x, pad_y = 22, 14
     box_w, box_h = tw + pad_x * 2, th + pad_y * 2
-    margin_top, margin_right = 56, 36
+    margin_right = 36
     x0 = W - box_w - margin_right
-    y0 = margin_top
+    y0 = int(H * 0.60)
 
     draw.rounded_rectangle([x0, y0, x0 + box_w, y0 + box_h], radius=box_h / 2, fill=(0, 0, 0, 140))
     draw.text((x0 + pad_x, y0 + pad_y - 4), text, font=font, fill=(255, 255, 255, 235))
@@ -263,7 +263,9 @@ def frame_puzzle_reveal(puzzle_img_path, title, recap_pairs=None):
     img = new_canvas(bg=(255, 255, 255))
     draw = ImageDraw.Draw(img)
 
-    y = draw_centered_text(draw, title, 90, get_font(44), fill="#1e293b", max_width=W - 160)
+    # 음악을 추가하면 쇼츠 상단에 곡 제목 오버레이가 뜨면서 화면 윗부분을 가림 -
+    # 제목/리캡이 잘리지 않도록 시작 위치를 아래로 내림 (기존 90 → 270)
+    y = draw_centered_text(draw, title, 270, get_font(44), fill="#1e293b", max_width=W - 160)
 
     if recap_pairs:
         y += 10
@@ -363,8 +365,13 @@ def render_video(quiz_id, out_path, frames_dir):
     cmd = [
         "ffmpeg", "-y",
         "-f", "concat", "-safe", "0", "-i", concat_file,
-        "-vf", f"scale={W}:{H},format=yuv420p",
+        "-vf", f"scale={W}:{H}:flags=lanczos,format=yuv420p",
         "-r", "30",
+        "-c:v", "libx264",
+        "-preset", "slow",
+        "-crf", "16",
+        "-pix_fmt", "yuv420p",
+        "-movflags", "+faststart",
         out_path,
     ]
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
