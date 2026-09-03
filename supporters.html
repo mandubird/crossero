@@ -97,7 +97,7 @@ body { font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; backgroun
 .supporter-card.first-supporter .s-name { color: #856404; }
 
 /* ---- TIMELINE ---- */
-.timeline { display: flex; flex-direction: column; gap: 28px; }
+.timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; align-items: start; }
 .timeline-month { }
 .timeline-month-label {
   font-size: 14px;
@@ -160,11 +160,13 @@ footer {
   .nav { padding: 8px 6px; gap: 6px; }
   .nav-item { padding: 6px 10px; font-size: 12px; }
   .supporters-grid { grid-template-columns: repeat(2, 1fr); }
+  .timeline { grid-template-columns: repeat(2, 1fr); gap: 20px; }
   .founder-name { font-size: 22px; }
   .page-header h1 { font-size: 22px; }
 }
 @media (max-width: 480px) {
   .supporters-grid { grid-template-columns: 1fr; }
+  .timeline { gap: 16px; }
 }
 </style>
 </head>
