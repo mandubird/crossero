@@ -78,7 +78,7 @@ window.addEventListener('DOMContentLoaded', updatePremiumUI);
 // ※ 주석 처리하면 코드가 비활성화됩니다. 발송 메모만 추가하고 코드는 유지하세요.
 
 const VALID_CODES_D1 = [
-  "CRS-D1-X3G6",
+  "CRS-D1-X3G6",  // [발송] 2026-08-23 최현주
   "CRS-D1-FHVX",
   "CRS-D1-6KST",
   "CRS-D1-9SGZ",
