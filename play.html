@@ -2274,60 +2274,70 @@ window.addEventListener('load', () => {
     }
   }
 
-  // ⭐ 1순위: quizId가 있으면 data.js에서 제목 가져오기
-  if (quizId && QUIZ_DATABASE[quizId]) {
-    const quizData = QUIZ_DATABASE[quizId];
-    
-    // 페이지 헤더 제목 변경
-    if (document.getElementById('dynamicTitle')) {
-      document.getElementById('dynamicTitle').innerText = quizData.title;
-    }
-    
-    // 브라우저 탭 제목 변경 (SEO)
-    document.title = `${quizData.title} | 십자가로세로`;
-    
-    // 검색 로봇을 위한 description 메타태그 변경 (SEO)
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (metaDesc) {
-      metaDesc.setAttribute("content", `${quizData.title} - ${quizData.category} 성경 낱말 퍼즐을 풀어보세요. ${quizData.meta}`);
-    }
-    
-    // 검색 로봇을 위한 keywords 메타태그 변경 (SEO)
-    let metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (metaKeywords) {
-      metaKeywords.setAttribute("content", `${quizData.title}, ${quizData.category}, 성경 퍼즐, 십자가로세로`);
-    }
-    
-    // AEO: 구조화 데이터 (Dataset, Quiz) + 퍼즐 하단 요약
-    injectAeoStructuredData(quizData, quizId);
-    updatePuzzleSummary(quizId, quizData.title);
+  // ⭐ SEO/AEO 메타태그·구조화 데이터 설정 (실패해도 퍼즐 렌더링은 반드시 진행되도록 격리)
+  try {
+    // ⭐ 1순위: quizId가 있으면 data.js에서 제목 가져오기
+    if (quizId && QUIZ_DATABASE[quizId]) {
+      const quizData = QUIZ_DATABASE[quizId];
 
-    // 기독교 인물 퍼즐: 사실 오류 제보 안내 노출
-    if (quizData.category && quizData.category.includes('기독교인물')) {
-      var factNotice = document.getElementById('factCorrectionNotice');
-      if (factNotice) factNotice.style.display = 'block';
-    }
+      // 페이지 헤더 제목 변경
+      if (document.getElementById('dynamicTitle')) {
+        document.getElementById('dynamicTitle').innerText = quizData.title;
+      }
 
-    console.log('✅ SEO 설정 완료:', quizData.title);
-  }
-  // ⭐ 2순위: query 파라미터가 있으면 (검색어 기반)
-  else if (query) {
-    const finalTitle = `성경 ${query} 관련 말씀 퍼즐`;
-    if (document.getElementById('dynamicTitle')) {
-      document.getElementById('dynamicTitle').innerText = finalTitle;
+      // 브라우저 탭 제목 변경 (SEO)
+      document.title = `${quizData.title} | 십자가로세로`;
+
+      // 검색 로봇을 위한 description 메타태그 변경 (SEO)
+      let metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute("content", `${quizData.title} - ${quizData.category} 성경 낱말 퍼즐을 풀어보세요. ${quizData.meta}`);
+      }
+
+      // 검색 로봇을 위한 keywords 메타태그 변경 (SEO)
+      let metaKeywords = document.querySelector('meta[name="keywords"]');
+      if (metaKeywords) {
+        metaKeywords.setAttribute("content", `${quizData.title}, ${quizData.category}, 성경 퍼즐, 십자가로세로`);
+      }
+
+      // AEO: 구조화 데이터 (Dataset, Quiz) + 퍼즐 하단 요약
+      injectAeoStructuredData(quizData, quizId);
+      updatePuzzleSummary(quizId, quizData.title);
+
+      // 기독교 인물 퍼즐: 사실 오류 제보 안내 노출
+      if (quizData.category && quizData.category.includes('기독교인물')) {
+        var factNotice = document.getElementById('factCorrectionNotice');
+        if (factNotice) factNotice.style.display = 'block';
+      }
+
+      console.log('✅ SEO 설정 완료:', quizData.title);
     }
-    document.title = `${finalTitle} | 십자가로세로`;
-    injectStructuredData(finalTitle);
-  }
-  // ⭐ 3순위: 아무것도 없으면 기본 제목 (structured data만 기본형)
-  else {
-    if (document.getElementById('dynamicTitle')) {
-      document.getElementById('dynamicTitle').innerText = '말씀 가로세로 퍼즐';
+    // ⭐ 2순위: query 파라미터가 있으면 (검색어 기반)
+    else if (query) {
+      const finalTitle = `성경 ${query} 관련 말씀 퍼즐`;
+      if (document.getElementById('dynamicTitle')) {
+        document.getElementById('dynamicTitle').innerText = finalTitle;
+      }
+      document.title = `${finalTitle} | 십자가로세로`;
+      injectStructuredData(finalTitle);
     }
+    // ⭐ 3순위: 아무것도 없으면 기본 제목 (structured data만 기본형)
+    else {
+      if (document.getElementById('dynamicTitle')) {
+        document.getElementById('dynamicTitle').innerText = '말씀 가로세로 퍼즐';
+      }
+    }
+  } catch (e) {
+    console.warn('⚠️ SEO/AEO 설정 중 오류 발생 (퍼즐 렌더링에는 영향 없음):', e);
   }
 
-  loadAndTranslateData(); 
-  setupQuiz(3); 
+  // ⭐ 위 SEO/AEO 로직이 무엇을 하든(에러가 나든) 퍼즐 자체는 항상 그려지도록 보장
+  try {
+    loadAndTranslateData();
+  } catch (e) {
+    console.warn('⚠️ loadAndTranslateData 오류 (퍼즐 렌더링에는 영향 없음):', e);
+  }
+  setupQuiz(3);
 });
 
 const canonicalLink = document.createElement('link');
