@@ -63,8 +63,9 @@ def page(path, title, desc, body, ld="", scripts=""):
     out.append('<main class="wrap">')
     out.append(body)
     out.append('</main>')
+    out.append('<div id="crs-subscribe"></div>')
     out.append(FOOTER)
-    out.append('<script src="/ga-events.js"></script>' + scripts + '\n</body>\n</html>\n')
+    out.append('<script src="/ga-events.js"></script><script src="/subscribe.js"></script>' + scripts + '\n</body>\n</html>\n')
     return "\n".join(out)
 
 
@@ -178,7 +179,7 @@ def hub():
 </script>"""
     title = "교사 허브 - 주일학교·구역 공과 자료 검색 | 십자가로세로"
     desc = "주일학교 교사와 구역 리더를 위한 자료 검색. 성경 퍼즐, 성경사전, 게시글을 인물·책·주제로 한 번에 찾아보세요."
-    return page("/teachers/", title, desc, body + style, "", "<script src=\"/subscribe.js\"></script>" + js)
+    return page("/teachers/", title, desc, body + style, "", js)
 
 
 def encouragement():
