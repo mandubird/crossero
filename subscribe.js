@@ -10,7 +10,9 @@
       if (!footer) return;
       host = document.createElement('div');
       host.id = 'crs-subscribe';
-      footer.insertBefore(host, footer.firstChild);
+      var divider = footer.querySelector('.footer-divider');
+      if (divider && divider.parentNode === footer) footer.insertBefore(host, divider.nextSibling);
+      else footer.insertBefore(host, footer.firstChild);
     }
 
     var css =
