@@ -37,7 +37,7 @@
       '#crs-subscribe .stb_form_modal_title{font-size:16px;margin:0 0 10px}' +
       '#crs-subscribe .stb_form_modal_text{font-size:13.5px;line-height:1.7;white-space:pre-line;margin-bottom:14px}' +
       '#crs-subscribe .stb_form_modal_close_btn{padding:8px 18px;border:0;border-radius:8px;background:#0073e6;color:#fff;cursor:pointer}' +
-      '@media (max-width:480px){#crs-subscribe .stb_form{grid-template-columns:1fr}#crs-subscribe .stb_form_set_submit{margin-top:6px}#crs-subscribe .stb_form_submit_button{width:100%}}';
+      '@media (max-width:480px){#crs-subscribe{padding:0 10px;margin-bottom:14px}#crs-subscribe .crs-subc{padding:9px 10px 8px;border-radius:10px}#crs-subscribe .crs-subc-head,#crs-subscribe .crs-hide-m{display:none}#crs-subscribe .stb_form_set_input{height:32px;font-size:13px;padding:0 10px}#crs-subscribe .stb_form_submit_button{height:32px;padding:0 14px;font-size:13px}#crs-subscribe .stb_form_policy{font-size:11px;margin-top:5px}}';
 
     host.innerHTML =
       '<style>' + css + '</style>' +
@@ -53,8 +53,8 @@
       '<fieldset class="stb_form_set_submit"><button type="submit" class="stb_form_submit_button" id="stb_form_submit_button" data-ga="subscribe_click" data-ga-label="footer">구독</button></fieldset>' +
       '<div class="stb_form_policy"><label>' +
       '<input type="checkbox" id="stb_policy" value="stb_policy_true"><span>(필수)</span> ' +
-      '<button id="stb_form_modal_open" data-modal="stb_form_policy_modal" class="stb_form_modal_open_btn" type="button">개인정보 수집 및 이용</button>에 동의 · ' +
-      '<a href="/privacy.html" style="color:#889;">처리방침</a>' +
+      '<button id="stb_form_modal_open" data-modal="stb_form_policy_modal" class="stb_form_modal_open_btn" type="button">개인정보 수집 및 이용</button>에 동의<span class="crs-hide-m"> · </span>' +
+      '<a class="crs-hide-m" href="/privacy.html" style="color:#889;">처리방침</a>' +
       '</label>' +
       '<div class="stb_form_msg_error" id="stb_policy_error"></div>' +
       '<div class="stb_form_modal stb_form_policy_text blind" id="stb_form_policy_modal"><div class="stb_form_modal_body">' +
@@ -65,6 +65,10 @@
       '</div>' +
       '<div class="stb_form_result" id="stb_form_result"></div>' +
       '</form></div></div>';
+
+    if (window.matchMedia && window.matchMedia('(max-width:480px)').matches) {
+      document.getElementById('stb_email').placeholder = '📬 새 성경 퍼즐 메일 받기 (이메일 주소)';
+    }
 
     var loaded = false;
     function loadStibee() {
