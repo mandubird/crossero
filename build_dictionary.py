@@ -21,6 +21,9 @@ SITE = "https://crossero.com"
 TODAY = date.today().isoformat()
 BOOKS = OT + NT
 from dictionary_data_books_deep import DEEP
+from dictionary_data_books_deep2 import DEEP2
+from dictionary_data_books_deep3 import DEEP3
+DEEP = {**DEEP, **DEEP2, **DEEP3}
 for _b in BOOKS:
     if _b["slug"] in DEEP:
         _secs = _b["sections"]
