@@ -12,14 +12,18 @@ from datetime import date
 
 from dictionary_data_people import PEOPLE
 from dictionary_data_events_places import EVENTS, PLACES
+from dictionary_data_books_ot import OT
+from dictionary_data_books_nt import NT
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, "dictionary")
 SITE = "https://crossero.com"
 TODAY = date.today().isoformat()
-ENTRIES = PEOPLE + EVENTS + PLACES
+BOOKS = OT + NT
+ENTRIES = PEOPLE + EVENTS + PLACES + BOOKS
 BY_SLUG = {e["slug"]: e for e in ENTRIES}
 TYPE_ORDER = [("인물", "성경 인물"), ("사건", "성경 사건"), ("지명", "성경 지명")]
+BOOK_GROUPS = [("구약", ["모세오경", "역사서", "시가서", "대선지서", "소선지서"]), ("신약", ["복음서", "역사서", "바울서신", "일반서신", "예언서"])]
 
 GA = """<script async src="https://www.googletagmanager.com/gtag/js?id=G-DN6WXRL3CV"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-DN6WXRL3CV');</script>
@@ -89,6 +93,7 @@ h2 { font-size:20px; color:#16324f; margin:30px 0 10px; padding-bottom:6px; bord
 .cta { display:block; text-align:center; background:linear-gradient(135deg,#0073e6,#0052cc); color:#fff !important; text-decoration:none; font-weight:700; padding:16px; border-radius:14px; margin:26px 0 6px; font-size:16px; }
 .cta small { display:block; font-weight:400; opacity:.85; font-size:13px; margin-top:2px; }
 .idx-section h2 { margin-top:34px; }
+.idx-group { font-size:15px; color:#6b7b8d; margin:18px 0 8px; }
 footer { text-align:center; padding:32px 20px; background:#fff; border-top:1px solid #e5e5e5; }
 @media (max-width:600px) { h1 { font-size:25px; } .facts, .cards { grid-template-columns:1fr; } .nav-item { padding:6px 10px; font-size:12px; } }
 """
@@ -138,7 +143,10 @@ def head(title, desc, path, extra_ld="", image=None):
 
 def render_entry(e):
     path = f"/dictionary/{e['slug']}.html"
-    title = f"{e['name']} - {e['sub']} | 성경사전 | 십자가로세로"
+    if e["type"] == "성경 책":
+        title = f"{e['name']} 요약 - 핵심 내용·구절·핵심 메시지 | 성경사전 | 십자가로세로"
+    else:
+        title = f"{e['name']} - {e['sub']} | 성경사전 | 십자가로세로"
     desc = e["summary"][:140]
     faq_ld = {
         "@context": "https://schema.org", "@type": "FAQPage",
@@ -149,7 +157,7 @@ def render_entry(e):
     img_sq = f"{SITE}/images/dictionary/{e['slug']}-bible-dictionary-square.png"
     article_ld = {
         "@context": "https://schema.org", "@type": "Article",
-        "headline": f"{e['name']} - {e['sub']}", "description": e["summary"],
+        "headline": (f"{e['name']} 요약" if e["type"] == "성경 책" else f"{e['name']} - {e['sub']}"), "description": e["summary"],
         "inLanguage": "ko", "dateModified": TODAY,
         "image": [img_wide, img_sq],
         "author": {"@type": "Organization", "name": "십자가로세로"},
@@ -184,6 +192,8 @@ def render_entry(e):
     out.append('<h2>자주 묻는 질문</h2><div class="faq">' + "".join(
         f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in e["faq"]) + "</div>")
 
+    if not e["puzzles"]:
+        out.append(f'<a class="cta" href="/bible-crossword.html" data-ga="dictionary_to_puzzle" data-ga-label="{esc(e["slug"])}">🧩 성경 퍼즐 둘러보기<small>66권과 인물·사건 주제로 풀어 보는 가로세로 낱말퀴즈</small></a>')
     if e["puzzles"]:
         pid = e["puzzles"][0]
         out.append(f'<a class="cta" href="/play.html?id={pid}" data-ga="dictionary_to_puzzle" data-ga-label="{esc(e["slug"])}">'
@@ -195,6 +205,11 @@ def render_entry(e):
                 f'<b>{esc(TITLES.get(p, p))}</b><span>퍼즐 풀기 →</span></a>' for p in e["puzzles"]) + "</div>")
 
     rel = [BY_SLUG[s] for s in e["related"] if s in BY_SLUG]
+    if e["type"] == "성경 책":
+        i = BOOKS.index(e)
+        for j in (i - 1, i + 1):
+            if 0 <= j < len(BOOKS) and BOOKS[j] not in rel:
+                rel.append(BOOKS[j])
     if rel:
         out.append('<h2>함께 보면 좋은 항목</h2><div class="cards">' + "".join(
             f'<a class="card" href="/dictionary/{r["slug"]}.html"><b>{esc(r["name"])}</b><span>{esc(r["type"])} · {esc(r["sub"])}</span></a>'
@@ -207,8 +222,8 @@ def render_entry(e):
 
 def render_index():
     path = "/dictionary/"
-    title = "성경사전 - 인물·사건·지명 한눈에 보기 | 십자가로세로"
-    desc = f"성경 속 인물, 사건, 지명 {len(ENTRIES)}개 항목을 쉽게 풀어 정리한 사전. 구절 위치와 자주 묻는 질문, 관련 퍼즐까지 함께 확인하세요."
+    title = "성경사전 - 성경 66권 요약과 인물·사건·지명 | 십자가로세로"
+    desc = f"성경 66권 책별 요약과 인물·사건·지명 {len(ENTRIES)}개 항목을 쉽게 정리한 사전. 구절 위치와 자주 묻는 질문, 관련 퍼즐까지 함께 확인하세요."
     ld = '<script type="application/ld+json">' + json.dumps({
         "@context": "https://schema.org", "@type": "CollectionPage", "name": "성경사전",
         "description": desc, "inLanguage": "ko", "url": SITE + path,
@@ -216,7 +231,7 @@ def render_index():
     }, ensure_ascii=False) + "</script>"
     out = [head(title, desc, path, ld), '<main class="wrap">']
     out.append('<div class="crumb"><a href="/">홈</a> › 성경사전</div>')
-    out.append('<h1>성경사전</h1><div class="sub">인물 · 사건 · 지명을 쉽게 풀어 정리했습니다</div>')
+    out.append('<h1>성경사전</h1><div class="sub">성경 66권 요약, 인물 · 사건 · 지명을 쉽게 풀어 정리했습니다</div>')
     out.append('<div class="summary">각 항목은 성경 본문의 구절 위치를 기준으로 직접 정리했습니다. 읽고 나서 관련 가로세로 퍼즐을 풀며 내용을 복습할 수 있고, 주일학교·소그룹 준비에도 활용하실 수 있습니다. 해석이 갈리는 부분은 그렇다고 밝혀 두었습니다. 자세한 작성 원칙은 <a href="/editorial-policy.html">콘텐츠 제작 원칙</a>을 참고해 주세요.</div>')
     for typ, label in TYPE_ORDER:
         items = [e for e in ENTRIES if e["type"] == typ]
@@ -225,6 +240,16 @@ def render_index():
         out.append(f'<div class="idx-section"><h2>{label} ({len(items)})</h2><div class="cards">' + "".join(
             f'<a class="card" href="/dictionary/{e["slug"]}.html"><b>{esc(e["name"])}</b><span>{esc(e["sub"])}</span></a>'
             for e in items) + "</div></div>")
+    for testament, groups in BOOK_GROUPS:
+        items = [e for e in BOOKS if e["testament"] == testament]
+        out.append(f'<div class="idx-section"><h2>{testament} 성경 책별 요약 ({len(items)}권)</h2>')
+        for g in groups:
+            gi = [e for e in items if e["group"] == g]
+            if not gi:
+                continue
+            out.append(f'<h3 class="idx-group">{g}</h3><div class="cards">' + "".join(
+                f'<a class="card" href="/dictionary/{e["slug"]}.html"><b>{esc(e["name"])}</b><span>{esc(e["sub"])}</span></a>' for e in gi) + "</div>")
+        out.append("</div>")
     out.append('</main><div id="crs-subscribe"></div>')
     out.append(FOOTER)
     out.append('<script src="/ga-events.js"></script><script src="/subscribe.js"></script>\n</body>\n</html>\n')

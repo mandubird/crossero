@@ -7,13 +7,15 @@ import random
 from PIL import Image, ImageDraw, ImageFont
 
 from dictionary_data_events_places import EVENTS, PLACES
+from dictionary_data_books_ot import OT
+from dictionary_data_books_nt import NT
 from dictionary_data_people import PEOPLE
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, "images", "dictionary")
 FONT = "/System/Library/Fonts/AppleSDGothicNeo.ttc"
 LOGO = os.path.join(ROOT, "images", "crossero-logo.png")
-COLORS = {"인물": ((11, 92, 173), (0, 115, 230)), "사건": ((120, 53, 15), (217, 119, 6)), "지명": ((6, 95, 70), (16, 185, 129))}
+COLORS = {"인물": ((11, 92, 173), (0, 115, 230)), "사건": ((120, 53, 15), (217, 119, 6)), "지명": ((6, 95, 70), (16, 185, 129)), "성경 책": ((76, 29, 149), (139, 92, 246))}
 
 
 def font(size, bold=False):
@@ -64,8 +66,9 @@ def card(e, w, h):
     img = Image.alpha_composite(img.convert("RGBA"), ov)
     d = ImageDraw.Draw(img)
     pad = 70 if w > h else 80
-    d.rounded_rectangle([pad, pad, pad + 150, pad + 52], radius=26, fill=(255, 255, 255, 235))
-    d.text((pad + 75, pad + 26), e["type"], font=font(28, True), fill=c1, anchor="mm")
+    bw = 150 if len(e["type"]) <= 2 else 190
+    d.rounded_rectangle([pad, pad, pad + bw, pad + 52], radius=26, fill=(255, 255, 255, 235))
+    d.text((pad + bw // 2, pad + 26), e["type"], font=font(28, True), fill=c1, anchor="mm")
     name_size = 110 if w > h else 120
     nf = font(name_size, True)
     while d.textlength(e["name"], font=nf) > w - pad * 2 and name_size > 50:
@@ -85,7 +88,7 @@ def card(e, w, h):
 def main():
     os.makedirs(OUT, exist_ok=True)
     n = 0
-    for e in PEOPLE + EVENTS + PLACES:
+    for e in PEOPLE + EVENTS + PLACES + OT + NT:
         card(e, 1200, 630).save(os.path.join(OUT, f"{e['slug']}-bible-dictionary.png"), optimize=True)
         card(e, 1000, 1000).save(os.path.join(OUT, f"{e['slug']}-bible-dictionary-square.png"), optimize=True)
         n += 1
