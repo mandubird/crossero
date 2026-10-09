@@ -11,18 +11,7 @@ from build_dictionary import esc, head, FOOTER, NAV, SITE, ROOT
 from bible_book_info import BOOK_INFO
 
 BOOKS = list(BOOK_INFO)
-PICKS = {
-    "위로": [("시편", 23, 1), ("시편", 34, 18), ("시편", 46, 1), ("시편", 147, 3), ("이사야", 41, 10), ("이사야", 43, 2),
-           ("마태복음", 11, 28), ("요한복음", 14, 27), ("고린도후서", 1, 4), ("요한계시록", 21, 4), ("시편", 121, 2)],
-    "평안": [("빌립보서", 4, 6), ("빌립보서", 4, 7), ("베드로전서", 5, 7), ("시편", 56, 3), ("이사야", 26, 3), ("마태복음", 6, 34),
-           ("시편", 94, 19), ("요한복음", 16, 33), ("시편", 55, 22), ("잠언", 3, 5)],
-    "용기": [("여호수아", 1, 9), ("신명기", 31, 6), ("이사야", 40, 31), ("시편", 27, 1), ("디모데후서", 1, 7), ("시편", 118, 6),
-           ("빌립보서", 4, 13), ("로마서", 8, 31), ("고린도전서", 16, 13), ("시편", 31, 24)],
-    "감사": [("시편", 100, 4), ("데살로니가전서", 5, 18), ("시편", 107, 1), ("시편", 95, 2), ("시편", 103, 2), ("골로새서", 3, 17),
-           ("시편", 118, 24), ("시편", 9, 1), ("에베소서", 5, 20), ("골로새서", 3, 15)],
-    "소망": [("로마서", 15, 13), ("예레미야", 29, 11), ("로마서", 12, 12), ("히브리서", 11, 1), ("예레미야애가", 3, 22), ("시편", 42, 11),
-           ("로마서", 8, 28), ("베드로전서", 1, 3), ("시편", 130, 5), ("로마서", 5, 5)],
-}
+from verse_picks import PICKS
 
 
 def load_text():
@@ -41,13 +30,18 @@ def load_text():
 
 def build_data():
     text = load_text()
-    out = []
+    out, seen_ref, seen_txt = [], set(), set()
     for topic, items in PICKS.items():
         for name, c, v in items:
+            ref = f"{name} {c}:{v}"
             t = text[(BOOKS.index(name) + 1, c, v)]
-            out.append({"topic": topic, "ref": f"{name} {c}:{v}", "text": t})
-    refs = [d["ref"] for d in out]
-    assert len(refs) == len(set(refs))
+            if re.match(r"^\(.*절에.*\)$", t):
+                raise SystemExit(f"합쳐진 구절 표시 본문: {ref} -> {t}")
+            if ref in seen_ref or t in seen_txt:
+                continue
+            seen_ref.add(ref)
+            seen_txt.add(t)
+            out.append({"topic": topic, "ref": ref, "text": t})
     return out
 
 
