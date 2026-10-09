@@ -1817,6 +1817,19 @@
     <priority>0.5</priority>
   </url>
 
+  <url>
+    <loc>https://crossero.com/bible-crossword.html</loc>
+    <lastmod>2026-10-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://crossero.com/how-to-crossword.html</loc>
+    <lastmod>2026-10-09</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
   <!-- DICT-START -->
   <url>
     <loc>https://crossero.com/dictionary/</loc>

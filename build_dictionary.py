@@ -40,6 +40,8 @@ NAV = """<nav class="nav">
 
 FOOTER = """<footer>
   <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;">
+    <a href="/bible-crossword.html" style="font-size:13px;color:#666;text-decoration:none;">성경 십자말풀이</a>
+    <a href="/how-to-crossword.html" style="font-size:13px;color:#666;text-decoration:none;">십자말풀이 하는 법</a>
     <a href="/church-bulletin-puzzle.html" style="font-size:13px;color:#666;text-decoration:none;">교회·주일학교 활용</a>
     <a href="/editorial-policy.html" style="font-size:13px;color:#666;text-decoration:none;">콘텐츠 제작 원칙</a>
     <a href="/terms.html" style="font-size:13px;color:#666;text-decoration:none;">이용약관</a>
@@ -64,6 +66,7 @@ a { color:#0073e6; }
 h1 { font-size:30px; color:#16324f; margin:10px 0 4px; line-height:1.35; }
 .sub { font-size:16px; color:#6b7b8d; margin-bottom:18px; }
 .summary { background:#fff; border-left:4px solid #0073e6; padding:16px 18px; border-radius:8px; font-size:16px; margin-bottom:20px; }
+.hero { margin:0 0 22px; } .hero img { width:100%; height:auto; border-radius:14px; display:block; }
 .facts { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:28px; }
 .fact { background:#fff; border:1px solid #e5e5e5; border-radius:10px; padding:10px 14px; }
 .fact b { display:block; font-size:12px; color:#8a97a6; font-weight:600; }
@@ -107,7 +110,7 @@ def puzzle_titles():
 TITLES = puzzle_titles()
 
 
-def head(title, desc, path, extra_ld=""):
+def head(title, desc, path, extra_ld="", image=None):
     url = f"{SITE}{path}"
     return f"""<!DOCTYPE html>
 <html lang="ko">
@@ -121,7 +124,8 @@ def head(title, desc, path, extra_ld=""):
 <meta property="og:title" content="{esc(title)}">
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:url" content="{url}">
-<meta property="og:image" content="{SITE}/images/og-image.png">
+<meta property="og:image" content="{image or SITE + '/images/og-image.png'}">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/images/favicon.png" type="image/png">
 <link rel="stylesheet" href="/dictionary/style.css">
 {GA}
@@ -141,10 +145,13 @@ def render_entry(e):
         "mainEntity": [{"@type": "Question", "name": q,
                         "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in e["faq"]],
     }
+    img_wide = f"{SITE}/images/dictionary/{e['slug']}-bible-dictionary.png"
+    img_sq = f"{SITE}/images/dictionary/{e['slug']}-bible-dictionary-square.png"
     article_ld = {
         "@context": "https://schema.org", "@type": "Article",
         "headline": f"{e['name']} - {e['sub']}", "description": e["summary"],
         "inLanguage": "ko", "dateModified": TODAY,
+        "image": [img_wide, img_sq],
         "author": {"@type": "Organization", "name": "십자가로세로"},
         "publisher": {"@type": "Organization", "name": "십자가로세로", "url": SITE},
         "mainEntityOfPage": f"{SITE}{path}",
@@ -160,11 +167,12 @@ def render_entry(e):
     ld = "".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>\n'
                  for x in (article_ld, faq_ld, crumb_ld))
 
-    out = [head(title, desc, path, ld), '<main class="wrap">']
+    out = [head(title, desc, path, ld, img_wide), '<main class="wrap">']
     out.append(f'<div class="crumb"><a href="/">홈</a> › <a href="/dictionary/">성경사전</a> › {esc(e["name"])}</div>')
     out.append(f'<span class="badge">{esc(e["type"])}</span>')
     out.append(f'<h1>{esc(e["name"])}</h1><div class="sub">{esc(e["sub"])}</div>')
     out.append(f'<div class="summary">{esc(e["summary"])}</div>')
+    out.append(f'<figure class="hero"><img src="/images/dictionary/{e["slug"]}-bible-dictionary.png" width="1200" height="630" alt="{esc(e["name"])} - {esc(e["sub"])} 성경사전 안내 이미지" fetchpriority="high"></figure>')
     out.append('<div class="facts">' + "".join(
         f'<div class="fact"><b>{esc(k)}</b><span>{esc(v)}</span></div>' for k, v in e["facts"]) + '</div>')
     for h, paras in e["sections"]:

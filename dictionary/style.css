@@ -12,6 +12,7 @@ a { color:#0073e6; }
 h1 { font-size:30px; color:#16324f; margin:10px 0 4px; line-height:1.35; }
 .sub { font-size:16px; color:#6b7b8d; margin-bottom:18px; }
 .summary { background:#fff; border-left:4px solid #0073e6; padding:16px 18px; border-radius:8px; font-size:16px; margin-bottom:20px; }
+.hero { margin:0 0 22px; } .hero img { width:100%; height:auto; border-radius:14px; display:block; }
 .facts { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:28px; }
 .fact { background:#fff; border:1px solid #e5e5e5; border-radius:10px; padding:10px 14px; }
 .fact b { display:block; font-size:12px; color:#8a97a6; font-weight:600; }
