@@ -54,6 +54,7 @@ NAV = """<nav class="nav">
 
 FOOTER = """<footer>
   <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;">
+    <a href="/verse/" style="font-size:13px;color:#666;text-decoration:none;">말씀 뽑기</a>
     <a href="/teachers/" style="font-size:13px;color:#666;text-decoration:none;">교사 허브</a>
     <a href="/bible-crossword.html" style="font-size:13px;color:#666;text-decoration:none;">성경 십자말풀이</a>
     <a href="/how-to-crossword.html" style="font-size:13px;color:#666;text-decoration:none;">십자말풀이 하는 법</a>
