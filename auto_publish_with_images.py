@@ -486,9 +486,7 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 </div>
 </article>
 </main>
-<div id="crs-subscribe"></div>
 <script src="/ga-events.js"></script>
-<script src="/subscribe.js"></script>
 <footer>
   <div class="footer-divider"></div>
   <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 20px;">
@@ -650,9 +648,7 @@ main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
 </ul>
 </div>
 </main>
-<div id="crs-subscribe"></div>
 <script src="/ga-events.js"></script>
-<script src="/subscribe.js"></script>
 <footer>
   <div class="footer-divider"></div>
   <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 20px;">

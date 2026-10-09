@@ -193,8 +193,8 @@ def render(data):
 <div class="vprint" aria-hidden="true">{prints}</div>
 </main>"""
     data_js = "<script>window.__VERSES=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";</script>"
-    return "\n".join([h, body, '<div id="crs-subscribe"></div>', FOOTER, data_js,
-                      '<script src="/ga-events.js"></script><script src="/subscribe.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])
+    return "\n".join([h, body, FOOTER, data_js,
+                      '<script src="/ga-events.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])
 
 
 def update_sitemap():

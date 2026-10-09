@@ -226,9 +226,9 @@ def render_entry(e):
         out.append('<h2>함께 보면 좋은 항목</h2><div class="cards">' + "".join(
             f'<a class="card" href="/dictionary/{r["slug"]}.html"><b>{esc(r["name"])}</b><span>{esc(r["type"])} · {esc(r["sub"])}</span></a>'
             for r in rel) + "</div>")
-    out.append('</main><div id="crs-subscribe"></div>')
+    out.append('</main>')
     out.append(FOOTER)
-    out.append('<script src="/ga-events.js"></script><script src="/subscribe.js"></script>\n</body>\n</html>\n')
+    out.append('<script src="/ga-events.js"></script>\n</body>\n</html>\n')
     return "\n".join(out)
 
 
@@ -262,9 +262,9 @@ def render_index():
             out.append(f'<h3 class="idx-group">{g}</h3><div class="cards">' + "".join(
                 f'<a class="card" href="/dictionary/{e["slug"]}.html"><b>{esc(e["name"])}</b><span>{esc(e["sub"])}</span></a>' for e in gi) + "</div>")
         out.append("</div>")
-    out.append('</main><div id="crs-subscribe"></div>')
+    out.append('</main>')
     out.append(FOOTER)
-    out.append('<script src="/ga-events.js"></script><script src="/subscribe.js"></script>\n</body>\n</html>\n')
+    out.append('<script src="/ga-events.js"></script>\n</body>\n</html>\n')
     return "\n".join(out)
 
 

@@ -17,9 +17,8 @@ def page(path, title, desc, body, ld=""):
     out.append('<main class="wrap">')
     out.append(body)
     out.append('</main>')
-    out.append('<div id="crs-subscribe"></div>')
     out.append(FOOTER)
-    out.append('<script src="/ga-events.js"></script><script src="/subscribe.js"></script>\n</body>\n</html>\n')
+    out.append('<script src="/ga-events.js"></script>\n</body>\n</html>\n')
     return "\n".join(out)
 
 
