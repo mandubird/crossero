@@ -20,6 +20,12 @@ OUT = os.path.join(ROOT, "dictionary")
 SITE = "https://crossero.com"
 TODAY = date.today().isoformat()
 BOOKS = OT + NT
+from dictionary_data_books_deep import DEEP
+for _b in BOOKS:
+    if _b["slug"] in DEEP:
+        _secs = _b["sections"]
+        _i = [h for h, _ in _secs].index("핵심 메시지와 읽는 법")
+        _b["sections"] = _secs[:_i] + DEEP[_b["slug"]] + _secs[_i:]
 ENTRIES = PEOPLE + EVENTS + PLACES + BOOKS
 BY_SLUG = {e["slug"]: e for e in ENTRIES}
 TYPE_ORDER = [("인물", "성경 인물"), ("사건", "성경 사건"), ("지명", "성경 지명")]
