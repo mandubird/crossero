@@ -486,7 +486,6 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 </div>
 </article>
 </main>
-<script src="/ga-events.js"></script>
 <footer>
   <div class="footer-divider"></div>
   <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 20px;">
@@ -504,6 +503,8 @@ footer a {{ color: #0073e6; text-decoration: none; }}
   <div class="footer-copyright">&copy; 2026 십자가로세로. All rights reserved.</div>
 </footer>
 <script src="../coupang-partner.js"></script>
+<script src="/ga-events.js"></script>
+<script src="/subscribe.js"></script>
 </body>
 </html>"""
 
@@ -648,7 +649,6 @@ main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
 </ul>
 </div>
 </main>
-<script src="/ga-events.js"></script>
 <footer>
   <div class="footer-divider"></div>
   <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 20px;">
@@ -685,6 +685,8 @@ main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
   }});
 }})();
 </script>
+<script src="/ga-events.js"></script>
+<script src="/subscribe.js"></script>
 </body>
 </html>"""
     with open(os.path.join(POSTS_DIR, 'index.html'), 'w', encoding='utf-8') as f:

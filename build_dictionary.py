@@ -228,7 +228,7 @@ def render_entry(e):
             for r in rel) + "</div>")
     out.append('</main>')
     out.append(FOOTER)
-    out.append('<script src="/ga-events.js"></script>\n</body>\n</html>\n')
+    out.append('<script src="/ga-events.js"></script><script src="/subscribe.js"></script>\n</body>\n</html>\n')
     return "\n".join(out)
 
 
@@ -264,7 +264,7 @@ def render_index():
         out.append("</div>")
     out.append('</main>')
     out.append(FOOTER)
-    out.append('<script src="/ga-events.js"></script>\n</body>\n</html>\n')
+    out.append('<script src="/ga-events.js"></script><script src="/subscribe.js"></script>\n</body>\n</html>\n')
     return "\n".join(out)
 
 
