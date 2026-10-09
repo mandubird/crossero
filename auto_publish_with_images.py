@@ -13,6 +13,7 @@ from html import escape
 from urllib.parse import quote
 from bible_book_info import BOOK_INFO
 from topic_info import TOPIC_INFO
+from dict_links import dict_links_html
 
 # generate_seo_posts와 동일한 파싱·템플릿
 from generate_seo_posts import (
@@ -337,6 +338,7 @@ def generate_post_html_with_image(puzzle, keyword, slug, publish_date, image_slu
         across_html = "".join(f'<div class="hint-item">{i}. {escape(h)}</div>' for i, h in enumerate(across_list[:20], 1))
         down_html = "".join(f'<div class="hint-item">{i}. {escape(h)}</div>' for i, h in enumerate(down_list[:20], 1))
     book_info = BOOK_INFO.get(book) or TOPIC_INFO.get(title)
+    dict_links_block = dict_links_html(title, book, " ".join(book_info["events"]) if book_info else "")
     if book_info:
         events_html = " · ".join(escape(e) for e in book_info["events"])
         if book in BOOK_INFO:
@@ -453,7 +455,7 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 <h2 class="hints-title">📝 세로 힌트</h2>
 <div class="hints-list">{down_html}</div>
 </div>
-<section class="puzzle-learning">
+{dict_links_block}<section class="puzzle-learning">
 <h3>🧩 이 퍼즐에서 배우는 내용</h3>
 <p>이 퍼즐은 {escape(title)}의 핵심 단어와 개념을 자연스럽게 복습할 수 있도록 구성되었습니다. 주일학교 수업이나 개인 성경공부에서 학습 내용을 점검하는 용도로 바로 활용할 수 있습니다.</p>
 </section>
