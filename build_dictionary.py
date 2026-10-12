@@ -42,34 +42,13 @@ GA = """<script async src="https://www.googletagmanager.com/gtag/js?id=G-DN6WXRL
 <script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","vin36biyig");</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0717185892763061" crossorigin="anonymous"></script>"""
 
-NAV = """<nav class="nav">
-  <a href="/index.html" class="nav-item">홈</a>
-  <a href="/play.html" class="nav-item">퍼즐하기</a>
-  <a href="/list.html" class="nav-item">퍼즐목록</a>
-  <a href="/dictionary/" class="nav-item nav-active">성경사전</a>
-  <a href="/teachers/" class="nav-item">교사허브</a>
-  <a href="/posts/index.html" class="nav-item">게시판</a>
-  <a href="/about.html" class="nav-item">소개</a>
-  <a href="/supporters.html" class="nav-item">⭐ 후원자</a>
-  <a href="/support.html" class="nav-item">후원하기</a>
-  <a href="/faq.html" class="nav-item">FAQ</a>
-</nav>"""
+from site_chrome import nav_html, footer_links_html
 
-FOOTER = """<footer>
-  <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;">
-    <a href="/today/" style="font-size:13px;color:#666;text-decoration:none;">오늘의 말씀</a>
-    <a href="/verse/" style="font-size:13px;color:#666;text-decoration:none;">말씀 뽑기</a>
-    <a href="/teachers/" style="font-size:13px;color:#666;text-decoration:none;">교사 허브</a>
-    <a href="/bible-crossword.html" style="font-size:13px;color:#666;text-decoration:none;">성경 십자말풀이</a>
-    <a href="/how-to-crossword.html" style="font-size:13px;color:#666;text-decoration:none;">십자말풀이 하는 법</a>
-    <a href="/church-bulletin-puzzle.html" style="font-size:13px;color:#666;text-decoration:none;">교회·주일학교 활용</a>
-    <a href="/editorial-policy.html" style="font-size:13px;color:#666;text-decoration:none;">콘텐츠 제작 원칙</a>
-    <a href="/terms.html" style="font-size:13px;color:#666;text-decoration:none;">이용약관</a>
-    <a href="/privacy.html" style="font-size:13px;color:#666;text-decoration:none;">개인정보처리방침</a>
-    <a href="/faq.html" style="font-size:13px;color:#666;text-decoration:none;">FAQ</a>
-    <a href="mailto:mandubird@naver.com" style="font-size:13px;color:#666;text-decoration:none;">문의</a>
-  </div>
-  <p style="font-size:12px;color:#aaa;">© 2025 십자가로세로. All rights reserved.</p>
+NAV = nav_html("dict")
+
+FOOTER = f"""<footer>
+{footer_links_html()}
+  <p style="font-size:12px;color:#aaa;">© 2026 십자가로세로. All rights reserved.</p>
 </footer>"""
 
 CSS = """* { box-sizing: border-box; margin: 0; padding: 0; }

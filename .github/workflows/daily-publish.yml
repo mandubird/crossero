@@ -50,6 +50,7 @@ jobs:
         run: |
           python3 build_teacher_hub.py
           python3 build_today.py
+          python3 site_chrome.py
 
       - name: List generated files (이미지/글 생성 확인)
         run: |
