@@ -1335,7 +1335,7 @@ function renderClues(){
 }
 
 function focusCell(x, y) {
-  if (solution[y][x] === null) return;
+  if (!solution[y] || solution[y][x] === undefined || solution[y][x] === null) return;
 
   // 조합 중이던 글자 확정
   if (composingChar && cursor.x !== null && cursor.y !== null) {
@@ -1468,7 +1468,7 @@ document.addEventListener("keydown",e=>{
   if(e.key==="ArrowLeft") x--;
   if(e.key==="ArrowDown") y++;
   if(e.key==="ArrowUp") y--;
-  if(solution[y] && solution[y][x]!==null){
+  if(solution[y] && solution[y][x]!==undefined && solution[y][x]!==null){
     cursor={x,y}; updateHint(x,y); draw();
   }
 });
