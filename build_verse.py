@@ -185,6 +185,10 @@ def render(data):
     guide = '<h2 style="margin-top:34px;text-align:left">해설이 있는 말씀</h2><div class="cards" style="text-align:left">' + "".join(
         f'<a class="card" href="{guide_map[d["ref"]]}"><b>{esc(d["ref"])}</b><span>{esc(d["topic"])} · {esc(d["text"][:30])}…</span></a>'
         for ts in topics.values() for d in ts) + '</div>'
+    from season_picks import SEASONS as _SEASONS
+    seasons = '<h2 style="margin-top:34px;text-align:left">절기 말씀 뽑기</h2><div class="cards" style="text-align:left">' + "".join(
+        f'<a class="card" href="/verse/{k}/" data-ga="verse_to_season" data-ga-label="{k}"><b>{c["emoji"]} {esc(c["label"])}</b><span>{esc(c["sub"])}</span></a>'
+        for k, c in _SEASONS.items()) + '</div>'
     body = f"""<main class="vwrap">
 <div class="crumb" style="text-align:left"><a href="/">홈</a> › 말씀 뽑기</div>
 <span class="badge">무료 · 회원가입 없음</span>
@@ -202,6 +206,7 @@ def render(data):
 <button class="vbtn sub" id="vprint">🖨️ 책갈피 인쇄(4장)</button>
 <button class="vbtn sub" id="vshare">🔗 링크 공유</button>
 </div>
+{seasons}
 {guide}
 <p class="vnote">성경 본문은 성경전서 개역한글판(대한성서공회)을 사용했습니다. 개인 묵상과 소모임 나눔을 위한 용도로 제공하며, 판매용으로 이용하실 수 없습니다. 구절은 주제별로 직접 골랐고, 앞으로 계속 늘려 갑니다. 말씀을 더 깊이 읽고 싶다면 <a href="/dictionary/">성경사전</a>에서 해당 책의 요약을 확인해 보세요.</p>
 <div class="vprint" aria-hidden="true">{prints}</div>

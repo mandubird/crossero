@@ -14,7 +14,8 @@ FONT = "/System/Library/Fonts/AppleSDGothicNeo.ttc"
 W, H = 1200, 630
 TOPIC_COLOR = {"위로": (11, 92, 173), "평안": (6, 95, 70), "용기": (153, 27, 27), "감사": (180, 83, 9), "소망": (91, 33, 182),
                "사랑": (190, 24, 93), "믿음": (30, 64, 175), "용서": (15, 118, 110), "인내": (71, 85, 105),
-               "기도": (67, 56, 202), "인도": (3, 105, 161), "회복": (21, 128, 61)}
+               "기도": (67, 56, 202), "인도": (3, 105, 161), "회복": (21, 128, 61),
+               "새해": (3, 105, 161), "성탄": (153, 27, 27), "추수감사": (180, 83, 9)}
 
 
 def font(size, bold=False):
@@ -83,5 +84,27 @@ def main():
     print(f"카드 이미지 {len(data)}장, 합계 {total / 1024 / 1024:.1f}MB")
 
 
+def season_main():
+    from season_picks import SEASONS
+    from verse_lib import KO_BOOKS, load_text
+    text = load_text()
+    sdir = os.path.join(OUT, "season")
+    os.makedirs(sdir, exist_ok=True)
+    n = 0
+    for key, cfg in SEASONS.items():
+        seen = set()
+        for name, c, v in cfg["picks"]:
+            t = text[(KO_BOOKS.index(name) + 1, c, v)]
+            if t in seen:
+                continue
+            seen.add(t)
+            ref = f"{name} {c}:{v}"
+            card({"topic": cfg["topic"], "ref": ref, "text": t}).save(
+                os.path.join(sdir, f"{key}-{verse_slug(ref)}.jpg"), "JPEG", quality=84, optimize=True, progressive=True)
+            n += 1
+    print(f"절기 카드 이미지 {n}장")
+
+
 if __name__ == "__main__":
     main()
+    season_main()

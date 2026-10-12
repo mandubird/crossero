@@ -2403,15 +2403,6 @@
   </url>
   <!-- DICT-END -->
 
-  <!-- VERSE-START -->
-  <url>
-    <loc>https://crossero.com/verse/</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- VERSE-END -->
-
   <!-- VERSEPG-START -->
   <url>
     <loc>https://crossero.com/verse/john-3-16.html</loc>
@@ -2642,4 +2633,34 @@
     <priority>0.8</priority>
   </url>
   <!-- TODAY-END -->
+
+  <!-- SEASON-START -->
+  <url>
+    <loc>https://crossero.com/verse/new-year/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://crossero.com/verse/christmas/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://crossero.com/verse/thanksgiving/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- SEASON-END -->
+
+  <!-- VERSE-START -->
+  <url>
+    <loc>https://crossero.com/verse/</loc>
+    <lastmod>2026-10-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- VERSE-END -->
 </urlset>
