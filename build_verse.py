@@ -9,6 +9,8 @@ import re
 import build_dictionary as bd
 from build_dictionary import esc, head, FOOTER, NAV, SITE, ROOT
 from bible_book_info import BOOK_INFO
+from verse_commentary import C as COMMENTARY
+from verse_lib import verse_url
 
 BOOKS = list(BOOK_INFO)
 from verse_picks import PICKS
@@ -86,6 +88,7 @@ JS = r"""
     $('vtag').textContent=d.topic; $('vtext').textContent=d.text; $('vref').textContent=d.ref;
     $('vactions').style.display='block'; $('vbox').style.display='none';
     $('vdraw').textContent='🎴 다시 뽑기';
+    var mu=window.__GUIDE[d.ref]; var mo=$('vmore'); if(mu){mo.href=mu; mo.style.display='inline-block';} else {mo.style.display='none';}
     var pc=document.querySelectorAll('.vprint .pc');
     [].forEach.call(pc,function(p){p.querySelector('.pt').textContent=d.text;p.querySelector('.pr').textContent=d.ref;});
     if(fromDraw&&window.crsTrack) window.crsTrack('verse_draw',{topic:d.topic,ref:d.ref});
@@ -174,6 +177,14 @@ def render(data):
     chips = '<button class="vchip on" data-t="전체">전체</button>' + "".join(
         f'<button class="vchip" data-t="{t}">{t}</button>' for t in PICKS)
     prints = "".join('<div class="pc"><div class="pt"></div><div class="pr"></div><div class="pf">십자가로세로 · crossero.com</div></div>' for _ in range(4))
+    guide_map = {ref: verse_url(ref) for ref in COMMENTARY}
+    topics = {}
+    for d in data:
+        if d["ref"] in COMMENTARY:
+            topics.setdefault(d["topic"], []).append(d)
+    guide = '<h2 style="margin-top:34px;text-align:left">해설이 있는 말씀</h2><div class="cards" style="text-align:left">' + "".join(
+        f'<a class="card" href="{guide_map[d["ref"]]}"><b>{esc(d["ref"])}</b><span>{esc(d["topic"])} · {esc(d["text"][:30])}…</span></a>'
+        for ts in topics.values() for d in ts) + '</div>'
     body = f"""<main class="vwrap">
 <div class="crumb" style="text-align:left"><a href="/">홈</a> › 말씀 뽑기</div>
 <span class="badge">무료 · 회원가입 없음</span>
@@ -184,15 +195,18 @@ def render(data):
 <button class="vbtn" id="vdraw" data-ga="verse_draw_click">🎴 말씀 뽑기</button>
 <div class="vcard" id="vcard" style="display:none"><div class="vtag" id="vtag"></div><p class="vtext" id="vtext"></p><div class="vref" id="vref"></div><div class="vmark">십자가로세로 · crossero.com</div></div>
 <div class="vactions" id="vactions" style="display:none">
+<a class="vbtn sub" id="vmore" href="#" style="display:none;text-decoration:none" data-ga="verse_to_guide">📖 이 말씀 해설 읽기</a>
 <button class="vbtn sub" id="vsave">📑 책갈피 이미지 저장</button>
 <button class="vbtn sub" id="vsavesq">🖼️ 카드 이미지 저장</button>
 <button class="vbtn sub" id="vprint">🖨️ 책갈피 인쇄(4장)</button>
 <button class="vbtn sub" id="vshare">🔗 링크 공유</button>
 </div>
+{guide}
 <p class="vnote">성경 본문은 성경전서 개역한글판(대한성서공회)을 사용했습니다. 개인 묵상과 소모임 나눔을 위한 용도로 제공하며, 판매용으로 이용하실 수 없습니다. 구절은 주제별로 직접 골랐고, 앞으로 계속 늘려 갑니다. 말씀을 더 깊이 읽고 싶다면 <a href="/dictionary/">성경사전</a>에서 해당 책의 요약을 확인해 보세요.</p>
 <div class="vprint" aria-hidden="true">{prints}</div>
 </main>"""
-    data_js = "<script>window.__VERSES=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";</script>"
+    data_js = ("<script>window.__VERSES=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";"
+               "window.__GUIDE=" + json.dumps(guide_map, ensure_ascii=False, separators=(",", ":")) + ";</script>")
     return "\n".join([h, body, FOOTER, data_js,
                       '<script src="/ga-events.js"></script><script src="/subscribe.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])
 
