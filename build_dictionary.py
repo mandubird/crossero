@@ -43,6 +43,10 @@ GA = """<script async src="https://www.googletagmanager.com/gtag/js?id=G-DN6WXRL
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0717185892763061" crossorigin="anonymous"></script>"""
 
 from site_chrome import nav_html, footer_links_html
+try:
+    from dictionary_geo_data import GEO
+except ImportError:
+    GEO = {}
 
 NAV = nav_html("dict")
 
@@ -70,6 +74,16 @@ h1 { font-size:30px; color:#16324f; margin:10px 0 4px; line-height:1.35; }
 .fact { background:#fff; border:1px solid #e5e5e5; border-radius:10px; padding:10px 14px; }
 .fact b { display:block; font-size:12px; color:#8a97a6; font-weight:600; }
 .fact span { font-size:14px; }
+.geo { background:#fff; border:1px solid #e5e5e5; border-radius:14px; padding:16px; margin:8px 0 26px; }
+.geo h2 { margin-top:0; }
+.geo-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.geo figure, .geo .gmap { margin:0; }
+.geo img, .geo iframe { width:100%; height:220px; object-fit:cover; border:0; border-radius:10px; background:#eef2f6; display:block; }
+.geo figcaption, .geo .gnote { font-size:12px; color:#7b8794; margin-top:6px; line-height:1.5; }
+.geo dl { margin:12px 0 0; font-size:14px; }
+.geo dt { display:inline; color:#8a97a6; font-weight:600; font-size:12px; }
+.geo dd { display:inline; margin:0 12px 0 4px; }
+@media (max-width:600px) { .geo-grid { grid-template-columns:1fr; } }
 h2 { font-size:20px; color:#16324f; margin:30px 0 10px; padding-bottom:6px; border-bottom:2px solid #e8f1ff; }
 .wrap p { margin-bottom:14px; font-size:16px; }
 .refs { list-style:none; background:#fff; border:1px solid #e5e5e5; border-radius:12px; padding:6px 16px; }
@@ -136,6 +150,30 @@ def head(title, desc, path, extra_ld="", image=None):
 """
 
 
+def render_geo(e):
+    g = GEO.get(e["slug"])
+    if not g:
+        return ""
+    lat, lon = g["lat"], g["lon"]
+    d = 0.02 if e["slug"] not in ("egypt",) else 1.0
+    bbox = f"{lon-d},{lat-d*0.6},{lon+d},{lat+d*0.6}"
+    embed = f"https://www.openstreetmap.org/export/embed.html?bbox={bbox}&amp;layer=mapnik&amp;marker={lat},{lon}"
+    big = f"https://www.openstreetmap.org/?mlat={lat}&amp;mlon={lon}#map=14/{lat}/{lon}"
+    ob = f"https://www.openbible.info/geo/ancient/{g['ob_id']}/{g['ob_slug']}"
+    out = [f'<section class="geo"><h2>{esc(e["name"])} 오늘의 모습</h2><div class="geo-grid">']
+    if g.get("img"):
+        out.append(f'<figure><img src="{g["img"]}" loading="lazy" alt="{esc(e["name"])} 현재 모습 사진"><figcaption>'
+                   f'사진: <a href="{g["credit_url"]}" rel="noopener nofollow" target="_blank">{esc(g["credit"])}</a> · {esc(g["license"])}</figcaption></figure>')
+    out.append(f'<div class="gmap"><iframe src="{embed}" loading="lazy" title="{esc(e["name"])} 현재 지도"></iframe>'
+               f'<div class="gnote"><a href="{big}" rel="noopener nofollow" target="_blank">큰 지도에서 보기</a> · 지도 © OpenStreetMap 기여자</div></div>')
+    out.append('</div>')
+    out.append(f'<dl><dt>오늘의 위치</dt><dd>{esc(g["where"])}</dd><dt>현재 지명(추정)</dt><dd>{esc(g["modern"])}</dd>'
+               f'<dt>성경 언급</dt><dd>{g["verses"]}절</dd></dl>')
+    out.append(f'<p class="gnote">위치는 학자들의 식별을 모은 OpenBible.info 성경 지오코딩 데이터(CC BY 4.0)를 따르며, 일부 장소는 학설에 따라 달라질 수 있습니다. '
+               f'<a href="{ob}" rel="noopener nofollow" target="_blank">원자료 보기</a></p></section>')
+    return "".join(out)
+
+
 def render_entry(e):
     path = f"/dictionary/{e['slug']}.html"
     if e["type"] == "성경 책":
@@ -181,6 +219,7 @@ def render_entry(e):
     for h, paras in e["sections"]:
         out.append(f"<h2>{esc(h)}</h2>")
         out += [f"<p>{esc(p)}</p>" for p in paras]
+    out.append(render_geo(e))
     out.append("<h2>함께 읽을 본문</h2><ul class=\"refs\">" + "".join(
         f'<li><b>{esc(r)}</b> — {esc(n)}</li>' for r, n in e["refs"]) + "</ul>")
     out.append('<p class="note">성경 구절은 장·절 표기로 안내합니다. 본문은 사용하시는 번역본으로 직접 읽어 보세요.</p>')
