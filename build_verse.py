@@ -190,6 +190,7 @@ def render(data):
 <span class="badge">무료 · 회원가입 없음</span>
 <h1 style="margin-top:10px">말씀 뽑기</h1>
 <div class="sub">오늘 마음에 필요한 말씀을 한 장 뽑아 보세요</div>
+<div class="sub" style="margin-top:-6px"><a href="/today/" data-ga="verse_to_today">📅 오늘의 말씀 보기</a></div>
 <div class="vchips" id="vchips">{chips}</div>
 <div class="vbox" id="vbox" title="눌러서 뽑기">🎴</div>
 <button class="vbtn" id="vdraw" data-ga="verse_draw_click">🎴 말씀 뽑기</button>
