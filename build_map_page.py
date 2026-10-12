@@ -20,7 +20,7 @@ EXTRA_HEAD = ('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/li
               '<style>#bmap{height:520px;border-radius:14px;border:1px solid #e5e5e5;margin:14px 0 8px;z-index:0}'
               '.mbtn{border:1px solid #ccd;background:#fff;border-radius:18px;padding:6px 14px;font-size:13px;cursor:pointer;margin-right:6px}'
               '.mbtn:hover{background:#f0f6ff}.pop b{font-size:15px}.pop img{width:200px;height:120px;object-fit:cover;border-radius:6px;display:block;margin:6px 0}'
-              '.pop a{color:#0073e6}@media(max-width:600px){#bmap{height:420px}}</style>\n</head>')
+              '.pop a{color:#0073e6}.steps{padding-left:22px}.steps li{margin:8px 0}.sref{font-size:12px;color:#0073e6}.snote{font-size:13px;color:#667}.faq{margin:10px 0}.faq p{margin:2px 0 0}@media(max-width:600px){#bmap{height:420px}}</style>\n</head>')
 
 
 def render_map(GEO, BY_SLUG, head, esc, FOOTER, SITE):
@@ -46,6 +46,9 @@ def render_map(GEO, BY_SLUG, head, esc, FOOTER, SITE):
     out.append('<div id="bmap" role="application" aria-label="성경 지명 지도"></div>')
     out.append('<div style="font-size:12px;color:#7b8794">지도 © <a href="https://www.openstreetmap.org/copyright" rel="noopener nofollow">OpenStreetMap</a> 기여자 · '
                '데이터 <a href="https://github.com/openbibleinfo/Bible-Geocoding-Data" rel="noopener nofollow">OpenBible.info</a> CC BY 4.0</div>')
+    from build_routes import ROUTES
+    out.append('<div class="idx-section"><h2>바울의 여행 경로</h2><div class="cards">' + "".join(
+        f'<a class="card" href="/dictionary/map/{r["slug"]}.html"><b>{esc(r["short"])}</b><span>{esc(r["ref"])}</span></a>' for r in ROUTES) + "</div></div>")
     out.append(f'<div class="idx-section"><h2>지명 목록 ({len(pts)})</h2><div class="cards">' + "".join(
         f'<a class="card" href="/dictionary/{p["slug"]}.html"><b>{esc(p["name"])}</b><span>{esc(p["where"])}</span></a>' for p in pts)
         + "</div></div>")

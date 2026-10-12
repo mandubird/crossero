@@ -295,7 +295,9 @@ def update_sitemap():
     p = os.path.join(ROOT, "sitemap.xml")
     s = open(p, encoding="utf-8").read()
     s = re.sub(r"\s*<!-- DICT-START -->.*?<!-- DICT-END -->", "", s, flags=re.S)
-    urls = [("/dictionary/", "0.8"), ("/dictionary/map/", "0.8")] + [(f"/dictionary/{e['slug']}.html", "0.7") for e in ENTRIES]
+    from build_routes import ROUTES as _R
+    urls = [("/dictionary/", "0.8"), ("/dictionary/map/", "0.8")] + [(f"/dictionary/map/{r['slug']}.html", "0.7") for r in _R]
+    urls += [(f"/dictionary/{e['slug']}.html", "0.7") for e in ENTRIES]
     block = "\n  <!-- DICT-START -->\n" + "\n".join(
         f"  <url>\n    <loc>{SITE}{u}</loc>\n    <lastmod>{TODAY}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>{pr}</priority>\n  </url>"
         for u, pr in urls) + "\n  <!-- DICT-END -->\n"
@@ -318,6 +320,9 @@ def main():
     from build_map_page import render_map
     os.makedirs(os.path.join(OUT, "map"), exist_ok=True)
     open(os.path.join(OUT, "map", "index.html"), "w", encoding="utf-8").write(render_map(GEO, BY_SLUG, head, esc, FOOTER, SITE))
+    from build_routes import ROUTES, render_route
+    for r in ROUTES:
+        open(os.path.join(OUT, "map", f"{r['slug']}.html"), "w", encoding="utf-8").write(render_route(r, head, FOOTER, SITE, BY_SLUG))
     open(os.path.join(OUT, "style.css"), "w", encoding="utf-8").write(CSS)
     update_sitemap()
     print(f"생성 완료: {len(ENTRIES)}개 항목 + 인덱스")
