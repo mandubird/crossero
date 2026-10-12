@@ -170,7 +170,7 @@ def render_geo(e):
     out.append(f'<dl><dt>오늘의 위치</dt><dd>{esc(g["where"])}</dd><dt>현재 지명(추정)</dt><dd>{esc(g["modern"])}</dd>'
                f'<dt>성경 언급</dt><dd>{g["verses"]}절</dd></dl>')
     out.append(f'<p class="gnote">위치는 학자들의 식별을 모은 OpenBible.info 성경 지오코딩 데이터(CC BY 4.0)를 따르며, 일부 장소는 학설에 따라 달라질 수 있습니다. '
-               f'<a href="{ob}" rel="noopener nofollow" target="_blank">원자료 보기</a></p></section>')
+               f'<a href="{ob}" rel="noopener nofollow" target="_blank">원자료 보기</a> · <a href="/dictionary/map/">성경 지도에서 모든 지명 보기</a></p></section>')
     return "".join(out)
 
 
@@ -267,6 +267,7 @@ def render_index():
     out.append('<div class="crumb"><a href="/">홈</a> › 성경사전</div>')
     out.append('<h1>성경사전</h1><div class="sub">성경 66권 요약, 인물 · 사건 · 지명을 쉽게 풀어 정리했습니다</div>')
     out.append('<div class="summary">각 항목은 성경 본문의 구절 위치를 기준으로 직접 정리했습니다. 읽고 나서 관련 가로세로 퍼즐을 풀며 내용을 복습할 수 있고, 주일학교·소그룹 준비에도 활용하실 수 있습니다. 해석이 갈리는 부분은 그렇다고 밝혀 두었습니다. 자세한 작성 원칙은 <a href="/editorial-policy.html">콘텐츠 제작 원칙</a>을 참고해 주세요.</div>')
+    out.append('<a class="cta" href="/dictionary/map/">🗺️ 성경 지도 - 지명이 지금은 어디에 있을까?<small>예루살렘·갈릴리·여리고 등 지명의 오늘의 위치와 사진</small></a>')
     for typ, label in TYPE_ORDER:
         items = [e for e in ENTRIES if e["type"] == typ]
         if not items:
@@ -294,7 +295,7 @@ def update_sitemap():
     p = os.path.join(ROOT, "sitemap.xml")
     s = open(p, encoding="utf-8").read()
     s = re.sub(r"\s*<!-- DICT-START -->.*?<!-- DICT-END -->", "", s, flags=re.S)
-    urls = [("/dictionary/", "0.8")] + [(f"/dictionary/{e['slug']}.html", "0.7") for e in ENTRIES]
+    urls = [("/dictionary/", "0.8"), ("/dictionary/map/", "0.8")] + [(f"/dictionary/{e['slug']}.html", "0.7") for e in ENTRIES]
     block = "\n  <!-- DICT-START -->\n" + "\n".join(
         f"  <url>\n    <loc>{SITE}{u}</loc>\n    <lastmod>{TODAY}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>{pr}</priority>\n  </url>"
         for u, pr in urls) + "\n  <!-- DICT-END -->\n"
@@ -314,6 +315,9 @@ def main():
             assert p in TITLES, (e["slug"], p)
         open(os.path.join(OUT, f"{e['slug']}.html"), "w", encoding="utf-8").write(render_entry(e))
     open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(render_index())
+    from build_map_page import render_map
+    os.makedirs(os.path.join(OUT, "map"), exist_ok=True)
+    open(os.path.join(OUT, "map", "index.html"), "w", encoding="utf-8").write(render_map(GEO, BY_SLUG, head, esc, FOOTER, SITE))
     open(os.path.join(OUT, "style.css"), "w", encoding="utf-8").write(CSS)
     update_sitemap()
     print(f"생성 완료: {len(ENTRIES)}개 항목 + 인덱스")

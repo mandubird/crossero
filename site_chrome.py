@@ -14,7 +14,7 @@ NAV_ITEMS = [  # (key, label, href)
     ("about", "소개", "/about.html"),
 ]
 
-FOOT_EXPLORE = [("퍼즐목록", "/list.html"), ("게시판", "/posts/index.html"), ("말씀 뽑기", "/verse/"),
+FOOT_EXPLORE = [("퍼즐목록", "/list.html"), ("성경 지도", "/dictionary/map/"), ("게시판", "/posts/index.html"), ("말씀 뽑기", "/verse/"),
                 ("성경 십자말풀이", "/bible-crossword.html"), ("십자말풀이 하는 법", "/how-to-crossword.html"),
                 ("주일학교 자료", "/sunday-school-materials.html"), ("교회·주일학교 활용", "/church-bulletin-puzzle.html"),
                 ("⭐ 후원자", "/supporters.html")]
