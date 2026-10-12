@@ -7,6 +7,9 @@ import random
 from PIL import Image, ImageDraw, ImageFont
 
 from dictionary_data_events_places import EVENTS, PLACES
+from dictionary_data_events2 import EVENTS2
+from dictionary_data_places2 import PLACES2
+from dictionary_data_terms import TERMS
 from dictionary_data_books_ot import OT
 from dictionary_data_books_nt import NT
 from dictionary_data_people import PEOPLE
@@ -15,7 +18,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, "images", "dictionary")
 FONT = "/System/Library/Fonts/AppleSDGothicNeo.ttc"
 LOGO = os.path.join(ROOT, "images", "crossero-logo.png")
-COLORS = {"인물": ((11, 92, 173), (0, 115, 230)), "사건": ((120, 53, 15), (217, 119, 6)), "지명": ((6, 95, 70), (16, 185, 129)), "성경 책": ((76, 29, 149), (139, 92, 246))}
+COLORS = {"인물": ((11, 92, 173), (0, 115, 230)), "사건": ((120, 53, 15), (217, 119, 6)), "지명": ((6, 95, 70), (16, 185, 129)), "신앙 용어": ((190, 24, 93), (236, 72, 153)), "성경 책": ((76, 29, 149), (139, 92, 246))}
 
 
 def font(size, bold=False):
@@ -88,7 +91,7 @@ def card(e, w, h):
 def main():
     os.makedirs(OUT, exist_ok=True)
     n = 0
-    for e in PEOPLE + EVENTS + PLACES + OT + NT:
+    for e in PEOPLE + EVENTS + EVENTS2 + PLACES + PLACES2 + TERMS + OT + NT:
         card(e, 1200, 630).save(os.path.join(OUT, f"{e['slug']}-bible-dictionary.png"), optimize=True)
         card(e, 1000, 1000).save(os.path.join(OUT, f"{e['slug']}-bible-dictionary-square.png"), optimize=True)
         n += 1
