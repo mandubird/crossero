@@ -13,7 +13,7 @@ import build_dictionary as bd
 import build_verse as bv
 from build_dictionary import esc, head, FOOTER, NAV, SITE, ROOT
 from verse_commentary import C as COMMENTARY
-from verse_lib import verse_url
+from verse_lib import verse_url, verse_slug
 
 EPOCH = date(2026, 10, 12)
 KST = timezone(timedelta(hours=9))
@@ -63,7 +63,7 @@ def render(day, data):
     ld = '<script type="application/ld+json">' + json.dumps({
         "@context": "https://schema.org", "@type": "WebPage", "name": "오늘의 말씀", "url": SITE + path,
         "inLanguage": "ko", "dateModified": day.isoformat(), "description": desc}, ensure_ascii=False) + "</script>"
-    h = head(title, desc, path, ld).replace(NAV, NAV.replace(" nav-active", "")).replace('og:type" content="article"', 'og:type" content="website"')
+    h = head(title, desc, path, ld, f"{SITE}/images/verse/{verse_slug(today_ref)}.jpg").replace(NAV, NAV.replace(" nav-active", "")).replace('og:type" content="article"', 'og:type" content="website"')
     h = h.replace("</head>", f"<style>{bv.CSS}\n.tday{{font-size:15px;color:#6b7b8d;margin:4px 0 0}}.past a{{color:inherit}}</style>\n</head>", 1)
     sm = summary_of(today_ref)
     ctx = ""

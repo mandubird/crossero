@@ -49,19 +49,21 @@ def render_page(ref, data, text, same_topic):
               "description": data["meaning"][:140], "inLanguage": "ko", "dateModified": bd.TODAY,
               "author": {"@type": "Organization", "name": "십자가로세로"},
               "publisher": {"@type": "Organization", "name": "십자가로세로", "url": SITE},
-              "mainEntityOfPage": SITE + path}
+              "image": f"{SITE}/images/verse/{slug}.jpg", "mainEntityOfPage": SITE + path}
     crumb_ld = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
         {"@type": "ListItem", "position": 1, "name": "홈", "item": SITE + "/"},
         {"@type": "ListItem", "position": 2, "name": "말씀 뽑기", "item": SITE + "/verse/"},
         {"@type": "ListItem", "position": 3, "name": ref, "item": SITE + path}]}
     ld = "".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>\n' for x in (art_ld, faq_ld, crumb_ld))
-    h = head(title, desc, path, ld).replace(NAV, NAV.replace(' nav-active', '')).replace("</head>", f"<style>{EXTRA_CSS}</style>\n</head>", 1)
+    img_url = f"{SITE}/images/verse/{slug}.jpg"
+    h = head(title, desc, path, ld, img_url).replace(NAV, NAV.replace(' nav-active', '')).replace("</head>", f"<style>{EXTRA_CSS}</style>\n</head>", 1)
 
     out = [h, '<main class="wrap">']
     out.append(f'<div class="crumb"><a href="/">홈</a> › <a href="/verse/">말씀 뽑기</a> › {esc(ref)}</div>')
     out.append(f'<span class="badge">{esc(topic)}</span>')
     out.append(f'<h1>{esc(ref)} 뜻과 해설</h1><div class="sub">{esc(name)} {c}장 {v}절 · 개역한글</div>')
     out.append(f'<div class="vq"><p>{esc(verse)}</p><div class="vr">{esc(ref)}</div></div>')
+    out.append(f'<figure style="margin:0 0 22px"><img src="/images/verse/{slug}.jpg" width="1200" height="630" alt="{esc(ref)} 말씀 카드 - {esc(topic)}" style="width:100%;height:auto;border-radius:14px;display:block" loading="lazy"></figure>')
     out.append("<h2>말씀의 배경</h2>" + f"<p>{esc(data['who'])}</p>")
     out.append("<h2>이 말씀의 뜻</h2>" + f"<p>{esc(data['meaning'])}</p>")
     ctx = ""

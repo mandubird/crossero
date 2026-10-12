@@ -176,7 +176,7 @@
   });
   $('vshare').addEventListener('click',function(){
     if(!cur)return;
-    var url=location.origin+'/verse/?v='+encodeURIComponent(cur.ref);
+    var url=location.origin+(window.__GUIDE[cur.ref]||('/verse/?v='+encodeURIComponent(cur.ref)));
     if(window.crsTrack) window.crsTrack('verse_share',{topic:cur.topic,ref:cur.ref});
     if(navigator.share){ navigator.share({title:'오늘의 말씀 - '+cur.ref,text:cur.text,url:url}).catch(function(){}); return; }
     if(navigator.clipboard){ navigator.clipboard.writeText(url).then(function(){ $('vshare').textContent='✅ 링크 복사됨'; setTimeout(function(){$('vshare').textContent='🔗 링크 공유';},1800); }); }
