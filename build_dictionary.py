@@ -61,7 +61,7 @@ body { font-family: 'Apple SD Gothic Neo','Noto Sans KR',sans-serif; background:
 a { color:#0073e6; }
 .nav { display:flex; justify-content:center; gap:10px; background:#fff; border-bottom:1px solid #e5e5e5; padding:12px 0; flex-wrap:wrap; }
 .nav-item { padding:8px 14px; font-size:14px; color:#444; text-decoration:none; border-radius:6px; white-space:nowrap; }
-.nav-item:hover { background:#f0f6ff; color:#0073e6; }
+.nav-item:not(.nav-active):hover { background:#f0f6ff; color:#0073e6; }
 .nav-active { background:#0073e6; color:#fff !important; font-weight:600; }
 .wrap { max-width:780px; margin:0 auto; padding:28px 20px 48px; }
 .crumb { font-size:13px; color:#888; margin-bottom:14px; }
