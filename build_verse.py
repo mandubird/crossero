@@ -93,7 +93,30 @@ JS = r"""
     [].forEach.call(pc,function(p){p.querySelector('.pt').textContent=d.text;p.querySelector('.pr').textContent=d.ref;});
     if(fromDraw&&window.crsTrack) window.crsTrack('verse_draw',{topic:d.topic,ref:d.ref});
   }
-  function draw(){
+
+  var busy=false;
+  function ritual(done){
+    if(busy) return; busy=true;
+    var ov=document.createElement('div');
+    ov.setAttribute('role','dialog'); ov.setAttribute('aria-live','polite');
+    ov.style.cssText='position:fixed;inset:0;z-index:9999;background:rgba(10,30,60,.72);display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;transition:opacity .35s';
+    ov.innerHTML='<div style="background:#fff;border-radius:20px;padding:34px 28px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.35)">'
+      +'<div style="font-size:44px;margin-bottom:10px">🙏</div>'
+      +'<p style="font-size:19px;font-weight:700;color:#0b2a4a;line-height:1.55;margin:0 0 6px">내게 주시는 말씀을<br>기도하며 기다려볼까요?</p>'
+      +'<p style="font-size:13px;color:#7b8794;margin:0 0 14px">잠시 마음을 고요히 하고 숨을 고릅니다</p>'
+      +'<div id="vdots" style="font-size:26px;letter-spacing:6px;color:#0073e6;height:30px">·</div></div>';
+    document.body.appendChild(ov);
+    requestAnimationFrame(function(){ov.style.opacity='1';});
+    var n=0, dots=ov.querySelector('#vdots');
+    var iv=setInterval(function(){n=(n+1)%4; dots.textContent=new Array(n+2).join('·');},450);
+    var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setTimeout(function(){
+      clearInterval(iv); ov.style.opacity='0';
+      setTimeout(function(){ if(ov.parentNode) ov.parentNode.removeChild(ov); busy=false; done(); },300);
+    }, reduce?1200:3200);
+  }
+  function draw(){ ritual(drawNow); }
+  function drawNow(){
     var p=pool(); if(!p.length) return;
     var d; var tries=0;
     do{ d=p[Math.floor(Math.random()*p.length)]; tries++; }while(p.length>1&&last&&d.ref===last.ref&&tries<10);
@@ -191,7 +214,6 @@ def render(data):
         for k, c in _SEASONS.items()) + '</div>'
     body = f"""<main class="vwrap">
 <div class="crumb" style="text-align:left"><a href="/">홈</a> › 말씀 뽑기</div>
-<span class="badge">무료 · 회원가입 없음</span>
 <h1 style="margin-top:10px">말씀 뽑기</h1>
 <div class="sub">오늘 마음에 필요한 말씀을 한 장 뽑아 보세요</div>
 <div class="sub" style="margin-top:-6px"><a href="/today/" data-ga="verse_to_today">📅 오늘의 말씀 보기</a></div>

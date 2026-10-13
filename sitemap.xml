@@ -2013,36 +2013,6 @@
   </url>
   <!-- VERSEPG-END -->
 
-  <!-- SEASON-START -->
-  <url>
-    <loc>https://crossero.com/verse/new-year/</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://crossero.com/verse/christmas/</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://crossero.com/verse/thanksgiving/</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- SEASON-END -->
-
-  <!-- VERSE-START -->
-  <url>
-    <loc>https://crossero.com/verse/</loc>
-    <lastmod>2026-10-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- VERSE-END -->
-
   <!-- DICT-START -->
   <url>
     <loc>https://crossero.com/dictionary/</loc>
@@ -2993,6 +2963,36 @@
     <priority>0.7</priority>
   </url>
   <!-- DICT-END -->
+
+  <!-- VERSE-START -->
+  <url>
+    <loc>https://crossero.com/verse/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- VERSE-END -->
+
+  <!-- SEASON-START -->
+  <url>
+    <loc>https://crossero.com/verse/new-year/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://crossero.com/verse/christmas/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://crossero.com/verse/thanksgiving/</loc>
+    <lastmod>2026-10-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- SEASON-END -->
 
   <!-- TEACH-START -->
   <url>
