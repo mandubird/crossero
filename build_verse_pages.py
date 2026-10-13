@@ -73,6 +73,9 @@ def render_page(ref, data, text, same_topic):
     if next_t:
         ctx += f'<p><b>{c}:{v+1}</b>{esc(next_t)}</p>'
     out.append("<h2>앞뒤 문맥</h2>" + f'<div class="ctx">{ctx}</div>')
+    from pilgrim_banner import banner as _pb, PAUL_VERSE_PREFIXES
+    if slug.startswith(PAUL_VERSE_PREFIXES):
+        out.append(_pb(slug, "verse"))
     out.append("<h2>묵상 질문</h2><ul class=\"qs\">" + "".join(f"<li>{esc(q)}</li>" for q in data["points"]) + "</ul>")
     out.append('<h2>자주 묻는 질문</h2><div class="faq">' + "".join(
         f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in data["faq"]) + "</div>")

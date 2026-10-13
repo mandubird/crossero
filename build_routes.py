@@ -71,6 +71,8 @@ def render_route(r, head, FOOTER, SITE, BY_SLUG):
     out.append(f'<div class="summary">{_esc(r["intro"])}</div>')
     out.append('<div id="bmap" role="application" aria-label="바울의 여행 경로 지도"></div>')
     out.append('<div style="font-size:12px;color:#7b8794">선은 방문 순서를 잇는 개략적인 경로입니다. 지도 © <a href="https://www.openstreetmap.org/copyright" rel="noopener nofollow">OpenStreetMap</a> 기여자 · 위치 데이터 <a href="https://github.com/openbibleinfo/Bible-Geocoding-Data" rel="noopener nofollow">OpenBible.info</a> CC BY 4.0</div>')
+    from pilgrim_banner import banner as _pb
+    out.append(_pb(r["slug"], "route2" if r["slug"] == "paul-journey-2" else "default"))
     out.append("<h2>방문한 곳 순서</h2><ol class=\"steps\">" + "".join(
         f'<li><b>{_esc(p["name"])}</b> <span class="sref">행 {_esc(p["ref"])}</span><br><span class="snote">{_esc(p["note"])} · 오늘의 {_esc(p["modern"])} 일대</span></li>' for p in pts) + "</ol>")
     out.append("<h2>자주 묻는 질문</h2>" + "".join(f'<div class="faq"><b>Q. {_esc(q)}</b><p>{_esc(a)}</p></div>' for q, a in faq))

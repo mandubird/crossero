@@ -43,6 +43,7 @@ GA = """<script async src="https://www.googletagmanager.com/gtag/js?id=G-DN6WXRL
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0717185892763061" crossorigin="anonymous"></script>"""
 
 from site_chrome import nav_html, footer_links_html
+from pilgrim_banner import banner as pilgrim_banner, PAUL_ENTRY_SLUGS
 try:
     from dictionary_geo_data import GEO
 except ImportError:
@@ -219,6 +220,8 @@ def render_entry(e):
     for h, paras in e["sections"]:
         out.append(f"<h2>{esc(h)}</h2>")
         out += [f"<p>{esc(p)}</p>" for p in paras]
+    if e["slug"] in PAUL_ENTRY_SLUGS:
+        out.append(pilgrim_banner(e["slug"], "place" if e["type"] == "지명" else "default"))
     out.append(render_geo(e))
     out.append("<h2>함께 읽을 본문</h2><ul class=\"refs\">" + "".join(
         f'<li><b>{esc(r)}</b> — {esc(n)}</li>' for r, n in e["refs"]) + "</ul>")

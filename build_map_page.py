@@ -47,6 +47,8 @@ def render_map(GEO, BY_SLUG, head, esc, FOOTER, SITE):
     out.append('<div style="font-size:12px;color:#7b8794">지도 © <a href="https://www.openstreetmap.org/copyright" rel="noopener nofollow">OpenStreetMap</a> 기여자 · '
                '데이터 <a href="https://github.com/openbibleinfo/Bible-Geocoding-Data" rel="noopener nofollow">OpenBible.info</a> CC BY 4.0</div>')
     from build_routes import ROUTES
+    from pilgrim_banner import banner as _pb
+    out.append(_pb("map"))
     out.append('<div class="idx-section"><h2>바울의 여행 경로</h2><div class="cards">' + "".join(
         f'<a class="card" href="/dictionary/map/{r["slug"]}.html"><b>{esc(r["short"])}</b><span>{esc(r["ref"])}</span></a>' for r in ROUTES) + "</div></div>")
     out.append(f'<div class="idx-section"><h2>지명 목록 ({len(pts)})</h2><div class="cards">' + "".join(
