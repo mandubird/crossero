@@ -1,33 +1,90 @@
 # -*- coding: utf-8 -*-
-"""사이트 공용 메뉴·푸터. 모든 HTML에 같은 구조를 적용한다(멱등). 사용: python3 site_chrome.py"""
+"""사이트 공용 메뉴·서브메뉴·푸터·'계속 둘러보기'. 모든 HTML에 같은 구조를 적용한다(멱등).
+사용: python3 site_chrome.py"""
 import glob
 import os
 import re
 
 NAV_ITEMS = [  # (key, label, href)
     ("home", "홈", "/index.html"),
-    ("puzzle", "퍼즐", "/play.html"),
-    ("today", "오늘의 말씀", "/today/"),
     ("dict", "성경사전", "/dictionary/"),
+    ("map", "성경지도", "/dictionary/map/"),
+    ("puzzle", "퍼즐", "/list.html"),
+    ("today", "오늘의 말씀", "/today/"),
     ("teacher", "교사허브", "/teachers/"),
-    ("support", "후원", "/support.html"),
-    ("about", "소개", "/about.html"),
 ]
 
-FOOT_EXPLORE = [("퍼즐목록", "/list.html"), ("성경 지도", "/dictionary/map/"), ("게시판", "/posts/index.html"), ("말씀 뽑기", "/verse/"),
-                ("성경 십자말풀이", "/bible-crossword.html"), ("십자말풀이 하는 법", "/how-to-crossword.html"),
-                ("주일학교 자료", "/sunday-school-materials.html"), ("교회·주일학교 활용", "/church-bulletin-puzzle.html"),
-                ("⭐ 후원자", "/supporters.html")]
-FOOT_POLICY = [("콘텐츠 제작 원칙", "/editorial-policy.html"), ("이용약관", "/terms.html"),
-               ("개인정보처리방침", "/privacy.html"), ("FAQ", "/faq.html"), ("문의", "mailto:mandubird@naver.com")]
+# 성경사전 분류 (type, 폴더, 칩 라벨, 아이콘, 설명)
+CATS = [
+    ("지명", "places", "성경 지명", "📍", "예루살렘, 베들레헴, 갈릴리 바다… 오늘의 위치와 사진까지"),
+    ("인물", "people", "성경 인물", "👤", "아브라함, 모세, 다윗, 바울… 삶과 핵심 구절"),
+    ("사건", "events", "성경 사건", "📜", "천지창조, 출애굽, 십자가와 부활… 흐름으로 이해"),
+    ("신앙 용어", "terms", "신앙 용어", "✝️", "구원, 은혜, 칭의, 성령… 쉬운 말로 풀이"),
+    ("성경 책", "books", "66권 요약", "📚", "창세기부터 요한계시록까지 책별 핵심 요약"),
+]
+TYPE2CAT = {c[0]: c for c in CATS}
 
 ACTIVE_RULES = [  # (경로 접두어/이름, key) 위에서부터 첫 일치
-    ("index.html", "home"), ("play.html", "puzzle"), ("play2.html", "puzzle"), ("list.html", "puzzle"), ("posts/", "puzzle"),
-    ("today/", "today"), ("verse/", "today"), ("dictionary/", "dict"), ("teachers/", "teacher"),
-    ("sunday-school", "teacher"), ("church-bulletin", "teacher"),
-    ("support.html", "support"), ("sponsor.html", "support"), ("supporters.html", "support"),
-    ("about.html", "about"), ("faq.html", "about"), ("editorial-policy.html", "about"),
+    ("index.html", "home"), ("dictionary/map/", "map"), ("dictionary/", "dict"),
+    ("play.html", "puzzle"), ("play2.html", "puzzle"), ("list.html", "puzzle"), ("posts/", "puzzle"),
+    ("bible-crossword", "puzzle"), ("how-to-crossword", "puzzle"),
+    ("today/", "today"), ("verse/", "today"),
+    ("teachers/", "teacher"), ("sunday-school", "teacher"), ("church-bulletin", "teacher"),
 ]
+
+FOOT_COLS = [
+    ("성경사전", [("📍 성경 지명", "/dictionary/places/"), ("👤 성경 인물", "/dictionary/people/"), ("📜 성경 사건", "/dictionary/events/"),
+                 ("✝️ 신앙 용어", "/dictionary/terms/"), ("📚 66권 요약", "/dictionary/books/"), ("🗺️ 성경 지도", "/dictionary/map/")]),
+    ("말씀·묵상", [("오늘의 말씀", "/today/"), ("말씀 뽑기", "/verse/"), ("새해 말씀 뽑기", "/verse/new-year/"),
+                 ("성탄 말씀 뽑기", "/verse/christmas/"), ("추수감사 말씀 뽑기", "/verse/thanksgiving/")]),
+    ("퍼즐·교사 자료", [("퍼즐 목록", "/list.html"), ("퍼즐 게시판", "/posts/index.html"), ("성경 십자말풀이", "/bible-crossword.html"),
+                   ("십자말풀이 하는 법", "/how-to-crossword.html"), ("교사 허브", "/teachers/"), ("주일학교 자료", "/sunday-school-materials.html"),
+                   ("교회·주일학교 활용", "/church-bulletin-puzzle.html")]),
+    ("십자가로세로", [("서비스 소개", "/about.html"), ("후원하기", "/support.html"), ("⭐ 후원자", "/supporters.html"), ("FAQ", "/faq.html"),
+                  ("콘텐츠 제작 원칙", "/editorial-policy.html"), ("이용약관", "/terms.html"), ("개인정보처리방침", "/privacy.html"),
+                  ("문의", "mailto:mandubird@naver.com")]),
+]
+
+MORE = [  # key, 아이콘, 제목, 설명, href
+    ("dict", "📖", "성경사전", "인물·사건·지명·용어 한눈에", "/dictionary/"),
+    ("map", "🗺️", "성경 지도", "지명이 지금은 어디에?", "/dictionary/map/"),
+    ("today", "📅", "오늘의 말씀", "매일 새로운 한 구절", "/today/"),
+    ("puzzle", "🧩", "성경 퍼즐", "말씀을 가로세로로 풀어요", "/list.html"),
+    ("teacher", "🧑‍🏫", "교사 허브", "주일학교 자료 모음", "/teachers/"),
+]
+
+CSS = """
+.nav{position:sticky;top:0;z-index:100;display:flex!important;justify-content:center;gap:4px!important;flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav .nav-item{flex:0 0 auto;padding:11px 15px!important;font-size:15px!important}
+@media (max-width:640px){.nav{justify-content:space-between!important;gap:0!important;padding:2px 4px!important}.nav .nav-item{padding:11px 7px!important;font-size:13.5px!important}}
+.subnav{background:#fff;border-bottom:1px solid #e5e5e5}
+.subnav-in{display:flex;gap:8px;overflow-x:auto;padding:10px 14px;max-width:820px;margin:0 auto;scrollbar-width:none}
+.subnav-in::-webkit-scrollbar{display:none}
+.sn-chip{flex:0 0 auto;padding:7px 13px;border-radius:18px;border:1px solid #d6e2f1;background:#f5f9ff;color:#33506e!important;font-size:13.5px;text-decoration:none!important;white-space:nowrap}
+.sn-chip:hover{background:#e6f0ff}
+.sn-chip.on{background:#0073e6;border-color:#0073e6;color:#fff!important;font-weight:700}
+.site-more{max-width:820px;margin:34px auto 8px;padding:0 16px}
+.site-more h2{font-size:16px;margin:0 0 10px;color:#334}
+.sm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sm-card{display:block;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 12px;text-decoration:none!important;color:#222!important}
+.sm-card:hover{border-color:#0073e6;background:#f5f9ff}
+.sm-card b{display:block;font-size:14px}
+.sm-card span{display:block;font-size:12px;color:#667;margin-top:2px;line-height:1.4}
+.fnav{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 14px;max-width:820px;margin:0 auto 16px;padding:0 16px;text-align:left}
+.fnav h3{font-size:13px;color:#334;margin:0 0 8px}
+.fnav a{display:block;font-size:13px;color:#666;text-decoration:none;padding:4px 0}
+.fnav a:hover{color:#0073e6}
+.home-hub{max-width:820px;margin:0 auto 22px}
+.home-hub h2{font-size:18px;margin:6px 0 10px;text-align:center}
+.hh-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.hh-card{display:block;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px 8px;text-align:center;text-decoration:none!important;color:#222!important}
+.hh-card:hover{border-color:#0073e6;background:#f5f9ff}
+.hh-card i{display:block;font-style:normal;font-size:26px;margin-bottom:4px}
+.hh-card b{display:block;font-size:14px}
+.hh-card span{display:block;font-size:11.5px;color:#667;margin-top:2px}
+@media (max-width:640px){.sm-grid,.hh-grid{grid-template-columns:repeat(2,1fr)}.fnav{grid-template-columns:repeat(2,1fr)}}
+"""
 
 
 def active_key(path):
@@ -42,55 +99,107 @@ def nav_html(key):
     return '<nav class="nav">\n' + "\n".join(rows) + "\n</nav>"
 
 
-def _row(links):
-    a = "".join(f'\n    <a href="{h}" style="font-size:13px;color:#666;text-decoration:none;">{t}</a>' for t, h in links)
-    return f'  <div class="footer-links" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;">{a}\n  </div>'
+def subnav_html(path, s):
+    on = None
+    if path == "dictionary/map/index.html" or path.startswith("dictionary/map/"):
+        on = "map"
+    elif path == "dictionary/index.html":
+        on = "all"
+    else:
+        m = re.match(r"dictionary/(places|people|events|terms|books)/index\.html$", path)
+        if m:
+            on = m.group(1)
+        else:
+            b = re.search(r'<span class="badge">([^<]+)</span>', s)
+            if b and b.group(1) in TYPE2CAT:
+                on = TYPE2CAT[b.group(1)][1]
+    chips = [("all", "전체", "/dictionary/")] + [(c[1], f"{c[3]} {c[2]}", f"/dictionary/{c[1]}/") for c in CATS] + [("map", "🗺️ 성경 지도", "/dictionary/map/")]
+    a = "".join(f'<a class="sn-chip{" on" if k == on else ""}" href="{h}">{t}</a>' for k, t, h in chips)
+    return f'<!--SUBNAV--><div class="subnav"><div class="subnav-in">{a}</div></div><!--/SUBNAV-->'
 
 
-def footer_links_html():
-    return _row(FOOT_EXPLORE) + "\n" + _row(FOOT_POLICY)
+def footer_html():
+    cols = "".join(
+        f'<div><h3>{h}</h3>' + "".join(f'<a href="{u}">{t}</a>' for t, u in links) + "</div>" for h, links in FOOT_COLS)
+    return f'<!--FL--><nav class="fnav" aria-label="사이트 전체 메뉴">{cols}</nav><!--/FL-->'
 
 
-def _enclosing_div(s, idx):
-    start = s.rfind("<div", 0, idx)
-    end = s.find("</div>", idx)
-    if start < 0 or end < 0:
-        return None
-    if "<div" in s[start + 4:end]:
-        return None
-    return start, end + 6
+def more_html(key):
+    cards = [m for m in MORE if m[0] != key][:4]
+    g = "".join(f'<a class="sm-card" href="{h}" data-ga="more_click" data-ga-label="{k}"><b>{i} {t}</b><span>{d}</span></a>' for k, i, t, d, h in cards)
+    return f'<!--MORE--><section class="site-more"><h2>계속 둘러보기</h2><div class="sm-grid">{g}</div></section><!--/MORE-->'
+
+
+def hub_html():
+    cards = [("📍", "성경 지명", "오늘의 위치와 사진", "/dictionary/places/"), ("👤", "성경 인물", "삶과 핵심 구절", "/dictionary/people/"),
+             ("📜", "성경 사건", "흐름으로 이해", "/dictionary/events/"), ("🗺️", "성경 지도", "지명이 지금은?", "/dictionary/map/"),
+             ("🧩", "퍼즐 풀기", "가로세로 낱말 퍼즐", "/list.html"), ("📅", "오늘의 말씀", "매일 새로운 구절", "/today/"),
+             ("🎴", "말씀 뽑기", "내게 주시는 말씀", "/verse/"), ("🧑‍🏫", "교사 허브", "주일학교 자료", "/teachers/")]
+    g = "".join(f'<a class="hh-card" href="{h}" data-ga="home_hub_click" data-ga-label="{t}"><i>{ic}</i><b>{t}</b><span>{d}</span></a>' for ic, t, d, h in cards)
+    return f'<!--HUB--><section class="home-hub"><h2>무엇을 찾으세요?</h2><div class="hh-grid">{g}</div></section><!--/HUB-->'
+
+
+def _strip(s, tag):
+    return re.sub(rf"<!--{tag}-->.*?<!--/{tag}-->\n?", "", s, flags=re.S)
 
 
 def apply(path, s):
     key = active_key(path)
+    # 스타일
+    s = re.sub(r'<style id="crs-chrome">.*?</style>\n?', "", s, flags=re.S)
+    s = s.replace("</head>", f'<style id="crs-chrome">{CSS}</style>\n</head>', 1)
+    # 메뉴 + 서브메뉴
+    s = _strip(s, "SUBNAV")
     s = re.sub(r'<nav class="nav">.*?</nav>', lambda m: nav_html(key), s, count=1, flags=re.S)
+    if path.startswith("dictionary/"):
+        s = s.replace("</nav>", "</nav>\n" + subnav_html(path, s), 1)
+    # 홈 허브
+    s = _strip(s, "HUB")
+    if path == "index.html":
+        s = s.replace("<main>", "<main>\n" + hub_html(), 1)
+    # 푸터
     f0 = s.find("<footer")
     if f0 < 0:
         return s
     f1 = s.find("</footer>", f0)
     foot = s[f0:f1]
-    # 만든 이유/후원 응원 버튼 줄 제거
     i = foot.find("만든 이유")
-    if i >= 0:
-        r = _enclosing_div(foot, i)
-        if r:
-            foot = foot[:r[0]] + foot[r[1]:]
-    # 이미 적용된 줄 제거 후, 기존 링크 줄이 있던 자리에 한 번만 삽입
+    if i >= 0:  # 예전 CTA 버튼 줄
+        st = foot.rfind("<div", 0, i)
+        en = foot.find("</div>", i)
+        if st >= 0 and en >= 0 and "<div" not in foot[st + 4:en]:
+            foot = foot[:st] + foot[en + 6:]
+    legacy = None
+    fm = re.search(r"<!--FL-->.*?<!--/FL-->\n?", foot, flags=re.S)
+    if fm:
+        legacy = fm.start()
+        foot = foot[:fm.start()] + foot[fm.end():]
     rows = re.compile(r'[ \t]*<div class="footer-links"[^>]*>.*?</div>\n?', re.S)
-    if 'footer-links' in foot:
-        m = rows.search(foot)
-        pos = m.start()
+    m = rows.search(foot)
+    if m:
+        if legacy is None:
+            legacy = m.start()
         foot = rows.sub("", foot)
-        foot = foot[:pos] + footer_links_html() + "\n" + foot[pos:]
-        return s[:f0] + foot + s[f1:]
-    i = foot.find("privacy.html")
-    if i < 0:
-        i = foot.find("sunday-school-materials.html")
-    if i >= 0:
-        r = _enclosing_div(foot, i)
-        if r:
-            foot = foot[:r[0]] + footer_links_html() + foot[r[1]:]
-    return s[:f0] + foot + s[f1:]
+    elif legacy is None:  # 아주 오래된 게시글: 주일학교 자료 한 줄만 있는 푸터
+        j = foot.find("sunday-school-materials.html")
+        if j >= 0:
+            st = foot.rfind("<div", 0, j)
+            en = foot.find("</div>", j)
+            if st >= 0 and en >= 0 and "<div" not in foot[st + 4:en]:
+                legacy = st
+                foot = foot[:st] + foot[en + 6:]
+    block = footer_html() + "\n"
+    if legacy is None:
+        k = foot.find("<div class=\"footer-divider\"></div>")
+        legacy = (k + len('<div class="footer-divider"></div>')) if k >= 0 else len("<footer>")
+    foot = foot[:legacy] + block + foot[legacy:]
+    s = s[:f0] + foot + s[f1:]
+    # 계속 둘러보기(푸터 바로 위, 게임 화면 제외)
+    s = _strip(s, "MORE")
+    if not path.startswith(("play.html", "play2.html")):
+        f0 = s.find("<footer")
+        s = s[:f0] + more_html(key) + "\n" + s[f0:]
+    return s
 
 
 def main():

@@ -66,16 +66,47 @@
   .vprintall .pf{margin-top:3mm;font-size:7pt;color:#999}
 }
 </style>
+<style id="crs-chrome">
+.nav{position:sticky;top:0;z-index:100;display:flex!important;justify-content:center;gap:4px!important;flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav .nav-item{flex:0 0 auto;padding:11px 15px!important;font-size:15px!important}
+@media (max-width:640px){.nav{justify-content:space-between!important;gap:0!important;padding:2px 4px!important}.nav .nav-item{padding:11px 7px!important;font-size:13.5px!important}}
+.subnav{background:#fff;border-bottom:1px solid #e5e5e5}
+.subnav-in{display:flex;gap:8px;overflow-x:auto;padding:10px 14px;max-width:820px;margin:0 auto;scrollbar-width:none}
+.subnav-in::-webkit-scrollbar{display:none}
+.sn-chip{flex:0 0 auto;padding:7px 13px;border-radius:18px;border:1px solid #d6e2f1;background:#f5f9ff;color:#33506e!important;font-size:13.5px;text-decoration:none!important;white-space:nowrap}
+.sn-chip:hover{background:#e6f0ff}
+.sn-chip.on{background:#0073e6;border-color:#0073e6;color:#fff!important;font-weight:700}
+.site-more{max-width:820px;margin:34px auto 8px;padding:0 16px}
+.site-more h2{font-size:16px;margin:0 0 10px;color:#334}
+.sm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sm-card{display:block;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 12px;text-decoration:none!important;color:#222!important}
+.sm-card:hover{border-color:#0073e6;background:#f5f9ff}
+.sm-card b{display:block;font-size:14px}
+.sm-card span{display:block;font-size:12px;color:#667;margin-top:2px;line-height:1.4}
+.fnav{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 14px;max-width:820px;margin:0 auto 16px;padding:0 16px;text-align:left}
+.fnav h3{font-size:13px;color:#334;margin:0 0 8px}
+.fnav a{display:block;font-size:13px;color:#666;text-decoration:none;padding:4px 0}
+.fnav a:hover{color:#0073e6}
+.home-hub{max-width:820px;margin:0 auto 22px}
+.home-hub h2{font-size:18px;margin:6px 0 10px;text-align:center}
+.hh-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.hh-card{display:block;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px 8px;text-align:center;text-decoration:none!important;color:#222!important}
+.hh-card:hover{border-color:#0073e6;background:#f5f9ff}
+.hh-card i{display:block;font-style:normal;font-size:26px;margin-bottom:4px}
+.hh-card b{display:block;font-size:14px}
+.hh-card span{display:block;font-size:11.5px;color:#667;margin-top:2px}
+@media (max-width:640px){.sm-grid,.hh-grid{grid-template-columns:repeat(2,1fr)}.fnav{grid-template-columns:repeat(2,1fr)}}
+</style>
 </head>
 <body>
 <nav class="nav">
   <a href="/index.html" class="nav-item">홈</a>
-  <a href="/play.html" class="nav-item">퍼즐</a>
-  <a href="/today/" class="nav-item nav-active">오늘의 말씀</a>
   <a href="/dictionary/" class="nav-item">성경사전</a>
+  <a href="/dictionary/map/" class="nav-item">성경지도</a>
+  <a href="/list.html" class="nav-item">퍼즐</a>
+  <a href="/today/" class="nav-item nav-active">오늘의 말씀</a>
   <a href="/teachers/" class="nav-item">교사허브</a>
-  <a href="/support.html" class="nav-item">후원</a>
-  <a href="/about.html" class="nav-item">소개</a>
 </nav>
 
 <main class="vwrap">
@@ -110,25 +141,9 @@
 <div class="vprint" aria-hidden="true"><div class="pc"><div class="pt"></div><div class="pr"></div><div class="pf">성탄 말씀 뽑기 · 십자가로세로</div></div><div class="pc"><div class="pt"></div><div class="pr"></div><div class="pf">성탄 말씀 뽑기 · 십자가로세로</div></div><div class="pc"><div class="pt"></div><div class="pr"></div><div class="pf">성탄 말씀 뽑기 · 십자가로세로</div></div><div class="pc"><div class="pt"></div><div class="pr"></div><div class="pf">성탄 말씀 뽑기 · 십자가로세로</div></div></div>
 <div class="vprintall" aria-hidden="true"></div>
 </main>
+<!--MORE--><section class="site-more"><h2>계속 둘러보기</h2><div class="sm-grid"><a class="sm-card" href="/dictionary/" data-ga="more_click" data-ga-label="dict"><b>📖 성경사전</b><span>인물·사건·지명·용어 한눈에</span></a><a class="sm-card" href="/dictionary/map/" data-ga="more_click" data-ga-label="map"><b>🗺️ 성경 지도</b><span>지명이 지금은 어디에?</span></a><a class="sm-card" href="/list.html" data-ga="more_click" data-ga-label="puzzle"><b>🧩 성경 퍼즐</b><span>말씀을 가로세로로 풀어요</span></a><a class="sm-card" href="/teachers/" data-ga="more_click" data-ga-label="teacher"><b>🧑‍🏫 교사 허브</b><span>주일학교 자료 모음</span></a></div></section><!--/MORE-->
 <footer>
-  <div class="footer-links" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;">
-    <a href="/list.html" style="font-size:13px;color:#666;text-decoration:none;">퍼즐목록</a>
-    <a href="/dictionary/map/" style="font-size:13px;color:#666;text-decoration:none;">성경 지도</a>
-    <a href="/posts/index.html" style="font-size:13px;color:#666;text-decoration:none;">게시판</a>
-    <a href="/verse/" style="font-size:13px;color:#666;text-decoration:none;">말씀 뽑기</a>
-    <a href="/bible-crossword.html" style="font-size:13px;color:#666;text-decoration:none;">성경 십자말풀이</a>
-    <a href="/how-to-crossword.html" style="font-size:13px;color:#666;text-decoration:none;">십자말풀이 하는 법</a>
-    <a href="/sunday-school-materials.html" style="font-size:13px;color:#666;text-decoration:none;">주일학교 자료</a>
-    <a href="/church-bulletin-puzzle.html" style="font-size:13px;color:#666;text-decoration:none;">교회·주일학교 활용</a>
-    <a href="/supporters.html" style="font-size:13px;color:#666;text-decoration:none;">⭐ 후원자</a>
-  </div>
-  <div class="footer-links" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;">
-    <a href="/editorial-policy.html" style="font-size:13px;color:#666;text-decoration:none;">콘텐츠 제작 원칙</a>
-    <a href="/terms.html" style="font-size:13px;color:#666;text-decoration:none;">이용약관</a>
-    <a href="/privacy.html" style="font-size:13px;color:#666;text-decoration:none;">개인정보처리방침</a>
-    <a href="/faq.html" style="font-size:13px;color:#666;text-decoration:none;">FAQ</a>
-    <a href="mailto:mandubird@naver.com" style="font-size:13px;color:#666;text-decoration:none;">문의</a>
-  </div>
+<!--FL--><nav class="fnav" aria-label="사이트 전체 메뉴"><div><h3>성경사전</h3><a href="/dictionary/places/">📍 성경 지명</a><a href="/dictionary/people/">👤 성경 인물</a><a href="/dictionary/events/">📜 성경 사건</a><a href="/dictionary/terms/">✝️ 신앙 용어</a><a href="/dictionary/books/">📚 66권 요약</a><a href="/dictionary/map/">🗺️ 성경 지도</a></div><div><h3>말씀·묵상</h3><a href="/today/">오늘의 말씀</a><a href="/verse/">말씀 뽑기</a><a href="/verse/new-year/">새해 말씀 뽑기</a><a href="/verse/christmas/">성탄 말씀 뽑기</a><a href="/verse/thanksgiving/">추수감사 말씀 뽑기</a></div><div><h3>퍼즐·교사 자료</h3><a href="/list.html">퍼즐 목록</a><a href="/posts/index.html">퍼즐 게시판</a><a href="/bible-crossword.html">성경 십자말풀이</a><a href="/how-to-crossword.html">십자말풀이 하는 법</a><a href="/teachers/">교사 허브</a><a href="/sunday-school-materials.html">주일학교 자료</a><a href="/church-bulletin-puzzle.html">교회·주일학교 활용</a></div><div><h3>십자가로세로</h3><a href="/about.html">서비스 소개</a><a href="/support.html">후원하기</a><a href="/supporters.html">⭐ 후원자</a><a href="/faq.html">FAQ</a><a href="/editorial-policy.html">콘텐츠 제작 원칙</a><a href="/terms.html">이용약관</a><a href="/privacy.html">개인정보처리방침</a><a href="mailto:mandubird@naver.com">문의</a></div></nav><!--/FL-->
   <p style="font-size:12px;color:#aaa;">© 2026 십자가로세로. All rights reserved.</p>
 </footer>
 <script>window.__POOL=[{"topic":"성탄","ref":"누가복음 2:11","text":"오늘날 다윗의 동네에 너희를 위하여 구주가 나셨으니 곧 그리스도 주시니라"},{"topic":"성탄","ref":"누가복음 2:10","text":"천사가 이르되 무서워 말라 보라 내가 온 백성에게 미칠 큰 기쁨의 좋은 소식을 너희에게 전하노라"},{"topic":"성탄","ref":"누가복음 2:14","text":"지극히 높은 곳에서는 하나님께 영광이요 땅에서는 기뻐하심을 입은 사람들 중에 평화로다 하니라"},{"topic":"성탄","ref":"마태복음 1:21","text":"아들을 낳으리니 이름을 예수라 하라 이는 그가 자기 백성을 저희 죄에서 구원할 자이심이라 하니라"},{"topic":"성탄","ref":"마태복음 1:23","text":"보라 처녀가 잉태하여 아들을 낳을 것이요 그 이름은 임마누엘이라 하리라 하셨으니 이를 번역한즉 하나님이 우리와 함께 계시다 함이라"},{"topic":"성탄","ref":"이사야 9:6","text":"이는 한 아기가 우리에게 났고 한 아들을 우리에게 주신 바 되었는데 그 어깨에는 정사를 메었고 그 이름은 기묘자라, 모사라, 전능하신 하나님이라, 영존하시는 아버지라, 평강의 왕이라 할 것임이라"},{"topic":"성탄","ref":"이사야 7:14","text":"그러므로 주께서 친히 징조로 너희에게 주실 것이라 보라 처녀가 잉태하여 아들을 낳을 것이요 그 이름을 임마누엘이라 하리라"},{"topic":"성탄","ref":"요한복음 1:14","text":"말씀이 육신이 되어 우리 가운데 거하시매 우리가 그 영광을 보니 아버지의 독생자의 영광이요 은혜와 진리가 충만하더라"},{"topic":"성탄","ref":"요한복음 1:9","text":"참 빛 곧 세상에 와서 각 사람에게 비취는 빛이 있었나니"},{"topic":"성탄","ref":"미가 5:2","text":"베들레헴 에브라다야 너는 유다 족속 중에 작을지라도 이스라엘을 다스릴 자가 네게서 내게로 나올 것이라 그의 근본은 상고에, 태초에니라"},{"topic":"성탄","ref":"누가복음 2:7","text":"맏아들을 낳아 강보로 싸서 구유에 뉘었으니 이는 사관에 있을 곳이 없음이러라"},{"topic":"성탄","ref":"누가복음 1:37","text":"대저 하나님의 모든 말씀은 능치 못하심이 없느니라"},{"topic":"성탄","ref":"누가복음 1:47","text":"내 마음이 하나님 내 구주를 기뻐하였음은"},{"topic":"성탄","ref":"마태복음 2:10","text":"저희가 별을 보고 가장 크게 기뻐하고 기뻐하더라"},{"topic":"성탄","ref":"마태복음 2:11","text":"집에 들어가 아기와 그 모친 마리아의 함께 있는 것을 보고 엎드려 아기께 경배하고 보배합을 열어 황금과 유향과 몰약을 예물로 드리니라"},{"topic":"성탄","ref":"갈라디아서 4:4","text":"때가 차매 하나님이 그 아들을 보내사 여자에게서 나게 하시고 율법 아래 나게 하신 것은"},{"topic":"성탄","ref":"빌립보서 2:7","text":"오히려 자기를 비어 종의 형체를 가져 사람들과 같이 되었고"},{"topic":"성탄","ref":"고린도후서 9:15","text":"말할 수 없는 그의 은사를 인하여 하나님께 감사하노라"},{"topic":"성탄","ref":"요한일서 4:9","text":"하나님의 사랑이 우리에게 이렇게 나타난 바 되었으니 하나님이 자기의 독생자를 세상에 보내심은 저로 말미암아 우리를 살리려 하심이니라"},{"topic":"성탄","ref":"디모데전서 1:15","text":"미쁘다 모든 사람이 받을 만한 이 말이여 그리스도 예수께서 죄인을 구원하시려고 세상에 임하셨다 하였도다 죄인 중에 내가 괴수니라"},{"topic":"성탄","ref":"이사야 9:2","text":"흑암에 행하던 백성이 큰 빛을 보고 사망의 그늘진 땅에 거하던 자에게 빛이 비취도다"},{"topic":"성탄","ref":"누가복음 1:30","text":"천사가 일러 가로되 마리아여 무서워 말라 네가 하나님께 은혜를 얻었느니라"},{"topic":"성탄","ref":"누가복음 2:12","text":"너희가 가서 강보에 싸여 구유에 누인 아기를 보리니 이것이 너희에게 표적이니라 하더니"},{"topic":"성탄","ref":"요한복음 3:16","text":"하나님이 세상을 이처럼 사랑하사 독생자를 주셨으니 이는 저를 믿는 자마다 멸망치 않고 영생을 얻게 하려 하심이니라"},{"topic":"성탄","ref":"로마서 5:8","text":"우리가 아직 죄인 되었을 때에 그리스도께서 우리를 위하여 죽으심으로 하나님께서 우리에게 대한 자기의 사랑을 확증하셨느니라"}];window.__SEASON="christmas";window.__LABEL="성탄 말씀 뽑기";</script>

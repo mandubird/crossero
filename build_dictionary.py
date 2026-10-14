@@ -42,7 +42,7 @@ GA = """<script async src="https://www.googletagmanager.com/gtag/js?id=G-DN6WXRL
 <script type="text/javascript">(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","vin36biyig");</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0717185892763061" crossorigin="anonymous"></script>"""
 
-from site_chrome import nav_html, footer_links_html
+from site_chrome import nav_html, footer_html
 from pilgrim_banner import banner as pilgrim_banner, PAUL_ENTRY_SLUGS
 try:
     from dictionary_geo_data import GEO
@@ -52,7 +52,7 @@ except ImportError:
 NAV = nav_html("dict")
 
 FOOTER = f"""<footer>
-{footer_links_html()}
+{footer_html()}
   <p style="font-size:12px;color:#aaa;">© 2026 십자가로세로. All rights reserved.</p>
 </footer>"""
 
@@ -175,6 +175,12 @@ def render_geo(e):
     return "".join(out)
 
 
+def _cat_crumb(e):
+    from site_chrome import TYPE2CAT
+    c = TYPE2CAT.get(e["type"])
+    return f'<a href="/dictionary/{c[1]}/">{c[2]}</a> › ' if c else ""
+
+
 def render_entry(e):
     path = f"/dictionary/{e['slug']}.html"
     if e["type"] == "성경 책":
@@ -210,7 +216,7 @@ def render_entry(e):
                  for x in (article_ld, faq_ld, crumb_ld))
 
     out = [head(title, desc, path, ld, img_wide), '<main class="wrap">']
-    out.append(f'<div class="crumb"><a href="/">홈</a> › <a href="/dictionary/">성경사전</a> › {esc(e["name"])}</div>')
+    out.append(f'<div class="crumb"><a href="/">홈</a> › <a href="/dictionary/">성경사전</a> › {_cat_crumb(e)}{esc(e["name"])}</div>')
     out.append(f'<span class="badge">{esc(e["type"])}</span>')
     out.append(f'<h1>{esc(e["name"])}</h1><div class="sub">{esc(e["sub"])}</div>')
     out.append(f'<div class="summary">{esc(e["summary"])}</div>')
@@ -299,7 +305,7 @@ def update_sitemap():
     s = open(p, encoding="utf-8").read()
     s = re.sub(r"\s*<!-- DICT-START -->.*?<!-- DICT-END -->", "", s, flags=re.S)
     from build_routes import ROUTES as _R
-    urls = [("/dictionary/", "0.8"), ("/dictionary/map/", "0.8")] + [(f"/dictionary/map/{r['slug']}.html", "0.7") for r in _R]
+    urls = [("/dictionary/", "0.8"), ("/dictionary/map/", "0.8")] + [(f"/dictionary/{c[1]}/", "0.8") for c in __import__("site_chrome").CATS] + [(f"/dictionary/map/{r['slug']}.html", "0.7") for r in _R]
     urls += [(f"/dictionary/{e['slug']}.html", "0.7") for e in ENTRIES]
     block = "\n  <!-- DICT-START -->\n" + "\n".join(
         f"  <url>\n    <loc>{SITE}{u}</loc>\n    <lastmod>{TODAY}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>{pr}</priority>\n  </url>"
@@ -319,7 +325,13 @@ def main():
         for p in e["puzzles"]:
             assert p in TITLES, (e["slug"], p)
         open(os.path.join(OUT, f"{e['slug']}.html"), "w", encoding="utf-8").write(render_entry(e))
-    open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(render_index())
+    from build_dict_categories import render_index as _ri, render_category as _rc
+    from site_chrome import CATS as _CATS
+    ctx = dict(ENTRIES=ENTRIES, BY_SLUG=BY_SLUG, head=head, esc=esc, FOOTER=FOOTER, SITE=SITE, BOOKS=BOOKS, BOOK_GROUPS=BOOK_GROUPS)
+    open(os.path.join(OUT, "index.html"), "w", encoding="utf-8").write(_ri(ctx))
+    for c in _CATS:
+        os.makedirs(os.path.join(OUT, c[1]), exist_ok=True)
+        open(os.path.join(OUT, c[1], "index.html"), "w", encoding="utf-8").write(_rc(c, ctx))
     from build_map_page import render_map
     os.makedirs(os.path.join(OUT, "map"), exist_ok=True)
     open(os.path.join(OUT, "map", "index.html"), "w", encoding="utf-8").write(render_map(GEO, BY_SLUG, head, esc, FOOTER, SITE))
