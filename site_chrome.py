@@ -161,10 +161,15 @@ def hub_html():
 
 
 def peek_html():
+    # 위치: 메뉴(서브메뉴) 바닥 기준 오프셋. 페이지마다 본문 시작 높이가 달라 콘텐츠를 덜 가리도록 조정한다.
     return ('<!--PEEK--><a class="peek" id="crsPeek" href="/support.html" data-ga="peek_support_click" aria-label="후원하기">'
-            '<span class="peek-b">후원 ❤️</span><img src="/images/mascot-peek.png" alt="" width="62" height="auto"></a>'
-            '<script>try{if(sessionStorage.getItem("peekOff")){var e=document.getElementById("crsPeek");if(e)e.style.display="none"}}catch(x){}'
-            'document.addEventListener("keydown",function(){});</script><!--/PEEK-->')
+            '<span class="peek-b">후원 ❤️</span><img src="/images/mascot-peek.png" alt="" width="62" height="78"></a>'
+            '<script>(function(){var e=document.getElementById("crsPeek");if(!e)return;'
+            'try{if(sessionStorage.getItem("peekOff")){e.style.display="none";return}}catch(x){}'
+            'function pos(){var sn=document.querySelector(".subnav"),nv=document.querySelector(".nav"),el=sn||nv;if(!el)return;'
+            'var b=el.getBoundingClientRect().bottom,p=location.pathname,o=sn?22:(/^\\/(list|puzzle)/.test(p)?6:66);'
+            'e.style.top=Math.max(48,b+o)+"px"}'
+            'pos();window.addEventListener("resize",pos);window.addEventListener("load",pos)})();</script><!--/PEEK-->')
 
 
 def _strip(s, tag):
