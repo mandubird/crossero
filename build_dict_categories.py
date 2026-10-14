@@ -52,6 +52,7 @@ def render_index(ctx):
         sample = " · ".join(e["name"] for e in items[:4])
         tiles.append(f'<a class="tile" href="/dictionary/{folder}/" data-ga="dict_tile" data-ga-label="{folder}"><i>{icon}</i><b>{label}</b><em>{len(items)}개</em><span>{esc(d)}</span><small>{esc(sample)} …</small></a>')
     tiles.append('<a class="tile" href="/dictionary/map/" data-ga="dict_tile" data-ga-label="map"><i>🗺️</i><b>성경 지도</b><em>지도 보기</em><span>지명이 지금은 어디에 있을까? 바울의 여행 경로까지</span><small>예루살렘 · 갈릴리 · 에베소 · 로마 …</small></a>')
+    tiles.append('<a class="tile" href="/dictionary/verses/" data-ga="dict_tile" data-ga-label="verses"><i>📖</i><b>구절로 찾기</b><em>구절 → 항목</em><span>창세기 12:1처럼 구절을 입력하면 관련 인물·사건·지명으로 연결</span><small>책별 구절 목록 포함</small></a>')
     out.append('<div class="tiles">' + "".join(tiles) + "</div>")
     feat = [BY_SLUG[s] for s in FEATURED if s in BY_SLUG]
     out.append('<h2 style="margin-top:26px">많이 찾는 항목</h2><div class="chips2">' + "".join(

@@ -178,6 +178,14 @@ def render_geo(e):
     return "".join(out)
 
 
+def _ref_link(r):
+    from build_verse_index import anchor
+    a = anchor(r)
+    if a:
+        return f'<a href="{a}" data-ga="ref_to_verses">{esc(r)}</a>'
+    return esc(r)
+
+
 def _cat_crumb(e):
     from site_chrome import TYPE2CAT
     c = TYPE2CAT.get(e["type"])
@@ -243,7 +251,7 @@ def render_entry(e):
         out.append(pilgrim_banner(e["slug"], "place" if e["type"] == "지명" else "default"))
     out.append(render_geo(e))
     out.append("<h2>함께 읽을 본문</h2><ul class=\"refs\">" + "".join(
-        f'<li><b>{esc(r)}</b> — {esc(n)}</li>' for r, n in e["refs"]) + "</ul>")
+        f'<li><b>{_ref_link(r)}</b> — {esc(n)}</li>' for r, n in e["refs"]) + "</ul>")
     out.append('<p class="note">성경 구절은 장·절 표기로 안내합니다. 본문은 사용하시는 번역본으로 직접 읽어 보세요.</p>')
     out.append('<h2>자주 묻는 질문</h2><div class="faq">' + "".join(
         f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in e["faq"]) + "</div>")
@@ -319,6 +327,7 @@ def update_sitemap():
     s = re.sub(r"\s*<!-- DICT-START -->.*?<!-- DICT-END -->", "", s, flags=re.S)
     from build_routes import ROUTES as _R
     urls = [("/dictionary/", "0.8"), ("/dictionary/map/", "0.8")] + [(f"/dictionary/{c[1]}/", "0.8") for c in __import__("site_chrome").CATS] + [(f"/dictionary/map/{r['slug']}.html", "0.7") for r in _R]
+    urls += [("/dictionary/verses/", "0.8")] + [(f"/dictionary/verses/{m['slug']}.html", "0.6") for m in globals().get("VERSE_BOOKS", [])]
     urls += [(f"/dictionary/{e['slug']}.html", "0.7") for e in ENTRIES]
     def _img(u):
         import re as _re
@@ -367,6 +376,9 @@ def main():
     for r in ROUTES:
         open(os.path.join(OUT, "map", f"{r['slug']}.html"), "w", encoding="utf-8").write(render_route(r, head, FOOTER, SITE, BY_SLUG))
     open(os.path.join(OUT, "style.css"), "w", encoding="utf-8").write(CSS)
+    from build_verse_index import render_all as _rv
+    global VERSE_BOOKS
+    VERSE_BOOKS = _rv(dict(ENTRIES=ENTRIES, head=head, esc=esc, FOOTER=FOOTER, SITE=SITE, OUT=OUT))
     from build_map_page import write_datasets, write_llms
     write_datasets(GEO, BY_SLUG, ENTRIES, SITE)
     write_llms(ENTRIES, GEO, SITE)
