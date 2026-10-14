@@ -84,7 +84,7 @@ CSS = """
 .hh-card i{display:block;font-style:normal;font-size:26px;margin-bottom:4px}
 .hh-card b{display:block;font-size:14px}
 .hh-card span{display:block;font-size:11.5px;color:#667;margin-top:2px}
-.sm-one{grid-template-columns:1fr!important}.sm-wide{background:linear-gradient(135deg,#fff7ed,#fffbeb);border-color:#fcd9a8}
+.support-band{background:linear-gradient(135deg,#0073e6,#0052cc);color:#fff;margin:40px 0 0;padding:44px 20px;text-align:center}.support-band h2{color:#fff;font-size:22px;margin:0 0 10px}.support-band p{margin:0 0 20px;font-size:15px;line-height:1.8;opacity:.95}.sb-btn{display:inline-block;background:#fff;color:#0059d6!important;font-weight:700;font-size:16px;padding:13px 30px;border-radius:30px;text-decoration:none!important;box-shadow:0 4px 14px rgba(0,0,0,.18)}.sb-btn:hover{transform:translateY(-1px)}
 .puzzle-zone{background:#eaf3ff;border:2px solid #bcd6f7;border-radius:22px;padding:16px 14px 18px;margin:26px auto;max-width:860px}
 .pz-label{display:inline-block;background:#0073e6;color:#fff;font-weight:700;font-size:13px;padding:5px 12px;border-radius:14px;margin-bottom:8px}
 .peek{position:fixed;right:0;top:112px;z-index:90;display:flex;align-items:flex-end;text-decoration:none!important;transform:translateX(0);animation:peek-in 7s ease-in-out infinite}
@@ -137,18 +137,24 @@ def footer_html():
     return f'<!--FL--><nav class="fnav" aria-label="사이트 전체 메뉴">{cols}</nav><!--/FL-->'
 
 
+ALIGN_JS = ('<script>(function(){var s=document.querySelector(".site-more");var m=document.querySelector("main");if(!s||!m)return;'
+            'function a(){var c=getComputedStyle(m),w=m.getBoundingClientRect().width-parseFloat(c.paddingLeft)-parseFloat(c.paddingRight);'
+            'if(w>280&&innerWidth>640){s.style.maxWidth=w+"px";s.style.padding="0"}else{s.style.maxWidth="";s.style.padding=""}}'
+            'a();addEventListener("resize",a)})();</script>')
+
+
 def more_html(key, path=""):
-    if key == "home":  # 홈은 위 허브와 겹치므로 후원 안내 한 장만
-        g = ('<a class="sm-card sm-wide" href="/support.html" data-ga="more_click" data-ga-label="support"><b>💝 후원하기</b>'
-             '<span>십자가로세로는 개인 사역으로 무료 운영됩니다. 작은 응원이 새 퍼즐과 자료가 됩니다.</span></a>')
-        return f'<!--MORE--><section class="site-more"><div class="sm-grid sm-one">{g}</div></section><!--/MORE-->'
+    if key == "home":  # 홈은 위 허브와 겹치므로 전폭 후원 띠 한 장만
+        return ('<!--MORE--><section class="support-band"><div class="sb-in"><h2>🙏 이 사역을 함께해 주세요</h2>'
+                '<p>십자가로세로는 개인 사역으로 무료 운영됩니다.<br>작은 응원이 새 퍼즐과 자료가 됩니다.</p>'
+                '<a class="sb-btn" href="/support.html" data-ga="more_click" data-ga-label="support_band">후원하고 함께하기</a></div></section><!--/MORE-->')
     cards = [m for m in MORE if m[0] != key][:3]
     if key != "support" and not path.startswith(("support", "supporters", "sponsor")):
         cards.append(SUPPORT)
     else:
         cards = [m for m in MORE if m[0] != key][:4]
     g = "".join(f'<a class="sm-card" href="{h}" data-ga="more_click" data-ga-label="{k}"><b>{i} {t}</b><span>{d}</span></a>' for k, i, t, d, h in cards)
-    return f'<!--MORE--><section class="site-more"><h2>계속 둘러보기</h2><div class="sm-grid">{g}</div></section><!--/MORE-->'
+    return f'<!--MORE--><section class="site-more"><h2>계속 둘러보기</h2><div class="sm-grid">{g}</div></section>{ALIGN_JS}<!--/MORE-->'
 
 
 def hub_html():
