@@ -59,17 +59,24 @@ def render_route(r, head, FOOTER, SITE, BY_SLUG):
     ld = "".join('<script type="application/ld+json">' + json.dumps(x, ensure_ascii=False) + "</script>\n" for x in (
         {"@context": "https://schema.org", "@type": "Article", "headline": f"{r['name']} 지도", "description": desc, "inLanguage": "ko",
          "author": {"@type": "Organization", "name": "십자가로세로"}, "mainEntityOfPage": SITE + path},
+        {"@context": "https://schema.org", "@type": "Trip", "name": r["name"], "description": r["summary"], "inLanguage": "ko",
+         "image": f"{SITE}/images/maps/{r['slug']}.png", "url": SITE + path,
+         "itinerary": {"@type": "ItemList", "itemListElement": [
+             {"@type": "ListItem", "position": p["n"], "name": p["name"],
+              "item": {"@type": "Place", "name": p["name"], "geo": {"@type": "GeoCoordinates", "latitude": p["lat"], "longitude": p["lon"]}}}
+             for p in pts]}},
         {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]},
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "홈", "item": SITE + "/"},
             {"@type": "ListItem", "position": 2, "name": "성경사전", "item": SITE + "/dictionary/"},
             {"@type": "ListItem", "position": 3, "name": "성경 지도", "item": SITE + "/dictionary/map/"},
             {"@type": "ListItem", "position": 4, "name": r["name"], "item": SITE + path}]}))
-    out = [head(title, desc, path, ld).replace("</head>", EXTRA_HEAD, 1), '<main class="wrap">']
+    out = [head(title, desc, path, ld, f"{SITE}/images/maps/{r['slug']}.png").replace("</head>", EXTRA_HEAD, 1), '<main class="wrap">']
     out.append(f'<div class="crumb"><a href="/">홈</a> › <a href="/dictionary/">성경사전</a> › <a href="/dictionary/map/">성경 지도</a> › {_esc(r["short"])}</div>')
     out.append(f'<h1>{_esc(r["name"])}</h1><div class="sub">{_esc(r["ref"])} · {_esc(r["when"])}</div>')
     out.append(f'<div class="summary">{_esc(r["intro"])}</div>')
-    out.append('<div id="bmap" role="application" aria-label="바울의 여행 경로 지도"></div>')
+    out.append(f'<figure style="margin:14px 0"><img src="/images/maps/{r["slug"]}.png" width="1200" height="630" alt="{_esc(r["name"])} 경로 지도 - {_esc(r["ref"])}" style="width:100%;height:auto;border-radius:14px;display:block"></figure>')
+    out.append('<div id="bmap" role="application" aria-label="바울의 여행 경로 지도(확대·이동 가능)"></div>')
     out.append('<div style="font-size:12px;color:#7b8794">선은 방문 순서를 잇는 개략적인 경로입니다. 지도 © <a href="https://www.openstreetmap.org/copyright" rel="noopener nofollow">OpenStreetMap</a> 기여자 · 위치 데이터 <a href="https://github.com/openbibleinfo/Bible-Geocoding-Data" rel="noopener nofollow">OpenBible.info</a> CC BY 4.0</div>')
     from pilgrim_banner import banner as _pb
     out.append(_pb(r["slug"], "route2" if r["slug"] == "paul-journey-2" else "default"))

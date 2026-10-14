@@ -1,0 +1,547 @@
+{
+ "name": "사도 바울의 여행 경로(십자가로세로 편집본)",
+ "license": "CC BY 4.0",
+ "attribution": "십자가로세로(crossero.com), 위치 OpenBible.info CC BY 4.0",
+ "routes": [
+  {
+   "slug": "paul-journey-1",
+   "name": "바울 1차 전도 여행",
+   "reference": "사도행전 13:1–14:28",
+   "approx_date": "주후 46~48년경",
+   "page_url": "https://crossero.com/dictionary/map/paul-journey-1.html",
+   "stops": [
+    {
+     "order": 1,
+     "name_ko": "안디옥(수리아)",
+     "modern_name": "Antioch on the Orontes",
+     "latitude": 36.2267,
+     "longitude": 36.1717,
+     "acts_reference": "13:1-3",
+     "note_ko": "교회의 파송을 받고 출발"
+    },
+    {
+     "order": 2,
+     "name_ko": "실루기아",
+     "modern_name": "Seleucia Pieria",
+     "latitude": 36.124,
+     "longitude": 35.922,
+     "acts_reference": "13:4",
+     "note_ko": "배를 타고 구브로로"
+    },
+    {
+     "order": 3,
+     "name_ko": "살라미",
+     "modern_name": "Salamis",
+     "latitude": 35.1849,
+     "longitude": 33.9019,
+     "acts_reference": "13:5",
+     "note_ko": "유대인 회당에서 말씀을 전함"
+    },
+    {
+     "order": 4,
+     "name_ko": "바보",
+     "modern_name": "New Paphos",
+     "latitude": 34.7557,
+     "longitude": 32.4042,
+     "acts_reference": "13:6-12",
+     "note_ko": "총독 서기오 바울이 믿음"
+    },
+    {
+     "order": 5,
+     "name_ko": "버가",
+     "modern_name": "Perga",
+     "latitude": 36.9604,
+     "longitude": 30.8537,
+     "acts_reference": "13:13",
+     "note_ko": "마가 요한이 예루살렘으로 돌아감"
+    },
+    {
+     "order": 6,
+     "name_ko": "비시디아 안디옥",
+     "modern_name": "Antioch in Pisidia",
+     "latitude": 38.3061,
+     "longitude": 31.1892,
+     "acts_reference": "13:14-50",
+     "note_ko": "안식일 회당 설교, 이방인에게로"
+    },
+    {
+     "order": 7,
+     "name_ko": "이고니온",
+     "modern_name": "Konya",
+     "latitude": 37.8722,
+     "longitude": 32.4923,
+     "acts_reference": "13:51–14:5",
+     "note_ko": "많은 사람이 믿으나 박해를 받음"
+    },
+    {
+     "order": 8,
+     "name_ko": "루스드라",
+     "modern_name": "Tel Lystra",
+     "latitude": 37.6017,
+     "longitude": 32.3384,
+     "acts_reference": "14:6-19",
+     "note_ko": "앉은뱅이를 고침, 돌에 맞음"
+    },
+    {
+     "order": 9,
+     "name_ko": "더베",
+     "modern_name": "Kerti Hüyük",
+     "latitude": 37.3486,
+     "longitude": 33.3615,
+     "acts_reference": "14:20-21",
+     "note_ko": "복음을 전하고 많은 제자를 얻음"
+    },
+    {
+     "order": 10,
+     "name_ko": "루스드라",
+     "modern_name": "Tel Lystra",
+     "latitude": 37.6017,
+     "longitude": 32.3384,
+     "acts_reference": "14:21",
+     "note_ko": "돌아오며 제자들을 굳게 함"
+    },
+    {
+     "order": 11,
+     "name_ko": "이고니온",
+     "modern_name": "Konya",
+     "latitude": 37.8722,
+     "longitude": 32.4923,
+     "acts_reference": "14:21",
+     "note_ko": "장로를 세움"
+    },
+    {
+     "order": 12,
+     "name_ko": "비시디아 안디옥",
+     "modern_name": "Antioch in Pisidia",
+     "latitude": 38.3061,
+     "longitude": 31.1892,
+     "acts_reference": "14:21",
+     "note_ko": "교회를 돌아봄"
+    },
+    {
+     "order": 13,
+     "name_ko": "버가",
+     "modern_name": "Perga",
+     "latitude": 36.9604,
+     "longitude": 30.8537,
+     "acts_reference": "14:25",
+     "note_ko": "말씀을 전함"
+    },
+    {
+     "order": 14,
+     "name_ko": "앗달리아",
+     "modern_name": "Antalya",
+     "latitude": 36.8813,
+     "longitude": 30.7036,
+     "acts_reference": "14:25",
+     "note_ko": "항구에서 배를 탐"
+    },
+    {
+     "order": 15,
+     "name_ko": "안디옥(수리아)",
+     "modern_name": "Antioch on the Orontes",
+     "latitude": 36.2267,
+     "longitude": 36.1717,
+     "acts_reference": "14:26-28",
+     "note_ko": "돌아와 선교 보고"
+    }
+   ]
+  },
+  {
+   "slug": "paul-journey-2",
+   "name": "바울 2차 전도 여행",
+   "reference": "사도행전 15:36–18:22",
+   "approx_date": "주후 49~52년경",
+   "page_url": "https://crossero.com/dictionary/map/paul-journey-2.html",
+   "stops": [
+    {
+     "order": 1,
+     "name_ko": "안디옥(수리아)",
+     "modern_name": "Antioch on the Orontes",
+     "latitude": 36.2267,
+     "longitude": 36.1717,
+     "acts_reference": "15:36-41",
+     "note_ko": "바나바와 헤어져 실라와 출발"
+    },
+    {
+     "order": 2,
+     "name_ko": "더베",
+     "modern_name": "Kerti Hüyük",
+     "latitude": 37.3486,
+     "longitude": 33.3615,
+     "acts_reference": "16:1",
+     "note_ko": "교회들을 굳게 함"
+    },
+    {
+     "order": 3,
+     "name_ko": "루스드라",
+     "modern_name": "Tel Lystra",
+     "latitude": 37.6017,
+     "longitude": 32.3384,
+     "acts_reference": "16:1-5",
+     "note_ko": "디모데가 합류"
+    },
+    {
+     "order": 4,
+     "name_ko": "드로아",
+     "modern_name": "Alexandria Troas",
+     "latitude": 39.7519,
+     "longitude": 26.1586,
+     "acts_reference": "16:8-10",
+     "note_ko": "마게도냐인의 환상"
+    },
+    {
+     "order": 5,
+     "name_ko": "네압볼리",
+     "modern_name": "Kavala",
+     "latitude": 40.935,
+     "longitude": 24.415,
+     "acts_reference": "16:11",
+     "note_ko": "유럽 땅에 첫발"
+    },
+    {
+     "order": 6,
+     "name_ko": "빌립보",
+     "modern_name": "Philippi",
+     "latitude": 41.0121,
+     "longitude": 24.2846,
+     "acts_reference": "16:12-40",
+     "note_ko": "루디아의 회심, 감옥의 간수"
+    },
+    {
+     "order": 7,
+     "name_ko": "암비볼리",
+     "modern_name": "Amphipolis",
+     "latitude": 40.8202,
+     "longitude": 23.8472,
+     "acts_reference": "17:1",
+     "note_ko": "지나감"
+    },
+    {
+     "order": 8,
+     "name_ko": "아볼로니아",
+     "modern_name": "Apollonia",
+     "latitude": 40.6237,
+     "longitude": 23.4697,
+     "acts_reference": "17:1",
+     "note_ko": "지나감"
+    },
+    {
+     "order": 9,
+     "name_ko": "데살로니가",
+     "modern_name": "Thessaloniki",
+     "latitude": 40.6378,
+     "longitude": 22.9458,
+     "acts_reference": "17:1-9",
+     "note_ko": "회당에서 세 안식일 강론"
+    },
+    {
+     "order": 10,
+     "name_ko": "베뢰아",
+     "modern_name": "Veria",
+     "latitude": 40.5183,
+     "longitude": 22.2,
+     "acts_reference": "17:10-14",
+     "note_ko": "날마다 성경을 상고함"
+    },
+    {
+     "order": 11,
+     "name_ko": "아덴",
+     "modern_name": "Athens",
+     "latitude": 37.9719,
+     "longitude": 23.7267,
+     "acts_reference": "17:16-34",
+     "note_ko": "아레오바고 설교"
+    },
+    {
+     "order": 12,
+     "name_ko": "고린도",
+     "modern_name": "Corinth",
+     "latitude": 37.9058,
+     "longitude": 22.8787,
+     "acts_reference": "18:1-18",
+     "note_ko": "1년 6개월 체류, 아굴라·브리스길라를 만남"
+    },
+    {
+     "order": 13,
+     "name_ko": "에베소",
+     "modern_name": "Ephesus",
+     "latitude": 37.9391,
+     "longitude": 27.3407,
+     "acts_reference": "18:19-21",
+     "note_ko": "잠시 들러 강론"
+    },
+    {
+     "order": 14,
+     "name_ko": "가이사랴",
+     "modern_name": "Caesarea Maritima",
+     "latitude": 32.5,
+     "longitude": 34.8917,
+     "acts_reference": "18:22",
+     "note_ko": "상륙"
+    },
+    {
+     "order": 15,
+     "name_ko": "예루살렘",
+     "modern_name": "Jerusalem",
+     "latitude": 31.7767,
+     "longitude": 35.2342,
+     "acts_reference": "18:22",
+     "note_ko": "교회에 문안"
+    },
+    {
+     "order": 16,
+     "name_ko": "안디옥(수리아)",
+     "modern_name": "Antioch on the Orontes",
+     "latitude": 36.2267,
+     "longitude": 36.1717,
+     "acts_reference": "18:22",
+     "note_ko": "돌아옴"
+    }
+   ]
+  },
+  {
+   "slug": "paul-journey-3",
+   "name": "바울 3차 전도 여행",
+   "reference": "사도행전 18:23–21:17",
+   "approx_date": "주후 53~57년경",
+   "page_url": "https://crossero.com/dictionary/map/paul-journey-3.html",
+   "stops": [
+    {
+     "order": 1,
+     "name_ko": "안디옥(수리아)",
+     "modern_name": "Antioch on the Orontes",
+     "latitude": 36.2267,
+     "longitude": 36.1717,
+     "acts_reference": "18:23",
+     "note_ko": "얼마 있다가 떠남"
+    },
+    {
+     "order": 2,
+     "name_ko": "에베소",
+     "modern_name": "Ephesus",
+     "latitude": 37.9391,
+     "longitude": 27.3407,
+     "acts_reference": "19:1-41",
+     "note_ko": "약 3년 사역, 두란노 서원"
+    },
+    {
+     "order": 3,
+     "name_ko": "빌립보",
+     "modern_name": "Philippi",
+     "latitude": 41.0121,
+     "longitude": 24.2846,
+     "acts_reference": "20:1-6",
+     "note_ko": "마게도냐를 거쳐 감"
+    },
+    {
+     "order": 4,
+     "name_ko": "고린도",
+     "modern_name": "Corinth",
+     "latitude": 37.9058,
+     "longitude": 22.8787,
+     "acts_reference": "20:2-3",
+     "note_ko": "헬라에서 석 달 체류"
+    },
+    {
+     "order": 5,
+     "name_ko": "빌립보",
+     "modern_name": "Philippi",
+     "latitude": 41.0121,
+     "longitude": 24.2846,
+     "acts_reference": "20:6",
+     "note_ko": "무교절 후 배를 탐"
+    },
+    {
+     "order": 6,
+     "name_ko": "드로아",
+     "modern_name": "Alexandria Troas",
+     "latitude": 39.7519,
+     "longitude": 26.1586,
+     "acts_reference": "20:6-12",
+     "note_ko": "유두고를 살림"
+    },
+    {
+     "order": 7,
+     "name_ko": "앗소",
+     "modern_name": "Assos",
+     "latitude": 39.4906,
+     "longitude": 26.3367,
+     "acts_reference": "20:13-14",
+     "note_ko": "걸어서 도착해 합류"
+    },
+    {
+     "order": 8,
+     "name_ko": "미둘레네",
+     "modern_name": "ancient theater at Mitylene",
+     "latitude": 39.1105,
+     "longitude": 26.547,
+     "acts_reference": "20:14",
+     "note_ko": "항해"
+    },
+    {
+     "order": 9,
+     "name_ko": "밀레도",
+     "modern_name": "Miletus",
+     "latitude": 37.5311,
+     "longitude": 27.2756,
+     "acts_reference": "20:15-38",
+     "note_ko": "에베소 장로들과 작별"
+    },
+    {
+     "order": 10,
+     "name_ko": "고스",
+     "modern_name": "Kos",
+     "latitude": 36.8153,
+     "longitude": 27.1103,
+     "acts_reference": "21:1",
+     "note_ko": "항해"
+    },
+    {
+     "order": 11,
+     "name_ko": "바다라",
+     "modern_name": "Patara",
+     "latitude": 36.2603,
+     "longitude": 29.3142,
+     "acts_reference": "21:1-2",
+     "note_ko": "배를 갈아탐"
+    },
+    {
+     "order": 12,
+     "name_ko": "두로",
+     "modern_name": "Tyre",
+     "latitude": 33.2708,
+     "longitude": 35.1961,
+     "acts_reference": "21:3-6",
+     "note_ko": "7일 머묾"
+    },
+    {
+     "order": 13,
+     "name_ko": "돌레마이",
+     "modern_name": "Acre",
+     "latitude": 32.9214,
+     "longitude": 35.0692,
+     "acts_reference": "21:7",
+     "note_ko": "형제들에게 문안"
+    },
+    {
+     "order": 14,
+     "name_ko": "가이사랴",
+     "modern_name": "Caesarea Maritima",
+     "latitude": 32.5,
+     "longitude": 34.8917,
+     "acts_reference": "21:8-14",
+     "note_ko": "빌립 집사의 집, 아가보의 예언"
+    },
+    {
+     "order": 15,
+     "name_ko": "예루살렘",
+     "modern_name": "Jerusalem",
+     "latitude": 31.7767,
+     "longitude": 35.2342,
+     "acts_reference": "21:15-17",
+     "note_ko": "형제들이 기쁘게 영접"
+    }
+   ]
+  },
+  {
+   "slug": "paul-journey-rome",
+   "name": "바울의 로마 압송 항해",
+   "reference": "사도행전 27:1–28:16",
+   "approx_date": "주후 59~60년경",
+   "page_url": "https://crossero.com/dictionary/map/paul-journey-rome.html",
+   "stops": [
+    {
+     "order": 1,
+     "name_ko": "가이사랴",
+     "modern_name": "Caesarea Maritima",
+     "latitude": 32.5,
+     "longitude": 34.8917,
+     "acts_reference": "27:1-2",
+     "note_ko": "백부장 율리오에게 인계되어 출발"
+    },
+    {
+     "order": 2,
+     "name_ko": "시돈",
+     "modern_name": "Sandikli archaeological site in Sidon",
+     "latitude": 33.561,
+     "longitude": 35.3719,
+     "acts_reference": "27:3",
+     "note_ko": "친구들에게 가서 대접을 받음"
+    },
+    {
+     "order": 3,
+     "name_ko": "무라",
+     "modern_name": "Myra",
+     "latitude": 36.2592,
+     "longitude": 29.9853,
+     "acts_reference": "27:5-6",
+     "note_ko": "알렉산드리아 배로 갈아탐"
+    },
+    {
+     "order": 4,
+     "name_ko": "니도(구니도)",
+     "modern_name": "Cnidus",
+     "latitude": 36.6858,
+     "longitude": 27.375,
+     "acts_reference": "27:7",
+     "note_ko": "바람 때문에 지체됨"
+    },
+    {
+     "order": 5,
+     "name_ko": "미항",
+     "modern_name": "Kaloi Limenes",
+     "latitude": 34.9297,
+     "longitude": 24.8003,
+     "acts_reference": "27:8-12",
+     "note_ko": "그레데 섬 미항에 도착"
+    },
+    {
+     "order": 6,
+     "name_ko": "가우다",
+     "modern_name": "Gavdos",
+     "latitude": 34.8333,
+     "longitude": 24.0833,
+     "acts_reference": "27:16",
+     "note_ko": "유라굴로 광풍 속에 가우다를 지남"
+    },
+    {
+     "order": 7,
+     "name_ko": "멜리데(몰타)",
+     "modern_name": "Malta",
+     "latitude": 35.9335,
+     "longitude": 14.4117,
+     "acts_reference": "28:1-10",
+     "note_ko": "난파 후 섬에 상륙, 석 달 체류"
+    },
+    {
+     "order": 8,
+     "name_ko": "수라구사",
+     "modern_name": "Syracuse",
+     "latitude": 37.0639,
+     "longitude": 15.2931,
+     "acts_reference": "28:12",
+     "note_ko": "사흘 머묾"
+    },
+    {
+     "order": 9,
+     "name_ko": "보디올",
+     "modern_name": "Pozzuoli",
+     "latitude": 40.8261,
+     "longitude": 14.1206,
+     "acts_reference": "28:13-14",
+     "note_ko": "형제들을 만나 이레를 머묾"
+    },
+    {
+     "order": 10,
+     "name_ko": "로마",
+     "modern_name": "Rome",
+     "latitude": 41.8922,
+     "longitude": 12.4852,
+     "acts_reference": "28:14-16",
+     "note_ko": "로마에 들어감"
+    }
+   ]
+  }
+ ]
+}

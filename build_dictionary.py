@@ -80,6 +80,7 @@ h1 { font-size:30px; color:#16324f; margin:10px 0 4px; line-height:1.35; }
 .geo-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 .geo figure, .geo .gmap { margin:0; }
 .geo img, .geo iframe { width:100%; height:220px; object-fit:cover; border:0; border-radius:10px; background:#eef2f6; display:block; }
+.geo .gmap img { height:auto; object-fit:contain; aspect-ratio:1200/630; }
 .geo figcaption, .geo .gnote { font-size:12px; color:#7b8794; margin-top:6px; line-height:1.5; }
 .geo dl { margin:12px 0 0; font-size:14px; }
 .geo dt { display:inline; color:#8a97a6; font-weight:600; font-size:12px; }
@@ -165,8 +166,9 @@ def render_geo(e):
     if g.get("img"):
         out.append(f'<figure><img src="{g["img"]}" loading="lazy" alt="{esc(e["name"])} 현재 모습 사진"><figcaption>'
                    f'사진: <a href="{g["credit_url"]}" rel="noopener nofollow" target="_blank">{esc(g["credit"])}</a> · {esc(g["license"])}</figcaption></figure>')
-    out.append(f'<div class="gmap"><iframe src="{embed}" loading="lazy" title="{esc(e["name"])} 현재 지도"></iframe>'
-               f'<div class="gnote"><a href="{big}" rel="noopener nofollow" target="_blank">큰 지도에서 보기</a> · 지도 © OpenStreetMap 기여자</div></div>')
+    out.append(f'<figure class="gmap"><a href="/dictionary/map/" data-ga="geo_to_map"><img src="/images/maps/{e["slug"]}-map.png" loading="lazy" width="1200" height="630" '
+               f'alt="{esc(e["name"])} 오늘의 위치 지도 - {esc(g["where"])}"></a><figcaption><a href="/dictionary/map/">성경 지도에서 모든 지명 보기</a> · '
+               f'<a href="{big}" rel="noopener nofollow" target="_blank">OpenStreetMap에서 열기</a> · 지도 데이터 Natural Earth</figcaption></figure>')
     out.append('</div>')
     out.append(f'<dl><dt>오늘의 위치</dt><dd>{esc(g["where"])}</dd><dt>현재 지명(추정)</dt><dd>{esc(g["modern"])}</dd>'
                f'<dt>성경 언급</dt><dd>{g["verses"]}절</dd></dl>')
@@ -194,12 +196,14 @@ def render_entry(e):
                         "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in e["faq"]],
     }
     img_wide = f"{SITE}/images/dictionary/{e['slug']}-bible-dictionary.png"
+    map_img = f"{SITE}/images/maps/{e['slug']}-map.png" if e["slug"] in GEO else None
     img_sq = f"{SITE}/images/dictionary/{e['slug']}-bible-dictionary-square.png"
     article_ld = {
         "@context": "https://schema.org", "@type": "Article",
         "headline": (f"{e['name']} 요약" if e["type"] == "성경 책" else f"{e['name']} - {e['sub']}"), "description": e["summary"],
         "inLanguage": "ko", "dateModified": TODAY,
-        "image": [img_wide, img_sq],
+        "speakable": {"@type": "SpeakableSpecification", "cssSelector": [".summary", ".facts"]},
+        "image": ([map_img] if map_img else []) + [img_wide, img_sq],
         "author": {"@type": "Organization", "name": "십자가로세로"},
         "publisher": {"@type": "Organization", "name": "십자가로세로", "url": SITE},
         "mainEntityOfPage": f"{SITE}{path}",
@@ -212,10 +216,18 @@ def render_entry(e):
             {"@type": "ListItem", "position": 3, "name": e["name"], "item": SITE + path},
         ],
     }
-    ld = "".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>\n'
-                 for x in (article_ld, faq_ld, crumb_ld))
+    lds = [article_ld, faq_ld, crumb_ld]
+    if e["slug"] in GEO:
+        g = GEO[e["slug"]]
+        place_ld = {"@context": "https://schema.org", "@type": "Place", "name": e["name"], "description": e["summary"],
+                    "geo": {"@type": "GeoCoordinates", "latitude": g["lat"], "longitude": g["lon"]},
+                    "image": [map_img] + ([SITE + g["img"]] if g.get("img") else []),
+                    "url": SITE + path, "address": {"@type": "PostalAddress", "description": g["where"]},
+                    "sameAs": [f"https://www.openbible.info/geo/ancient/{g['ob_id']}/{g['ob_slug']}"]}
+        lds.append(place_ld)
+    ld = "".join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>\n' for x in lds)
 
-    out = [head(title, desc, path, ld, img_wide), '<main class="wrap">']
+    out = [head(title, desc, path, ld, map_img or img_wide), '<main class="wrap">']
     out.append(f'<div class="crumb"><a href="/">홈</a> › <a href="/dictionary/">성경사전</a> › {_cat_crumb(e)}{esc(e["name"])}</div>')
     out.append(f'<span class="badge">{esc(e["type"])}</span>')
     out.append(f'<h1>{esc(e["name"])}</h1><div class="sub">{esc(e["sub"])}</div>')
@@ -307,9 +319,24 @@ def update_sitemap():
     from build_routes import ROUTES as _R
     urls = [("/dictionary/", "0.8"), ("/dictionary/map/", "0.8")] + [(f"/dictionary/{c[1]}/", "0.8") for c in __import__("site_chrome").CATS] + [(f"/dictionary/map/{r['slug']}.html", "0.7") for r in _R]
     urls += [(f"/dictionary/{e['slug']}.html", "0.7") for e in ENTRIES]
+    def _img(u):
+        import re as _re
+        m = _re.match(r"/dictionary/([a-z0-9-]+)\.html$", u)
+        im = None
+        if u == "/dictionary/map/":
+            im = "bible-map-overview.png"
+        elif m and m.group(1) in GEO:
+            im = f"{m.group(1)}-map.png"
+        elif m and m.group(1).startswith("paul-journey"):
+            im = m.group(1) + ".png"
+        elif u.startswith("/dictionary/map/paul-journey"):
+            im = u.split("/")[-1].replace(".html", ".png")
+        return f"\n    <image:image><image:loc>{SITE}/images/maps/{im}</image:loc></image:image>" if im else ""
     block = "\n  <!-- DICT-START -->\n" + "\n".join(
-        f"  <url>\n    <loc>{SITE}{u}</loc>\n    <lastmod>{TODAY}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>{pr}</priority>\n  </url>"
+        f"  <url>\n    <loc>{SITE}{u}</loc>\n    <lastmod>{TODAY}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>{pr}</priority>{_img(u)}\n  </url>"
         for u, pr in urls) + "\n  <!-- DICT-END -->\n"
+    if "xmlns:image" not in s:
+        s = s.replace("<urlset ", '<urlset xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" ', 1)
     s = s.replace("</urlset>", block + "</urlset>")
     open(p, "w", encoding="utf-8").write(s)
 
@@ -339,6 +366,9 @@ def main():
     for r in ROUTES:
         open(os.path.join(OUT, "map", f"{r['slug']}.html"), "w", encoding="utf-8").write(render_route(r, head, FOOTER, SITE, BY_SLUG))
     open(os.path.join(OUT, "style.css"), "w", encoding="utf-8").write(CSS)
+    from build_map_page import write_datasets, write_llms
+    write_datasets(GEO, BY_SLUG, ENTRIES, SITE)
+    write_llms(ENTRIES, GEO, SITE)
     update_sitemap()
     print(f"생성 완료: {len(ENTRIES)}개 항목 + 인덱스")
 
