@@ -11,6 +11,7 @@ import re
 from datetime import date
 
 from dictionary_data_people import PEOPLE
+from dictionary_data_people2 import PEOPLE2
 from dictionary_data_events_places import EVENTS, PLACES
 from dictionary_data_events2 import EVENTS2
 from dictionary_data_places2 import PLACES2
@@ -33,7 +34,7 @@ for _b in BOOKS:
         _secs = _b["sections"]
         _i = [h for h, _ in _secs].index("핵심 메시지와 읽는 법")
         _b["sections"] = _secs[:_i] + DEEP[_b["slug"]] + _secs[_i:]
-ENTRIES = PEOPLE + EVENTS + EVENTS2 + PLACES + PLACES2 + PLACES3 + TERMS + BOOKS
+ENTRIES = PEOPLE + PEOPLE2 + EVENTS + EVENTS2 + PLACES + PLACES2 + PLACES3 + TERMS + BOOKS
 BY_SLUG = {e["slug"]: e for e in ENTRIES}
 TYPE_ORDER = [("인물", "성경 인물"), ("사건", "성경 사건"), ("지명", "성경 지명"), ("신앙 용어", "신앙 용어")]
 BOOK_GROUPS = [("구약", ["모세오경", "역사서", "시가서", "대선지서", "소선지서"]), ("신약", ["복음서", "역사서", "바울서신", "일반서신", "예언서"])]
@@ -327,6 +328,7 @@ def update_sitemap():
     s = re.sub(r"\s*<!-- DICT-START -->.*?<!-- DICT-END -->", "", s, flags=re.S)
     from build_routes import ROUTES as _R
     urls = [("/dictionary/", "0.8"), ("/dictionary/map/", "0.8")] + [(f"/dictionary/{c[1]}/", "0.8") for c in __import__("site_chrome").CATS] + [(f"/dictionary/map/{r['slug']}.html", "0.7") for r in _R]
+    urls += [("/dictionary/genealogy/", "0.8")]
     urls += [("/dictionary/timeline/", "0.8")] + [(f"/dictionary/timeline/{x}.html", "0.7") for x in globals().get("TIMELINE_ERAS", [])]
     urls += [("/dictionary/verses/", "0.8")] + [(f"/dictionary/verses/{m['slug']}.html", "0.6") for m in globals().get("VERSE_BOOKS", [])]
     urls += [(f"/dictionary/{e['slug']}.html", "0.7") for e in ENTRIES]
@@ -384,6 +386,8 @@ def main():
     from build_verse_index import render_all as _rv
     global VERSE_BOOKS
     VERSE_BOOKS = _rv(dict(ENTRIES=ENTRIES, head=head, esc=esc, FOOTER=FOOTER, SITE=SITE, OUT=OUT))
+    from build_genealogy import render as _rg
+    _rg(dict(head=head, esc=esc, FOOTER=FOOTER, SITE=SITE, OUT=OUT, BY_SLUG=BY_SLUG))
     from build_timeline import render_all as _rt
     global TIMELINE_ERAS
     TIMELINE_ERAS = _rt(dict(ENTRIES=ENTRIES, BY_SLUG=BY_SLUG, head=head, esc=esc, FOOTER=FOOTER, SITE=SITE, OUT=OUT))

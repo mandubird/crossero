@@ -3,12 +3,13 @@
 > 성경 가로세로 낱말 퍼즐과 성경사전·성경 지도를 무료로 제공하는 한국어 사이트입니다. 개인 사역으로 운영됩니다.
 
 ## 성경사전
-- [성경사전 홈](https://crossero.com/dictionary/): 지명·인물·사건·신앙 용어·66권 요약 197개 항목
+- [성경사전 홈](https://crossero.com/dictionary/): 지명·인물·사건·신앙 용어·66권 요약 220개 항목
 - [성경 지명](https://crossero.com/dictionary/places/): 65개, 지명마다 오늘의 위치·사진·지도 이미지 포함
-- [성경 인물](https://crossero.com/dictionary/people/): 19개
+- [성경 인물](https://crossero.com/dictionary/people/): 42개
 - [성경 사건](https://crossero.com/dictionary/events/): 32개
 - [신앙 용어](https://crossero.com/dictionary/terms/): 15개
 - [성경 66권 요약](https://crossero.com/dictionary/books/)
+- [성경 가계도](https://crossero.com/dictionary/genealogy/): 아담~노아, 야곱의 열두 아들, 아브라함~예수님
 - [성경 연대표](https://crossero.com/dictionary/timeline/): 창조에서 초대교회까지 10개 시대별 정리
 - [구절로 찾기](https://crossero.com/dictionary/verses/): 성경 구절에서 관련 인물·사건·지명 항목으로 연결
 

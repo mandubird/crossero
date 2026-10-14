@@ -52,6 +52,7 @@ def render_index(ctx):
         sample = " · ".join(e["name"] for e in items[:4])
         tiles.append(f'<a class="tile" href="/dictionary/{folder}/" data-ga="dict_tile" data-ga-label="{folder}"><i>{icon}</i><b>{label}</b><em>{len(items)}개</em><span>{esc(d)}</span><small>{esc(sample)} …</small></a>')
     tiles.append('<a class="tile" href="/dictionary/map/" data-ga="dict_tile" data-ga-label="map"><i>🗺️</i><b>성경 지도</b><em>지도 보기</em><span>지명이 지금은 어디에 있을까? 바울의 여행 경로까지</span><small>예루살렘 · 갈릴리 · 에베소 · 로마 …</small></a>')
+    tiles.append('<a class="tile" href="/dictionary/genealogy/" data-ga="dict_tile" data-ga-label="genealogy"><i>👪</i><b>가계도</b><em>아담~예수님</em><span>아담에서 노아, 아브라함에서 예수님까지 계보</span><small>야곱의 열두 아들 · 마태복음 1장 …</small></a>')
     tiles.append('<a class="tile" href="/dictionary/timeline/" data-ga="dict_tile" data-ga-label="timeline"><i>⏳</i><b>연대표</b><em>10개 시대</em><span>창조에서 초대교회까지, 시대별 사건·인물·지명과 지도</span><small>족장 · 출애굽 · 왕국 · 예수님 · 초대교회 …</small></a>')
     tiles.append('<a class="tile" href="/dictionary/verses/" data-ga="dict_tile" data-ga-label="verses"><i>📖</i><b>구절로 찾기</b><em>구절 → 항목</em><span>창세기 12:1처럼 구절을 입력하면 관련 인물·사건·지명으로 연결</span><small>책별 구절 목록 포함</small></a>')
     out.append('<div class="tiles">' + "".join(tiles) + "</div>")

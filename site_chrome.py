@@ -34,7 +34,7 @@ ACTIVE_RULES = [  # (경로 접두어/이름, key) 위에서부터 첫 일치
 
 FOOT_COLS = [
     ("성경사전", [("📍 성경 지명", "/dictionary/places/"), ("👤 성경 인물", "/dictionary/people/"), ("📜 성경 사건", "/dictionary/events/"),
-                 ("✝️ 신앙 용어", "/dictionary/terms/"), ("📚 66권 요약", "/dictionary/books/"), ("⏳ 연대표", "/dictionary/timeline/"), ("📖 구절로 찾기", "/dictionary/verses/"), ("🗺️ 성경 지도", "/dictionary/map/")]),
+                 ("✝️ 신앙 용어", "/dictionary/terms/"), ("📚 66권 요약", "/dictionary/books/"), ("⏳ 연대표", "/dictionary/timeline/"), ("👪 가계도", "/dictionary/genealogy/"), ("📖 구절로 찾기", "/dictionary/verses/"), ("🗺️ 성경 지도", "/dictionary/map/")]),
     ("말씀·묵상", [("오늘의 말씀", "/today/"), ("말씀 뽑기", "/verse/"), ("새해 말씀 뽑기", "/verse/new-year/"),
                  ("성탄 말씀 뽑기", "/verse/christmas/"), ("추수감사 말씀 뽑기", "/verse/thanksgiving/")]),
     ("퍼즐·교사 자료", [("퍼즐 목록", "/list.html"), ("퍼즐 게시판", "/posts/index.html"), ("성경 십자말풀이", "/bible-crossword.html"),
@@ -122,6 +122,8 @@ def subnav_html(path, s):
         on = "verses"
     elif path.startswith("dictionary/timeline/"):
         on = "timeline"
+    elif path.startswith("dictionary/genealogy/"):
+        on = "genealogy"
     else:
         m = re.match(r"dictionary/(places|people|events|terms|books)/index\.html$", path)
         if m:
@@ -130,7 +132,7 @@ def subnav_html(path, s):
             b = re.search(r'<span class="badge">([^<]+)</span>', s)
             if b and b.group(1) in TYPE2CAT:
                 on = TYPE2CAT[b.group(1)][1]
-    chips = [("all", "전체", "/dictionary/")] + [(c[1], f"{c[3]} {c[2]}", f"/dictionary/{c[1]}/") for c in CATS] + [("timeline", "⏳ 연대표", "/dictionary/timeline/"), ("verses", "📖 구절로 찾기", "/dictionary/verses/"), ("map", "🗺️ 성경 지도", "/dictionary/map/")]
+    chips = [("all", "전체", "/dictionary/")] + [(c[1], f"{c[3]} {c[2]}", f"/dictionary/{c[1]}/") for c in CATS] + [("timeline", "⏳ 연대표", "/dictionary/timeline/"), ("genealogy", "👪 가계도", "/dictionary/genealogy/"), ("verses", "📖 구절로 찾기", "/dictionary/verses/"), ("map", "🗺️ 성경 지도", "/dictionary/map/")]
     a = "".join(f'<a class="sn-chip{" on" if k == on else ""}" href="{h}">{t}</a>' for k, t, h in chips)
     return f'<!--SUBNAV--><div class="subnav"><div class="subnav-in">{a}</div></div><!--/SUBNAV-->'
 

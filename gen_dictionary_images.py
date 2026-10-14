@@ -14,6 +14,7 @@ from dictionary_data_terms import TERMS
 from dictionary_data_books_ot import OT
 from dictionary_data_books_nt import NT
 from dictionary_data_people import PEOPLE
+from dictionary_data_people2 import PEOPLE2
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(ROOT, "images", "dictionary")
@@ -92,7 +93,7 @@ def card(e, w, h):
 def main():
     os.makedirs(OUT, exist_ok=True)
     n = 0
-    for e in PEOPLE + EVENTS + EVENTS2 + PLACES + PLACES2 + PLACES3 + TERMS + OT + NT:
+    for e in PEOPLE + PEOPLE2 + EVENTS + EVENTS2 + PLACES + PLACES2 + PLACES3 + TERMS + OT + NT:
         card(e, 1200, 630).save(os.path.join(OUT, f"{e['slug']}-bible-dictionary.png"), optimize=True)
         card(e, 1000, 1000).save(os.path.join(OUT, f"{e['slug']}-bible-dictionary-square.png"), optimize=True)
         n += 1
