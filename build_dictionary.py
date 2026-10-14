@@ -327,6 +327,7 @@ def update_sitemap():
     s = re.sub(r"\s*<!-- DICT-START -->.*?<!-- DICT-END -->", "", s, flags=re.S)
     from build_routes import ROUTES as _R
     urls = [("/dictionary/", "0.8"), ("/dictionary/map/", "0.8")] + [(f"/dictionary/{c[1]}/", "0.8") for c in __import__("site_chrome").CATS] + [(f"/dictionary/map/{r['slug']}.html", "0.7") for r in _R]
+    urls += [("/dictionary/timeline/", "0.8")] + [(f"/dictionary/timeline/{x}.html", "0.7") for x in globals().get("TIMELINE_ERAS", [])]
     urls += [("/dictionary/verses/", "0.8")] + [(f"/dictionary/verses/{m['slug']}.html", "0.6") for m in globals().get("VERSE_BOOKS", [])]
     urls += [(f"/dictionary/{e['slug']}.html", "0.7") for e in ENTRIES]
     def _img(u):
@@ -337,6 +338,10 @@ def update_sitemap():
             im = "bible-map-overview.png"
         elif m and m.group(1) in GEO:
             im = f"{m.group(1)}-map.png"
+        elif u.startswith("/dictionary/timeline/") and u.endswith(".html"):
+            nm = "era-" + u.split("/")[-1].replace(".html", ".png")
+            import os as _os
+            im = nm if _os.path.exists(_os.path.join(ROOT, "images", "maps", nm)) else None
         elif m and m.group(1).startswith("paul-journey"):
             im = m.group(1) + ".png"
         elif u.startswith("/dictionary/map/paul-journey"):
@@ -379,6 +384,9 @@ def main():
     from build_verse_index import render_all as _rv
     global VERSE_BOOKS
     VERSE_BOOKS = _rv(dict(ENTRIES=ENTRIES, head=head, esc=esc, FOOTER=FOOTER, SITE=SITE, OUT=OUT))
+    from build_timeline import render_all as _rt
+    global TIMELINE_ERAS
+    TIMELINE_ERAS = _rt(dict(ENTRIES=ENTRIES, BY_SLUG=BY_SLUG, head=head, esc=esc, FOOTER=FOOTER, SITE=SITE, OUT=OUT))
     from build_map_page import write_datasets, write_llms
     write_datasets(GEO, BY_SLUG, ENTRIES, SITE)
     write_llms(ENTRIES, GEO, SITE)

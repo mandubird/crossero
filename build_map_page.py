@@ -137,6 +137,7 @@ def write_llms(ENTRIES, GEO, SITE):
 - [성경 사건]({SITE}/dictionary/events/): {cnt.get('사건', 0)}개
 - [신앙 용어]({SITE}/dictionary/terms/): {cnt.get('신앙 용어', 0)}개
 - [성경 66권 요약]({SITE}/dictionary/books/)
+- [성경 연대표]({SITE}/dictionary/timeline/): 창조에서 초대교회까지 10개 시대별 정리
 - [구절로 찾기]({SITE}/dictionary/verses/): 성경 구절에서 관련 인물·사건·지명 항목으로 연결
 
 ## 성경 지도

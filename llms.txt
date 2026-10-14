@@ -9,6 +9,7 @@
 - [성경 사건](https://crossero.com/dictionary/events/): 32개
 - [신앙 용어](https://crossero.com/dictionary/terms/): 15개
 - [성경 66권 요약](https://crossero.com/dictionary/books/)
+- [성경 연대표](https://crossero.com/dictionary/timeline/): 창조에서 초대교회까지 10개 시대별 정리
 - [구절로 찾기](https://crossero.com/dictionary/verses/): 성경 구절에서 관련 인물·사건·지명 항목으로 연결
 
 ## 성경 지도

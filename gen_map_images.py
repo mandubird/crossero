@@ -223,6 +223,30 @@ def route_map(r, data):
     save(im, f"{r['slug']}.png")
 
 
+def era_map(era, data, names):
+    pl_ = [(k, GEO[k]) for k in era["places"] if k in GEO]
+    if len(pl_) < 2:
+        return
+    pts = [(g["lon"], g["lat"]) for _, g in pl_]
+    b = bbox_of(pts)
+    padx, pady = (b[2] - b[0]) * 0.12 + 0.6, (b[3] - b[1]) * 0.15 + 0.5
+    proj = Proj(b[0] - padx, b[1] - pady - 0.6, b[2] + padx, b[3] + pady + 1.2)
+    im, d = base(proj, data)
+    pl = Placer(d)
+    xy = [proj.xy(*p) for p in pts]
+    for x, y in xy:
+        pl.obstacle(x, y, 16 * SS)
+    for i, ((k, g), (x, y)) in enumerate(zip(pl_, xy), 1):
+        d.ellipse([x - 15 * SS, y - 15 * SS, x + 15 * SS, y + 15 * SS], fill=(11, 92, 173), outline=(255, 255, 255), width=3 * SS)
+        f = font(17 * SS, True)
+        tw = d.textlength(str(i), font=f)
+        d.text((x - tw / 2, y - 11 * SS), str(i), font=f, fill=(255, 255, 255))
+    for (k, g), (x, y) in zip(pl_, xy):
+        pl.put(x, y, names[k], font(19 * SS, True), gap=20 * SS)
+    chrome(im, f"{era['name']} 지도", era["period"][:34])
+    save(im, f"era-{era['slug']}.png")
+
+
 def overview(data, names):
     pts = [(g["lon"], g["lat"]) for s, g in GEO.items() if 33 < g["lon"] < 37.5 and 29 < g["lat"] < 34]
     b = bbox_of(pts)
@@ -252,7 +276,10 @@ def main():
     for r in ROUTES:
         route_map(r, data)
     overview(data, names)
-    print("지도 이미지:", len(GEO) + len(ROUTES) + 1)
+    from timeline_data import ERAS
+    for era in ERAS:
+        era_map(era, data, names)
+    print("지도 이미지 생성 완료")
 
 
 if __name__ == "__main__":
