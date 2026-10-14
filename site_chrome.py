@@ -7,11 +7,11 @@ import re
 
 NAV_ITEMS = [  # (key, label, href)
     ("home", "홈", "/index.html"),
+    ("puzzle", "퍼즐", "/list.html"),
     ("dict", "성경사전", "/dictionary/"),
     ("map", "성경지도", "/dictionary/map/"),
-    ("puzzle", "퍼즐", "/list.html"),
-    ("today", "오늘의 말씀", "/today/"),
     ("teacher", "교사허브", "/teachers/"),
+    ("today", "오늘의 말씀", "/today/"),
 ]
 
 # 성경사전 분류 (type, 폴더, 칩 라벨, 아이콘, 설명)
@@ -46,18 +46,19 @@ FOOT_COLS = [
 ]
 
 MORE = [  # key, 아이콘, 제목, 설명, href
+    ("puzzle", "🧩", "성경 퍼즐", "말씀을 가로세로로 풀어요", "/list.html"),
     ("dict", "📖", "성경사전", "인물·사건·지명·용어 한눈에", "/dictionary/"),
     ("map", "🗺️", "성경 지도", "지명이 지금은 어디에?", "/dictionary/map/"),
-    ("today", "📅", "오늘의 말씀", "매일 새로운 한 구절", "/today/"),
-    ("puzzle", "🧩", "성경 퍼즐", "말씀을 가로세로로 풀어요", "/list.html"),
     ("teacher", "🧑‍🏫", "교사 허브", "주일학교 자료 모음", "/teachers/"),
+    ("today", "📅", "오늘의 말씀", "매일 새로운 한 구절", "/today/"),
 ]
+SUPPORT = ("support", "💝", "후원하기", "무료로 운영되는 이 사역을 응원해 주세요", "/support.html")
 
 CSS = """
 .nav{position:sticky;top:0;z-index:100;display:flex!important;justify-content:center;gap:4px!important;flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
 .nav .nav-item{flex:0 0 auto;padding:11px 15px!important;font-size:15px!important}
-@media (max-width:640px){.nav{justify-content:space-between!important;gap:0!important;padding:2px 4px!important}.nav .nav-item{padding:11px 7px!important;font-size:13.5px!important}}
+@media (max-width:640px){.nav{justify-content:space-between!important;gap:0!important;padding:2px 4px!important}.nav .nav-item{padding:11px 5px!important;font-size:13px!important}}
 .subnav{background:#fff;border-bottom:1px solid #e5e5e5}
 .subnav-in{display:flex;gap:8px;overflow-x:auto;padding:10px 14px;max-width:820px;margin:0 auto;scrollbar-width:none}
 .subnav-in::-webkit-scrollbar{display:none}
@@ -83,6 +84,18 @@ CSS = """
 .hh-card i{display:block;font-style:normal;font-size:26px;margin-bottom:4px}
 .hh-card b{display:block;font-size:14px}
 .hh-card span{display:block;font-size:11.5px;color:#667;margin-top:2px}
+.sm-one{grid-template-columns:1fr!important}.sm-wide{background:linear-gradient(135deg,#fff7ed,#fffbeb);border-color:#fcd9a8}
+.puzzle-zone{background:#eaf3ff;border:2px solid #bcd6f7;border-radius:22px;padding:16px 14px 18px;margin:26px auto;max-width:860px}
+.pz-label{display:inline-block;background:#0073e6;color:#fff;font-weight:700;font-size:13px;padding:5px 12px;border-radius:14px;margin-bottom:8px}
+.peek{position:fixed;right:0;top:112px;z-index:90;display:flex;align-items:flex-end;text-decoration:none!important;transform:translateX(0);animation:peek-in 7s ease-in-out infinite}
+.peek img{width:62px;height:auto;display:block;margin-right:-8px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+.peek-b{background:#fff;color:#c2410c;border:2px solid #fdba74;border-radius:14px 14px 0 14px;padding:6px 10px;font-size:13px;font-weight:800;margin-bottom:34px;box-shadow:0 3px 10px rgba(0,0,0,.15);white-space:nowrap;animation:peek-blink 1.6s ease-in-out infinite}
+.peek-x{position:absolute;left:-6px;top:-8px;width:20px;height:20px;border-radius:50%;border:0;background:#556;color:#fff;font-size:12px;line-height:20px;padding:0;cursor:pointer;opacity:.0}
+.peek:hover .peek-x,.peek:focus-within .peek-x{opacity:.85}
+@keyframes peek-in{0%,12%{transform:translateX(105%)}22%,78%{transform:translateX(0)}90%,100%{transform:translateX(105%)}}
+@keyframes peek-blink{0%,100%{opacity:1}50%{opacity:.35}}
+@media (prefers-reduced-motion:reduce){.peek{animation:none}.peek-b{animation:none}}
+@media (max-width:640px){.peek{top:104px}.peek img{width:50px}.peek-b{font-size:12px;padding:5px 8px;margin-bottom:26px}}
 @media (max-width:640px){.sm-grid,.hh-grid{grid-template-columns:repeat(2,1fr)}.fnav{grid-template-columns:repeat(2,1fr)}}
 """
 
@@ -124,19 +137,34 @@ def footer_html():
     return f'<!--FL--><nav class="fnav" aria-label="사이트 전체 메뉴">{cols}</nav><!--/FL-->'
 
 
-def more_html(key):
-    cards = [m for m in MORE if m[0] != key][:4]
+def more_html(key, path=""):
+    if key == "home":  # 홈은 위 허브와 겹치므로 후원 안내 한 장만
+        g = ('<a class="sm-card sm-wide" href="/support.html" data-ga="more_click" data-ga-label="support"><b>💝 후원하기</b>'
+             '<span>십자가로세로는 개인 사역으로 무료 운영됩니다. 작은 응원이 새 퍼즐과 자료가 됩니다.</span></a>')
+        return f'<!--MORE--><section class="site-more"><div class="sm-grid sm-one">{g}</div></section><!--/MORE-->'
+    cards = [m for m in MORE if m[0] != key][:3]
+    if key != "support" and not path.startswith(("support", "supporters", "sponsor")):
+        cards.append(SUPPORT)
+    else:
+        cards = [m for m in MORE if m[0] != key][:4]
     g = "".join(f'<a class="sm-card" href="{h}" data-ga="more_click" data-ga-label="{k}"><b>{i} {t}</b><span>{d}</span></a>' for k, i, t, d, h in cards)
     return f'<!--MORE--><section class="site-more"><h2>계속 둘러보기</h2><div class="sm-grid">{g}</div></section><!--/MORE-->'
 
 
 def hub_html():
-    cards = [("📍", "성경 지명", "오늘의 위치와 사진", "/dictionary/places/"), ("👤", "성경 인물", "삶과 핵심 구절", "/dictionary/people/"),
-             ("📜", "성경 사건", "흐름으로 이해", "/dictionary/events/"), ("🗺️", "성경 지도", "지명이 지금은?", "/dictionary/map/"),
-             ("🧩", "퍼즐 풀기", "가로세로 낱말 퍼즐", "/list.html"), ("📅", "오늘의 말씀", "매일 새로운 구절", "/today/"),
-             ("🎴", "말씀 뽑기", "내게 주시는 말씀", "/verse/"), ("🧑‍🏫", "교사 허브", "주일학교 자료", "/teachers/")]
+    cards = [("🧩", "퍼즐 풀기", "가로세로 낱말 퍼즐", "/list.html"), ("📍", "성경 지명", "오늘의 위치와 사진", "/dictionary/places/"),
+             ("👤", "성경 인물", "삶과 핵심 구절", "/dictionary/people/"), ("📜", "성경 사건", "흐름으로 이해", "/dictionary/events/"),
+             ("🗺️", "성경 지도", "지명이 지금은?", "/dictionary/map/"), ("🧑‍🏫", "교사 허브", "주일학교 자료", "/teachers/"),
+             ("📅", "오늘의 말씀", "매일 새로운 구절", "/today/"), ("🎴", "말씀 뽑기", "내게 주시는 말씀", "/verse/")]
     g = "".join(f'<a class="hh-card" href="{h}" data-ga="home_hub_click" data-ga-label="{t}"><i>{ic}</i><b>{t}</b><span>{d}</span></a>' for ic, t, d, h in cards)
     return f'<!--HUB--><section class="home-hub"><h2>무엇을 찾으세요?</h2><div class="hh-grid">{g}</div></section><!--/HUB-->'
+
+
+def peek_html():
+    return ('<!--PEEK--><a class="peek" id="crsPeek" href="/support.html" data-ga="peek_support_click" aria-label="후원하기">'
+            '<span class="peek-b">후원 ❤️</span><img src="/images/mascot-peek.png" alt="" width="62" height="auto"></a>'
+            '<script>try{if(sessionStorage.getItem("peekOff")){var e=document.getElementById("crsPeek");if(e)e.style.display="none"}}catch(x){}'
+            'document.addEventListener("keydown",function(){});</script><!--/PEEK-->')
 
 
 def _strip(s, tag):
@@ -194,11 +222,15 @@ def apply(path, s):
         legacy = (k + len('<div class="footer-divider"></div>')) if k >= 0 else len("<footer>")
     foot = foot[:legacy] + block + foot[legacy:]
     s = s[:f0] + foot + s[f1:]
+    # 우측 마스코트 후원 안내(게임 화면 제외)
+    s = _strip(s, "PEEK")
+    if not path.startswith(("play.html", "play2.html", "support.html")) and "</body>" in s:
+        s = s.replace("</body>", peek_html() + "\n</body>", 1)
     # 계속 둘러보기(푸터 바로 위, 게임 화면 제외)
     s = _strip(s, "MORE")
     if not path.startswith(("play.html", "play2.html")):
         f0 = s.find("<footer")
-        s = s[:f0] + more_html(key) + "\n" + s[f0:]
+        s = s[:f0] + more_html(key, path) + "\n" + s[f0:]
     return s
 
 

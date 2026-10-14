@@ -11,6 +11,7 @@ SEARCH_CSS = ('<style>.dsearch{position:relative;margin:14px 0 6px}.dsearch inpu
               '.dres a{display:flex;justify-content:space-between;gap:10px;padding:11px 14px;background:#fff;border:1px solid #e5e5e5;border-radius:10px;margin-bottom:6px;text-decoration:none;color:#222}'
               '.dres a:hover{border-color:#0073e6}.dres small{color:#7b8794;white-space:nowrap}'
               '.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:18px 0 8px}'
+              '.dreq{padding:14px;background:#fff8ec;border:1px solid #fcd9a8;border-radius:12px;text-align:center}.dreq p{margin:0 0 8px;color:#7a4a00}.dres a.dreqbtn{display:inline-block;background:#d97706;color:#fff!important;border:0;margin:0;padding:9px 16px;border-radius:20px;font-weight:700;text-decoration:none;font-size:14px}'
               '.tile{display:block;background:#fff;border:1px solid #e5e5e5;border-radius:16px;padding:16px;text-decoration:none!important;color:#222!important;box-shadow:0 2px 8px rgba(0,0,0,.04)}'
               '.tile:hover{border-color:#0073e6;box-shadow:0 4px 14px rgba(0,115,230,.14)}'
               '.tile i{font-style:normal;font-size:28px}.tile b{display:block;font-size:17px;margin:4px 0 2px}'
@@ -21,9 +22,10 @@ SEARCH_CSS = ('<style>.dsearch{position:relative;margin:14px 0 6px}.dsearch inpu
               '@media(max-width:600px){.tile{padding:12px}.tile i{font-size:24px}.tile b{font-size:15px}.tile span{font-size:12px;margin-top:2px}.tile small{display:none}}</style>')
 
 SEARCH_JS = """<script>(function(){var D=%s;var i=document.getElementById('dq'),r=document.getElementById('dres');
-if(!i)return;i.addEventListener('input',function(){var q=i.value.trim().toLowerCase();if(!q){r.style.display='none';r.innerHTML='';return;}
+if(!i)return;function reqHref(q){return 'mailto:mandubird@naver.com?subject='+encodeURIComponent('[십자가로세로] 성경사전 항목 추가 요청: '+q)+'&body='+encodeURIComponent('요청 항목: '+q+'\n찾아본 페이지: '+location.href+'\n\n(필요하신 내용이 있으면 자유롭게 적어 주세요)');}
+i.addEventListener('input',function(){var q=i.value.trim().toLowerCase();if(!q){r.style.display='none';r.innerHTML='';return;}
 var m=D.filter(function(d){return d.n.toLowerCase().indexOf(q)>-1||d.s.toLowerCase().indexOf(q)>-1;}).slice(0,12);
-r.style.display='block';r.innerHTML=m.length?m.map(function(d){return '<a href="/dictionary/'+d.u+'.html"><span><b>'+d.n+'</b> <span style="color:#667;font-size:13px">'+d.s+'</span></span><small>'+d.t+'</small></a>';}).join(''):'<div style="padding:10px;color:#667">검색 결과가 없습니다. 다른 이름으로 찾아 보세요.</div>';
+r.style.display='block';r.innerHTML=m.length?m.map(function(d){return '<a href="/dictionary/'+d.u+'.html"><span><b>'+d.n+'</b> <span style="color:#667;font-size:13px">'+d.s+'</span></span><small>'+d.t+'</small></a>';}).join(''):'<div class="dreq"><p>"'+q.replace(/</g,'&lt;')+'" 항목이 아직 없어요.</p><a class="dreqbtn" href="'+reqHref(q)+'" data-ga="dict_request">✉️ 이 항목 추가를 요청하기</a></div>';
 if(window.crsTrack&&q.length>1)window.crsTrack('dict_search',{q:q});});})();</script>"""
 
 
