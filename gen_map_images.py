@@ -224,15 +224,20 @@ def route_map(r, data):
 
 
 def overview(data, names):
-    pts = [(g["lon"], g["lat"]) for s, g in GEO.items() if 25 < g["lon"] < 40]
+    pts = [(g["lon"], g["lat"]) for s, g in GEO.items() if 33 < g["lon"] < 37.5 and 29 < g["lat"] < 34]
     b = bbox_of(pts)
     proj = Proj(b[0] - 0.8, b[1] - 0.8, b[2] + 0.8, b[3] + 0.8)
     im, d = base(proj, data)
+    pl = Placer(d)
+    todo = []
     for s, g in GEO.items():
         x, y = proj.xy(g["lon"], g["lat"])
         if 0 < x < W * SS and 92 * SS < y < (H - 46) * SS:
             d.ellipse([x - 8 * SS, y - 8 * SS, x + 8 * SS, y + 8 * SS], fill=(0, 115, 230), outline=(255, 255, 255), width=3 * SS)
-            text_outline(d, (x + 12 * SS, y - 12 * SS), names[s], font(18 * SS, True))
+            pl.obstacle(x, y, 10 * SS)
+            todo.append((x, y, names[s]))
+    for x, y, nm in todo:
+        pl.put(x, y, nm, font(18 * SS, True), gap=12 * SS)
     chrome(im, "성경 지도 - 성경 속 지명", "지명이 지금은 어디에 있을까요?")
     save(im, "bible-map-overview.png")
 

@@ -3,15 +3,15 @@
 > 성경 가로세로 낱말 퍼즐과 성경사전·성경 지도를 무료로 제공하는 한국어 사이트입니다. 개인 사역으로 운영됩니다.
 
 ## 성경사전
-- [성경사전 홈](https://crossero.com/dictionary/): 지명·인물·사건·신앙 용어·66권 요약 152개 항목
-- [성경 지명](https://crossero.com/dictionary/places/): 20개, 지명마다 오늘의 위치·사진·지도 이미지 포함
+- [성경사전 홈](https://crossero.com/dictionary/): 지명·인물·사건·신앙 용어·66권 요약 197개 항목
+- [성경 지명](https://crossero.com/dictionary/places/): 65개, 지명마다 오늘의 위치·사진·지도 이미지 포함
 - [성경 인물](https://crossero.com/dictionary/people/): 19개
 - [성경 사건](https://crossero.com/dictionary/events/): 32개
 - [신앙 용어](https://crossero.com/dictionary/terms/): 15개
 - [성경 66권 요약](https://crossero.com/dictionary/books/)
 
 ## 성경 지도
-- [성경 지도](https://crossero.com/dictionary/map/): 성경 지명 18곳의 오늘의 위치 (인터랙티브 지도)
+- [성경 지도](https://crossero.com/dictionary/map/): 성경 지명 63곳의 오늘의 위치 (인터랙티브 지도)
 - [바울 1차 전도 여행](https://crossero.com/dictionary/map/paul-journey-1.html)
 - [바울 2차 전도 여행](https://crossero.com/dictionary/map/paul-journey-2.html)
 - [바울 3차 전도 여행](https://crossero.com/dictionary/map/paul-journey-3.html)

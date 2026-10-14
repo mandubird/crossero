@@ -14,6 +14,7 @@ from dictionary_data_people import PEOPLE
 from dictionary_data_events_places import EVENTS, PLACES
 from dictionary_data_events2 import EVENTS2
 from dictionary_data_places2 import PLACES2
+from dictionary_data_places3 import PLACES3
 from dictionary_data_terms import TERMS
 from dictionary_data_books_ot import OT
 from dictionary_data_books_nt import NT
@@ -32,7 +33,7 @@ for _b in BOOKS:
         _secs = _b["sections"]
         _i = [h for h, _ in _secs].index("핵심 메시지와 읽는 법")
         _b["sections"] = _secs[:_i] + DEEP[_b["slug"]] + _secs[_i:]
-ENTRIES = PEOPLE + EVENTS + EVENTS2 + PLACES + PLACES2 + TERMS + BOOKS
+ENTRIES = PEOPLE + EVENTS + EVENTS2 + PLACES + PLACES2 + PLACES3 + TERMS + BOOKS
 BY_SLUG = {e["slug"]: e for e in ENTRIES}
 TYPE_ORDER = [("인물", "성경 인물"), ("사건", "성경 사건"), ("지명", "성경 지명"), ("신앙 용어", "신앙 용어")]
 BOOK_GROUPS = [("구약", ["모세오경", "역사서", "시가서", "대선지서", "소선지서"]), ("신약", ["복음서", "역사서", "바울서신", "일반서신", "예언서"])]
