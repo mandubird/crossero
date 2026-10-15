@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "source": "/bible-quiz/:slug([^/.]+)", "destination": "/bible-quiz/", "permanent": true }
+  ]
+}
