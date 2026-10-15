@@ -1,0 +1,341 @@
+{
+ "name": "예수님의 사역 경로(십자가로세로 편집본)",
+ "license": "CC BY 4.0",
+ "attribution": "십자가로세로(crossero.com), 위치 OpenBible.info CC BY 4.0",
+ "note": "경로는 방문 순서를 잇는 개략적인 것이며 복음서·사도행전의 순서 정리는 학자마다 다릅니다.",
+ "routes": [
+  {
+   "slug": "jesus-birth",
+   "name": "예수님의 탄생과 유년기 경로",
+   "reference": "마태복음 1–2장, 누가복음 1–2장",
+   "approx_date": "주전 6~4년경(학설에 따라 다름)",
+   "page_url": "https://crossero.com/dictionary/map/jesus-birth.html",
+   "stops": [
+    {
+     "order": 1,
+     "name_ko": "나사렛",
+     "modern_name": "Nazareth",
+     "latitude": 32.7021,
+     "longitude": 35.2977,
+     "scripture_reference": "눅 1:26-38",
+     "note_ko": "천사가 마리아에게 수태를 알림"
+    },
+    {
+     "order": 2,
+     "name_ko": "베들레헴",
+     "modern_name": "Bethlehem",
+     "latitude": 31.7043,
+     "longitude": 35.2076,
+     "scripture_reference": "눅 2:1-7",
+     "note_ko": "호적을 하러 올라가 예수님을 낳음"
+    },
+    {
+     "order": 3,
+     "name_ko": "예루살렘",
+     "modern_name": "Jerusalem",
+     "latitude": 31.7767,
+     "longitude": 35.2342,
+     "scripture_reference": "눅 2:22-38",
+     "note_ko": "성전에서 봉헌, 시므온과 안나를 만남"
+    },
+    {
+     "order": 4,
+     "name_ko": "베들레헴",
+     "modern_name": "Bethlehem",
+     "latitude": 31.7043,
+     "longitude": 35.2076,
+     "scripture_reference": "마 2:1-12",
+     "note_ko": "동방 박사들의 경배(시기는 학설이 갈림)"
+    },
+    {
+     "order": 5,
+     "name_ko": "나사렛",
+     "modern_name": "Nazareth",
+     "latitude": 32.7021,
+     "longitude": 35.2977,
+     "scripture_reference": "마 2:23, 눅 2:39",
+     "note_ko": "나사렛으로 돌아와 자람"
+    },
+    {
+     "order": 6,
+     "name_ko": "예루살렘",
+     "modern_name": "Jerusalem",
+     "latitude": 31.7767,
+     "longitude": 35.2342,
+     "scripture_reference": "눅 2:41-52",
+     "note_ko": "열두 살 때 성전에서 선생들과 이야기함"
+    },
+    {
+     "order": 7,
+     "name_ko": "나사렛",
+     "modern_name": "Nazareth",
+     "latitude": 32.7021,
+     "longitude": 35.2977,
+     "scripture_reference": "눅 2:51-52",
+     "note_ko": "부모를 순종하며 자람"
+    }
+   ]
+  },
+  {
+   "slug": "jesus-galilee",
+   "name": "예수님의 갈릴리 사역 경로",
+   "reference": "마태복음 3–17장, 마가복음 1–9장 등",
+   "approx_date": "주후 27~29년경",
+   "page_url": "https://crossero.com/dictionary/map/jesus-galilee.html",
+   "stops": [
+    {
+     "order": 1,
+     "name_ko": "요단강",
+     "modern_name": "Jordan River",
+     "latitude": 31.7614,
+     "longitude": 35.5583,
+     "scripture_reference": "마 3:13-17",
+     "note_ko": "요한에게 세례를 받으심"
+    },
+    {
+     "order": 2,
+     "name_ko": "가나",
+     "modern_name": "Horbat Qana",
+     "latitude": 32.8222,
+     "longitude": 35.3027,
+     "scripture_reference": "요 2:1-11",
+     "note_ko": "혼인 잔치에서 첫 표적(위치는 학설이 갈림)"
+    },
+    {
+     "order": 3,
+     "name_ko": "가버나움",
+     "modern_name": "Tell Hum",
+     "latitude": 32.8811,
+     "longitude": 35.575,
+     "scripture_reference": "마 4:13-17",
+     "note_ko": "가버나움에 거처를 정하고 가르치기 시작하심"
+    },
+    {
+     "order": 4,
+     "name_ko": "갈릴리 바다",
+     "modern_name": "Sea of Galilee",
+     "latitude": 32.8189,
+     "longitude": 35.59,
+     "scripture_reference": "마 4:18-22",
+     "note_ko": "베드로와 안드레 등 제자들을 부르심"
+    },
+    {
+     "order": 5,
+     "name_ko": "나사렛",
+     "modern_name": "Nazareth",
+     "latitude": 32.7021,
+     "longitude": 35.2977,
+     "scripture_reference": "눅 4:16-30",
+     "note_ko": "고향에서 배척당하심"
+    },
+    {
+     "order": 6,
+     "name_ko": "가버나움",
+     "modern_name": "Tell Hum",
+     "latitude": 32.8811,
+     "longitude": 35.575,
+     "scripture_reference": "막 2:1-12",
+     "note_ko": "중풍병자를 고치심"
+    },
+    {
+     "order": 7,
+     "name_ko": "벳새다",
+     "modern_name": "At Tell",
+     "latitude": 32.9104,
+     "longitude": 35.631,
+     "scripture_reference": "눅 9:10-17",
+     "note_ko": "벳새다 근처에서 오천 명을 먹이심"
+    },
+    {
+     "order": 8,
+     "name_ko": "두로",
+     "modern_name": "Tyre",
+     "latitude": 33.2708,
+     "longitude": 35.1961,
+     "scripture_reference": "마 15:21-28",
+     "note_ko": "두로 지방 가나안 여인의 믿음"
+    },
+    {
+     "order": 9,
+     "name_ko": "가이사랴 빌립보",
+     "modern_name": "Banias",
+     "latitude": 33.2461,
+     "longitude": 35.6933,
+     "scripture_reference": "마 16:13-20",
+     "note_ko": "베드로의 신앙 고백"
+    },
+    {
+     "order": 10,
+     "name_ko": "가버나움",
+     "modern_name": "Tell Hum",
+     "latitude": 32.8811,
+     "longitude": 35.575,
+     "scripture_reference": "마 17:24-27",
+     "note_ko": "가버나움으로 돌아오심"
+    }
+   ]
+  },
+  {
+   "slug": "jesus-to-jerusalem",
+   "name": "예수님의 예루살렘 여정 경로",
+   "reference": "누가복음 9:51–19:28, 요한복음 11장",
+   "approx_date": "주후 29~30년경",
+   "page_url": "https://crossero.com/dictionary/map/jesus-to-jerusalem.html",
+   "stops": [
+    {
+     "order": 1,
+     "name_ko": "가버나움",
+     "modern_name": "Tell Hum",
+     "latitude": 32.8811,
+     "longitude": 35.575,
+     "scripture_reference": "눅 9:51",
+     "note_ko": "예루살렘으로 올라가기로 굳게 결심하심"
+    },
+    {
+     "order": 2,
+     "name_ko": "사마리아",
+     "modern_name": "Samaria",
+     "latitude": 32.2761,
+     "longitude": 35.195,
+     "scripture_reference": "눅 9:52-56",
+     "note_ko": "사마리아 마을에서 영접받지 못하심"
+    },
+    {
+     "order": 3,
+     "name_ko": "베다니",
+     "modern_name": "Al Eizariya",
+     "latitude": 31.7717,
+     "longitude": 35.2559,
+     "scripture_reference": "눅 10:38-42, 요 11:1-44",
+     "note_ko": "마르다와 마리아의 집, 나사로를 살리심"
+    },
+    {
+     "order": 4,
+     "name_ko": "여리고",
+     "modern_name": "Tell es Sultan",
+     "latitude": 31.8717,
+     "longitude": 35.4446,
+     "scripture_reference": "눅 18:35–19:10",
+     "note_ko": "맹인을 고치시고 삭개오를 만나심"
+    },
+    {
+     "order": 5,
+     "name_ko": "예루살렘",
+     "modern_name": "Jerusalem",
+     "latitude": 31.7767,
+     "longitude": 35.2342,
+     "scripture_reference": "눅 19:28",
+     "note_ko": "예루살렘을 향해 올라가심"
+    }
+   ]
+  },
+  {
+   "slug": "jesus-passion",
+   "name": "예수님의 십자가 주간과 부활 경로",
+   "reference": "마태복음 21–28장 등",
+   "approx_date": "주후 30년경(또는 33년)",
+   "page_url": "https://crossero.com/dictionary/map/jesus-passion.html",
+   "stops": [
+    {
+     "order": 1,
+     "name_ko": "여리고",
+     "modern_name": "Tell es Sultan",
+     "latitude": 31.8717,
+     "longitude": 35.4446,
+     "scripture_reference": "눅 19:1-10",
+     "note_ko": "여리고를 지나 예루살렘으로 가심"
+    },
+    {
+     "order": 2,
+     "name_ko": "베다니",
+     "modern_name": "Al Eizariya",
+     "latitude": 31.7717,
+     "longitude": 35.2559,
+     "scripture_reference": "요 12:1-8",
+     "note_ko": "마리아가 향유를 부음"
+    },
+    {
+     "order": 3,
+     "name_ko": "감람산",
+     "modern_name": "Mount of Olives",
+     "latitude": 31.7779,
+     "longitude": 35.2457,
+     "scripture_reference": "마 21:1-7",
+     "note_ko": "나귀를 타고 입성을 준비하심"
+    },
+    {
+     "order": 4,
+     "name_ko": "예루살렘",
+     "modern_name": "Jerusalem",
+     "latitude": 31.7767,
+     "longitude": 35.2342,
+     "scripture_reference": "마 21:8-17",
+     "note_ko": "예루살렘 입성과 성전 정화"
+    },
+    {
+     "order": 5,
+     "name_ko": "예루살렘",
+     "modern_name": "Jerusalem",
+     "latitude": 31.7767,
+     "longitude": 35.2342,
+     "scripture_reference": "마 26:17-30",
+     "note_ko": "다락방에서 최후의 만찬"
+    },
+    {
+     "order": 6,
+     "name_ko": "겟세마네",
+     "modern_name": "Gethsemane",
+     "latitude": 31.7794,
+     "longitude": 35.2394,
+     "scripture_reference": "마 26:36-46",
+     "note_ko": "겟세마네에서 기도하심"
+    },
+    {
+     "order": 7,
+     "name_ko": "예루살렘",
+     "modern_name": "Jerusalem",
+     "latitude": 31.7767,
+     "longitude": 35.2342,
+     "scripture_reference": "마 26:57–27:26",
+     "note_ko": "재판을 받으심"
+    },
+    {
+     "order": 8,
+     "name_ko": "골고다",
+     "modern_name": "Church of the Holy Sepulchre",
+     "latitude": 31.7784,
+     "longitude": 35.2298,
+     "scripture_reference": "마 27:33-50",
+     "note_ko": "십자가에 못 박히심"
+    },
+    {
+     "order": 9,
+     "name_ko": "골고다",
+     "modern_name": "Church of the Holy Sepulchre",
+     "latitude": 31.7784,
+     "longitude": 35.2298,
+     "scripture_reference": "마 27:57-61",
+     "note_ko": "요셉의 새 무덤에 장사됨"
+    },
+    {
+     "order": 10,
+     "name_ko": "갈릴리 바다",
+     "modern_name": "Sea of Galilee",
+     "latitude": 32.8189,
+     "longitude": 35.59,
+     "scripture_reference": "요 21:1-14",
+     "note_ko": "갈릴리 바다에서 제자들에게 나타나심"
+    },
+    {
+     "order": 11,
+     "name_ko": "감람산",
+     "modern_name": "Mount of Olives",
+     "latitude": 31.7779,
+     "longitude": 35.2457,
+     "scripture_reference": "행 1:9-12",
+     "note_ko": "감람산에서 승천하심(누가복음은 베다니 앞)"
+    }
+   ]
+  }
+ ]
+}

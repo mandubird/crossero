@@ -75,7 +75,9 @@ def render_map(GEO, BY_SLUG, head, esc, FOOTER, SITE):
     from pilgrim_banner import banner as _pb
     out.append(_pb("map"))
     out.append('<div class="idx-section"><h2>바울의 여행 경로</h2><div class="cards">' + "".join(
-        f'<a class="card" href="/dictionary/map/{r["slug"]}.html"><b>{esc(r["short"])}</b><span>{esc(r["ref"])}</span></a>' for r in ROUTES) + "</div></div>")
+        f'<a class="card" href="/dictionary/map/{r["slug"]}.html"><b>{esc(r["short"])}</b><span>{esc(r["ref"])}</span></a>' for r in ROUTES if r["group"] == "paul") + "</div></div>")
+    out.append('<div class="idx-section"><h2>예수님의 사역 경로</h2><div class="cards">' + "".join(
+        f'<a class="card" href="/dictionary/map/{r["slug"]}.html"><b>{esc(r["short"])}</b><span>{esc(r["ref"])}</span></a>' for r in ROUTES if r["group"] == "jesus") + "</div></div>")
     out.append(f'<div class="idx-section"><h2>지명 목록 ({len(pts)})</h2><div class="cards">' + "".join(
         f'<a class="card" href="/dictionary/{p["slug"]}.html"><b>{esc(p["name"])}</b><span>{esc(p["where"])}</span></a>' for p in pts)
         + "</div></div>")
@@ -114,12 +116,14 @@ def write_datasets(GEO, BY_SLUG, ENTRIES, SITE):
         w.writerows(rows)
     from build_routes import ROUTES
     from dictionary_routes_data import PLACES as RP
-    routes = [{"slug": r["slug"], "name": r["name"], "reference": r["ref"], "approx_date": r["when"], "page_url": f"{SITE}/dictionary/map/{r['slug']}.html",
-               "stops": [{"order": i, "name_ko": RP[k]["name"], "modern_name": RP[k]["modern"], "latitude": RP[k]["lat"], "longitude": RP[k]["lon"],
-                          "acts_reference": ref, "note_ko": note} for i, (k, ref, note) in enumerate(r["steps"], 1)]} for r in ROUTES]
-    open(os.path.join(out, "paul-journeys.json"), "w", encoding="utf-8").write(json.dumps(
-        {"name": "사도 바울의 여행 경로(십자가로세로 편집본)", "license": "CC BY 4.0",
-         "attribution": "십자가로세로(crossero.com), 위치 OpenBible.info CC BY 4.0", "routes": routes}, ensure_ascii=False, indent=1))
+    def pack(group):
+        return [{"slug": r["slug"], "name": r["name"], "reference": r["ref"], "approx_date": r["when"], "page_url": f"{SITE}/dictionary/map/{r['slug']}.html",
+                 "stops": [{"order": i, "name_ko": RP[k]["name"], "modern_name": RP[k]["modern"], "latitude": RP[k]["lat"], "longitude": RP[k]["lon"],
+                            "scripture_reference": ref, "note_ko": note} for i, (k, ref, note) in enumerate(r["steps"], 1)]} for r in ROUTES if r["group"] == group]
+    for fname, group, title in (("paul-journeys.json", "paul", "사도 바울의 여행 경로(십자가로세로 편집본)"), ("jesus-ministry.json", "jesus", "예수님의 사역 경로(십자가로세로 편집본)")):
+        open(os.path.join(out, fname), "w", encoding="utf-8").write(json.dumps(
+            {"name": title, "license": "CC BY 4.0", "attribution": "십자가로세로(crossero.com), 위치 OpenBible.info CC BY 4.0",
+             "note": "경로는 방문 순서를 잇는 개략적인 것이며 복음서·사도행전의 순서 정리는 학자마다 다릅니다.", "routes": pack(group)}, ensure_ascii=False, indent=1))
 
 
 def write_llms(ENTRIES, GEO, SITE):
@@ -147,10 +151,14 @@ def write_llms(ENTRIES, GEO, SITE):
 - [바울 2차 전도 여행]({SITE}/dictionary/map/paul-journey-2.html)
 - [바울 3차 전도 여행]({SITE}/dictionary/map/paul-journey-3.html)
 - [바울의 로마 압송 항해]({SITE}/dictionary/map/paul-journey-rome.html)
+- [예수님의 탄생과 유년기]({SITE}/dictionary/map/jesus-birth.html)
+- [예수님의 갈릴리 사역]({SITE}/dictionary/map/jesus-galilee.html)
+- [예수님의 예루살렘 여정]({SITE}/dictionary/map/jesus-to-jerusalem.html)
+- [예수님의 십자가 주간과 부활]({SITE}/dictionary/map/jesus-passion.html)
 
 ## 데이터 (CC BY 4.0, 출처 표기 필수)
 - [성경 지명 좌표 JSON]({SITE}/data/bible-places.json) / [CSV]({SITE}/data/bible-places.csv)
-- [바울 여행 경로 JSON]({SITE}/data/paul-journeys.json)
+- [바울 여행 경로 JSON]({SITE}/data/paul-journeys.json) / [예수님 사역 경로 JSON]({SITE}/data/jesus-ministry.json)
 - 원자료: OpenBible.info 성경 지오코딩 데이터(CC BY 4.0). 위치는 학자들의 식별이며 일부는 학설에 따라 다를 수 있습니다.
 - 성경 본문은 개역한글판(저작권 만료)을 사용합니다.
 

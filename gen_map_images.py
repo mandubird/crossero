@@ -190,8 +190,9 @@ def place_map(slug, g, data, names, sub):
 def route_map(r, data):
     pts = [(RP[k]["lon"], RP[k]["lat"]) for k, _, _ in r["steps"]]
     b = bbox_of(pts)
-    padx, pady = (b[2] - b[0]) * 0.10 + 0.5, (b[3] - b[1]) * 0.12 + 0.6
-    proj = Proj(b[0] - padx, b[1] - pady - 0.6, b[2] + padx, b[3] + pady + 1.4)
+    big = (b[2] - b[0]) > 3 or (b[3] - b[1]) > 3
+    padx, pady = (b[2] - b[0]) * 0.10 + (0.5 if big else 0.08), (b[3] - b[1]) * 0.12 + (0.6 if big else 0.08)
+    proj = Proj(b[0] - padx, b[1] - pady - (0.6 if big else 0.1), b[2] + padx, b[3] + pady + (1.4 if big else 0.2))
     im, d = base(proj, data)
     col = tuple(int(r["color"][i:i + 2], 16) for i in (1, 3, 5))
     xy = [proj.xy(*p) for p in pts]

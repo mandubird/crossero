@@ -346,7 +346,7 @@ def update_sitemap():
             im = nm if _os.path.exists(_os.path.join(ROOT, "images", "maps", nm)) else None
         elif m and m.group(1).startswith("paul-journey"):
             im = m.group(1) + ".png"
-        elif u.startswith("/dictionary/map/paul-journey"):
+        elif u.startswith("/dictionary/map/") and u.endswith(".html"):
             im = u.split("/")[-1].replace(".html", ".png")
         return f"\n    <image:image><image:loc>{SITE}/images/maps/{im}</image:loc></image:image>" if im else ""
     block = "\n  <!-- DICT-START -->\n" + "\n".join(

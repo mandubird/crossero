@@ -19,10 +19,14 @@
 - [바울 2차 전도 여행](https://crossero.com/dictionary/map/paul-journey-2.html)
 - [바울 3차 전도 여행](https://crossero.com/dictionary/map/paul-journey-3.html)
 - [바울의 로마 압송 항해](https://crossero.com/dictionary/map/paul-journey-rome.html)
+- [예수님의 탄생과 유년기](https://crossero.com/dictionary/map/jesus-birth.html)
+- [예수님의 갈릴리 사역](https://crossero.com/dictionary/map/jesus-galilee.html)
+- [예수님의 예루살렘 여정](https://crossero.com/dictionary/map/jesus-to-jerusalem.html)
+- [예수님의 십자가 주간과 부활](https://crossero.com/dictionary/map/jesus-passion.html)
 
 ## 데이터 (CC BY 4.0, 출처 표기 필수)
 - [성경 지명 좌표 JSON](https://crossero.com/data/bible-places.json) / [CSV](https://crossero.com/data/bible-places.csv)
-- [바울 여행 경로 JSON](https://crossero.com/data/paul-journeys.json)
+- [바울 여행 경로 JSON](https://crossero.com/data/paul-journeys.json) / [예수님 사역 경로 JSON](https://crossero.com/data/jesus-ministry.json)
 - 원자료: OpenBible.info 성경 지오코딩 데이터(CC BY 4.0). 위치는 학자들의 식별이며 일부는 학설에 따라 다를 수 있습니다.
 - 성경 본문은 개역한글판(저작권 만료)을 사용합니다.
 
