@@ -109,6 +109,7 @@ def render_all(ctx):
         out.append(f'<h1>{esc(b)} 구절 찾아보기</h1><div class="sub">구절에서 인물·사건·지명 항목으로 바로 이동하세요</div>')
         out.append('<div class="vi-msg" id="vimsg"></div>')
         cur = None
+        used = set()
         for p, items in lst:
             if p[1] != cur:
                 cur = p[1]
@@ -117,7 +118,10 @@ def render_all(ctx):
                 f'<a class="vent" href="/dictionary/{e["slug"]}.html"><i>{esc(TYPE2CAT[e["type"]][2] if e["type"] in TYPE2CAT else e["type"])}</i><b>{esc(e["name"])}</b><span>{esc(note)}</span></a>'
                 for e, note, _ in items)
             tx = vtext(p)
-            out.append(f'<div class="vrow" id="c{p[1]}v{p[2]}" data-c1="{p[1]}" data-v1="{p[2]}" data-c2="{p[3]}" data-v2="{p[4]}">'
+            rid = f"c{p[1]}v{p[2]}"
+            idattr = "" if rid in used else f' id="{rid}"'
+            used.add(rid)
+            out.append(f'<div class="vrow"{idattr} data-c1="{p[1]}" data-v1="{p[2]}" data-c2="{p[3]}" data-v2="{p[4]}">'
                        f'<div class="vr">{esc(label(p))}</div>' + (f'<div class="vt">{tx}</div>' if tx else "") + f'<div class="vents">{ents}</div></div>')
         out.append("</main>")
         out.append(FOOTER)

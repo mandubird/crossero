@@ -167,7 +167,7 @@ def render_geo(e):
     out = [f'<section class="geo"><h2>{esc(e["name"])} 오늘의 모습</h2><div class="geo-grid">']
     if g.get("img"):
         out.append(f'<figure><img src="{g["img"]}" loading="lazy" alt="{esc(e["name"])} 현재 모습 사진"><figcaption>'
-                   f'사진: <a href="{g["credit_url"]}" rel="noopener nofollow" target="_blank">{esc(g["credit"])}</a> · {esc(g["license"])}</figcaption></figure>')
+                   f'사진: ' + (f'<a href="{g["credit_url"]}" rel="noopener nofollow" target="_blank">{esc(g["credit"])}</a>' if g.get("credit_url") else esc(g.get("credit") or "")) + f' · {esc(g["license"])}</figcaption></figure>')
     out.append(f'<figure class="gmap"><a href="/dictionary/map/" data-ga="geo_to_map"><img src="/images/maps/{e["slug"]}-map.png" loading="lazy" width="1200" height="630" '
                f'alt="{esc(e["name"])} 오늘의 위치 지도 - {esc(g["where"])}"></a><figcaption><a href="/dictionary/map/">성경 지도에서 모든 지명 보기</a> · '
                f'<a href="{big}" rel="noopener nofollow" target="_blank">OpenStreetMap에서 열기</a> · 지도 데이터 Natural Earth</figcaption></figure>')
