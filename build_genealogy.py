@@ -5,7 +5,7 @@ import os
 
 NAME2SLUG = {"아담": "adam-and-eve", "노아": "noah", "아브라함": "abraham", "이삭": "isaac", "야곱": "jacob", "다윗": "david",
              "솔로몬": "solomon", "히스기야": "hezekiah", "요시야": "josiah", "보아스": "ruth", "오벳": "ruth", "예수": "jesus",
-             "요셉": None, "유다": None}
+             "요셉": None, "유다": "judah", "라합": "rahab", "밧세바": "bathsheba"}
 CSS = """<style>
 .gen{display:flex;flex-direction:column;align-items:stretch;margin:12px 0 22px}
 .gen-g{margin:0 0 4px;padding:10px 14px;border-radius:12px;background:#eaf3ff;border:1px solid #bcd6f7;font-weight:700;color:#0b5cad}

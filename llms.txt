@@ -15,9 +15,9 @@
 - 내용은 교회 지도자의 피드백을 받아 수정하며 이력은 [검수·수정 이력](https://crossero.com/feedback/)에 공개합니다.
 
 ## 성경사전
-- [성경사전 홈](https://crossero.com/dictionary/): 지명·인물·사건·신앙 용어·66권 요약 220개 항목
+- [성경사전 홈](https://crossero.com/dictionary/): 지명·인물·사건·신앙 용어·66권 요약 256개 항목
 - [성경 지명](https://crossero.com/dictionary/places/): 65개, 지명마다 오늘의 위치·사진·지도 이미지 포함
-- [성경 인물](https://crossero.com/dictionary/people/): 42개
+- [성경 인물](https://crossero.com/dictionary/people/): 78개
 - [성경 사건](https://crossero.com/dictionary/events/): 32개
 - [신앙 용어](https://crossero.com/dictionary/terms/): 15개
 - [성경 66권 요약](https://crossero.com/dictionary/books/)
