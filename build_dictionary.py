@@ -180,6 +180,34 @@ def render_geo(e):
     return "".join(out)
 
 
+def render_more(e):
+    """같은 시대·같은 분류의 항목으로 이어지는 내부 링크(탐색·크롤링 보강)."""
+    from timeline_data import ERAS
+    eras = [x for x in ERAS if e["slug"] in x["events"] + x["people"] + x["places"] + x["books"]]
+    same = [x for x in ENTRIES if x["type"] == e["type"] and x["slug"] != e["slug"]]
+    mates = []
+    for er in eras:
+        for s in er["events"] + er["people"] + er["places"]:
+            x = BY_SLUG.get(s)
+            if x and x["slug"] != e["slug"] and x not in mates:
+                mates.append(x)
+    idx = next((i for i, x in enumerate(ENTRIES) if x["slug"] == e["slug"]), 0)
+    near = [x for x in ENTRIES[max(0, idx - 3): idx + 4] if x["slug"] != e["slug"] and x["type"] == e["type"]]
+    picks = []
+    for x in mates + near + same:
+        if x not in picks:
+            picks.append(x)
+        if len(picks) >= 8:
+            break
+    h = ""
+    if eras:
+        h += '<p style="margin:0 0 10px">⏳ 연대표에서 보기: ' + " · ".join(
+            f'<a href="/dictionary/timeline/{er["slug"]}.html">{esc(er["name"])}</a>' for er in eras) + "</p>"
+    h += '<div class="cards">' + "".join(
+        f'<a class="card" href="/dictionary/{x["slug"]}.html"><b>{esc(x["name"])}</b><span>{esc(x["sub"])}</span></a>' for x in picks) + "</div>"
+    return '<h2>같은 시대·분류의 다른 항목</h2>' + h
+
+
 def _ref_link(r):
     from build_verse_index import anchor
     a = anchor(r)
@@ -257,6 +285,7 @@ def render_entry(e):
     out.append('<p class="note">성경 구절은 장·절 표기로 안내합니다. 본문은 사용하시는 번역본으로 직접 읽어 보세요.</p>')
     out.append('<h2>자주 묻는 질문</h2><div class="faq">' + "".join(
         f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in e["faq"]) + "</div>")
+    out.append(render_more(e))
     from feedback_box import box as _fbbox, SENSITIVE as _SENS
     out.append(_fbbox(e["slug"], e["name"], e["slug"] in _SENS))
 

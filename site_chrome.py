@@ -85,6 +85,11 @@ CSS = """
 .hh-card b{display:block;font-size:14px}
 .hh-card span{display:block;font-size:11.5px;color:#667;margin-top:2px}
 .support-band{background:linear-gradient(135deg,#0073e6,#0052cc);color:#fff;margin:40px 0 0;padding:44px 20px;text-align:center}.support-band h2{color:#fff;font-size:22px;margin:0 0 10px}.support-band p{margin:0 0 20px;font-size:15px;line-height:1.8;opacity:.95}.sb-btn{display:inline-block;background:#fff;color:#0059d6!important;font-weight:700;font-size:16px;padding:13px 30px;border-radius:30px;text-decoration:none!important;box-shadow:0 4px 14px rgba(0,0,0,.18)}.sb-btn:hover{transform:translateY(-1px)}
+.explore{max-width:820px;margin:28px auto 0;padding:18px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:16px}
+.explore h2{font-size:18px;margin:0 0 6px}.ex-g{margin:14px 0 0}.ex-g h3{font-size:15px;margin:0 0 6px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.ex-more{font-size:12px;font-weight:400;color:#0073e6}.ex-l{display:flex;flex-wrap:wrap;gap:6px 8px}
+.ex-l a{background:#f5f9ff;border:1px solid #d6e2f1;border-radius:14px;padding:4px 11px;font-size:13.5px;color:#33506e;text-decoration:none}
+.ex-l a:hover{background:#e6f0ff}
 .puzzle-zone{background:#eaf3ff;border:2px solid #bcd6f7;border-radius:22px;padding:16px 14px 18px;margin:26px auto;max-width:860px}
 .pz-label{display:inline-block;background:#0073e6;color:#fff;font-weight:700;font-size:13px;padding:5px 12px;border-radius:14px;margin-bottom:8px}
 .peek{position:fixed;right:0;top:112px;z-index:90;display:flex;align-items:flex-end;text-decoration:none!important;transform:translateX(0);animation:peek-in 7s ease-in-out infinite}
@@ -172,6 +177,26 @@ def hub_html():
     return f'<!--HUB--><section class="home-hub"><h2>무엇을 찾으세요?</h2><div class="hh-grid">{g}</div></section><!--/HUB-->'
 
 
+def explore_html():
+    from build_dictionary import BY_SLUG
+    from build_routes import ROUTES
+    from timeline_data import ERAS
+    groups = [
+        ("📍 성경 지명", "/dictionary/places/", ["jerusalem", "bethlehem", "nazareth", "jordan-river", "sea-of-galilee", "capernaum", "jericho", "mount-sinai", "babylon", "rome", "ephesus", "damascus", "corinth", "patmos"]),
+        ("👤 성경 인물", "/dictionary/people/", ["abraham", "moses", "david", "paul", "jesus", "peter", "elijah", "daniel", "esther", "ruth", "mary", "john-apostle", "isaiah", "joseph"]),
+        ("📜 성경 사건", "/dictionary/events/", ["creation", "the-flood", "red-sea-crossing", "ten-commandments", "david-and-goliath", "birth-of-jesus", "crucifixion", "resurrection", "pentecost", "babylonian-exile", "feeding-the-five-thousand", "last-supper"]),
+    ]
+    rows = []
+    for title, more, slugs in groups:
+        links = " ".join(f'<a href="/dictionary/{s}.html">{BY_SLUG[s]["name"]}</a>' for s in slugs if s in BY_SLUG)
+        rows.append(f'<div class="ex-g"><h3>{title} <a class="ex-more" href="{more}">전체 보기 →</a></h3><div class="ex-l">{links}</div></div>')
+    rl = " ".join(f'<a href="/dictionary/map/{r["slug"]}.html">{r["short"]}</a>' for r in ROUTES)
+    rows.append(f'<div class="ex-g"><h3>🗺️ 성경 지도·경로 <a class="ex-more" href="/dictionary/map/">지도 보기 →</a></h3><div class="ex-l">{rl}</div></div>')
+    el = " ".join(f'<a href="/dictionary/timeline/{x["slug"]}.html">{x["name"]}</a>' for x in ERAS)
+    rows.append(f'<div class="ex-g"><h3>⏳ 시대별 연대표 <a class="ex-more" href="/dictionary/timeline/">전체 보기 →</a></h3><div class="ex-l">{el} <a href="/dictionary/genealogy/">가계도</a> <a href="/dictionary/verses/">구절로 찾기</a></div></div>')
+    return ('<!--EXPLORE--><section class="explore"><h2>성경 콘텐츠 둘러보기</h2>' + "".join(rows) + '</section><!--/EXPLORE-->')
+
+
 def peek_html():
     # 위치: 메뉴(서브메뉴) 바닥 기준 오프셋. 페이지마다 본문 시작 높이가 달라 콘텐츠를 덜 가리도록 조정한다.
     return ('<!--PEEK--><a class="peek" id="crsPeek" href="/support.html" data-ga="peek_support_click" aria-label="후원하기">'
@@ -202,6 +227,10 @@ def apply(path, s):
     s = _strip(s, "HUB")
     if path == "index.html":
         s = s.replace("<main>", "<main>\n" + hub_html(), 1)
+    # 홈: 성경 콘텐츠 둘러보기(내부 링크)
+    s = _strip(s, "EXPLORE")
+    if path == "index.html" and "</main>" in s:
+        s = s.replace("</main>", explore_html() + "\n</main>", 1)
     # 푸터
     f0 = s.find("<footer")
     if f0 < 0:

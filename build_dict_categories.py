@@ -59,6 +59,12 @@ def render_index(ctx):
     feat = [BY_SLUG[s] for s in FEATURED if s in BY_SLUG]
     out.append('<h2 style="margin-top:26px">많이 찾는 항목</h2><div class="chips2">' + "".join(
         f'<a href="/dictionary/{e["slug"]}.html">{esc(e["name"])}</a>' for e in feat) + "</div>")
+    allh = []
+    for typ, folder, label, icon, d in CATS:
+        its = [e for e in ENTRIES if e["type"] == typ]
+        allh.append(f'<h3 style="margin:14px 0 6px">{icon} {label} ({len(its)})</h3><p style="line-height:2;font-size:14px;margin:0">' + " · ".join(
+            f'<a href="/dictionary/{e["slug"]}.html">{esc(e["name"])}</a>' for e in its) + "</p>")
+    out.append('<details style="margin:18px 0"><summary style="cursor:pointer;font-weight:700;font-size:16px">전체 항목 한눈에 보기 (%d)</summary>' % len(ENTRIES) + "".join(allh) + "</details>")
     out.append('<p style="font-size:14px;color:#556;line-height:1.8">각 항목은 성경 본문의 구절 위치를 기준으로 직접 정리했습니다. 읽고 나서 관련 가로세로 퍼즐로 복습할 수 있고, 해석이 갈리는 부분은 그렇다고 밝혀 두었습니다. 작성 원칙은 <a href="/editorial-policy.html">콘텐츠 제작 원칙</a>을 참고해 주세요.</p>')
     out.append("</main>")
     out.append(FOOTER)
