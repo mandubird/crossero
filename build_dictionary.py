@@ -256,6 +256,8 @@ def render_entry(e):
     out.append('<p class="note">성경 구절은 장·절 표기로 안내합니다. 본문은 사용하시는 번역본으로 직접 읽어 보세요.</p>')
     out.append('<h2>자주 묻는 질문</h2><div class="faq">' + "".join(
         f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in e["faq"]) + "</div>")
+    from feedback_box import box as _fbbox, SENSITIVE as _SENS
+    out.append(_fbbox(e["slug"], e["name"], e["slug"] in _SENS))
 
     if not e["puzzles"]:
         out.append(f'<a class="cta" href="/bible-crossword.html" data-ga="dictionary_to_puzzle" data-ga-label="{esc(e["slug"])}">🧩 성경 퍼즐 둘러보기<small>66권과 인물·사건 주제로 풀어 보는 가로세로 낱말퀴즈</small></a>')
@@ -328,6 +330,7 @@ def update_sitemap():
     s = re.sub(r"\s*<!-- DICT-START -->.*?<!-- DICT-END -->", "", s, flags=re.S)
     from build_routes import ROUTES as _R
     urls = [("/dictionary/", "0.8"), ("/dictionary/map/", "0.8")] + [(f"/dictionary/{c[1]}/", "0.8") for c in __import__("site_chrome").CATS] + [(f"/dictionary/map/{r['slug']}.html", "0.7") for r in _R]
+    urls += [("/feedback/", "0.5")]
     urls += [("/dictionary/genealogy/", "0.8")]
     urls += [("/dictionary/timeline/", "0.8")] + [(f"/dictionary/timeline/{x}.html", "0.7") for x in globals().get("TIMELINE_ERAS", [])]
     urls += [("/dictionary/verses/", "0.8")] + [(f"/dictionary/verses/{m['slug']}.html", "0.6") for m in globals().get("VERSE_BOOKS", [])]
@@ -386,6 +389,8 @@ def main():
     from build_verse_index import render_all as _rv
     global VERSE_BOOKS
     VERSE_BOOKS = _rv(dict(ENTRIES=ENTRIES, head=head, esc=esc, FOOTER=FOOTER, SITE=SITE, OUT=OUT))
+    from build_feedback import render as _rf
+    _rf(dict(head=head, esc=esc, FOOTER=FOOTER, SITE=SITE, OUT=OUT))
     from build_genealogy import render as _rg
     _rg(dict(head=head, esc=esc, FOOTER=FOOTER, SITE=SITE, OUT=OUT, BY_SLUG=BY_SLUG))
     from build_timeline import render_all as _rt

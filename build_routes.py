@@ -91,8 +91,8 @@ def _esc(s):
 
 def render_route(r, head, FOOTER, SITE, BY_SLUG):
     path = f"/dictionary/map/{r['slug']}.html"
-    title = f"{r['name']} 지도 - 경로와 방문 도시 | 십자가로세로"
-    desc = f"{r['name']}({r['ref']}) 경로를 지도에서 따라가 보세요. 방문한 도시를 순서대로 보고 오늘의 위치와 해당 구절을 함께 확인할 수 있어요."
+    title = f"{r['name']} 지도 - " + ("성지순례 경로와 방문 도시" if r["group"] == "paul" else "경로와 방문 장소") + " | 십자가로세로"
+    desc = f"{r['name']}({r['ref']}) 경로를 지도에서 따라가 보세요. 방문한 곳을 순서대로 보고 오늘의 위치와 해당 구절을 함께 확인할 수 있어 성경공부와 성지순례 준비에 좋습니다."
     pts = []
     for i, (k, ref, note) in enumerate(r["steps"], 1):
         p = PLACES[k]

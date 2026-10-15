@@ -37,7 +37,7 @@ def _cards(items, esc):
 def render_index(ctx):
     ENTRIES, BY_SLUG, head, esc, FOOTER, SITE, BOOKS, BOOK_GROUPS = (ctx[k] for k in ("ENTRIES", "BY_SLUG", "head", "esc", "FOOTER", "SITE", "BOOKS", "BOOK_GROUPS"))
     path = "/dictionary/"
-    title = "성경사전 - 성경 지명·인물·사건·용어와 66권 요약 | 십자가로세로"
+    title = "성경사전 - 성경 인물·지명·사건·용어와 66권 요약, 성경공부 | 십자가로세로"
     desc = f"성경 지명, 성경 인물, 성경 사건, 신앙 용어와 66권 요약 {len(ENTRIES)}개 항목을 쉽게 정리한 사전. 지명은 오늘의 위치와 사진, 성경 지도로 함께 확인하세요."
     ld = '<script type="application/ld+json">' + json.dumps({
         "@context": "https://schema.org", "@type": "CollectionPage", "name": "성경사전", "description": desc, "inLanguage": "ko", "url": SITE + path,

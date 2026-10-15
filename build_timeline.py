@@ -29,8 +29,8 @@ def render_all(ctx):
 
     # 개요
     path = "/dictionary/timeline/"
-    title = "성경 연대표 - 시대별 사건·인물·지명 한눈에 보기 | 성경사전 | 십자가로세로"
-    desc = "창조와 족장 시대부터 출애굽, 왕국, 포로기, 예수님의 시대, 초대교회까지 성경의 흐름을 시대별로 정리했습니다. 시대마다 사건·인물·지명과 지도를 함께 볼 수 있어요."
+    title = "성경 연대표(성경 연대기) - 시대별 사건·인물·지명 한눈에 보기 | 십자가로세로"
+    desc = "성경 연대기를 창조와 족장 시대부터 출애굽, 왕국, 포로기, 예수님의 시대, 초대교회까지 10개 시대로 정리했습니다. 성경공부에 맞춰 시대별 사건·인물·지명과 지도를 함께 볼 수 있어요."
     ld = '<script type="application/ld+json">' + json.dumps({
         "@context": "https://schema.org", "@type": "ItemList", "name": "성경 연대표", "description": desc, "inLanguage": "ko", "url": SITE + path,
         "itemListElement": [{"@type": "ListItem", "position": i, "name": e["name"], "url": f"{SITE}/dictionary/timeline/{e['slug']}.html"} for i, e in enumerate(ERAS, 1)]},
@@ -80,6 +80,8 @@ def render_all(ctx):
             out.append("<h2>주요 지명</h2>" + cards(e["places"]))
         out.append("<h2>이 시대를 읽을 성경</h2>" + cards(e["books"]))
         out.append('<h2>자주 묻는 질문</h2><div class="faq">' + "".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in faq) + "</div>")
+        from feedback_box import box as _fb, SENSITIVE_ERAS
+        out.append(_fb("timeline/" + e["slug"], e["name"] + " 연대표", e["slug"] in SENSITIVE_ERAS).replace("/dictionary/timeline/", "/dictionary/timeline/"))
         nav = ""
         if i > 0:
             p = ERAS[i - 1]

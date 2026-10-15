@@ -34,7 +34,7 @@ MATT = [
 def render(ctx):
     head, esc, FOOTER, SITE, OUT, BY_SLUG = (ctx[k] for k in ("head", "esc", "FOOTER", "SITE", "OUT", "BY_SLUG"))
     path = "/dictionary/genealogy/"
-    title = "성경 가계도 - 아담에서 노아, 아브라함에서 예수님까지 | 성경사전 | 십자가로세로"
+    title = "성경 가계도(성경 족보) - 아담에서 노아, 아브라함에서 예수님까지 | 십자가로세로"
     desc = "아담에서 노아까지 10대, 야곱의 열두 아들, 마태복음 1장의 아브라함에서 예수 그리스도까지 42대를 가계도로 정리했습니다."
     ld = "".join('<script type="application/ld+json">' + json.dumps(x, ensure_ascii=False) + "</script>\n" for x in (
         {"@context": "https://schema.org", "@type": "Article", "headline": "성경 가계도", "description": desc, "inLanguage": "ko",
