@@ -92,6 +92,23 @@ CSS = """
 .ex-l a:hover{background:#e6f0ff}
 .puzzle-zone{background:#eaf3ff;border:2px solid #bcd6f7;border-radius:22px;padding:16px 14px 18px;margin:26px auto;max-width:860px}
 .pz-label{display:inline-block;background:#0073e6;color:#fff;font-weight:700;font-size:13px;padding:5px 12px;border-radius:14px;margin-bottom:8px}
+.pg-side{display:none}
+.pg-pill{display:none}
+@media (min-width:1280px){
+.pg-side{display:block;position:fixed;left:max(14px,calc(50% - 410px - 176px));top:150px;width:150px;z-index:80;background:linear-gradient(160deg,#fff7ed,#ffedd5);border:1px solid #fdba74;border-radius:16px;padding:12px 10px 12px;text-align:center;box-shadow:0 6px 18px rgba(154,52,18,.15)}
+.pg-side a{display:block;text-decoration:none;color:#7c2d12}
+.pg-side img{width:84px;height:auto;image-rendering:pixelated;display:block;margin:0 auto 6px}
+.pg-side b{display:block;font-size:14px;line-height:1.4}
+.pg-side span{display:block;font-size:11.5px;color:#9a3412;margin:4px 0 8px;line-height:1.4}
+.pg-side i{display:block;font-style:normal;font-weight:700;font-size:12.5px;background:#c2410c;color:#fff;border-radius:14px;padding:6px 0}
+.pg-x{position:absolute;right:4px;top:2px;border:0;background:none;font-size:18px;line-height:1;color:#9a3412;cursor:pointer;padding:2px 6px}
+}
+@media (max-width:1279px){
+.pg-pill{display:flex;align-items:center;gap:8px;position:fixed;left:12px;bottom:14px;z-index:80;background:#fff7ed;border:1px solid #fdba74;border-radius:26px;padding:5px 14px 5px 6px;text-decoration:none;color:#7c2d12;font-size:13px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.18);transform:translateY(90px);opacity:0;transition:transform .45s ease,opacity .45s ease}
+.pg-pill.on{transform:none;opacity:1}
+.pg-pill img{width:34px;height:auto;image-rendering:pixelated;display:block}
+.pg-side{display:none!important}
+}
 .peek{position:fixed;right:0;top:112px;z-index:90;display:flex;align-items:flex-end;text-decoration:none!important;transform:translateX(0);animation:peek-in 7s ease-in-out infinite}
 .peek img{width:62px;height:auto;display:block;margin-right:-8px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
 .peek-b{background:#fff;color:#c2410c;border:2px solid #fdba74;border-radius:14px 14px 0 14px;padding:6px 10px;font-size:13px;font-weight:800;margin-bottom:34px;box-shadow:0 3px 10px rgba(0,0,0,.15);white-space:nowrap;animation:peek-blink 1.6s ease-in-out infinite}
@@ -197,6 +214,24 @@ def explore_html():
     return ('<!--EXPLORE--><section class="explore"><h2>성경 콘텐츠 둘러보기</h2>' + "".join(rows) + '</section><!--/EXPLORE-->')
 
 
+def pilgrim_html():
+    """'달려가노라' 순례 게임 노출: PC 왼쪽 옆면 카드(1280px 이상) + 모바일 하단 왼쪽 알약(스크롤 후)."""
+    base = "https://dallyeoganora.vercel.app/?utm_source=crossero&utm_medium=%s&utm_campaign=%s"
+    return ('<!--PILGRIM--><aside class="pg-side" id="pgSide" aria-label="바울과 함께 순례자의 길">'
+            '<button class="pg-x" id="pgX" aria-label="닫기" type="button">×</button>'
+            f'<a href="{base % ("side", "pc_left")}" target="_blank" rel="noopener" data-ga="pilgrim_side_click" data-ga-label="pc_left">'
+            '<img src="/images/paul-face.png" alt="" width="84" height="92"><b>바울과 함께<br>순례자의 길</b><span>달려가노라 · 하루 한 걸음 순례 게임</span><i>순례 시작 →</i></a></aside>'
+            f'<a class="pg-pill" id="pgPill" href="{base % ("float", "mobile_pill")}" target="_blank" rel="noopener" data-ga="pilgrim_side_click" data-ga-label="mobile_pill">'
+            '<img src="/images/paul-face.png" alt="" width="34" height="37"><span>바울과 순례자의 길 →</span></a>'
+            '<script>(function(){var s=document.getElementById("pgSide"),p=document.getElementById("pgPill");if(!s||!p)return;'
+            'var off=false;try{off=!!sessionStorage.getItem("pgOff")}catch(e){}'
+            'function hide(){off=true;try{sessionStorage.setItem("pgOff","1")}catch(e){}s.style.display="none";p.style.display="none"}'
+            'document.getElementById("pgX").addEventListener("click",hide);'
+            'if(off){hide();return}'
+            'var shown=false;function chk(){var h=document.documentElement.scrollHeight-innerHeight;if(!shown&&h>0&&scrollY/h>0.3){shown=true;p.classList.add("on");removeEventListener("scroll",chk)}}'
+            'addEventListener("scroll",chk,{passive:true});chk();})();</script><!--/PILGRIM-->')
+
+
 def peek_html():
     # 위치: 메뉴(서브메뉴) 바닥 기준 오프셋. 페이지마다 본문 시작 높이가 달라 콘텐츠를 덜 가리도록 조정한다.
     return ('<!--PEEK--><a class="peek" id="crsPeek" href="/support.html" data-ga="peek_support_click" aria-label="후원하기">'
@@ -272,6 +307,10 @@ def apply(path, s):
     s = _strip(s, "PEEK")
     if not path.startswith(("play.html", "play2.html", "support.html")) and "</body>" in s:
         s = s.replace("</body>", peek_html() + "\n</body>", 1)
+    # 달려가노라 순례 게임 카드(PC 왼쪽 옆면·모바일 알약, 게임·후원 화면 제외)
+    s = _strip(s, "PILGRIM")
+    if not path.startswith(("play.html", "play2.html", "support.html", "supporters.html", "sponsor.html")) and "</body>" in s:
+        s = s.replace("</body>", pilgrim_html() + "\n</body>", 1)
     # 계속 둘러보기(푸터 바로 위, 게임 화면 제외)
     s = _strip(s, "MORE")
     if not path.startswith(("play.html", "play2.html")):

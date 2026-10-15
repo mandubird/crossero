@@ -588,6 +588,23 @@ footer {
 .ex-l a:hover{background:#e6f0ff}
 .puzzle-zone{background:#eaf3ff;border:2px solid #bcd6f7;border-radius:22px;padding:16px 14px 18px;margin:26px auto;max-width:860px}
 .pz-label{display:inline-block;background:#0073e6;color:#fff;font-weight:700;font-size:13px;padding:5px 12px;border-radius:14px;margin-bottom:8px}
+.pg-side{display:none}
+.pg-pill{display:none}
+@media (min-width:1280px){
+.pg-side{display:block;position:fixed;left:max(14px,calc(50% - 410px - 176px));top:150px;width:150px;z-index:80;background:linear-gradient(160deg,#fff7ed,#ffedd5);border:1px solid #fdba74;border-radius:16px;padding:12px 10px 12px;text-align:center;box-shadow:0 6px 18px rgba(154,52,18,.15)}
+.pg-side a{display:block;text-decoration:none;color:#7c2d12}
+.pg-side img{width:84px;height:auto;image-rendering:pixelated;display:block;margin:0 auto 6px}
+.pg-side b{display:block;font-size:14px;line-height:1.4}
+.pg-side span{display:block;font-size:11.5px;color:#9a3412;margin:4px 0 8px;line-height:1.4}
+.pg-side i{display:block;font-style:normal;font-weight:700;font-size:12.5px;background:#c2410c;color:#fff;border-radius:14px;padding:6px 0}
+.pg-x{position:absolute;right:4px;top:2px;border:0;background:none;font-size:18px;line-height:1;color:#9a3412;cursor:pointer;padding:2px 6px}
+}
+@media (max-width:1279px){
+.pg-pill{display:flex;align-items:center;gap:8px;position:fixed;left:12px;bottom:14px;z-index:80;background:#fff7ed;border:1px solid #fdba74;border-radius:26px;padding:5px 14px 5px 6px;text-decoration:none;color:#7c2d12;font-size:13px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.18);transform:translateY(90px);opacity:0;transition:transform .45s ease,opacity .45s ease}
+.pg-pill.on{transform:none;opacity:1}
+.pg-pill img{width:34px;height:auto;image-rendering:pixelated;display:block}
+.pg-side{display:none!important}
+}
 .peek{position:fixed;right:0;top:112px;z-index:90;display:flex;align-items:flex-end;text-decoration:none!important;transform:translateX(0);animation:peek-in 7s ease-in-out infinite}
 .peek img{width:62px;height:auto;display:block;margin-right:-8px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
 .peek-b{background:#fff;color:#c2410c;border:2px solid #fdba74;border-radius:14px 14px 0 14px;padding:6px 10px;font-size:13px;font-weight:800;margin-bottom:34px;box-shadow:0 3px 10px rgba(0,0,0,.15);white-space:nowrap;animation:peek-blink 1.6s ease-in-out infinite}
