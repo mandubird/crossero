@@ -361,7 +361,7 @@ def update_sitemap():
     from build_routes import ROUTES as _R
     urls = [("/dictionary/", "0.8"), ("/dictionary/map/", "0.8")] + [(f"/dictionary/{c[1]}/", "0.8") for c in __import__("site_chrome").CATS] + [(f"/dictionary/map/{r['slug']}.html", "0.7") for r in _R]
     urls += [("/feedback/", "0.5")]
-    urls += [("/christmas/" if x == "index" else f"/christmas/{x}.html", "0.8" if x in ("index", "guide") else "0.7") for x in globals().get("CHRISTMAS_PAGES", [])]
+    urls += [("/christmas/" if x == "index" else f"/christmas/{x}.html", "0.8" if x in ("index", "guide", "props") else "0.7") for x in globals().get("CHRISTMAS_PAGES", [])]
     urls += [("/dictionary/genealogy/", "0.8")]
     urls += [("/dictionary/timeline/", "0.8")] + [(f"/dictionary/timeline/{x}.html", "0.7") for x in globals().get("TIMELINE_ERAS", [])]
     urls += [("/dictionary/verses/", "0.8")] + [(f"/dictionary/verses/{m['slug']}.html", "0.6") for m in globals().get("VERSE_BOOKS", [])]

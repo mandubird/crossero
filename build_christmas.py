@@ -62,6 +62,7 @@ def render_all(ctx):
     out.append('<h1>🎭 성탄절 성극 대본 모음</h1><div class="sub">크리스마스 성극, 이렇게 준비해 보세요</div>')
     out.append('<div class="summary">성탄절 성극 대본 10편을 연령별로 모았습니다. 모두 성경 본문을 바탕으로 십자가로세로가 직접 작성했거나 개역한글 본문을 그대로 낭독하도록 구성했습니다. 교회 주일학교와 가정 예배에서 인쇄해 사용하세요.</div>')
     out.append('<a class="cta" href="/christmas/guide.html" data-ga="christmas_guide">📋 성극 준비 가이드 보기<small>일정, 배역, 소품, 무대, 연습 팁 한눈에</small></a>')
+    out.append('<a class="cta" href="/christmas/props.html" style="background:linear-gradient(135deg,#c2410c,#9a3412)" data-ga="christmas_props">✂️ 소품 도안 인쇄하기<small>별·왕관·양 머리띠·천사 날개·구유 등 A4 PDF 무료</small></a>')
     for gname, slugs in AGE_GROUPS:
         out.append(f'<h2>{gname}</h2>')
         for sl in slugs:
@@ -104,12 +105,49 @@ def render_all(ctx):
     ]
     for h, items in sections:
         out.append(f"<h2>{esc(h)}</h2><ul>" + "".join(f"<li>{i}</li>" for i in items) + "</ul>")
+    out.append('<p><a href="/christmas/props.html" data-ga="guide_to_props">✂️ 별·왕관·구유 등 <b>소품 도안(PDF)</b> 인쇄하기 →</a></p>')
     out.append('<h2>추천 대본</h2><div class="cards">' + "".join(
         f'<a class="card" href="/christmas/{s["slug"]}.html"><b>{esc(s["title"])}</b><span>{s["minutes"]}분 · {esc(s["age"])}</span></a>' for s in SCRIPTS[:6]) + '</div><p><a href="/christmas/">대본 전체 보기 →</a></p>')
     out.append('<h2>자주 묻는 질문</h2><div class="faq">' + "".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in GUIDE_FAQ) + "</div>")
     out.append("</main>")
     out.append(tail())
     open(os.path.join(out_dir, "guide.html"), "w", encoding="utf-8").write("\n".join(out))
+
+    # ----- 소품 도안 페이지
+    PROPS = [
+        ("star", "베들레헴의 별", "별 막대 만들기. 색칠해서 오려 막대에 붙이면 박사들을 이끄는 별이 됩니다.", ["first-christmas", "wise-men", "shepherds-night"]),
+        ("crown", "동방 박사의 왕관 (3개)", "색칠해서 오리고 붙임 부분으로 머리 둘레에 맞춰 붙입니다.", ["wise-men", "first-christmas", "reading-matthew2"]),
+        ("sheep", "양 머리띠와 귀", "흰 솜이나 휴지를 붙여 양의 귀를 꾸미는 도안입니다.", ["shepherds-night", "little-shepherd", "first-christmas"]),
+        ("angel", "천사 날개와 후광", "날개 한 쌍과 후광 머리띠 도안입니다.", ["annunciation", "shepherds-night", "first-christmas"]),
+        ("manger", "구유와 아기 예수님", "구유를 접어 세우고 아기 포대기를 오려 올려 놓는 도안입니다.", ["bethlehem-inn", "first-christmas", "simeon-anna"]),
+        ("gifts", "동방 박사의 선물 상자", "황금·유향·몰약 상자 세 개를 색칠해 오려 선물로 사용합니다.", ["wise-men", "reading-matthew2"]),
+        ("nametags", "배역 이름표", "10개 대본에 나오는 모든 배역의 이름표입니다. 오려서 목걸이처럼 겁니다.", [s["slug"] for s in SCRIPTS]),
+        ("poster", "성극 안내 포스터(빈칸 쓰기)", "제목, 일시, 장소, 참여자를 직접 써서 교회 게시판에 붙이는 포스터입니다.", []),
+    ]
+    path = "/christmas/props.html"
+    title = "성탄 성극 소품 도안 - 별·왕관·양 머리띠·천사 날개·구유 인쇄 PDF | 십자가로세로"
+    desc = "성탄 성극에 필요한 소품 도안을 A4 PDF로 무료 제공합니다. 별, 동방 박사 왕관, 양 머리띠, 천사 날개와 후광, 구유와 아기 예수님, 선물 상자, 배역 이름표, 안내 포스터."
+    ld = "".join('<script type="application/ld+json">' + json.dumps(x, ensure_ascii=False) + "</script>\n" for x in (
+        {"@context": "https://schema.org", "@type": "CollectionPage", "name": "성탄 성극 소품 도안", "description": desc, "inLanguage": "ko", "url": SITE + path,
+         "hasPart": [{"@type": "CreativeWork", "name": n, "url": f"{SITE}/christmas/props/{k}.pdf", "encodingFormat": "application/pdf", "isAccessibleForFree": True} for k, n, _, _ in PROPS]},
+        {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "홈", "item": SITE + "/"}, {"@type": "ListItem", "position": 2, "name": "성탄 성극", "item": SITE + "/christmas/"},
+            {"@type": "ListItem", "position": 3, "name": "소품 도안", "item": SITE + path}]}))
+    out = [head(title, desc, path, ld, f"{SITE}/images/christmas/props-star.png").replace("</head>", CSS + "\n</head>", 1), '<main class="wrap">']
+    out.append('<div class="crumb"><a href="/">홈</a> › <a href="/christmas/">성탄 성극</a> › 소품 도안</div>')
+    out.append('<h1>✂️ 성탄 성극 소품 도안</h1><div class="sub">인쇄해서 색칠하고 오리면 바로 쓰는 A4 도안</div>')
+    out.append('<div class="summary">별, 왕관, 양 머리띠, 천사 날개, 구유, 선물 상자, 배역 이름표, 안내 포스터 도안입니다. 두꺼운 종이(180g 이상)에 인쇄하면 튼튼하고, 어린이들이 직접 색칠하면 성극 준비 시간이 신앙 활동이 됩니다.</div>')
+    out.append('<a class="cta" href="/christmas/props/all.pdf" target="_blank" data-ga="christmas_props_all">📥 전체 도안 한 번에 받기 (PDF 10쪽)<small>모든 소품을 한 파일로 인쇄</small></a>')
+    for k, n, d_, slugs in PROPS:
+        used = "".join(f'<a href="/christmas/{sl}.html" style="margin-right:8px">{esc(by_slug[sl]["title"])}</a>' for sl in slugs[:3])
+        out.append(f'<div class="cx-card" style="display:flex;gap:14px;align-items:flex-start;cursor:default"><img src="/images/christmas/props-{k}.png" alt="{esc(n)} 도안 미리보기" loading="lazy" width="120" style="width:120px;height:auto;border:1px solid #eee;border-radius:8px;flex:none;background:#fff">'
+                   f'<div><b>{esc(n)}</b><span>{esc(d_)}</span>' + (f'<span style="margin-top:6px;font-size:12.5px">쓰는 대본: {used}</span>' if used else "") +
+                   f'<span style="margin-top:8px"><a href="/christmas/props/{k}.pdf" target="_blank" data-ga="christmas_props_download" data-ga-label="{k}" style="font-weight:700;color:#c2410c">📥 PDF 받기</a></span></div></div>')
+    out.append('<div class="note2">모든 도안은 십자가로세로가 만들었으며, 교회·주일학교·가정에서 비상업적으로 인쇄해 쓸 수 있습니다. 판매나 재배포는 하지 말아 주세요.</div>')
+    out.append('<h2>인쇄 팁</h2><ul><li>A4 용지, 배율 100%(실제 크기)로 인쇄하세요.</li><li>점선은 오리는 선입니다. 어린이는 가위질을 어른이 도와주세요.</li><li>왕관과 머리띠는 머리 둘레에 맞춰 붙임 부분을 조절하세요.</li></ul>')
+    out.append("</main>")
+    out.append(tail())
+    open(os.path.join(out_dir, "props.html"), "w", encoding="utf-8").write("\n".join(out))
 
     # ----- 대본 페이지
     from feedback_box import box as _fb
@@ -142,7 +180,7 @@ def render_all(ctx):
         out.append(f'<div class="cx-meta"><div><b>대상</b>{esc(s["age"])}</div><div><b>소요 시간</b>약 {s["minutes"]}분</div><div><b>인원</b>{esc(s["cast_n"])}</div><div><b>성경 본문</b>{esc(", ".join(r for r, _ in s["refs"]))}</div></div>')
         out.append('<div class="btnrow"><button class="pbtn" onclick="window.print()" data-ga="christmas_print">🖨️ 대본 인쇄하기</button></div>')
         out.append("<h2>등장 인물</h2><p>" + _cast_chips(esc, s["cast"]) + "</p>")
-        out.append("<h2>준비물</h2><ul>" + "".join(f"<li>{esc(p)}</li>" for p in s["props"]) + "</ul>")
+        out.append("<h2>준비물</h2><ul>" + "".join(f"<li>{esc(p)}</li>" for p in s["props"]) + '</ul><p><a href="/christmas/props.html" data-ga="script_to_props">✂️ 별·왕관·구유 등 소품 도안(PDF) 인쇄하기 →</a> · <a href="/christmas/props/nametags.pdf" target="_blank">배역 이름표 PDF</a></p>')
         out.append("<h2>대본</h2>")
         if "reading" in s:
             out.append('<div class="note2">성경 본문(개역한글)을 그대로 나누어 읽는 낭독극입니다. 배역별로 맡은 부분만 소리 내어 읽습니다.</div>')
@@ -162,4 +200,4 @@ def render_all(ctx):
         out.append("</main>")
         out.append(tail())
         open(os.path.join(out_dir, f"{s['slug']}.html"), "w", encoding="utf-8").write("\n".join(out))
-    return ["index"] + ["guide"] + [s["slug"] for s in SCRIPTS]
+    return ["index", "guide", "props"] + [s["slug"] for s in SCRIPTS]
