@@ -176,6 +176,7 @@ def write_llms(ENTRIES, GEO, SITE):
 
 ## 말씀·퍼즐·교사 자료
 - [성탄절 성극 대본]({SITE}/christmas/): 성탄 성극·크리스마스 성극 대본 10편과 준비 가이드(직접 작성, 비상업적 사용 가능)
+- [성탄 활동지]({SITE}/christmas/activities.html): 색칠 공부·미로·낱말 찾기·빈칸 채우기·OX 퀴즈 A4 PDF(정답 포함)
 - [성탄 성극 소품 도안]({SITE}/christmas/props.html): 별·왕관·양 머리띠·천사 날개·구유 등 A4 PDF 무료 도안
 - [오늘의 말씀]({SITE}/today/): 매일 바뀌는 한 구절과 해설
 - [말씀 뽑기]({SITE}/verse/): 주제별 구절 카드
