@@ -43,6 +43,7 @@
 - 성경 본문은 개역한글판(저작권 만료)을 사용합니다.
 
 ## 말씀·퍼즐·교사 자료
+- [성탄절 성극 대본](https://crossero.com/christmas/): 성탄 성극·크리스마스 성극 대본 10편과 준비 가이드(직접 작성, 비상업적 사용 가능)
 - [오늘의 말씀](https://crossero.com/today/): 매일 바뀌는 한 구절과 해설
 - [말씀 뽑기](https://crossero.com/verse/): 주제별 구절 카드
 - [교사 허브](https://crossero.com/teachers/): 주일학교·구역 공과 자료 검색

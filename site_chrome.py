@@ -25,7 +25,7 @@ CATS = [
 TYPE2CAT = {c[0]: c for c in CATS}
 
 ACTIVE_RULES = [  # (경로 접두어/이름, key) 위에서부터 첫 일치
-    ("index.html", "home"), ("dictionary/map/", "map"), ("dictionary/", "dict"),
+    ("index.html", "home"), ("dictionary/map/", "map"), ("christmas/", "today"), ("dictionary/", "dict"),
     ("play.html", "puzzle"), ("play2.html", "puzzle"), ("list.html", "puzzle"), ("posts/", "puzzle"),
     ("bible-crossword", "puzzle"), ("how-to-crossword", "puzzle"),
     ("today/", "today"), ("verse/", "today"),
@@ -35,7 +35,7 @@ ACTIVE_RULES = [  # (경로 접두어/이름, key) 위에서부터 첫 일치
 FOOT_COLS = [
     ("성경사전", [("📍 성경 지명", "/dictionary/places/"), ("👤 성경 인물", "/dictionary/people/"), ("📜 성경 사건", "/dictionary/events/"),
                  ("✝️ 신앙 용어", "/dictionary/terms/"), ("📚 66권 요약", "/dictionary/books/"), ("⏳ 연대표", "/dictionary/timeline/"), ("👪 가계도", "/dictionary/genealogy/"), ("📖 구절로 찾기", "/dictionary/verses/"), ("🗺️ 성경 지도", "/dictionary/map/")]),
-    ("말씀·묵상", [("오늘의 말씀", "/today/"), ("말씀 뽑기", "/verse/"), ("새해 말씀 뽑기", "/verse/new-year/"),
+    ("말씀·묵상", [("오늘의 말씀", "/today/"), ("말씀 뽑기", "/verse/"), ("🎭 성탄 성극 대본", "/christmas/"), ("새해 말씀 뽑기", "/verse/new-year/"),
                  ("성탄 말씀 뽑기", "/verse/christmas/"), ("추수감사 말씀 뽑기", "/verse/thanksgiving/")]),
     ("퍼즐·교사 자료", [("퍼즐 목록", "/list.html"), ("퍼즐 게시판", "/posts/index.html"), ("성경 십자말풀이", "/bible-crossword.html"),
                    ("십자말풀이 하는 법", "/how-to-crossword.html"), ("교사 허브", "/teachers/"), ("주일학교 자료", "/sunday-school-materials.html"),
@@ -207,6 +207,7 @@ def explore_html():
     for title, more, slugs in groups:
         links = " ".join(f'<a href="/dictionary/{s}.html">{BY_SLUG[s]["name"]}</a>' for s in slugs if s in BY_SLUG)
         rows.append(f'<div class="ex-g"><h3>{title} <a class="ex-more" href="{more}">전체 보기 →</a></h3><div class="ex-l">{links}</div></div>')
+    rows.append('<div class="ex-g"><h3>🎭 성탄 성극 <a class="ex-more" href="/christmas/">대본 전체 보기 →</a></h3><div class="ex-l"><a href="/christmas/">성탄절 성극 대본 10편</a> <a href="/christmas/guide.html">성극 준비 가이드</a> <a href="/christmas/reading-luke2.html">누가복음 2장 낭독극</a> <a href="/verse/christmas/">성탄 말씀 뽑기</a></div></div>')
     rl = " ".join(f'<a href="/dictionary/map/{r["slug"]}.html">{r["short"]}</a>' for r in ROUTES)
     rows.append(f'<div class="ex-g"><h3>🗺️ 성경 지도·경로 <a class="ex-more" href="/dictionary/map/">지도 보기 →</a></h3><div class="ex-l">{rl}</div></div>')
     el = " ".join(f'<a href="/dictionary/timeline/{x["slug"]}.html">{x["name"]}</a>' for x in ERAS)

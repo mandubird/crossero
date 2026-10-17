@@ -361,6 +361,7 @@ def update_sitemap():
     from build_routes import ROUTES as _R
     urls = [("/dictionary/", "0.8"), ("/dictionary/map/", "0.8")] + [(f"/dictionary/{c[1]}/", "0.8") for c in __import__("site_chrome").CATS] + [(f"/dictionary/map/{r['slug']}.html", "0.7") for r in _R]
     urls += [("/feedback/", "0.5")]
+    urls += [("/christmas/" if x == "index" else f"/christmas/{x}.html", "0.8" if x in ("index", "guide") else "0.7") for x in globals().get("CHRISTMAS_PAGES", [])]
     urls += [("/dictionary/genealogy/", "0.8")]
     urls += [("/dictionary/timeline/", "0.8")] + [(f"/dictionary/timeline/{x}.html", "0.7") for x in globals().get("TIMELINE_ERAS", [])]
     urls += [("/dictionary/verses/", "0.8")] + [(f"/dictionary/verses/{m['slug']}.html", "0.6") for m in globals().get("VERSE_BOOKS", [])]
@@ -419,6 +420,9 @@ def main():
     from build_verse_index import render_all as _rv
     global VERSE_BOOKS
     VERSE_BOOKS = _rv(dict(ENTRIES=ENTRIES, head=head, esc=esc, FOOTER=FOOTER, SITE=SITE, OUT=OUT))
+    from build_christmas import render_all as _rc
+    global CHRISTMAS_PAGES
+    CHRISTMAS_PAGES = _rc(dict(head=head, esc=esc, FOOTER=FOOTER, SITE=SITE, OUT=OUT, BY_SLUG=BY_SLUG))
     from build_feedback import render as _rf
     _rf(dict(head=head, esc=esc, FOOTER=FOOTER, SITE=SITE, OUT=OUT))
     from build_genealogy import render as _rg

@@ -10,7 +10,8 @@ SENSITIVE_ERAS = {"exodus", "jesus"}
 
 def box(slug, name, sensitive=False):
     subj = quote(f"[십자가로세로 검수] {name}")
-    body = quote(f"검수 대상: {name}\n페이지: https://crossero.com/dictionary/{slug}.html\n\n(소속·직분과 의견을 자유롭게 적어 주세요)")
+    page = f"https://crossero.com/{slug[3:]}.html" if slug.startswith("../") else f"https://crossero.com/dictionary/{slug}.html"
+    body = quote(f"검수 대상: {name}\n페이지: {page}\n\n(소속·직분과 의견을 자유롭게 적어 주세요)")
     href = f"mailto:mandubird@naver.com?subject={subj}&body={body}"
     if sensitive:
         msg = ("교단마다 이해가 다를 수 있는 내용입니다. <b>대한예수교장로회 소속 목사님을 비롯한 교회 지도자의 피드백</b>을 주시면 확인 후 반영하겠습니다.")
