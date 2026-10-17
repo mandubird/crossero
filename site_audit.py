@@ -10,7 +10,7 @@ import sys
 from urllib.parse import unquote, urlparse
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
-SKIP = ("node_modules", "backup", "youtube_shorts_generator", ".git", "naver", "google")
+SKIP = ("node_modules", "backup", "youtube_shorts_generator", ".git", "naver", "google", "blog_drafts")
 
 
 def pages():
