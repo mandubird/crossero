@@ -49,34 +49,64 @@ def star(d, cx, cy, ro, ri=None, w=LW):
     d.polygon(pts, outline=INK, width=w)
 
 
-def person(d, x, y, s=1.0, hat=None, staff=False):
-    """간단한 사람 윤곽(머리·옷·팔)."""
-    hr = 90 * s
-    d.ellipse((x - hr, y - hr, x + hr, y + hr), outline=INK, width=LW)
-    d.ellipse((x - 30 * s, y - 20 * s, x - 14 * s, y - 4 * s), fill=INK)
-    d.ellipse((x + 14 * s, y - 20 * s, x + 30 * s, y - 4 * s), fill=INK)
-    d.arc((x - 36 * s, y + 5 * s, x + 36 * s, y + 55 * s), 20, 160, fill=INK, width=LW - 2)
-    d.polygon([(x - 110 * s, y + 520 * s), (x + 110 * s, y + 520 * s), (x + 70 * s, y + hr), (x - 70 * s, y + hr)], outline=INK, width=LW)
-    d.line([(x - 70 * s, y + hr + 40 * s), (x - 170 * s, y + 330 * s)], fill=INK, width=LW)
-    d.line([(x + 70 * s, y + hr + 40 * s), (x + 170 * s, y + 330 * s)], fill=INK, width=LW)
+def _bez(p0, p1, p2, n=30):
+    return [((1 - t) ** 2 * p0[0] + 2 * (1 - t) * t * p1[0] + t * t * p2[0], (1 - t) ** 2 * p0[1] + 2 * (1 - t) * t * p1[1] + t * t * p2[1]) for t in [i / n for i in range(n + 1)]]
+
+
+def person(d, x, y, s=1.0, hat=None, staff=False, hold=None):
+    """부드러운 사람 윤곽: 머리카락/두건, 종 모양 옷, 팔과 손."""
+    hr = 95 * s
+    top = y + hr - 10 * s
+    bot = y + 760 * s
+    robe = _bez((x - 80 * s, top), (x - 150 * s, y + 380 * s), (x - 230 * s, bot))
+    robe2 = _bez((x + 80 * s, top), (x + 150 * s, y + 380 * s), (x + 230 * s, bot))
+    pts = robe + [(x + 230 * s, bot + 10 * s)] + list(reversed(robe2)) + [(x - 230 * s, bot + 10 * s)][:0]
+    d.polygon(pts, fill="white", outline=INK, width=LW)
+    d.line([(x - 230 * s, bot), (x + 230 * s, bot)], fill=INK, width=LW)
+    d.line([(x - 100 * s, y + 320 * s), (x + 100 * s, y + 320 * s)], fill=INK, width=LW - 2)  # 허리띠
+    # 팔과 손
+    for sg in (-1, 1):
+        arm = _bez((x + sg * 85 * s, y + 230 * s), (x + sg * 190 * s, y + 360 * s), (x + sg * 100 * s, y + 470 * s))
+        d.line(arm, fill=INK, width=LW)
+        d.ellipse((x + sg * 100 * s - 30 * s, y + 470 * s - 30 * s, x + sg * 100 * s + 30 * s, y + 470 * s + 30 * s), fill="white", outline=INK, width=LW - 2)
+    # 머리
+    d.ellipse((x - hr, y - hr, x + hr, y + hr), fill="white", outline=INK, width=LW)
+    d.ellipse((x - 34 * s, y - 16 * s, x - 18 * s, y), fill=INK)
+    d.ellipse((x + 18 * s, y - 16 * s, x + 34 * s, y), fill=INK)
+    d.arc((x - 40 * s, y + 5 * s, x + 40 * s, y + 55 * s), 20, 160, fill=INK, width=LW - 2)
     if hat == "crown":
-        d.polygon([(x - 80 * s, y - hr), (x - 80 * s, y - hr - 90 * s), (x - 40 * s, y - hr - 40 * s), (x, y - hr - 100 * s), (x + 40 * s, y - hr - 40 * s), (x + 80 * s, y - hr - 90 * s), (x + 80 * s, y - hr)], outline=INK, width=LW)
+        d.polygon([(x - 85 * s, y - hr + 30 * s), (x - 90 * s, y - hr - 90 * s), (x - 45 * s, y - hr - 30 * s), (x, y - hr - 110 * s), (x + 45 * s, y - hr - 30 * s), (x + 90 * s, y - hr - 90 * s), (x + 85 * s, y - hr + 30 * s)], fill="white", outline=INK, width=LW)
+        d.ellipse((x - 14 * s, y - hr - 40 * s, x + 14 * s, y - hr - 12 * s), outline=INK, width=LW - 3)
     elif hat == "scarf":
-        d.arc((x - hr - 20 * s, y - hr - 20 * s, x + hr + 20 * s, y + hr + 40 * s), 180, 360, fill=INK, width=LW + 6)
+        d.pieslice((x - hr - 25 * s, y - hr - 25 * s, x + hr + 25 * s, y + hr + 70 * s), 180, 360, fill="white", outline=INK, width=LW)
+        d.arc((x - hr - 25 * s, y - hr - 25 * s, x + hr + 25 * s, y + hr + 70 * s), 180, 360, fill=INK, width=LW)
+        d.ellipse((x - hr + 5 * s, y - 55 * s, x + hr - 5 * s, y + hr), fill="white", outline=INK, width=LW)
+        d.ellipse((x - 34 * s, y - 16 * s, x - 18 * s, y), fill=INK)
+        d.ellipse((x + 18 * s, y - 16 * s, x + 34 * s, y), fill=INK)
+        d.arc((x - 40 * s, y + 5 * s, x + 40 * s, y + 55 * s), 20, 160, fill=INK, width=LW - 2)
     elif hat == "halo":
-        d.ellipse((x - 70 * s, y - hr - 90 * s, x + 70 * s, y - hr - 40 * s), outline=INK, width=LW)
+        d.ellipse((x - 80 * s, y - hr - 100 * s, x + 80 * s, y - hr - 40 * s), outline=INK, width=LW)
+    else:  # 머리카락
+        d.arc((x - hr - 12 * s, y - hr - 12 * s, x + hr + 12 * s, y + hr), 190, 350, fill=INK, width=LW + 8)
     if staff:
-        d.line([(x + 200 * s, y + 280 * s), (x + 200 * s, y + 560 * s)], fill=INK, width=LW + 4)
-        d.arc((x + 140 * s, y + 220 * s, x + 260 * s, y + 340 * s), 180, 360, fill=INK, width=LW + 4)
+        sx = x + 215 * s
+        d.line([(sx, y + 300 * s), (sx, bot + 20 * s)], fill=INK, width=LW + 4)
+        d.arc((sx - 110 * s, y + 220 * s, sx + 20 * s, y + 360 * s), 180, 360, fill=INK, width=LW + 4)
 
 
 def sheep(d, x, y, s=1.0):
-    for dx, dy in ((-90, -30), (0, -60), (90, -30), (-60, 40), (60, 40), (0, 20)):
-        d.ellipse((x + (dx - 80) * s, y + (dy - 80) * s, x + (dx + 80) * s, y + (dy + 80) * s), outline=INK, width=LW - 2)
-    d.ellipse((x + 130 * s, y - 40 * s, x + 270 * s, y + 90 * s), outline=INK, width=LW - 2)
-    d.ellipse((x + 200 * s, y - 5 * s, x + 218 * s, y + 13 * s), fill=INK)
-    for dx in (-60, 60):
-        d.line([(x + dx * s, y + 110 * s), (x + dx * s, y + 220 * s)], fill=INK, width=LW)
+    """솜털 구름 몸통(앞쪽 원이 뒤쪽을 가림), 얼굴, 다리."""
+    for dx in (-60, 60):  # 다리(뒤)
+        d.line([(x + dx * s, y + 100 * s), (x + dx * s, y + 230 * s)], fill=INK, width=LW + 2)
+        d.ellipse((x + dx * s - 22 * s, y + 215 * s, x + dx * s + 22 * s, y + 245 * s), fill=INK)
+    circles = [(-110, 0, 95), (-30, -60, 100), (60, -55, 100), (125, 5, 90), (90, 70, 90), (0, 80, 95), (-85, 65, 85), (10, 5, 105)]
+    for cx, cy, r in circles:
+        d.ellipse((x + (cx - r) * s, y + (cy - r) * s, x + (cx + r) * s, y + (cy + r) * s), fill="white", outline=INK, width=LW - 2)
+    hx = x + 195 * s
+    d.ellipse((hx - 70 * s, y - 55 * s, hx + 70 * s, y + 70 * s), fill="white", outline=INK, width=LW - 2)
+    d.ellipse((hx - 85 * s, y - 70 * s, hx - 25 * s, y - 20 * s), fill="white", outline=INK, width=LW - 2)  # 귀
+    d.ellipse((hx + 12 * s, y - 15 * s, hx + 32 * s, y + 5 * s), fill=INK)
+    d.arc((hx - 20 * s, y + 10 * s, hx + 40 * s, y + 50 * s), 20, 150, fill=INK, width=LW - 3)
 
 
 def hills(d, y0):
@@ -93,8 +123,8 @@ def c_stable():
     d.polygon([(900, 2400), (1580, 2400), (1480, 2900), (1000, 2900)], outline=INK, width=LW)
     d.ellipse((1020, 2200, 1460, 2480), outline=INK, width=LW)
     d.ellipse((1130, 2250, 1180, 2300), fill=INK); d.ellipse((1290, 2250, 1340, 2300), fill=INK)
-    person(d, 760, 1750, 0.8, "scarf")
-    person(d, 1720, 1750, 0.8)
+    person(d, 790, 1400, 0.88, "scarf")
+    person(d, 1700, 1400, 0.88)
     d.line([(520, 2900), (1960, 2900)], fill=INK, width=LW)
     foot(d)
     return im
@@ -105,12 +135,14 @@ def c_shepherds():
     head(d, "들에서 만난 천사", "목자와 양들, 천사를 색칠해 보세요")
     for i, (x, y) in enumerate([(300, 700), (1000, 560), (1900, 760), (2200, 520), (600, 480)]):
         star(d, x, y, 80)
-    person(d, 1240, 780, 0.7, "halo")
-    for dx in (-330, 330):  # 날개
-        sg = 1 if dx > 0 else -1
-        d.polygon([(1240 + sg * 90, 900), (1240 + sg * 480, 760), (1240 + sg * 560, 1010), (1240 + sg * 90, 1180)], outline=INK, width=LW)
+    person(d, 1240, 820, 0.8, "halo")
+    for sg in (-1, 1):  # 날개
+        pts = _bez((1240 + sg * 90, 900), (1240 + sg * 640, 700), (1240 + sg * 620, 1150))
+        for k in range(5):
+            pts += _bez((1240 + sg * (620 - k * 105), 1150 - k * 8), (1240 + sg * (570 - k * 105), 1230), (1240 + sg * (520 - k * 105), 1150 - k * 8), 8)[1:]
+        d.polygon(pts + [(1240 + sg * 90, 1180)], fill="white", outline=INK, width=LW)
     hills(d, 2050)
-    person(d, 650, 1900, 0.75, "scarf", staff=True)
+    person(d, 640, 1500, 0.9, "scarf", staff=True)
     sheep(d, 1500, 2700, 1.0)
     sheep(d, 1980, 2950, 0.7)
     foot(d)
@@ -120,13 +152,13 @@ def c_shepherds():
 def c_kings():
     im, d = page()
     head(d, "별을 따라온 박사들", "세 박사와 선물과 별을 색칠해 보세요")
-    star(d, 1240, 650, 380)
+    star(d, 1240, 760, 330)
     for k, x in enumerate((560, 1240, 1920)):
-        person(d, x, 1500, 0.78, "crown")
-        d.rectangle((x - 170, 2150, x + 170, 2420), outline=INK, width=LW)
-        d.rectangle((x - 190, 2090, x + 190, 2160), outline=INK, width=LW)
-        d.line([(x, 2090), (x, 2420)], fill=INK, width=LW)
-    d.text((1240, 2700), "황금 · 유향 · 몰약", font=font(80, True), fill=INK, anchor="mm")
+        person(d, x, 1260, 0.82, "crown")
+        d.rectangle((x - 170, 2400, x + 170, 2670), outline=INK, width=LW)
+        d.rectangle((x - 190, 2340, x + 190, 2410), outline=INK, width=LW)
+        d.line([(x, 2340), (x, 2670)], fill=INK, width=LW)
+    d.text((1240, 2900), "황금 · 유향 · 몰약", font=font(80, True), fill=INK, anchor="mm")
     foot(d)
     return im
 
