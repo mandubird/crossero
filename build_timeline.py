@@ -54,7 +54,9 @@ def render_all(ctx):
         desc = f"{e['name']}({e['period']})의 핵심 사건, 인물, 지명을 정리했습니다. {e['summary'][:60]}"
         has_map = os.path.exists(os.path.join(os.path.dirname(OUT), "images", "maps", f"era-{e['slug']}.png"))
         img = f"{SITE}/images/maps/era-{e['slug']}.png" if has_map else None
-        faq = [(f"{e['name']}은 언제인가요?", f"{e['period']}으로 추정되며, 성경 연대는 학자마다 의견이 다릅니다."),
+        from timeline_extra import EXTRA as _EX
+        _m = _EX.get(e["slug"], {}).get("message")
+        faq = ([(f"{e['name']}의 핵심 메시지는 무엇인가요?", _m)] if _m else []) + [(f"{e['name']}은 언제인가요?", f"{e['period']}으로 추정되며, 성경 연대는 학자마다 의견이 다릅니다."),
                (f"{e['name']}은 성경 어디에 나오나요?", f"{e['refs']}에 기록되어 있습니다.")]
         ld = "".join('<script type="application/ld+json">' + json.dumps(x, ensure_ascii=False) + "</script>\n" for x in (
             {"@context": "https://schema.org", "@type": "Article", "headline": f"{e['name']} - 성경 연대표", "description": desc, "inLanguage": "ko",
@@ -71,7 +73,18 @@ def render_all(ctx):
         out.append(f'<div class="summary">{esc(e["summary"])}</div>')
         if has_map:
             out.append(f'<figure style="margin:14px 0"><img src="/images/maps/era-{e["slug"]}.png" width="1200" height="630" alt="{esc(e["name"])} 시대의 주요 지명 지도" style="width:100%;height:auto;border-radius:14px;display:block"><figcaption style="font-size:12px;color:#7b8794;margin-top:4px">이 시대의 주요 지명 (<a href="/dictionary/map/">성경 지도에서 보기</a>)</figcaption></figure>')
+        from timeline_extra import EXTRA
+        ex = EXTRA.get(e["slug"])
+        if ex:
+            out.append('<div class="btnrow"><button class="pbtn" onclick="window.print()" data-ga="timeline_print">🖨️ 이 시대 공부지 인쇄하기</button></div>')
+            out.append('<div class="note2" style="background:#eef6ff;border-color:#bcd6f7;color:#1e3a5f"><b>이 시대의 핵심 메시지</b><br>' + esc(ex["message"]) + "</div>")
+            out.append("<h2>시대 배경</h2>" + "".join(f"<p>{esc(t)}</p>" for t in ex["bg"]))
+            out.append("<h2>한눈에 보는 흐름</h2><ol class=\"pts\">" + "".join(f"<li><b>{esc(a)}</b> — {esc(b)}</li>" for a, b in ex["flow"]) + "</ol>")
         out.append("<h2>핵심 흐름</h2><ul class=\"pts\">" + "".join(f"<li>{esc(p)}</li>" for p in e["points"]) + "</ul>")
+        if ex:
+            from build_verse_index import anchor
+            out.append("<h2>이 시대의 핵심 구절</h2><ul class=\"pts\">" + "".join(
+                f'<li><a href="{anchor(r) or "/dictionary/verses/"}"><b>{esc(r)}</b></a> — {esc(n)}</li>' for r, n in ex["verses"]) + "</ul>")
         if e["events"]:
             out.append("<h2>주요 사건</h2>" + cards(e["events"]))
         if e["people"]:
@@ -79,6 +92,13 @@ def render_all(ctx):
         if e["places"]:
             out.append("<h2>주요 지명</h2>" + cards(e["places"]))
         out.append("<h2>이 시대를 읽을 성경</h2>" + cards(e["books"]))
+        if ex:
+            out.append("<h2>토론·묵상 질문 (교사·소그룹용)</h2><ol class=\"pts\">" + "".join(f"<li>{esc(q)}</li>" for q in ex["qs"]) + "</ol>")
+            out.append("<h2>오늘의 적용</h2><p>" + esc(ex["apply"]) + "</p>")
+            from build_dictionary import TITLES
+            pz = [x for x in ex["puzzles"] if x in TITLES]
+            out.append("<h2>이 시대를 퍼즐로 복습하기</h2><div class=\"cards\">" + "".join(
+                f'<a class="card" href="/play.html?id={x}" data-ga="timeline_to_puzzle" data-ga-label="{x}"><b>{esc(TITLES[x])}</b><span>퍼즐로 풀어 보기 →</span></a>' for x in pz) + "</div>")
         out.append('<h2>자주 묻는 질문</h2><div class="faq">' + "".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in faq) + "</div>")
         from feedback_box import box as _fb, SENSITIVE_ERAS
         out.append(_fb("timeline/" + e["slug"], e["name"] + " 연대표", e["slug"] in SENSITIVE_ERAS).replace("/dictionary/timeline/", "/dictionary/timeline/"))
