@@ -62,6 +62,7 @@ def render_all(ctx):
     out.append('<h1>🎭 성탄절 성극 대본 모음</h1><div class="sub">크리스마스 성극, 이렇게 준비해 보세요</div>')
     out.append('<div class="summary">성탄절 성극 대본 10편을 연령별로 모았습니다. 모두 성경 본문을 바탕으로 십자가로세로가 직접 작성했거나 개역한글 본문을 그대로 낭독하도록 구성했습니다. 교회 주일학교와 가정 예배에서 인쇄해 사용하세요.</div>')
     out.append('<a class="cta" href="/christmas/guide.html" data-ga="christmas_guide">📋 성극 준비 가이드 보기<small>일정, 배역, 소품, 무대, 연습 팁 한눈에</small></a>')
+    out.append('<a class="cta" href="/christmas/puzzles.html" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)" data-ga="christmas_puzzles">🧩 성탄 가로세로 퍼즐<small>탄생·목자·박사·마리아와 요셉·상식 퍼즐 온라인으로 풀기</small></a>')
     out.append('<a class="cta" href="/christmas/activities.html" style="background:linear-gradient(135deg,#059669,#047857)" data-ga="christmas_acts">🎨 성탄 활동지 인쇄하기<small>색칠·미로·낱말 찾기·빈칸 채우기·OX 퀴즈 PDF 무료</small></a>')
     out.append('<a class="cta" href="/christmas/props.html" style="background:linear-gradient(135deg,#c2410c,#9a3412)" data-ga="christmas_props">✂️ 소품 도안 인쇄하기<small>별·왕관·양 머리띠·천사 날개·구유 등 A4 PDF 무료</small></a>')
     for gname, slugs in AGE_GROUPS:
@@ -184,6 +185,42 @@ def render_all(ctx):
     out.append(tail())
     open(os.path.join(out_dir, "activities.html"), "w", encoding="utf-8").write("\n".join(out))
 
+    # ----- 성탄 퍼즐 허브
+    from build_dictionary import TITLES
+    PZ = [("xms_001", "아기 예수님의 탄생", "쉬움", "마리아·요셉·베들레헴·구유 등 탄생 이야기의 핵심 낱말"),
+          ("xms_002", "목자와 천사", "쉬움", "누가복음 2장 8~20절의 목자, 천사, 구주, 평화"),
+          ("xms_003", "동방 박사와 별", "쉬움", "마태복음 2장의 박사, 별, 황금·유향·몰약, 헤롯"),
+          ("xms_004", "마리아와 요셉", "보통", "수태 고지부터 성전 봉헌, 열두 살 예수님까지"),
+          ("xms_005", "성탄 상식 종합", "보통", "임마누엘, 메시아, 구레뇨, 대림절 등 성탄 상식"),
+          ("mat_071", "마태복음: 왕의 탄생", "쉬움", "마태복음이 전하는 예수님의 탄생"),
+          ("lif_135", "예수님의 생애: 탄생과 유년기", "쉬움", "탄생에서 소년 시절까지"),
+          ("mic_064", "미가: 베들레헴의 통치자", "보통", "베들레헴에서 나실 통치자의 예언")]
+    PZ = [x for x in PZ if x[0] in TITLES]
+    path = "/christmas/puzzles.html"
+    title = "성탄 퍼즐 - 크리스마스 성경 가로세로 낱말 퍼즐 모음 | 십자가로세로"
+    desc = "크리스마스와 성탄을 주제로 한 성경 가로세로 낱말 퍼즐 모음입니다. 아기 예수님의 탄생, 목자와 천사, 동방 박사, 마리아와 요셉, 성탄 상식을 온라인으로 풀어 보세요."
+    faq = [("성탄 퍼즐은 무료인가요?", "온라인에서 풀이하는 것은 무료입니다. 정답 확인과 인쇄 기능은 후원자에게 제공됩니다."),
+           ("어떤 연령에 맞나요?", "쉬움 표시 퍼즐은 초등 중학년부터, 보통 표시 퍼즐은 초등 고학년·청소년·성인에게 맞습니다. 난이도(가볍게·보통·어렵게)를 직접 고를 수 있습니다."),
+           ("성탄 퍼즐을 한꺼번에 풀 수 있나요?", "'성탄 퍼즐 전체 통합'을 누르면 성탄 관련 모든 낱말이 섞인 큰 퍼즐이 만들어집니다."),
+           ("예배나 공과 시간에는 어떻게 쓰나요?", "성극 연습 전후 대기 시간이나 성탄 공과 복습 활동으로 10분 안팎에 풀 수 있습니다. 성극 대본과 활동지와 함께 사용하세요.")]
+    ld = "".join('<script type="application/ld+json">' + json.dumps(x, ensure_ascii=False) + "</script>\n" for x in (
+        {"@context": "https://schema.org", "@type": "CollectionPage", "name": "성탄 퍼즐 모음", "description": desc, "inLanguage": "ko", "url": SITE + path,
+         "hasPart": [{"@type": "CreativeWork", "name": t, "url": f"{SITE}/play.html?id={k}", "learningResourceType": "가로세로 낱말 퍼즐"} for k, t, _, _ in PZ]},
+        {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}))
+    out = [head(title, desc, path, ld).replace("</head>", CSS + "\n</head>", 1), '<main class="wrap">']
+    out.append('<div class="crumb"><a href="/">홈</a> › <a href="/christmas/">성탄 성극</a> › 성탄 퍼즐</div>')
+    out.append('<h1>🧩 성탄 퍼즐 모음</h1><div class="sub">크리스마스 가로세로 낱말 퍼즐로 배우는 성탄 이야기</div>')
+    out.append('<div class="summary">아기 예수님의 탄생부터 목자와 천사, 동방 박사까지, 성탄 이야기를 낱말 퍼즐로 풀어 보세요. 힌트는 성경 본문에 근거해 만들었고, 풀면서 성탄 이야기를 다시 읽게 됩니다.</div>')
+    out.append('<a class="cta" href="/play.html?category=성탄" data-ga="christmas_puzzle_all">🎄 성탄 퍼즐 전체 통합 풀기<small>성탄 관련 모든 낱말이 섞인 큰 퍼즐 (어렵게)</small></a>')
+    out.append("<h2>주제별 성탄 퍼즐</h2>")
+    for k, t, lv, d_ in PZ:
+        out.append(f'<a class="cx-card" href="/play.html?id={k}" data-ga="christmas_puzzle" data-ga-label="{k}"><b>{esc(t)}</b><em>{lv}</em><span>{esc(d_)} — 퍼즐 풀기 →</span></a>')
+    out.append('<h2>함께 쓰면 좋은 자료</h2><div class="cards"><a class="card" href="/christmas/"><b>🎭 성탄 성극 대본</b><span>10편</span></a><a class="card" href="/christmas/activities.html"><b>🎨 성탄 활동지</b><span>색칠·미로·퀴즈</span></a><a class="card" href="/christmas/props.html"><b>✂️ 소품 도안</b><span>별·왕관·구유</span></a><a class="card" href="/verse/christmas/"><b>⭐ 성탄 말씀 뽑기</b><span>말씀 카드</span></a></div>')
+    out.append('<h2>자주 묻는 질문</h2><div class="faq">' + "".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in faq) + "</div>")
+    out.append("</main>")
+    out.append(tail())
+    open(os.path.join(out_dir, "puzzles.html"), "w", encoding="utf-8").write("\n".join(out))
+
     # ----- 대본 페이지
     from feedback_box import box as _fb
     for s in SCRIPTS:
@@ -235,4 +272,4 @@ def render_all(ctx):
         out.append("</main>")
         out.append(tail())
         open(os.path.join(out_dir, f"{s['slug']}.html"), "w", encoding="utf-8").write("\n".join(out))
-    return ["index", "guide", "props", "activities"] + [s["slug"] for s in SCRIPTS]
+    return ["index", "guide", "props", "activities", "puzzles"] + [s["slug"] for s in SCRIPTS]
