@@ -503,6 +503,13 @@
   window.crsStudio = api;
   build();
   refresh();
+  (function () {
+    var m = /[?&]v=([^&#]+)/.exec(location.search); if (!m) return;
+    var ref = decodeURIComponent(m[1]).replace(/\+/g, ' ').trim(), hit = null;
+    (window.__SETS || []).forEach(function (st) { st.v.forEach(function (v) { if (!hit && v.ref === ref) hit = v; }); });
+    (window.__VERSES || []).forEach(function (v) { if (!hit && v.ref === ref) hit = v; });
+    if (hit) { api.setVerse({ ref: hit.ref, text: hit.text, topic: hit.topic || '' }); setTimeout(function () { var e = document.getElementById('vstudio'); if (e) e.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 700); }
+  })();
   if (location.hash === '#church-print' && window.__VERSES && window.__VERSES.length) {
     api.setVerse(window.__VERSES[(Math.random() * window.__VERSES.length) | 0]);
     setTimeout(function () { var e = document.getElementById('church-print'); if (e) e.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 900);

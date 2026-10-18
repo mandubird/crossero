@@ -36,6 +36,7 @@ JS = r"""
   function show(d,fromDraw){
     cur=d; var c=$('vcard'); c.style.display='block'; c.style.animation='none'; void c.offsetWidth; c.style.animation='';
     $('vtag').textContent=d.topic; $('vtext').textContent=d.text; $('vref').textContent=d.ref;
+    var sl=$('vstudiolink'); if(sl) sl.href='/verse/?v='+encodeURIComponent(d.ref);
     $('vactions').style.display='block'; $('vbox').style.display='none'; $('vdraw').textContent='🎴 다시 뽑기';
     [].forEach.call(document.querySelectorAll('.vprint .pc'),function(p){p.querySelector('.pt').textContent=d.text;p.querySelector('.pr').textContent=d.ref;});
     if(fromDraw&&window.crsTrack) window.crsTrack('season_draw',{season:window.__SEASON,ref:d.ref});
@@ -148,6 +149,7 @@ def render(key, cfg, text):
 <div class="vcard" id="vcard" style="display:none"><div class="vtag" id="vtag"></div><p class="vtext" id="vtext"></p><div class="vref" id="vref"></div><div class="vmark">{esc(cfg['label'])} · 십자가로세로</div></div>
 <div class="vactions" id="vactions" style="display:none">
 <button class="vbtn sub" id="vsave">📑 책갈피 이미지 저장</button>
+<a class="vbtn sub" id="vstudiolink" href="/verse/" data-ga="season_to_studio" style="text-decoration:none">🎨 사진·글꼴로 꾸며 저장</a>
 <button class="vbtn sub" id="vsavesq">🖼️ 카드 이미지 저장</button>
 <button class="vbtn sub" id="vprint">🖨️ 책갈피 인쇄(4장)</button>
 <button class="vbtn sub" id="vshare">🔗 링크 공유</button>

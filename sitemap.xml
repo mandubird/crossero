@@ -311,15 +311,6 @@
   </url>
   <!-- TEACH-END -->
 
-  <!-- TODAY-START -->
-  <url>
-    <loc>https://crossero.com/today/</loc>
-    <lastmod>2026-10-18</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- TODAY-END -->
-
   <!-- DICT-START -->
   <url>
     <loc>https://crossero.com/dictionary/</loc>
@@ -2438,6 +2429,15 @@
   </url>
   <!-- DICT-END -->
 
+  <!-- NYGUIDE-START -->
+  <url>
+    <loc>https://crossero.com/verse/new-year/guide/</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- NYGUIDE-END -->
+
   <!-- SEASON-START -->
   <url>
     <loc>https://crossero.com/verse/new-year/</loc>
@@ -2468,12 +2468,12 @@
   </url>
   <!-- VERSE-END -->
 
-  <!-- NYGUIDE-START -->
+  <!-- TODAY-START -->
   <url>
-    <loc>https://crossero.com/verse/new-year/guide/</loc>
+    <loc>https://crossero.com/today/</loc>
     <lastmod>2026-10-18</lastmod>
-    <changefreq>monthly</changefreq>
+    <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
-  <!-- NYGUIDE-END -->
+  <!-- TODAY-END -->
 </urlset>

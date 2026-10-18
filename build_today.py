@@ -2,6 +2,7 @@
 """오늘의 말씀(/today/) 생성. 실행: python3 build_today.py [--date YYYY-MM-DD]
 날짜마다 구절이 고정되며(KST 기준), 일일 자동 발행 때 다시 생성해 오늘 구절을 HTML에 직접 넣는다.
 페이지의 JS는 방문자 날짜로 다시 계산해(embedded schedule) 캐시된 페이지에서도 맞는 구절을 보여준다."""
+import urllib.parse
 import json
 import os
 import random
@@ -88,6 +89,7 @@ def render(day, data):
 <div class="vactions" id="vactions">
 {guide_link}
 <button class="vbtn sub" id="vsave">📑 책갈피 이미지 저장</button>
+<a class="vbtn sub" id="vstudiolink" href="/verse/?v={urllib.parse.quote(today_ref)}" data-ga="today_to_studio" style="text-decoration:none">🎨 사진·글꼴로 꾸며 저장</a>
 <button class="vbtn sub" id="vsavesq">🖼️ 카드 이미지 저장</button>
 <button class="vbtn sub" id="vprint">🖨️ 책갈피 인쇄(4장)</button>
 <button class="vbtn sub" id="vshare">🔗 링크 공유</button>
@@ -117,6 +119,7 @@ def render(day, data):
     var v=V[ref]; $('vtag').textContent=v.topic; $('vtext').textContent=v.text; $('vref').textContent=ref;
   }
   cur=V[$('vref').textContent]||null;
+  (function(){ var l=$('vstudiolink'); if(l) l.href='/verse/?v='+encodeURIComponent($('vref').textContent); })();
   var pc=document.querySelectorAll('.vprint .pc');
   function fillPrint(){ [].forEach.call(pc,function(p){p.querySelector('.pt').textContent=cur.text;p.querySelector('.pr').textContent=cur.ref;}); }
   if(cur){ cur.ref=$('vref').textContent; fillPrint(); }
