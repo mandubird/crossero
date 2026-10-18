@@ -38,7 +38,23 @@
     { k: 'Black Han Sans', n: '검은고딕 (강한 제목체)', w: '400', css: 'Black+Han+Sans' },
     { k: 'Song Myung', n: '송명 (고전 명조)', w: '400', css: 'Song+Myung' },
     { k: 'East Sea Dokdo', n: '동해독도 (붓글씨)', w: '400', css: 'East+Sea+Dokdo' },
-    { k: 'Yeon Sung', n: '연성 (손글씨 캘리)', w: '400', css: 'Yeon+Sung' }
+    { k: 'Yeon Sung', n: '연성 (손글씨 캘리)', w: '400', css: 'Yeon+Sung' },
+    { k: 'Nanum Brush Script', n: '나눔 붓글씨', w: '400', css: 'Nanum+Brush+Script' },
+    { k: 'Dokdo', n: '독도 (거친 붓글씨)', w: '400', css: 'Dokdo' },
+    { k: 'Poor Story', n: '푸어스토리 (일기장 손글씨)', w: '400', css: 'Poor+Story' },
+    { k: 'Single Day', n: '싱글데이 (귀여운 손글씨)', w: '400', css: 'Single+Day' },
+    { k: 'Cute Font', n: '큐트 폰트 (동글동글)', w: '400', css: 'Cute+Font' },
+    { k: 'Kirang Haerang', n: '기랑해랑 (장난스러운 글씨)', w: '400', css: 'Kirang+Haerang' },
+    { k: 'Dongle', n: '동글 (가는 둥근체)', w: '400', css: 'Dongle:wght@400' },
+    { k: 'Stylish', n: '스타일리시 (세련된 손글씨)', w: '400', css: 'Stylish' },
+    { k: 'Gasoek One', n: '가석원 (굵은 장식체)', w: '400', css: 'Gasoek+One' },
+    { k: 'Gugi', n: '구기 (개성 있는 제목체)', w: '400', css: 'Gugi' },
+    { k: 'Black And White Picture', n: '흑백사진 (스크립트체)', w: '400', css: 'Black+And+White+Picture' },
+    { k: 'Diphylleia', n: '디필레이아 (우아한 명조)', w: '400', css: 'Diphylleia' },
+    { k: 'Sunflower', n: '해바라기 (부드러운 고딕)', w: '500', css: 'Sunflower:wght@500' },
+    { k: 'Nanum Gothic', n: '나눔고딕', w: '400;700', css: 'Nanum+Gothic:wght@400;700' },
+    { k: 'IBM Plex Sans KR', n: 'IBM 플렉스 산스 KR', w: '400;700', css: 'IBM+Plex+Sans+KR:wght@400;700' },
+    { k: 'Orbit', n: '오르빗 (둥근 현대체)', w: '400', css: 'Orbit' }
   ];
 
   var SCENES = [
@@ -227,7 +243,7 @@
     var portraitish = h >= w;
     var padX = w * (portraitish ? 0.12 : 0.16);
     var maxW = w - padX * 2, maxH = h * (portraitish ? 0.62 : 0.6);
-    var MUL = { 'Nanum Pen Script': 1.55, 'Gaegu': 1.3, 'Hi Melody': 1.3, 'Gamja Flower': 1.3, 'East Sea Dokdo': 1.6, 'Yeon Sung': 1.15, 'Black Han Sans': 0.95, 'Song Myung': 1.05 };
+    var MUL = { 'Nanum Pen Script': 1.55, 'Gaegu': 1.3, 'Hi Melody': 1.3, 'Gamja Flower': 1.3, 'East Sea Dokdo': 1.6, 'Yeon Sung': 1.15, 'Black Han Sans': 0.95, 'Song Myung': 1.05, 'Nanum Brush Script': 1.5, 'Dokdo': 1.5, 'Poor Story': 1.3, 'Single Day': 1.3, 'Cute Font': 1.3, 'Kirang Haerang': 1.15, 'Dongle': 1.9, 'Stylish': 1.15, 'Gasoek One': 0.95, 'Black And White Picture': 1.05, 'Orbit': 1.05 };
     var fs = Math.min(w, h) * (portraitish ? 0.058 : 0.07) * S.scale * (MUL[S.font] || 1), lines, lh, total;
     var fam = fontStack();
     for (var it = 0; it < 30; it++) {
