@@ -57,7 +57,7 @@
   /* ---------- 상태 ---------- */
   var S = { verse: null, preset: 'sq', bg: { type: 'scene', k: 'sunrise', seed: 7 }, font: 'Noto Serif KR', tcolor: 'auto', scale: 1, dim: 15, shadow: true, box: false,
             showRef: true, align: 'center', mark: true, img: null };
-  try { var sv = JSON.parse(localStorage.getItem('crsStudio') || 'null'); if (sv) { for (var k0 in sv) if (k0 !== 'img' && k0 !== 'verse') S[k0] = sv[k0]; if (S.bg.type === 'image') S.bg = { type: 'scene', k: 'sunrise', seed: 7 }; } } catch (e) {}
+  try { var sv = JSON.parse(localStorage.getItem('crsStudio') || 'null'); if (sv) { for (var k0 in sv) if (k0 !== 'img' && k0 !== 'verse') S[k0] = sv[k0]; if (S.bg.type === 'image' || S.bg.type === 'photo') S.bg = { type: 'scene', k: 'sunrise', seed: 7 }; } } catch (e) {}
   function persist() { try { var c = {}; for (var k in S) if (k !== 'img' && k !== 'verse') c[k] = S[k]; localStorage.setItem('crsStudio', JSON.stringify(c)); } catch (e) {} }
   function isDonor() { try { return typeof checkAuthStatus === 'function' && !!checkAuthStatus(); } catch (e) { return false; } }
   function track(n, p) { if (window.crsTrack) window.crsTrack(n, p || {}); }
@@ -178,7 +178,7 @@
     if (b.type === 'scene') { var R = rng(b.seed * 9973 + b.k.length * 31); (SCENE[b.k] || SCENE.sunrise)(x, w, h, R, b.seed * 7); }
     else if (b.type === 'grad') { var g = GRADS[b.i] || GRADS[0]; var gg = x.createLinearGradient(0, 0, w * 0.3, h); gg.addColorStop(0, g[0]); gg.addColorStop(1, g[1]); x.fillStyle = gg; x.fillRect(0, 0, w, h); }
     else if (b.type === 'solid') { x.fillStyle = b.c; x.fillRect(0, 0, w, h); }
-    else if (b.type === 'image' && S.img) { var iw = S.img.width, ih = S.img.height, sc = Math.max(w / iw, h / ih), dw = iw * sc, dh = ih * sc; x.drawImage(S.img, (w - dw) / 2, (h - dh) / 2, dw, dh); }
+    else if ((b.type === 'image' && S.img) || (b.type === 'photo' && S.pimg)) { var SI = b.type === 'photo' ? S.pimg : S.img; var iw = SI.width, ih = SI.height, sc = Math.max(w / iw, h / ih), dw = iw * sc, dh = ih * sc; x.drawImage(SI, (w - dw) / 2, (h - dh) / 2, dw, dh); }
     if (S.dim > 0) { x.fillStyle = 'rgba(0,0,0,' + (S.dim / 100 * 0.7) + ')'; x.fillRect(0, 0, w, h); }
   }
   function lightBg() {
@@ -248,6 +248,7 @@
       x.globalAlpha = 1;
     }
     x.shadowColor = 'transparent'; x.shadowBlur = 0;
+    if (S.bg.type === 'photo' && S.pcredit) { x.font = Math.round(Math.min(w, h) * 0.017) + 'px "Noto Sans KR",sans-serif'; x.textAlign = 'center'; x.globalAlpha = 0.65; x.fillStyle = dark ? '#333' : '#fff'; x.fillText(S.pcredit, w / 2, h - Math.min(w, h) * 0.016); x.globalAlpha = 1; }
     if (S.mark && !isDonor()) { x.font = Math.round(Math.min(w, h) * 0.026) + 'px "Noto Sans KR",sans-serif'; x.textAlign = 'center'; x.globalAlpha = 0.7; x.fillStyle = dark ? '#333' : '#fff'; x.fillText('십자가로세로 · crossero.com', w / 2, h - Math.min(w, h) * 0.045); x.globalAlpha = 1; }
     else if (S.mark && isDonor() && false) { /* 후원자: 워터마크 없음 */ }
   }
@@ -302,6 +303,31 @@
     sel.value = S.preset;
     sel.addEventListener('change', function () { S.preset = sel.value; track('studio_preset', { preset: S.preset }); refresh(); });
 
+    // 사진 배경
+    var PH = null, pg = $('vsPhotos'), pt = $('vsPhotoThemes'), pcur = 'all';
+    function usePhoto(p) {
+      var im = new Image(); im.onload = function () { S.pimg = im; S.pcredit = '사진: ' + p.artist + ' · ' + p.lic + ' · Wikimedia Commons'; S.bg = { type: 'photo', id: p.id }; mark(); pinfo(p); refresh(); }; im.src = '/images/studio/' + p.id + '.jpg';
+    }
+    function pinfo(p) { var e = $('vsPhotoCredit'); if (!e) return; e.innerHTML = '사진: <a href="' + p.src + '" target="_blank" rel="noopener nofollow">' + p.title.replace(/</g, '') + '</a> · ' + p.artist.replace(/</g, '') + ' · <a href="' + p.licurl + '" target="_blank" rel="noopener nofollow">' + p.lic + '</a>'; }
+    function drawPhotos() {
+      pg.innerHTML = '';
+      PH.photos.filter(function (p) { return pcur === 'all' || p.theme === pcur; }).forEach(function (p) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'vs-ph'; b.dataset.id = p.id; b.title = p.title + ' / ' + p.artist;
+        var i = document.createElement('img'); i.loading = 'lazy'; i.alt = p.title; i.src = '/images/studio/' + p.id + '_t.jpg'; b.appendChild(i);
+        b.addEventListener('click', function () { usePhoto(p); track('studio_photo', { id: p.id, theme: p.theme }); });
+        pg.appendChild(b);
+      });
+      mark();
+    }
+    fetch('/verse/studio_photos.json').then(function (r) { return r.json(); }).then(function (d) {
+      PH = d;
+      var all = [['all', '전체']].concat(Object.keys(d.themes).map(function (k) { return [k, d.themes[k]]; }));
+      all.forEach(function (t) { var c = document.createElement('button'); c.type = 'button'; c.className = 'vs-chip' + (t[0] === 'all' ? ' on' : ''); c.textContent = t[1]; c.addEventListener('click', function () { pcur = t[0]; [].forEach.call(pt.children, function (q) { q.classList.toggle('on', q === c); }); drawPhotos(); }); pt.appendChild(c); });
+      drawPhotos();
+      if (!window.__studioInit) { window.__studioInit = 1; var pool = ['sunrise2', 'lake4', 'forest6', 'mountain4', 'sky7', 'autumn2', 'field1', 'flower4', 'sunrise4', 'night2', 'desert5', 'lake7']; var id = pool[(Math.random() * pool.length) | 0]; var p = d.photos.filter(function (q) { return q.id === id; })[0]; if (p && S.bg.type === 'scene' && S.bg.k === 'sunrise' && S.bg.seed === 7) usePhoto(p); }
+      $('vsRandom').dataset.ph = 1;
+    }).catch(function () {});
+
     // 풍경 썸네일
     var sg = $('vsScenes');
     SCENES.forEach(function (s) {
@@ -320,6 +346,7 @@
       var img = new Image(); img.onload = function () { S.img = img; S.bg = { type: 'image' }; mark(); track('studio_upload'); refresh(); }; img.src = URL.createObjectURL(f);
     });
     function mark() {
+      [].forEach.call(root.querySelectorAll('.vs-ph'), function (b) { b.classList.toggle('on', S.bg.type === 'photo' && S.bg.id === b.dataset.id); });
       [].forEach.call(root.querySelectorAll('.vs-th'), function (b) { b.classList.toggle('on', S.bg.type === 'scene' && S.bg.k === b.dataset.k); });
       [].forEach.call(root.querySelectorAll('.vs-sw'), function (b) { b.classList.toggle('on', (S.bg.type === 'grad' && b.dataset.g == S.bg.i) || (S.bg.type === 'solid' && b.dataset.c === S.bg.c)); });
     }
@@ -360,7 +387,9 @@
     // 스타일 랜덤
     $('vsRandom').addEventListener('click', function () {
       var r = Math.random;
-      var sc = SCENES[(r() * SCENES.length) | 0]; S.bg = { type: 'scene', k: sc.k, seed: 1 + ((r() * 30) | 0) };
+      var usedPhoto = false;
+      if (PH && r() < 0.7) { var pp = PH.photos[(r() * PH.photos.length) | 0]; usePhoto(pp); usedPhoto = true; }
+      else { var sc = SCENES[(r() * SCENES.length) | 0]; S.bg = { type: 'scene', k: sc.k, seed: 1 + ((r() * 30) | 0) }; }
       S.font = FONTS[(r() * FONTS.length) | 0].k; S.tcolor = 'auto'; S.dim = 10 + ((r() * 25) | 0); $('vsDim').value = S.dim;
       mark(); fmark(); cmark(); track('studio_random'); refresh();
     });
