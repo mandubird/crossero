@@ -48,8 +48,8 @@ def build_data():
 
 
 CSS = """
-.vwrap{max-width:720px;margin:0 auto;padding:28px 20px 12px;text-align:center}
-.vchips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px 0 22px}
+.vwrap{max-width:1000px;margin:0 auto;padding:28px 20px 12px;text-align:center}
+.vchips{max-width:720px;margin-left:auto;margin-right:auto;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px 0 22px}
 .vchip{padding:8px 16px;border:1px solid #bcd3f0;background:#fff;color:#0b5cad;border-radius:22px;font-size:15px;cursor:pointer;font-family:inherit}
 .vchip.on{background:#0073e6;color:#fff;border-color:#0073e6}
 .vbox{width:200px;height:130px;margin:0 auto 16px;background:linear-gradient(135deg,#0b5cad,#0073e6);border-radius:16px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:44px;box-shadow:0 8px 22px rgba(0,115,230,.28);cursor:pointer;transition:transform .2s}
@@ -65,6 +65,31 @@ CSS = """
 .vactions{margin:14px 0 6px}
 .vnote{font-size:12.5px;color:#889;line-height:1.7;max-width:560px;margin:22px auto 4px}
 .vprint{display:none}
+.vs{text-align:left;margin:30px auto 10px;padding:18px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 6px 22px rgba(0,0,0,.05)}
+.vs h2{margin:0 0 4px;font-size:21px}.vs .vs-sub{margin:0 0 14px;color:#667;font-size:14px;line-height:1.6}
+.vs-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
+@media(min-width:900px){.vs{max-width:980px}.vs-grid{grid-template-columns:minmax(0,420px) minmax(0,1fr);align-items:start}.vs-prev{position:sticky;top:64px}}
+.vs-prev canvas{width:100%;height:auto;max-height:78vh;display:block;margin:0 auto;border-radius:12px;box-shadow:0 8px 26px rgba(0,0,0,.22);background:#ddd;object-fit:contain}
+#vsInfo{margin:8px 0 10px;font-size:12.5px;color:#7b8794;text-align:center}
+.vs-act{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.vs-act button{padding:11px 16px;border:0;border-radius:12px;font-weight:700;font-size:14.5px;font-family:inherit;cursor:pointer;background:#0073e6;color:#fff}
+.vs-act button.alt{background:#fff;color:#0b5cad;border:1px solid #bcd3f0}
+.vs-ctl label{display:block;font-weight:700;font-size:14px;margin:0 0 6px;color:#334}
+.vs-ctl select,.vs-ctl input[type=text],.vs-ctl input[list]{width:100%;padding:11px 12px;border:1px solid #cdd7e4;border-radius:10px;font-size:15px;font-family:inherit;box-sizing:border-box;background:#fff}
+.vs-ctl details{border:1px solid #e5e7eb;border-radius:12px;margin:12px 0;padding:0}
+.vs-ctl summary{cursor:pointer;padding:12px 14px;font-weight:700;font-size:15px;color:#223}
+.vs-ctl .vs-in{padding:2px 14px 14px}
+.vs-th{width:calc(33.3% - 6px);max-width:110px;border:2px solid transparent;border-radius:10px;padding:0;background:none;cursor:pointer;overflow:hidden;font-family:inherit}
+.vs-th canvas{width:100%;height:auto;display:block;border-radius:8px}.vs-th span{display:block;font-size:11.5px;color:#445;padding:3px 0}
+.vs-th.on{border-color:#0073e6}
+.vs-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.vs-sw{width:36px;height:36px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #cdd7e4;cursor:pointer;padding:0}.vs-sw.on{box-shadow:0 0 0 3px #0073e6}
+.vs-font{width:100%;text-align:left;border:1px solid #e1e7ef;background:#fff;border-radius:10px;padding:8px 12px;margin:0 0 6px;cursor:pointer;font-family:inherit}
+.vs-font .n{display:block;font-size:11.5px;color:#7b8794}.vs-font .s{display:block;font-size:19px;color:#223;line-height:1.5}.vs-font.on{border-color:#0073e6;background:#f0f6ff}
+.vs-chip{padding:7px 13px;border:1px solid #cdd7e4;background:#fff;border-radius:18px;font-size:13.5px;cursor:pointer;font-family:inherit}.vs-chip.on{background:#0073e6;color:#fff;border-color:#0073e6}
+.vs-ctl input[type=range]{width:100%}.vs-ck{display:flex;align-items:center;gap:8px;font-size:14px;margin:8px 0;font-weight:400}
+.vs-note{font-size:12.5px;color:#7b8794;line-height:1.6;margin:6px 0 0}.vs-up{display:inline-block;margin:6px 0 0;padding:9px 14px;border:1px dashed #9bb7dd;border-radius:10px;font-size:14px;cursor:pointer;color:#0b5cad}
+@media print{.vs{display:none!important}}
 @media print{
   body *{visibility:hidden}
   .vprint,.vprint *{visibility:visible}
@@ -91,6 +116,7 @@ JS = r"""
     var mu=window.__GUIDE[d.ref]; var mo=$('vmore'); if(mu){mo.href=mu; mo.style.display='inline-block';} else {mo.style.display='none';}
     var pc=document.querySelectorAll('.vprint .pc');
     [].forEach.call(pc,function(p){p.querySelector('.pt').textContent=d.text;p.querySelector('.pr').textContent=d.ref;});
+    if(window.crsStudio) window.crsStudio.setVerse(d);
     if(fromDraw&&window.crsTrack) window.crsTrack('verse_draw',{topic:d.topic,ref:d.ref});
   }
 
@@ -161,14 +187,6 @@ JS = r"""
   function save(cv,name){
     var a=document.createElement('a'); a.download=name; a.href=cv.toDataURL('image/png'); document.body.appendChild(a); a.click(); a.remove();
   }
-  $('vsave').addEventListener('click',function(){
-    if(!cur)return; save(makeCanvas(600,1400,40),'말씀책갈피-'+cur.ref.replace(/\s|:/g,'_')+'.png');
-    if(window.crsTrack) window.crsTrack('verse_save_bookmark',{topic:cur.topic,ref:cur.ref});
-  });
-  $('vsavesq').addEventListener('click',function(){
-    if(!cur)return; save(makeCanvas(1080,1080,46),'말씀카드-'+cur.ref.replace(/\s|:/g,'_')+'.png');
-    if(window.crsTrack) window.crsTrack('verse_save_card',{topic:cur.topic,ref:cur.ref});
-  });
   $('vprint').addEventListener('click',function(){
     if(!cur)return; if(window.crsTrack) window.crsTrack('verse_print',{topic:cur.topic,ref:cur.ref}); window.print();
   });
@@ -186,14 +204,18 @@ JS = r"""
 """
 
 
+FAQ = [["말씀 카드는 무료인가요?", "네, 말씀 뽑기와 카드 만들기, 이미지 저장·공유·인쇄는 모두 무료입니다. 후원하시면 이미지에서 십자가로세로 워터마크를 뺄 수 있어요."], ["어떤 크기로 저장할 수 있나요?", "카카오톡·인스타그램 정사각(1080×1080)과 4:5, 스토리·휴대폰 배경화면(9:16), 아이폰·갤럭시 긴 화면, 프로필(정사각), PC 배경화면(FHD·QHD), 링크 미리보기(가로), 인쇄용 A4·A5·A6, 책갈피까지 12가지 크기를 지원합니다."], ["배경 이미지는 저작권 문제가 없나요?", "풍경 배경은 십자가로세로가 직접 그린 그래픽이라 저작권 걱정 없이 쓰실 수 있습니다. 내 사진을 올려 배경으로 쓸 수도 있고, 올린 사진은 기기 안에서만 처리됩니다."], ["글꼴도 무료로 쓸 수 있나요?", "노토 산스·노토 세리프·나눔명조·고운바탕·나눔 손글씨 등 구글 폰트의 무료(SIL OFL) 글꼴 16종을 제공합니다."], ["교회 주보나 주일학교에서 인쇄해도 되나요?", "교회·주일학교·가정에서의 비상업적 인쇄와 사용은 자유롭게 하실 수 있습니다. 판매는 하지 말아 주세요. 인쇄 크기로 A4·A5·A6를 고르면 인쇄 창이 열립니다."], ["성경 본문은 어떤 번역인가요?", "저작권이 만료된 성경전서 개역한글판을 사용합니다."]]
+
+
 def render(data):
     path = "/verse/"
-    title = "말씀 뽑기 - 오늘의 말씀 카드와 책갈피 | 십자가로세로"
-    desc = "버튼을 눌러 위로, 평안, 용기, 감사, 소망의 말씀을 뽑아 보세요. 마음에 드는 구절은 책갈피 이미지로 저장하거나 인쇄하고, 친구와 공유할 수 있어요."
+    title = "말씀 카드 만들기 - 성경 구절 카톡·인스타·배경화면·인쇄 이미지 | 십자가로세로"
+    desc = "위로·평안·용기·감사·소망의 말씀을 뽑아 풍경 배경과 무료 글꼴로 말씀 카드를 만들어 보세요. 카카오톡·인스타그램 공유, 프로필, 휴대폰·PC 배경화면, 교회 인쇄용 A4·A5 크기로 저장할 수 있어요."
     ld = '<script type="application/ld+json">' + json.dumps({
         "@context": "https://schema.org", "@type": "WebApplication", "name": "말씀 뽑기", "url": SITE + path,
         "applicationCategory": "LifestyleApplication", "inLanguage": "ko", "operatingSystem": "Web",
-        "description": desc, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}}, ensure_ascii=False) + "</script>"
+        "description": desc, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}}, ensure_ascii=False) + "</script>" + \
+        '<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in FAQ]}, ensure_ascii=False) + "</script>"
     plain_nav = NAV.replace(' nav-active', '')
     h = head(title, desc, path, ld).replace(NAV, plain_nav).replace('og:type" content="article"', 'og:type" content="website"')
     h = h.replace("</head>", f"<style>{CSS}</style>\n</head>", 1)
@@ -214,8 +236,8 @@ def render(data):
         for k, c in _SEASONS.items()) + '</div>'
     body = f"""<main class="vwrap">
 <div class="crumb" style="text-align:left"><a href="/">홈</a> › 말씀 뽑기</div>
-<h1 style="margin-top:10px">말씀 뽑기</h1>
-<div class="sub">오늘 마음에 필요한 말씀을 한 장 뽑아 보세요</div>
+<h1 style="margin-top:10px">말씀 뽑기 · 말씀 카드 만들기</h1>
+<div class="sub">말씀을 한 장 뽑고, 배경과 글꼴을 골라 나만의 카드로 만들어 보세요</div>
 <div class="sub" style="margin-top:-6px"><a href="/today/" data-ga="verse_to_today">📅 오늘의 말씀 보기</a></div>
 <div class="vchips" id="vchips">{chips}</div>
 <div class="vbox" id="vbox" title="눌러서 뽑기">🎴</div>
@@ -223,20 +245,66 @@ def render(data):
 <div class="vcard" id="vcard" style="display:none"><div class="vtag" id="vtag"></div><p class="vtext" id="vtext"></p><div class="vref" id="vref"></div><div class="vmark">십자가로세로 · crossero.com</div></div>
 <div class="vactions" id="vactions" style="display:none">
 <a class="vbtn sub" id="vmore" href="#" style="display:none;text-decoration:none" data-ga="verse_to_guide">📖 이 말씀 해설 읽기</a>
-<button class="vbtn sub" id="vsave">📑 책갈피 이미지 저장</button>
-<button class="vbtn sub" id="vsavesq">🖼️ 카드 이미지 저장</button>
 <button class="vbtn sub" id="vprint">🖨️ 책갈피 인쇄(4장)</button>
 <button class="vbtn sub" id="vshare">🔗 링크 공유</button>
 </div>
+<section class="vs" id="vstudio" style="display:none" aria-label="말씀 카드 만들기">
+<h2>✨ 말씀 카드 만들기</h2>
+<p class="vs-sub">뽑은 말씀으로 카드를 꾸며 보세요. 풍경 배경과 무료 글꼴을 고르고, 카카오톡·인스타그램·프로필·휴대폰/PC 배경화면·교회 인쇄용 크기로 저장할 수 있어요.</p>
+<div class="vs-grid">
+ <div class="vs-prev">
+  <canvas id="vsCanvas" width="540" height="540"></canvas>
+  <div id="vsInfo"></div>
+  <div class="vs-act">
+   <button type="button" id="vsSave" data-ga="studio_save_click">💾 이미지 저장</button>
+   <button type="button" id="vsShare" class="alt" data-ga="studio_share_click">📤 공유하기</button>
+   <button type="button" id="vsPrint" class="alt" data-ga="studio_print_click">🖨️ 인쇄하기</button>
+   <button type="button" id="vsSaveJpg" class="alt">JPG로 저장</button>
+  </div>
+  <p class="vs-note" style="text-align:center">공유가 안 되는 기기에서는 이미지가 저장됩니다. 저장한 사진을 카톡·인스타에 올리세요.</p>
+ </div>
+ <div class="vs-ctl">
+  <label for="vsPreset">① 용도·크기</label>
+  <select id="vsPreset"></select>
+  <details open><summary>② 배경</summary><div class="vs-in">
+   <div class="vs-row" id="vsScenes"></div>
+   <button type="button" class="vs-chip" id="vsVar">🔀 같은 풍경, 다른 느낌</button>
+   <div class="vs-row" id="vsGrads" style="margin-top:12px"></div>
+   <label class="vs-up">📷 내 사진으로 배경 만들기<input type="file" id="vsUpload" accept="image/*" style="display:none"></label>
+   <p class="vs-note">내 사진은 이 기기 안에서만 처리되고 서버로 올라가지 않아요.</p>
+   <label style="margin-top:12px">배경 어둡게 <span style="font-weight:400;color:#889">(글자가 잘 보이게)</span></label>
+   <input type="range" id="vsDim" min="0" max="70" value="15">
+  </div></details>
+  <details id="vsFontBox"><summary>③ 글꼴 (무료 글꼴 16종)</summary><div class="vs-in"><div id="vsFonts"></div><p class="vs-note">모든 글꼴은 구글 폰트의 무료(SIL OFL) 글꼴이에요.</p></div></details>
+  <details open><summary>④ 글자 꾸미기</summary><div class="vs-in">
+   <label>글자 크기</label><input type="range" id="vsScale" min="60" max="160" value="100">
+   <label style="margin-top:10px">글자 색</label><div class="vs-row" id="vsTcolor"></div>
+   <label style="margin-top:10px" for="vsAlign">정렬</label>
+   <select id="vsAlign"><option value="center">가운데</option><option value="left">왼쪽</option></select>
+   <label class="vs-ck"><input type="checkbox" id="vsShadow"> 글자 그림자</label>
+   <label class="vs-ck"><input type="checkbox" id="vsBox"> 글자 뒤에 반투명 상자</label>
+   <label class="vs-ck"><input type="checkbox" id="vsRef"> 성경 구절 위치(예: 시편 23:1) 표시</label>
+   <label class="vs-ck"><input type="checkbox" id="vsMark" disabled> 십자가로세로 워터마크</label>
+   <p class="vs-note" id="vsMarkNote"></p>
+  </div></details>
+  <details><summary>⑤ 다른 말씀으로 바꾸기</summary><div class="vs-in">
+   <label for="vsPick">구절 선택</label><input list="vsRefs" id="vsPick" placeholder="예: 시편 23:1"><datalist id="vsRefs"></datalist>
+   <p class="vs-note">원하는 구절을 목록에서 골라도 되고, 위의 '말씀 뽑기'로 다시 뽑아도 돼요.</p>
+  </div></details>
+  <div class="vs-act" style="margin-top:8px"><button type="button" class="alt" id="vsRandom">🎲 스타일 랜덤으로 바꾸기</button></div>
+ </div>
+</div>
+</section>
 {seasons}
 {guide}
+<h2 style="margin-top:34px;text-align:left">자주 묻는 질문</h2><div class="faq" style="text-align:left;max-width:760px"><details><summary>말씀 카드는 무료인가요?</summary><p>네, 말씀 뽑기와 카드 만들기, 이미지 저장·공유·인쇄는 모두 무료입니다. 후원하시면 이미지에서 십자가로세로 워터마크를 뺄 수 있어요.</p></details><details><summary>어떤 크기로 저장할 수 있나요?</summary><p>카카오톡·인스타그램 정사각(1080×1080)과 4:5, 스토리·휴대폰 배경화면(9:16), 아이폰·갤럭시 긴 화면, 프로필(정사각), PC 배경화면(FHD·QHD), 링크 미리보기(가로), 인쇄용 A4·A5·A6, 책갈피까지 12가지 크기를 지원합니다.</p></details><details><summary>배경 이미지는 저작권 문제가 없나요?</summary><p>풍경 배경은 십자가로세로가 직접 그린 그래픽이라 저작권 걱정 없이 쓰실 수 있습니다. 내 사진을 올려 배경으로 쓸 수도 있고, 올린 사진은 기기 안에서만 처리됩니다.</p></details><details><summary>글꼴도 무료로 쓸 수 있나요?</summary><p>노토 산스·노토 세리프·나눔명조·고운바탕·나눔 손글씨 등 구글 폰트의 무료(SIL OFL) 글꼴 16종을 제공합니다.</p></details><details><summary>교회 주보나 주일학교에서 인쇄해도 되나요?</summary><p>교회·주일학교·가정에서의 비상업적 인쇄와 사용은 자유롭게 하실 수 있습니다. 판매는 하지 말아 주세요. 인쇄 크기로 A4·A5·A6를 고르면 인쇄 창이 열립니다.</p></details><details><summary>성경 본문은 어떤 번역인가요?</summary><p>저작권이 만료된 성경전서 개역한글판을 사용합니다.</p></details></div>
 <p class="vnote">성경 본문은 성경전서 개역한글판(대한성서공회)을 사용했습니다. 개인 묵상과 소모임 나눔을 위한 용도로 제공하며, 판매용으로 이용하실 수 없습니다. 구절은 주제별로 직접 골랐고, 앞으로 계속 늘려 갑니다. 말씀을 더 깊이 읽고 싶다면 <a href="/dictionary/">성경사전</a>에서 해당 책의 요약을 확인해 보세요.</p>
 <div class="vprint" aria-hidden="true">{prints}</div>
 </main>"""
     data_js = ("<script>window.__VERSES=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";"
                "window.__GUIDE=" + json.dumps(guide_map, ensure_ascii=False, separators=(",", ":")) + ";</script>")
     return "\n".join([h, body, FOOTER, data_js,
-                      '<script src="/ga-events.js"></script><script src="/subscribe.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])
+                      '<script src="/ga-events.js"></script><script src="/subscribe.js"></script><script src="/auth.js"></script><script src="/verse/studio.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])
 
 
 def update_sitemap():
