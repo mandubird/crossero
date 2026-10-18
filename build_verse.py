@@ -48,6 +48,29 @@ def build_data():
     return out
 
 
+def build_sets(data):
+    """교회 행사용 묶음 인쇄에 쓰는 구절 묶음(절기 + 주제 + 전체)."""
+    from season_picks import SEASONS
+    text = load_text()
+    sets = []
+    for key in ("new-year", "christmas", "thanksgiving"):
+        cfg = SEASONS.get(key)
+        if not cfg:
+            continue
+        items, seen = [], set()
+        for name, c, v in cfg["picks"]:
+            ref = f"{name} {c}:{v}"
+            if ref in seen:
+                continue
+            seen.add(ref)
+            items.append({"ref": ref, "text": text[(BOOKS.index(name) + 1, c, v)]})
+        sets.append({"k": key, "n": cfg["label"], "v": items})
+    for t in PICKS:
+        sets.append({"k": "t-" + t, "n": t + " 말씀", "v": [{"ref": d["ref"], "text": d["text"]} for d in data if d["topic"] == t]})
+    sets.append({"k": "all", "n": "전체 말씀", "v": [{"ref": d["ref"], "text": d["text"]} for d in data]})
+    return sets
+
+
 CSS = """
 .vwrap{max-width:1000px;margin:0 auto;padding:28px 20px 12px;text-align:center}
 .vchips{max-width:720px;margin-left:auto;margin-right:auto;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px 0 22px}
@@ -74,7 +97,7 @@ CSS = """
 #vsInfo{margin:8px 0 10px;font-size:12.5px;color:#7b8794;text-align:center}
 .vs-act{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .vs-act button{padding:11px 16px;border:0;border-radius:12px;font-weight:700;font-size:14.5px;font-family:inherit;cursor:pointer;background:#0073e6;color:#fff}
-.vs-act button.alt{background:#fff;color:#0b5cad;border:1px solid #bcd3f0}
+.vs-act button:disabled{opacity:.45;cursor:default}.vs-act button.alt{background:#fff;color:#0b5cad;border:1px solid #bcd3f0}
 .vs-ctl label{display:block;font-weight:700;font-size:14px;margin:0 0 6px;color:#334}
 .vs-ctl select,.vs-ctl input[type=text],.vs-ctl input[list]{width:100%;padding:11px 12px;border:1px solid #cdd7e4;border-radius:10px;font-size:15px;font-family:inherit;box-sizing:border-box;background:#fff}
 .vs-ctl details{border:1px solid #e5e7eb;border-radius:12px;margin:12px 0;padding:0}
@@ -83,6 +106,10 @@ CSS = """
 .vs-th{width:calc(33.3% - 6px);max-width:110px;border:2px solid transparent;border-radius:10px;padding:0;background:none;cursor:pointer;overflow:hidden;font-family:inherit}
 .vs-th canvas{width:100%;height:auto;display:block;border-radius:8px}.vs-th span{display:block;font-size:11.5px;color:#445;padding:3px 0}
 .vs-th.on{border-color:#0073e6}
+.vs-batch{margin:26px auto 0;padding:20px 20px 18px;background:#f4f8ff;border:1px solid #cfe0f5;border-radius:16px;text-align:left}
+.vs-batch h3{margin:0 0 8px;font-size:18px;color:#0b3d73}.vs-brow{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 8px}.vs-brow>div{flex:1 1 170px}.vs-brow label{display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:#334}
+.vs-brow select{width:100%;padding:9px 10px;border:1px solid #cdd7e4;border-radius:9px;font-size:14.5px;font-family:inherit;background:#fff}.vs-chk{display:block;font-size:14px;margin:8px 0}
+.vs-bprev{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.vs-bprev img{width:calc(25% - 6px);min-width:120px;border:1px solid #cdd7e4;border-radius:4px;background:#fff}
 .vs-phs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-height:300px;overflow-y:auto;padding:2px}.vs-ph{padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;cursor:pointer;background:#e9eef5;aspect-ratio:1}.vs-ph img{width:100%;height:100%;object-fit:cover;display:block}.vs-ph.on{border-color:#0073e6}
 .vs-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
 .vs-sw{width:36px;height:36px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #cdd7e4;cursor:pointer;padding:0}.vs-sw.on{box-shadow:0 0 0 3px #0073e6}
@@ -255,7 +282,7 @@ def render(data):
 </div>
 <section class="vs" id="vstudio" style="display:none" aria-label="말씀 카드 만들기">
 <h2>✨ 말씀 카드 만들기</h2>
-<p class="vs-sub">뽑은 말씀으로 카드를 꾸며 보세요. 풍경 배경과 무료 글꼴을 고르고, 카카오톡·인스타그램·프로필·휴대폰/PC 배경화면·교회 인쇄용 크기로 저장할 수 있어요.</p>
+<p class="vs-sub"><a href="#church-print" style="color:#0b5cad;font-weight:700">⛪ 교회 행사용: 카드 여러 장 한꺼번에 인쇄 ↓</a><br>뽑은 말씀으로 카드를 꾸며 보세요. 풍경 배경과 무료 글꼴을 고르고, 카카오톡·인스타그램·프로필·휴대폰/PC 배경화면·교회 인쇄용 크기로 저장할 수 있어요.</p>
 <div class="vs-grid">
  <div class="vs-prev">
   <canvas id="vsCanvas" width="540" height="540"></canvas>
@@ -310,6 +337,19 @@ def render(data):
   <div class="vs-act" style="margin-top:8px"><button type="button" class="alt" id="vsRandom">🎲 스타일 랜덤으로 바꾸기</button></div>
  </div>
 </div>
+<div class="vs-batch" id="church-print">
+ <h3>⛪ 교회·모임용 카드 한꺼번에 인쇄</h3>
+ <p class="vs-note" style="margin-top:0">위에서 고른 사진·글꼴·장식 디자인 그대로, 여러 구절을 A4 용지에 모아 인쇄해요. 잘라서 말씀 상자에 담아 한 장씩 뽑는 송구영신·신년 예배, 주일학교, 소그룹 모임에 쓸 수 있어요.</p>
+ <div class="vs-brow">
+  <div><label for="vsBSet">구절 묶음</label><select id="vsBSet"></select></div>
+  <div><label for="vsBLay">용지당 카드</label><select id="vsBLay"></select></div>
+  <div><label for="vsBCopies">구절당 장수</label><select id="vsBCopies"><option>1</option><option>2</option><option>3</option><option>5</option></select></div>
+ </div>
+ <label class="vs-chk"><input type="checkbox" id="vsBCut" checked> 자르는 선(점선) 넣기</label>
+ <p class="vs-note" id="vsBInfo"></p>
+ <div class="vs-act"><button type="button" id="vsBGo">🖨️ 인쇄 미리보기 만들기</button><button type="button" class="alt" id="vsBPrint" disabled>인쇄하기 (PDF 저장 가능)</button></div>
+ <div class="vs-bprev" id="vsBPrev"></div>
+</div>
 </section>
 {seasons}
 {credits}
@@ -319,7 +359,7 @@ def render(data):
 <div class="vprint" aria-hidden="true">{prints}</div>
 </main>"""
     data_js = ("<script>window.__VERSES=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";"
-               "window.__GUIDE=" + json.dumps(guide_map, ensure_ascii=False, separators=(",", ":")) + ";</script>")
+               "window.__SETS=" + json.dumps(build_sets(data), ensure_ascii=False, separators=(",", ":")) + ";window.__GUIDE=" + json.dumps(guide_map, ensure_ascii=False, separators=(",", ":")) + ";</script>")
     return "\n".join([h, body, FOOTER, data_js,
                       '<script src="/ga-events.js"></script><script src="/subscribe.js"></script><script src="/auth.js"></script><script src="/verse/studio_deco.js"></script><script src="/verse/studio.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])
 

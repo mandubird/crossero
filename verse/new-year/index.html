@@ -48,7 +48,7 @@
 #vsInfo{margin:8px 0 10px;font-size:12.5px;color:#7b8794;text-align:center}
 .vs-act{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .vs-act button{padding:11px 16px;border:0;border-radius:12px;font-weight:700;font-size:14.5px;font-family:inherit;cursor:pointer;background:#0073e6;color:#fff}
-.vs-act button.alt{background:#fff;color:#0b5cad;border:1px solid #bcd3f0}
+.vs-act button:disabled{opacity:.45;cursor:default}.vs-act button.alt{background:#fff;color:#0b5cad;border:1px solid #bcd3f0}
 .vs-ctl label{display:block;font-weight:700;font-size:14px;margin:0 0 6px;color:#334}
 .vs-ctl select,.vs-ctl input[type=text],.vs-ctl input[list]{width:100%;padding:11px 12px;border:1px solid #cdd7e4;border-radius:10px;font-size:15px;font-family:inherit;box-sizing:border-box;background:#fff}
 .vs-ctl details{border:1px solid #e5e7eb;border-radius:12px;margin:12px 0;padding:0}
@@ -57,6 +57,11 @@
 .vs-th{width:calc(33.3% - 6px);max-width:110px;border:2px solid transparent;border-radius:10px;padding:0;background:none;cursor:pointer;overflow:hidden;font-family:inherit}
 .vs-th canvas{width:100%;height:auto;display:block;border-radius:8px}.vs-th span{display:block;font-size:11.5px;color:#445;padding:3px 0}
 .vs-th.on{border-color:#0073e6}
+.vs-batch{margin:26px auto 0;padding:20px 20px 18px;background:#f4f8ff;border:1px solid #cfe0f5;border-radius:16px;text-align:left}
+.vs-batch h3{margin:0 0 8px;font-size:18px;color:#0b3d73}.vs-brow{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 8px}.vs-brow>div{flex:1 1 170px}.vs-brow label{display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:#334}
+.vs-brow select{width:100%;padding:9px 10px;border:1px solid #cdd7e4;border-radius:9px;font-size:14.5px;font-family:inherit;background:#fff}.vs-chk{display:block;font-size:14px;margin:8px 0}
+.vs-bprev{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.vs-bprev img{width:calc(25% - 6px);min-width:120px;border:1px solid #cdd7e4;border-radius:4px;background:#fff}
+.vs-phs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-height:300px;overflow-y:auto;padding:2px}.vs-ph{padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;cursor:pointer;background:#e9eef5;aspect-ratio:1}.vs-ph img{width:100%;height:100%;object-fit:cover;display:block}.vs-ph.on{border-color:#0073e6}
 .vs-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
 .vs-sw{width:36px;height:36px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #cdd7e4;cursor:pointer;padding:0}.vs-sw.on{box-shadow:0 0 0 3px #0073e6}
 .vs-font{width:100%;text-align:left;border:1px solid #e1e7ef;background:#fff;border-radius:10px;padding:8px 12px;margin:0 0 6px;cursor:pointer;font-family:inherit}
@@ -188,6 +193,7 @@
 <h2 style="text-align:left;margin-top:30px">교회·모임용 전체 카드 인쇄</h2>
 <p style="text-align:left;font-size:15.5px">이 페이지의 말씀 34장을 A4 용지에 한 번에 인쇄해 잘라서 쓸 수 있습니다. 예배 후 한 장씩 뽑는 말씀 상자, 주일학교 활동, 소그룹 나눔에 활용해 보세요.</p>
 <button class="vbtn sub" id="vprintall" data-ga="season_print_all_click">🖨️ 말씀 카드 34장 전체 인쇄</button>
+<a class="vbtn sub" href="/verse/#church-print" data-ga="season_to_batch" style="text-decoration:none">🎨 사진·글꼴 골라 예쁘게 인쇄 (A4 4~12장씩)</a>
 <h2 style="text-align:left;margin-top:30px">자주 묻는 질문</h2>
 <div class="faq" style="text-align:left"><details><summary>새해 말씀 뽑기는 성경적인가요?</summary><p>성경에 새해 말씀을 뽑으라는 규례가 있는 것은 아닙니다. 한 해를 시작하며 말씀 앞에 서는 신앙 습관의 하나로 활용되며, 뽑기 자체보다 말씀을 묵상하는 데 의미를 두는 것이 좋습니다.</p></details><details><summary>뽑은 말씀이 마음에 들지 않으면 어떻게 하나요?</summary><p>다시 뽑기보다 그 말씀이 지금 내게 어떤 점을 말하는지 먼저 묵상해 보기를 권합니다. 구절 위치를 눌러 앞뒤 문맥을 함께 읽으면 뜻이 더 분명해집니다.</p></details><details><summary>교회나 소그룹에서는 어떻게 활용하나요?</summary><p>아래 &#x27;교회·모임용 전체 카드 인쇄&#x27;로 구절 카드를 한 번에 인쇄해 잘라서 상자에 담고, 한 사람씩 뽑아 나누는 방식으로 쓸 수 있습니다.</p></details><details><summary>새해 말씀은 언제 뽑나요?</summary><p>주로 1월 1일이나 새해 첫 주일에 뽑지만, 한 해 중 언제든 새롭게 시작하고 싶을 때 뽑아도 좋습니다.</p></details></div>
 <h2 style="text-align:left;margin-top:30px">새해 말씀 모음 (34구절)</h2>

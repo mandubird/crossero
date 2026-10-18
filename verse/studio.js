@@ -455,6 +455,45 @@
         track('studio_print', { preset: S.preset });
       });
     });
+
+    // 교회·모임용 묶음 인쇄 (현재 디자인으로 여러 구절을 A4에 모아 인쇄)
+    var LAY = [
+      { k: 'a8', n: '8장 (2×4 · 100×70mm)', c: 2, r: 4, w: 100, h: 70 },
+      { k: 'a6', n: '6장 (2×3 · 100×90mm)', c: 2, r: 3, w: 100, h: 90 },
+      { k: 'a4', n: '4장 (2×2 · 100×135mm)', c: 2, r: 2, w: 100, h: 135 },
+      { k: 'a10', n: '10장 (2×5 · 100×55mm)', c: 2, r: 5, w: 100, h: 55 },
+      { k: 'a12', n: '12장 (3×4 · 66×70mm)', c: 3, r: 4, w: 66, h: 70 }
+    ], bsel = $('vsBSet'), blay = $('vsBLay'), bcp = $('vsBCopies'), binfo = $('vsBInfo'), bprev = $('vsBPrev'), bgo = $('vsBGo'), bpr = $('vsBPrint'), bpages = null;
+    if (bsel && blay) {
+      var SETS = window.__SETS || [];
+      SETS.forEach(function (st, i) { var o = document.createElement('option'); o.value = i; o.textContent = st.n + ' (' + st.v.length + '장)'; bsel.appendChild(o); });
+      LAY.forEach(function (l, i) { var o = document.createElement('option'); o.value = i; o.textContent = l.n; blay.appendChild(o); });
+      var bsum = function () { var st = SETS[bsel.value], l = LAY[blay.value]; if (!st) return; var n = st.v.length * (+bcp.value), per = l.c * l.r; binfo.textContent = '총 ' + n + '장 · A4 ' + Math.ceil(n / per) + '쪽이에요. 같은 구절이 겹치지 않게 섞어서 상자에 담으세요.'; bpr.disabled = true; bprev.innerHTML = ''; bpages = null; };
+      [bsel, blay, bcp].forEach(function (e) { e.addEventListener('change', bsum); }); bsum();
+      bgo.addEventListener('click', function () {
+        var st = SETS[bsel.value], l = LAY[blay.value], copies = +bcp.value, cut = $('vsBCut').checked, list = [];
+        st.v.forEach(function (v) { for (var i = 0; i < copies; i++) list.push(v); });
+        bgo.disabled = true; bpr.disabled = true; bprev.innerHTML = ''; var urls = [], sv = S.verse, k = 0, cvs = document.createElement('canvas');
+        loadFont(S.font).then(function step() {
+          if (k >= list.length) { S.verse = sv; bgo.disabled = false; bgo.textContent = '🖨️ 다시 만들기'; bpages = { urls: urls, l: l, cut: cut }; bpr.disabled = false; binfo.textContent = '미리보기 ' + Math.min(4, urls.length) + '장 · 총 ' + urls.length + '장 준비됐어요. "인쇄하기"를 누르세요.'; track('studio_batch_ready', { set: st.k, n: urls.length, layout: l.k }); return; }
+          binfo.textContent = '카드 만드는 중… ' + (k + 1) + ' / ' + list.length;
+          S.verse = list[k]; render(cvs, Math.round(l.w * 12), Math.round(l.h * 12), true);
+          return new Promise(function (res) { cvs.toBlob(function (b) { var u = URL.createObjectURL(b); urls.push(u); if (k < 4) { var im = new Image(); im.src = u; bprev.appendChild(im); } k++; setTimeout(res, 0); }, 'image/jpeg', 0.9); }).then(step);
+        });
+      });
+      bpr.addEventListener('click', function () {
+        if (!bpages) return; var u = bpages.urls, l = bpages.l, per = l.c * l.r, html = '', pg = 0;
+        for (var i = 0; i < u.length; i += per) {
+          html += '<div class="pg">'; u.slice(i, i + per).forEach(function (x) { html += '<img src="' + x + '">'; }); html += '</div>';
+        }
+        var css = '@page{size:A4 portrait;margin:0}html,body{margin:0}.pg{width:210mm;height:297mm;display:grid;grid-template-columns:repeat(' + l.c + ',' + l.w + 'mm);grid-template-rows:repeat(' + l.r + ',' + l.h + 'mm);justify-content:center;align-content:center;page-break-after:always;break-after:page}.pg:last-child{page-break-after:auto;break-after:auto}img{width:' + l.w + 'mm;height:' + l.h + 'mm;display:block;box-sizing:border-box;' + (bpages.cut ? 'outline:0.2mm dashed #9aa;outline-offset:-0.1mm;' : '') + '}';
+        var fr = document.createElement('iframe'); fr.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0';
+        fr.srcdoc = '<!doctype html><html><head><meta charset="utf-8"><style>' + css + '</style></head><body>' + html + '</body></html>';
+        document.body.appendChild(fr);
+        fr.onload = function () { setTimeout(function () { try { fr.contentWindow.focus(); fr.contentWindow.print(); } catch (e) {} setTimeout(function () { fr.remove(); }, 120000); }, 600); };
+        track('studio_batch_print', { n: u.length, layout: l.k });
+      });
+    }
   }
 
   var api = {
@@ -464,4 +503,8 @@
   window.crsStudio = api;
   build();
   refresh();
+  if (location.hash === '#church-print' && window.__VERSES && window.__VERSES.length) {
+    api.setVerse(window.__VERSES[(Math.random() * window.__VERSES.length) | 0]);
+    setTimeout(function () { var e = document.getElementById('church-print'); if (e) e.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 900);
+  }
 })();

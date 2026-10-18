@@ -48,7 +48,7 @@
 #vsInfo{margin:8px 0 10px;font-size:12.5px;color:#7b8794;text-align:center}
 .vs-act{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
 .vs-act button{padding:11px 16px;border:0;border-radius:12px;font-weight:700;font-size:14.5px;font-family:inherit;cursor:pointer;background:#0073e6;color:#fff}
-.vs-act button.alt{background:#fff;color:#0b5cad;border:1px solid #bcd3f0}
+.vs-act button:disabled{opacity:.45;cursor:default}.vs-act button.alt{background:#fff;color:#0b5cad;border:1px solid #bcd3f0}
 .vs-ctl label{display:block;font-weight:700;font-size:14px;margin:0 0 6px;color:#334}
 .vs-ctl select,.vs-ctl input[type=text],.vs-ctl input[list]{width:100%;padding:11px 12px;border:1px solid #cdd7e4;border-radius:10px;font-size:15px;font-family:inherit;box-sizing:border-box;background:#fff}
 .vs-ctl details{border:1px solid #e5e7eb;border-radius:12px;margin:12px 0;padding:0}
@@ -57,6 +57,11 @@
 .vs-th{width:calc(33.3% - 6px);max-width:110px;border:2px solid transparent;border-radius:10px;padding:0;background:none;cursor:pointer;overflow:hidden;font-family:inherit}
 .vs-th canvas{width:100%;height:auto;display:block;border-radius:8px}.vs-th span{display:block;font-size:11.5px;color:#445;padding:3px 0}
 .vs-th.on{border-color:#0073e6}
+.vs-batch{margin:26px auto 0;padding:20px 20px 18px;background:#f4f8ff;border:1px solid #cfe0f5;border-radius:16px;text-align:left}
+.vs-batch h3{margin:0 0 8px;font-size:18px;color:#0b3d73}.vs-brow{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 8px}.vs-brow>div{flex:1 1 170px}.vs-brow label{display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:#334}
+.vs-brow select{width:100%;padding:9px 10px;border:1px solid #cdd7e4;border-radius:9px;font-size:14.5px;font-family:inherit;background:#fff}.vs-chk{display:block;font-size:14px;margin:8px 0}
+.vs-bprev{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.vs-bprev img{width:calc(25% - 6px);min-width:120px;border:1px solid #cdd7e4;border-radius:4px;background:#fff}
+.vs-phs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-height:300px;overflow-y:auto;padding:2px}.vs-ph{padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;cursor:pointer;background:#e9eef5;aspect-ratio:1}.vs-ph img{width:100%;height:100%;object-fit:cover;display:block}.vs-ph.on{border-color:#0073e6}
 .vs-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
 .vs-sw{width:36px;height:36px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #cdd7e4;cursor:pointer;padding:0}.vs-sw.on{box-shadow:0 0 0 3px #0073e6}
 .vs-font{width:100%;text-align:left;border:1px solid #e1e7ef;background:#fff;border-radius:10px;padding:8px 12px;margin:0 0 6px;cursor:pointer;font-family:inherit}
@@ -188,6 +193,7 @@
 <h2 style="text-align:left;margin-top:30px">교회·모임용 전체 카드 인쇄</h2>
 <p style="text-align:left;font-size:15.5px">이 페이지의 말씀 24장을 A4 용지에 한 번에 인쇄해 잘라서 쓸 수 있습니다. 예배 후 한 장씩 뽑는 말씀 상자, 주일학교 활동, 소그룹 나눔에 활용해 보세요.</p>
 <button class="vbtn sub" id="vprintall" data-ga="season_print_all_click">🖨️ 말씀 카드 24장 전체 인쇄</button>
+<a class="vbtn sub" href="/verse/#church-print" data-ga="season_to_batch" style="text-decoration:none">🎨 사진·글꼴 골라 예쁘게 인쇄 (A4 4~12장씩)</a>
 <h2 style="text-align:left;margin-top:30px">자주 묻는 질문</h2>
 <div class="faq" style="text-align:left"><details><summary>추수감사절은 언제인가요?</summary><p>한국 개신교에서는 일반적으로 11월 셋째 주일을 추수감사주일로 지킵니다. 교회마다 다를 수 있습니다.</p></details><details><summary>감사에 대한 성경 구절은 어디에 많이 나오나요?</summary><p>시편에 감사와 찬양의 노래가 많고(100편, 107편, 136편 등), 신약에서는 데살로니가전서 5장과 골로새서 3장이 자주 인용됩니다.</p></details><details><summary>교회에서는 어떻게 활용하나요?</summary><p>아래 &#x27;교회·모임용 전체 카드 인쇄&#x27;로 카드를 인쇄해 예배 후 성도들이 한 장씩 뽑아 가는 방식으로 쓸 수 있습니다.</p></details><details><summary>아이들과 함께 활용할 수 있나요?</summary><p>짧은 구절 위주로 구성되어 있어서 아이들과 함께 소리 내어 읽고 감사한 일을 한 가지씩 말해 보는 활동에 적합합니다.</p></details></div>
 <h2 style="text-align:left;margin-top:30px">추수감사 말씀 모음 (24구절)</h2>
