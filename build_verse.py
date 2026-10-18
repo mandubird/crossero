@@ -206,7 +206,7 @@ JS = r"""
 """
 
 
-FAQ = [["말씀 카드는 무료인가요?", "네, 말씀 뽑기와 카드 만들기, 이미지 저장·공유·인쇄는 모두 무료입니다. 후원하시면 이미지에서 십자가로세로 워터마크를 뺄 수 있어요."], ["어떤 크기로 저장할 수 있나요?", "카카오톡·인스타그램 정사각(1080×1080)과 4:5, 스토리·휴대폰 배경화면(9:16), 아이폰·갤럭시 긴 화면, 프로필(정사각), PC 배경화면(FHD·QHD), 링크 미리보기(가로), 인쇄용 A4·A5·A6, 책갈피까지 12가지 크기를 지원합니다."], ["배경 이미지는 저작권 문제가 없나요?", "배경 사진은 위키미디어 커먼즈의 자유 이용 사진(CC BY, CC BY-SA, CC0, 퍼블릭 도메인)만 골랐고, 촬영자와 라이선스는 사진을 고르면 카드 아래쪽에 자동으로 적힙니다. CC BY-SA 사진으로 만든 카드는 같은 조건(출처 표시, 동일 조건 공유)으로 자유롭게 나눠 쓰실 수 있어요. 일러스트 풍경은 십자가로세로가 직접 그린 그래픽이고, 내 사진을 올려 배경으로 쓸 수도 있습니다(올린 사진은 기기 안에서만 처리)."], ["글꼴도 무료로 쓸 수 있나요?", "노토 산스·노토 세리프·나눔명조·고운바탕·나눔 손글씨 등 구글 폰트의 무료(SIL OFL) 글꼴 16종을 제공합니다."], ["교회 주보나 주일학교에서 인쇄해도 되나요?", "교회·주일학교·가정에서의 비상업적 인쇄와 사용은 자유롭게 하실 수 있습니다. 판매는 하지 말아 주세요. 인쇄 크기로 A4·A5·A6를 고르면 인쇄 창이 열립니다."], ["성경 본문은 어떤 번역인가요?", "저작권이 만료된 성경전서 개역한글판을 사용합니다."]]
+FAQ = [["말씀 카드는 무료인가요?", "네, 말씀 뽑기와 카드 만들기, 이미지 저장·공유·인쇄는 모두 무료입니다. 후원하시면 이미지에서 십자가로세로 워터마크를 뺄 수 있어요."], ["어떤 크기로 저장할 수 있나요?", "카카오톡·인스타그램 정사각(1080×1080)과 4:5, 스토리·휴대폰 배경화면(9:16), 아이폰·갤럭시 긴 화면, 프로필(정사각), PC 배경화면(FHD·QHD), 링크 미리보기(가로), 인쇄용 A4·A5·A6, 책갈피까지 12가지 크기를 지원합니다."], ["배경 이미지는 저작권 문제가 없나요?", "배경 사진은 위키미디어 커먼즈의 자유 이용 사진(CC BY, CC BY-SA, CC0, 퍼블릭 도메인)만 골랐고, 촬영자와 라이선스는 사진을 고르면 카드 아래쪽에 자동으로 적힙니다. CC BY-SA 사진으로 만든 카드는 같은 조건(출처 표시, 동일 조건 공유)으로 자유롭게 나눠 쓰실 수 있어요. 일러스트 풍경과 십자가·비둘기·올리브 가지 같은 장식 도안, 테두리, 분위기 효과는 십자가로세로가 직접 그린 그래픽이고, 내 사진을 올려 배경으로 쓸 수도 있습니다(올린 사진은 기기 안에서만 처리)."], ["글꼴도 무료로 쓸 수 있나요?", "노토 산스·노토 세리프·나눔명조·고운바탕·나눔 손글씨 등 구글 폰트의 무료(SIL OFL) 글꼴 16종을 제공합니다."], ["교회 주보나 주일학교에서 인쇄해도 되나요?", "교회·주일학교·가정에서의 비상업적 인쇄와 사용은 자유롭게 하실 수 있습니다. 판매는 하지 말아 주세요. 인쇄 크기로 A4·A5·A6를 고르면 인쇄 창이 열립니다."], ["성경 본문은 어떤 번역인가요?", "저작권이 만료된 성경전서 개역한글판을 사용합니다."]]
 
 
 def render(data):
@@ -230,6 +230,7 @@ def render(data):
         if d["ref"] in COMMENTARY:
             topics.setdefault(d["topic"], []).append(d)
     _ph = json.load(open("verse/studio_photos.json", encoding="utf-8"))
+    NPH = len(_ph["photos"])
     credits = '<details style="margin-top:22px;text-align:left;max-width:760px"><summary style="cursor:pointer;font-weight:700">📷 배경 사진 출처·라이선스 (%d장)</summary><ul style="font-size:12.5px;line-height:1.7;color:#556;columns:1">' % len(_ph["photos"]) + "".join('<li>%s — %s, <a href="%s" rel="nofollow noopener">%s</a> (<a href="%s" rel="nofollow noopener">원본</a>)</li>' % (html.escape(q["title"]), html.escape(q["artist"]), q["licurl"] or "https://commons.wikimedia.org", html.escape(q["lic"]), q["src"]) for q in _ph["photos"]) + '</ul><p style="font-size:12.5px;color:#556">사진은 위키미디어 커먼즈에서 가져왔으며 크기를 줄이고 글자와 어두운 필터를 입혀 사용합니다. CC BY-SA 사진으로 만든 카드는 같은 라이선스 조건으로 공유됩니다.</p></details>'
     guide = '<h2 style="margin-top:34px;text-align:left">해설이 있는 말씀</h2><div class="cards" style="text-align:left">' + "".join(
         f'<a class="card" href="{guide_map[d["ref"]]}"><b>{esc(d["ref"])}</b><span>{esc(d["topic"])} · {esc(d["text"][:30])}…</span></a>'
@@ -271,7 +272,7 @@ def render(data):
   <label for="vsPreset">① 용도·크기</label>
   <select id="vsPreset"></select>
   <details open><summary>② 배경</summary><div class="vs-in">
-   <label style="margin-top:2px">📷 사진 <span style="font-weight:400;color:#889">(무료 라이선스 사진 59장)</span></label>
+   <label style="margin-top:2px">📷 사진 <span style="font-weight:400;color:#889">(무료 라이선스 사진 {NPH}장)</span></label>
    <div class="vs-row" id="vsPhotoThemes" style="margin-bottom:4px"></div>
    <div class="vs-phs" id="vsPhotos"></div>
    <p class="vs-note" id="vsPhotoCredit">사진을 고르면 촬영자와 라이선스가 여기와 카드 아래쪽에 표시돼요.</p>
@@ -296,7 +297,13 @@ def render(data):
    <label class="vs-ck"><input type="checkbox" id="vsMark" disabled> 십자가로세로 워터마크</label>
    <p class="vs-note" id="vsMarkNote"></p>
   </div></details>
-  <details><summary>⑤ 다른 말씀으로 바꾸기</summary><div class="vs-in">
+  <details><summary>⑤ 장식 (십자가·비둘기·테두리·효과)</summary><div class="vs-in">
+   <label>글 위 장식 <span style="font-weight:400;color:#889">(직접 그린 도안)</span></label><div class="vs-row" id="vsOrn"></div>
+   <label style="margin-top:10px">테두리</label><div class="vs-row" id="vsFrame"></div>
+   <label style="margin-top:10px">분위기 효과</label><div class="vs-row" id="vsFx"></div>
+   <label style="margin-top:10px">장식 색</label><div class="vs-row" id="vsDcolor"></div>
+  </div></details>
+  <details><summary>⑥ 다른 말씀으로 바꾸기</summary><div class="vs-in">
    <label for="vsPick">구절 선택</label><input list="vsRefs" id="vsPick" placeholder="예: 시편 23:1"><datalist id="vsRefs"></datalist>
    <p class="vs-note">원하는 구절을 목록에서 골라도 되고, 위의 '말씀 뽑기'로 다시 뽑아도 돼요.</p>
   </div></details>
@@ -314,7 +321,7 @@ def render(data):
     data_js = ("<script>window.__VERSES=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";"
                "window.__GUIDE=" + json.dumps(guide_map, ensure_ascii=False, separators=(",", ":")) + ";</script>")
     return "\n".join([h, body, FOOTER, data_js,
-                      '<script src="/ga-events.js"></script><script src="/subscribe.js"></script><script src="/auth.js"></script><script src="/verse/studio.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])
+                      '<script src="/ga-events.js"></script><script src="/subscribe.js"></script><script src="/auth.js"></script><script src="/verse/studio_deco.js"></script><script src="/verse/studio.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])
 
 
 def update_sitemap():

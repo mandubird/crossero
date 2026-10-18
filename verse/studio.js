@@ -59,6 +59,7 @@
             showRef: true, align: 'center', mark: true, img: null };
   try { var sv = JSON.parse(localStorage.getItem('crsStudio') || 'null'); if (sv) { for (var k0 in sv) if (k0 !== 'img' && k0 !== 'verse') S[k0] = sv[k0]; if (S.bg.type === 'image' || S.bg.type === 'photo') S.bg = { type: 'scene', k: 'sunrise', seed: 7 }; } } catch (e) {}
   function persist() { try { var c = {}; for (var k in S) if (k !== 'img' && k !== 'verse') c[k] = S[k]; localStorage.setItem('crsStudio', JSON.stringify(c)); } catch (e) {} }
+  S.frame = S.frame || 'none'; S.orn = S.orn || 'none'; S.fx = S.fx || 'none'; S.dcolor = S.dcolor || 'text';
   function isDonor() { try { return typeof checkAuthStatus === 'function' && !!checkAuthStatus(); } catch (e) { return false; } }
   function track(n, p) { if (window.crsTrack) window.crsTrack(n, p || {}); }
 
@@ -220,6 +221,9 @@
       tc = lum > 168 ? '#1d1d1d' : '#ffffff';
     }
     var dark = tc === '#1d1d1d' || tc === '#16325c';
+    var D = window.crsDeco, dcol = S.dcolor === 'text' ? tc : S.dcolor;
+    if (D && S.fx !== 'none') D.fx(x, w, h, S.fx);
+    if (D && S.frame !== 'none') D.frame(x, w, h, S.frame, S.frame === 'mat' ? '#fbf8f1' : dcol);
     var portraitish = h >= w;
     var padX = w * (portraitish ? 0.12 : 0.16);
     var maxW = w - padX * 2, maxH = h * (portraitish ? 0.62 : 0.6);
@@ -248,6 +252,7 @@
       x.globalAlpha = 1;
     }
     x.shadowColor = 'transparent'; x.shadowBlur = 0;
+    if (D && S.orn !== 'none') { var mm = Math.min(w, h), osz = mm * (portraitish ? 0.12 : 0.1), top = startY - lh * 0.55 - (S.box ? fs * 0.8 : 0), oy = Math.max(top - osz * 0.7 - mm * 0.02, osz * 0.6 + mm * 0.07); D.orn(x, left ? padX + osz * 0.5 : w / 2, oy, osz, S.orn, dcol); }
     if (S.bg.type === 'photo' && S.pcredit) { x.font = Math.round(Math.min(w, h) * 0.017) + 'px "Noto Sans KR",sans-serif'; x.textAlign = 'center'; x.globalAlpha = 0.65; x.fillStyle = dark ? '#333' : '#fff'; x.fillText(S.pcredit, w / 2, h - Math.min(w, h) * 0.016); x.globalAlpha = 1; }
     if (S.mark && !isDonor()) { x.font = Math.round(Math.min(w, h) * 0.026) + 'px "Noto Sans KR",sans-serif'; x.textAlign = 'center'; x.globalAlpha = 0.7; x.fillStyle = dark ? '#333' : '#fff'; x.fillText('십자가로세로 · crossero.com', w / 2, h - Math.min(w, h) * 0.045); x.globalAlpha = 1; }
     else if (S.mark && isDonor() && false) { /* 후원자: 워터마크 없음 */ }
@@ -302,6 +307,26 @@
     Object.keys(grp).forEach(function (g) { var og = document.createElement('optgroup'); og.label = g; grp[g].forEach(function (p) { var o = document.createElement('option'); o.value = p.k; o.textContent = p.n + ' (' + p.w + '×' + p.h + ')'; og.appendChild(o); }); sel.appendChild(og); });
     sel.value = S.preset;
     sel.addEventListener('change', function () { S.preset = sel.value; track('studio_preset', { preset: S.preset }); refresh(); });
+
+    // 장식
+    (function () {
+      var D = window.crsDeco; if (!D) return;
+      function group(id, list, key) {
+        var el = $(id); if (!el) return;
+        list.forEach(function (o) {
+          var b = document.createElement('button'); b.type = 'button'; b.className = 'vs-chip'; b.dataset.k = o.k; b.dataset.g = key; b.textContent = o.n;
+          b.addEventListener('click', function () { S[key] = o.k; if (key === 'orn' && o.k !== 'none' && S.dcolor === 'text') { } track('studio_deco', { kind: key, k: o.k }); dmark(); refresh(); });
+          el.appendChild(b);
+        });
+      }
+      group('vsOrn', D.ORN, 'orn'); group('vsFrame', D.FRAMES, 'frame'); group('vsFx', D.FX, 'fx');
+      var dc = $('vsDcolor'); if (dc) [['글자색', 'text'], ['금색', '#f2c75c'], ['흰색', '#ffffff'], ['크림', '#fff4d8']].forEach(function (c) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'vs-chip'; b.dataset.c = c[1]; b.textContent = c[0]; b.addEventListener('click', function () { S.dcolor = c[1]; dmark(); refresh(); }); dc.appendChild(b);
+      });
+      window.__dmark = dmark;
+      function dmark() { [].forEach.call(root.querySelectorAll('[data-g]'), function (b) { b.classList.toggle('on', S[b.dataset.g] === b.dataset.k); }); [].forEach.call(root.querySelectorAll('#vsDcolor [data-c]'), function (b) { b.classList.toggle('on', S.dcolor === b.dataset.c); }); }
+      dmark();
+    })();
 
     // 사진 배경
     var PH = null, pg = $('vsPhotos'), pt = $('vsPhotoThemes'), pcur = 'all';
@@ -391,6 +416,7 @@
       if (PH && r() < 0.7) { var pp = PH.photos[(r() * PH.photos.length) | 0]; usePhoto(pp); usedPhoto = true; }
       else { var sc = SCENES[(r() * SCENES.length) | 0]; S.bg = { type: 'scene', k: sc.k, seed: 1 + ((r() * 30) | 0) }; }
       S.font = FONTS[(r() * FONTS.length) | 0].k; S.tcolor = 'auto'; S.dim = 10 + ((r() * 25) | 0); $('vsDim').value = S.dim;
+      var D2 = window.crsDeco; if (D2) { S.orn = r() < 0.55 ? D2.ORN[1 + ((r() * (D2.ORN.length - 1)) | 0)].k : 'none'; S.frame = r() < 0.4 ? D2.FRAMES[1 + ((r() * (D2.FRAMES.length - 1)) | 0)].k : 'none'; S.fx = r() < 0.35 ? D2.FX[1 + ((r() * (D2.FX.length - 1)) | 0)].k : 'none'; S.dcolor = 'text'; if (window.__dmark) window.__dmark(); }
       mark(); fmark(); cmark(); track('studio_random'); refresh();
     });
     $('vsSave').addEventListener('click', function () { exportBlob('image/png').then(function (b) { download(b, fname('png')); track('studio_save', { preset: S.preset, font: S.font, bg: S.bg.type === 'scene' ? S.bg.k : S.bg.type, donor: isDonor() }); }); });
