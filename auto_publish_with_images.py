@@ -14,6 +14,7 @@ from urllib.parse import quote
 from bible_book_info import BOOK_INFO
 from topic_info import TOPIC_INFO
 from dict_links import dict_links_html
+import post_quality
 
 # generate_seo_posts와 동일한 파싱·템플릿
 from generate_seo_posts import (
@@ -552,6 +553,8 @@ def rebuild_index_and_xml(manifest_entries):
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
         f.write('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
         for e in entries:
+            if post_quality.is_low(e.get('id')):
+                continue
             f.write(f'  <url>\n')
             f.write(f'    <loc>{DOMAIN}/posts/{e["slug"]}.html</loc>\n')
             f.write(f'    <lastmod>{e["date"]}</lastmod>\n')
@@ -771,6 +774,7 @@ def publish_today(force_date=None):
         path = os.path.join(POSTS_DIR, f"{slug}.html")
         with open(path, 'w', encoding='utf-8') as f:
             f.write(html)
+        post_quality.ensure_robots(path, pid)  # 주제 전용 힌트가 적은 글은 색인 제외
         img_note = f" (이미지: {slug}.png)" if has_img else ""
         print(f"  ✅ 발행: {slug}.html{img_note}")
 
