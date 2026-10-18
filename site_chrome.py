@@ -272,8 +272,17 @@ def _strip(s, tag):
     return re.sub(rf"<!--{tag}-->.*?<!--/{tag}-->\n?", "", s, flags=re.S)
 
 
+ICONS = ('<!--ICONS--><link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="48x48" href="/images/favicon-48.png">'
+         '<link rel="icon" type="image/png" sizes="256x256" href="/images/favicon.png"><link rel="apple-touch-icon" href="/images/apple-touch-icon.png"><!--/ICONS-->')
+
+
 def apply(path, s):
     key = active_key(path)
+    # 파비콘(모든 페이지 동일하게: ico + png + 애플 터치 아이콘)
+    s = re.sub(r'<link[^>]*rel="(?:shortcut )?icon"[^>]*>\n?', "", s)
+    s = re.sub(r'<link[^>]*rel="apple-touch-icon"[^>]*>\n?', "", s)
+    s = re.sub(r"<!--ICONS-->.*?<!--/ICONS-->\n?", "", s, flags=re.S)
+    s = s.replace("</head>", ICONS + "\n</head>", 1)
     # 스타일
     s = re.sub(r'<style id="crs-chrome">.*?</style>\n?', "", s, flags=re.S)
     s = s.replace("</head>", f'<style id="crs-chrome">{CSS}</style>\n</head>', 1)
