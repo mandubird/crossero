@@ -148,7 +148,7 @@ def render(key, cfg, text):
 <button class="vbtn" id="vdraw" data-ga="season_draw_click">🎴 말씀 뽑기</button>
 <div class="vcard" id="vcard" style="display:none"><div class="vtag" id="vtag"></div><p class="vtext" id="vtext"></p><div class="vref" id="vref"></div><div class="vmark">{esc(cfg['label'])} · 십자가로세로</div></div>
 <div class="vactions" id="vactions" style="display:none">
-<a id="vstudiolink" href="/verse/" data-ga="season_to_studio" style="display:block;max-width:420px;margin:0 auto 14px;padding:16px 18px;border-radius:16px;background:linear-gradient(135deg,#0b5cad,#0073e6);color:#fff;text-decoration:none;font-weight:800;font-size:18px;line-height:1.4;box-shadow:0 8px 20px rgba(0,115,230,.28)">🎨 사진·글꼴로 꾸며 저장<span style="display:block;font-weight:500;font-size:12.5px;opacity:.92;margin-top:3px">사진 200여 장 · 글꼴 31종 · 카톡·인스타·배경화면·인쇄</span></a>
+<a class="vhero" id="vstudiolink" href="/verse/" data-ga="season_to_studio">🎨 사진·글꼴로 꾸며 저장<small>사진 200여 장 · 글꼴 31종 · 카톡·인스타·배경화면·인쇄</small></a>
 <button class="vbtn sub" id="vsave">📑 책갈피 이미지 저장</button>
 <button class="vbtn sub" id="vsavesq">🖼️ 카드 이미지 저장</button>
 <button class="vbtn sub" id="vprint">🖨️ 책갈피 인쇄(4장)</button>

@@ -48,6 +48,20 @@ def build_data():
     return out
 
 
+def season_banner():
+    """절기 말씀 뽑기 배너(말씀 뽑기·오늘의 말씀 페이지에서 공용)."""
+    from season_picks import SEASONS as _S
+    badge = {"new-year": "송구영신 · 교회 인쇄", "christmas": "성극 · 주일학교", "thanksgiving": "추수감사절"}
+    grad = {"new-year": "linear-gradient(135deg,#0b5cad,#0073e6)", "christmas": "linear-gradient(135deg,#8f1d1d,#c0392b)",
+            "thanksgiving": "linear-gradient(135deg,#a8530a,#d98a1c)"}
+    cards = "".join(
+        f'<a class="vsb-c" style="--g:{grad.get(k, "#0b5cad")}" href="/verse/{k}/" data-ga="verse_to_season" data-ga-label="{k}">'
+        + ('<em>송구영신 인기</em>' if k == "new-year" else '')
+        + f'<i>{c["emoji"]}</i><b>{esc(c["label"].replace(" 뽑기", ""))}</b><span>{esc(badge.get(k, c["sub"]))}</span></a>'
+        for k, c in _S.items())
+    return '<div class="vsb"><div class="vsb-h">🎄 절기 말씀 뽑기 <span>교회 행사에 바로 쓰세요</span></div><div class="vsb-row">' + cards + '</div></div>'
+
+
 def build_sets(data):
     """교회 행사용 묶음 인쇄에 쓰는 구절 묶음(절기 + 주제 + 전체)."""
     from season_picks import SEASONS
@@ -73,7 +87,7 @@ def build_sets(data):
 
 CSS = """
 .vwrap{max-width:1000px;margin:0 auto;padding:28px 20px 12px;text-align:center}
-.vchips{max-width:720px;margin-left:auto;margin-right:auto;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px 0 22px}
+.vchips{max-width:720px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px auto 22px}
 .vchip{padding:8px 16px;border:1px solid #bcd3f0;background:#fff;color:#0b5cad;border-radius:22px;font-size:15px;cursor:pointer;font-family:inherit}
 .vchip.on{background:#0073e6;color:#fff;border-color:#0073e6}
 .vbox{width:200px;height:130px;margin:0 auto 16px;background:linear-gradient(135deg,#0b5cad,#0073e6);border-radius:16px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:44px;box-shadow:0 8px 22px rgba(0,115,230,.28);cursor:pointer;transition:transform .2s}
@@ -86,7 +100,11 @@ CSS = """
 .vtext{font-size:20px;line-height:1.9;color:#1f2d3d;word-break:keep-all;margin:0 0 16px}
 .vref{font-size:15px;color:#6b7b8d;font-weight:600}
 .vmark{margin-top:18px;font-size:12px;color:#99a}
-.vactions{margin:14px 0 6px}
+.vwrap>.crumb{max-width:760px;margin:0 auto 6px;text-align:left}
+.vactions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:460px;margin:14px auto 6px}
+.vactions .vbtn.sub{flex:1 1 calc(50% - 8px);margin:0;text-align:center;box-sizing:border-box;text-decoration:none}
+.vactions .vhero{flex:1 1 100%;display:block;box-sizing:border-box;padding:16px 18px;border-radius:16px;background:linear-gradient(135deg,#0b5cad,#0073e6);color:#fff;text-decoration:none;font-weight:800;font-size:18px;line-height:1.4;box-shadow:0 8px 20px rgba(0,115,230,.28);text-align:center}
+.vactions .vhero small{display:block;font-weight:500;font-size:12.5px;opacity:.92;margin-top:3px}
 .vnote{font-size:12.5px;color:#889;line-height:1.7;max-width:560px;margin:22px auto 4px}
 .vprint{display:none}
 .vs{text-align:left;margin:30px auto 10px;padding:18px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 6px 22px rgba(0,0,0,.05)}
@@ -107,13 +125,6 @@ CSS = """
 .vs-pro{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:10px;background:#ffd43b;color:#5b4a00;font-size:11px;font-weight:700;vertical-align:middle}
 .vs-th canvas{width:100%;height:auto;display:block;border-radius:8px}.vs-th span{display:block;font-size:11.5px;color:#445;padding:3px 0}
 .vs-th.on{border-color:#0073e6}
-.vsb{max-width:760px;margin:6px auto 22px;padding:14px 14px 12px;background:linear-gradient(135deg,#eef5ff,#f9fbff);border:1px solid #cfe0f5;border-radius:16px}
-.vsb-h{font-weight:800;font-size:16px;color:#0b3d73;text-align:left;margin-bottom:10px}.vsb-h span{font-weight:500;font-size:13px;color:#667;margin-left:6px}
-.vsb-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.vsb-c{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 6px;background:#fff;border:1px solid #d6e4f7;border-radius:12px;text-decoration:none;color:#0b3d73;text-align:center}
-.vsb-c:first-child{border-color:#0073e6;box-shadow:0 0 0 2px rgba(0,115,230,.12)}
-.vsb-c i{font-style:normal;font-size:24px}.vsb-c b{font-size:14.5px}.vsb-c span{font-size:11.5px;color:#667;line-height:1.4}
-@media(max-width:520px){.vsb-c b{font-size:13.5px}.vsb-c span{font-size:10.5px}}
 .vs-cust textarea{width:100%;min-height:96px;padding:10px;border:1px solid #cdd7e4;border-radius:9px;font-size:15px;font-family:inherit;box-sizing:border-box;resize:vertical}
 .vs-cust input[type=text]{width:100%;padding:9px 10px;border:1px solid #cdd7e4;border-radius:9px;font-size:15px;font-family:inherit;box-sizing:border-box}
 .vs-lock{background:#fffbea;border:1px solid #ffd43b;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.7;color:#5b4a00}.vs-lock a{color:#0b5cad;font-weight:700}
@@ -274,10 +285,7 @@ def render(data):
         f'<a class="card" href="{guide_map[d["ref"]]}"><b>{esc(d["ref"])}</b><span>{esc(d["topic"])} · {esc(d["text"][:30])}…</span></a>'
         for ts in topics.values() for d in ts) + '</div>'
     from season_picks import SEASONS as _SEASONS
-    _badge = {"new-year": "12/31 송구영신 · 교회 인쇄", "christmas": "성극·주일학교", "thanksgiving": "추수감사절"}
-    seasons = '<div class="vsb"><div class="vsb-h">🎄 절기 말씀 뽑기 <span>교회 행사에 바로 쓰세요</span></div><div class="vsb-row">' + "".join(
-        f'<a class="vsb-c" href="/verse/{k}/" data-ga="verse_to_season" data-ga-label="{k}"><i>{c["emoji"]}</i><b>{esc(c["label"])}</b><span>{esc(_badge.get(k, c["sub"]))}</span></a>'
-        for k, c in _SEASONS.items()) + '</div></div>'
+    seasons = season_banner()
     body = f"""<main class="vwrap">
 <div class="crumb" style="text-align:left"><a href="/">홈</a> › 말씀 뽑기</div>
 <h1 style="margin-top:10px">말씀 뽑기 · 말씀 카드 만들기</h1>

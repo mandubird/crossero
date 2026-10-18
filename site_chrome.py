@@ -76,6 +76,14 @@ CSS = """
 .fnav h3{font-size:13px;color:#334;margin:0 0 8px}
 .fnav a{display:block;font-size:13px;color:#666;text-decoration:none;padding:4px 0}
 .fnav a:hover{color:#0073e6}
+.vsb{max-width:760px;margin:6px auto 22px;text-align:left}
+.vsb-h{font-weight:800;font-size:17px;color:#0b3d73;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:6px 8px;flex-wrap:wrap;text-align:center}.vsb-h span{font-weight:500;font-size:13px;color:#667}
+.vsb-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.vsb-c{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:18px 8px 14px;background:var(--g,#0b5cad);color:#fff;border-radius:16px;text-decoration:none;text-align:center;box-shadow:0 6px 16px rgba(0,0,0,.16);transition:transform .15s}
+.vsb-c:hover{transform:translateY(-3px)}
+.vsb-c i{font-style:normal;font-size:30px;line-height:1.1}.vsb-c b{font-size:16px}.vsb-c span{font-size:12px;opacity:.92;line-height:1.4}
+.vsb-c em{position:absolute;top:-9px;right:10px;font-style:normal;background:#ffd43b;color:#5b4a00;font-size:11px;font-weight:800;padding:2px 9px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+@media(max-width:560px){.vsb-row{gap:7px}.vsb-c{padding:14px 4px 11px}.vsb-c b{font-size:13.5px}.vsb-c span{font-size:10.5px}.vsb-c i{font-size:26px}.vsb-h{font-size:15px}}
 .home-hub{max-width:820px;margin:0 auto 22px}
 .home-hub h2{font-size:18px;margin:6px 0 10px;text-align:center}
 .hh-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
@@ -185,13 +193,18 @@ def more_html(key, path=""):
     return f'<!--MORE--><section class="site-more"><h2>계속 둘러보기</h2><div class="sm-grid">{g}</div></section>{ALIGN_JS}<!--/MORE-->'
 
 
+def season_html():
+    import build_verse as bv
+    return bv.season_banner()
+
+
 def hub_html():
     cards = [("🧩", "퍼즐 풀기", "가로세로 낱말 퍼즐", "/list.html"), ("📍", "성경 지명", "오늘의 위치와 사진", "/dictionary/places/"),
              ("👤", "성경 인물", "삶과 핵심 구절", "/dictionary/people/"), ("📜", "성경 사건", "흐름으로 이해", "/dictionary/events/"),
              ("🗺️", "성경 지도", "지명이 지금은?", "/dictionary/map/"), ("🧑‍🏫", "교사 허브", "주일학교 자료", "/teachers/"),
              ("📅", "오늘의 말씀", "매일 새로운 구절", "/today/"), ("🎴", "말씀 뽑기", "내게 주시는 말씀", "/verse/")]
     g = "".join(f'<a class="hh-card" href="{h}" data-ga="home_hub_click" data-ga-label="{t}"><i>{ic}</i><b>{t}</b><span>{d}</span></a>' for ic, t, d, h in cards)
-    return f'<!--HUB--><section class="home-hub"><h2>무엇을 찾으세요?</h2><div class="hh-grid">{g}</div></section><!--/HUB-->'
+    return f'<!--HUB--><section class="home-hub">{season_html()}<h2>무엇을 찾으세요?</h2><div class="hh-grid">{g}</div></section><!--/HUB-->'
 
 
 def explore_html():

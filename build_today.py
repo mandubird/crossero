@@ -87,7 +87,7 @@ def render(day, data):
 <div class="sub" id="tdate">{ko_date(day)}</div>
 <div class="vcard" id="vcard"><div class="vtag" id="vtag">{esc(cur['topic'])}</div><p class="vtext" id="vtext">{esc(cur['text'])}</p><div class="vref" id="vref">{esc(today_ref)}</div><div class="vmark">십자가로세로 · crossero.com</div></div>
 <div class="vactions" id="vactions">
-<a id="vstudiolink" href="/verse/?v={urllib.parse.quote(today_ref)}" data-ga="today_to_studio" style="display:block;max-width:420px;margin:0 auto 14px;padding:16px 18px;border-radius:16px;background:linear-gradient(135deg,#0b5cad,#0073e6);color:#fff;text-decoration:none;font-weight:800;font-size:18px;line-height:1.4;box-shadow:0 8px 20px rgba(0,115,230,.28)">🎨 사진·글꼴로 꾸며 저장<span style="display:block;font-weight:500;font-size:12.5px;opacity:.92;margin-top:3px">사진 200여 장 · 글꼴 31종 · 카톡·인스타·배경화면·인쇄</span></a>
+<a class="vhero" id="vstudiolink" href="/verse/?v={urllib.parse.quote(today_ref)}" data-ga="today_to_studio">🎨 사진·글꼴로 꾸며 저장<small>사진 200여 장 · 글꼴 31종 · 카톡·인스타·배경화면·인쇄</small></a>
 {guide_link}
 <button class="vbtn sub" id="vsave">📑 책갈피 이미지 저장</button>
 <button class="vbtn sub" id="vsavesq">🖼️ 카드 이미지 저장</button>
@@ -95,7 +95,8 @@ def render(day, data):
 <button class="vbtn sub" id="vshare">🔗 링크 공유</button>
 </div>
 <div id="tctx">{ctx}</div>
-<a class="cta" href="/verse/" data-ga="today_to_draw" style="margin-top:26px">🎴 다른 말씀도 뽑아 보기<small>위로·평안·용기·감사·소망 등 12가지 주제</small></a>
+<div style="margin-top:26px">{bv.season_banner()}</div>
+<a class="cta" href="/verse/" data-ga="today_to_draw" style="margin-top:8px">🎴 다른 말씀도 뽑아 보기<small>위로·평안·용기·감사·소망 등 12가지 주제</small></a>
 <h2 style="text-align:left;margin-top:34px">지난 7일의 말씀</h2>
 <div class="cards past" style="text-align:left">{past}</div>
 <p class="vnote">성경 본문은 성경전서 개역한글판(대한성서공회)을 사용했습니다. 개인 묵상과 소모임 나눔을 위한 용도로 제공하며, 판매용으로 이용하실 수 없습니다. 오늘의 말씀은 매일 아침 바뀝니다.</p>
