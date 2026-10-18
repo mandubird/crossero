@@ -253,7 +253,7 @@
       if (total <= maxH && lines.every(function (l) { return x.measureText(l).width <= maxW + 1; })) break;
       fs *= 0.93;
     }
-    var rs = fs * 0.62, refH = S.showRef ? rs * 2.4 : 0;
+    var rs = fs * 0.62, refH = (S.showRef && v.ref) ? rs * 2.4 : 0;
     var startY = (h - (total + refH)) / 2 + lh * 0.55 - (h * 0.02);
     var left = S.align === 'left';
     var tx = left ? padX : w / 2;
@@ -262,7 +262,7 @@
     if (S.shadow && !dark) { x.shadowColor = 'rgba(0,0,0,0.45)'; x.shadowBlur = fs * 0.35; x.shadowOffsetY = fs * 0.05; }
     x.fillStyle = tc;
     lines.forEach(function (l, i) { x.fillText(l, tx, startY + i * lh); });
-    if (S.showRef) {
+    if (S.showRef && v.ref) {
       x.font = Math.round(rs) + 'px ' + fam; x.globalAlpha = 0.9;
       x.fillText(v.ref, tx, startY + total + rs * 0.9);
       x.globalAlpha = 1;
@@ -455,6 +455,24 @@
         track('studio_print', { preset: S.preset });
       });
     });
+
+    // 내가 쓴 말씀 직접 입력 (후원자 전용: 개역개정·영어 등 어떤 본문이든)
+    var cu = $('vsCust');
+    if (cu) {
+      if (isDonor()) {
+        cu.innerHTML = '<p class="vs-note" style="margin-top:0">원하는 번역(개역개정, 새번역, 영어 등)이나 직접 쓴 문장을 붙여넣으세요. 번역본의 저작권과 사용 허락은 사용하시는 분이 확인해 주세요.</p>' +
+          '<label for="vsCText">말씀 본문</label><textarea id="vsCText" maxlength="600" placeholder="여기에 말씀을 붙여넣거나 입력하세요"></textarea>' +
+          '<label for="vsCRef" style="margin-top:8px">출처 (예: 요한복음 3:16 · 개역개정)</label><input type="text" id="vsCRef" maxlength="60" placeholder="비워 두면 출처 줄이 표시되지 않아요">' +
+          '<div class="vs-act" style="margin-top:10px"><button type="button" id="vsCApply">카드에 적용</button></div>';
+        $('vsCApply').addEventListener('click', function () {
+          var t = $('vsCText').value.replace(/\s*\n\s*/g, ' ').trim(); if (!t) return;
+          var r = $('vsCRef').value.trim(); S.showRef = true;
+          api.setVerse({ ref: r, text: t, topic: '' }); track('studio_custom_text', { len: t.length });
+        });
+      } else {
+        cu.innerHTML = '<div class="vs-lock">🔒 후원하시면 개역개정·새번역·영어 등 <b>원하는 본문을 직접 붙여넣어</b> 카드로 만들 수 있어요. 후원 이용권을 사용하시는 동안 열립니다.<br><a href="/support.html" data-ga="studio_custom_to_support">후원 안내 보기 →</a></div>';
+      }
+    }
 
     // 교회·모임용 묶음 인쇄 (현재 디자인으로 여러 구절을 A4에 모아 인쇄)
     var LAY = [

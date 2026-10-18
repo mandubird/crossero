@@ -104,8 +104,19 @@ CSS = """
 .vs-ctl summary{cursor:pointer;padding:12px 14px;font-weight:700;font-size:15px;color:#223}
 .vs-ctl .vs-in{padding:2px 14px 14px}
 .vs-th{width:calc(33.3% - 6px);max-width:110px;border:2px solid transparent;border-radius:10px;padding:0;background:none;cursor:pointer;overflow:hidden;font-family:inherit}
+.vs-pro{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:10px;background:#ffd43b;color:#5b4a00;font-size:11px;font-weight:700;vertical-align:middle}
 .vs-th canvas{width:100%;height:auto;display:block;border-radius:8px}.vs-th span{display:block;font-size:11.5px;color:#445;padding:3px 0}
 .vs-th.on{border-color:#0073e6}
+.vsb{max-width:760px;margin:6px auto 22px;padding:14px 14px 12px;background:linear-gradient(135deg,#eef5ff,#f9fbff);border:1px solid #cfe0f5;border-radius:16px}
+.vsb-h{font-weight:800;font-size:16px;color:#0b3d73;text-align:left;margin-bottom:10px}.vsb-h span{font-weight:500;font-size:13px;color:#667;margin-left:6px}
+.vsb-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.vsb-c{display:flex;flex-direction:column;align-items:center;gap:2px;padding:12px 6px;background:#fff;border:1px solid #d6e4f7;border-radius:12px;text-decoration:none;color:#0b3d73;text-align:center}
+.vsb-c:first-child{border-color:#0073e6;box-shadow:0 0 0 2px rgba(0,115,230,.12)}
+.vsb-c i{font-style:normal;font-size:24px}.vsb-c b{font-size:14.5px}.vsb-c span{font-size:11.5px;color:#667;line-height:1.4}
+@media(max-width:520px){.vsb-c b{font-size:13.5px}.vsb-c span{font-size:10.5px}}
+.vs-cust textarea{width:100%;min-height:96px;padding:10px;border:1px solid #cdd7e4;border-radius:9px;font-size:15px;font-family:inherit;box-sizing:border-box;resize:vertical}
+.vs-cust input[type=text]{width:100%;padding:9px 10px;border:1px solid #cdd7e4;border-radius:9px;font-size:15px;font-family:inherit;box-sizing:border-box}
+.vs-lock{background:#fffbea;border:1px solid #ffd43b;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.7;color:#5b4a00}.vs-lock a{color:#0b5cad;font-weight:700}
 .vs-batch{margin:26px auto 0;padding:20px 20px 18px;background:#f4f8ff;border:1px solid #cfe0f5;border-radius:16px;text-align:left}
 .vs-batch h3{margin:0 0 8px;font-size:18px;color:#0b3d73}.vs-brow{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 8px}.vs-brow>div{flex:1 1 170px}.vs-brow label{display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:#334}
 .vs-brow select{width:100%;padding:9px 10px;border:1px solid #cdd7e4;border-radius:9px;font-size:14.5px;font-family:inherit;background:#fff}.vs-chk{display:block;font-size:14px;margin:8px 0}
@@ -263,14 +274,16 @@ def render(data):
         f'<a class="card" href="{guide_map[d["ref"]]}"><b>{esc(d["ref"])}</b><span>{esc(d["topic"])} · {esc(d["text"][:30])}…</span></a>'
         for ts in topics.values() for d in ts) + '</div>'
     from season_picks import SEASONS as _SEASONS
-    seasons = '<h2 style="margin-top:34px;text-align:left">절기 말씀 뽑기</h2><div class="cards" style="text-align:left">' + "".join(
-        f'<a class="card" href="/verse/{k}/" data-ga="verse_to_season" data-ga-label="{k}"><b>{c["emoji"]} {esc(c["label"])}</b><span>{esc(c["sub"])}</span></a>'
-        for k, c in _SEASONS.items()) + '</div>'
+    _badge = {"new-year": "12/31 송구영신 · 교회 인쇄", "christmas": "성극·주일학교", "thanksgiving": "추수감사절"}
+    seasons = '<div class="vsb"><div class="vsb-h">🎄 절기 말씀 뽑기 <span>교회 행사에 바로 쓰세요</span></div><div class="vsb-row">' + "".join(
+        f'<a class="vsb-c" href="/verse/{k}/" data-ga="verse_to_season" data-ga-label="{k}"><i>{c["emoji"]}</i><b>{esc(c["label"])}</b><span>{esc(_badge.get(k, c["sub"]))}</span></a>'
+        for k, c in _SEASONS.items()) + '</div></div>'
     body = f"""<main class="vwrap">
 <div class="crumb" style="text-align:left"><a href="/">홈</a> › 말씀 뽑기</div>
 <h1 style="margin-top:10px">말씀 뽑기 · 말씀 카드 만들기</h1>
 <div class="sub">말씀을 한 장 뽑고, 배경과 글꼴을 골라 나만의 카드로 만들어 보세요</div>
 <div class="sub" style="margin-top:-6px"><a href="/today/" data-ga="verse_to_today">📅 오늘의 말씀 보기</a></div>
+{seasons}
 <div class="vchips" id="vchips">{chips}</div>
 <div class="vbox" id="vbox" title="눌러서 뽑기">🎴</div>
 <button class="vbtn" id="vdraw" data-ga="verse_draw_click">🎴 말씀 뽑기</button>
@@ -330,7 +343,8 @@ def render(data):
    <label style="margin-top:10px">분위기 효과</label><div class="vs-row" id="vsFx"></div>
    <label style="margin-top:10px">장식 색</label><div class="vs-row" id="vsDcolor"></div>
   </div></details>
-  <details><summary>⑥ 다른 말씀으로 바꾸기</summary><div class="vs-in">
+  <details id="vsCustBox"><summary>⑥ ✍️ 내가 쓴 말씀 직접 입력 <span class="vs-pro">후원 기능</span></summary><div class="vs-in vs-cust" id="vsCust"></div></details>
+  <details><summary>⑦ 다른 말씀으로 바꾸기</summary><div class="vs-in">
    <label for="vsPick">구절 선택</label><input list="vsRefs" id="vsPick" placeholder="예: 시편 23:1"><datalist id="vsRefs"></datalist>
    <p class="vs-note">원하는 구절을 목록에서 골라도 되고, 위의 '말씀 뽑기'로 다시 뽑아도 돼요.</p>
   </div></details>
@@ -351,7 +365,6 @@ def render(data):
  <div class="vs-bprev" id="vsBPrev"></div>
 </div>
 </section>
-{seasons}
 {credits}
 {guide}
 <h2 style="margin-top:34px;text-align:left">자주 묻는 질문</h2><div class="faq" style="text-align:left;max-width:760px"><details><summary>말씀 카드는 무료인가요?</summary><p>네, 말씀 뽑기와 카드 만들기, 이미지 저장·공유·인쇄는 모두 무료입니다. 후원하시면 이미지에서 십자가로세로 워터마크를 뺄 수 있어요.</p></details><details><summary>어떤 크기로 저장할 수 있나요?</summary><p>카카오톡·인스타그램 정사각(1080×1080)과 4:5, 스토리·휴대폰 배경화면(9:16), 아이폰·갤럭시 긴 화면, 프로필(정사각), PC 배경화면(FHD·QHD), 링크 미리보기(가로), 인쇄용 A4·A5·A6, 책갈피까지 12가지 크기를 지원합니다.</p></details><details><summary>배경 이미지는 저작권 문제가 없나요?</summary><p>풍경 배경은 십자가로세로가 직접 그린 그래픽이라 저작권 걱정 없이 쓰실 수 있습니다. 내 사진을 올려 배경으로 쓸 수도 있고, 올린 사진은 기기 안에서만 처리됩니다.</p></details><details><summary>글꼴도 무료로 쓸 수 있나요?</summary><p>노토 산스·노토 세리프·나눔명조·고운바탕·나눔 손글씨 등 구글 폰트의 무료(SIL OFL) 글꼴 31종을 제공합니다.</p></details><details><summary>교회 주보나 주일학교에서 인쇄해도 되나요?</summary><p>교회·주일학교·가정에서의 비상업적 인쇄와 사용은 자유롭게 하실 수 있습니다. 판매는 하지 말아 주세요. 인쇄 크기로 A4·A5·A6를 고르면 인쇄 창이 열립니다.</p></details><details><summary>성경 본문은 어떤 번역인가요?</summary><p>저작권이 만료된 성경전서 개역한글판을 사용합니다.</p></details></div>
