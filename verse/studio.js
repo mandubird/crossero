@@ -323,6 +323,35 @@
     Object.keys(grp).forEach(function (g) { var og = document.createElement('optgroup'); og.label = g; grp[g].forEach(function (p) { var o = document.createElement('option'); o.value = p.k; o.textContent = p.n + ' (' + p.w + '×' + p.h + ')'; og.appendChild(o); }); sel.appendChild(og); });
     sel.value = S.preset;
     sel.addEventListener('change', function () { S.preset = sel.value; track('studio_preset', { preset: S.preset }); refresh(); });
+    // 쉬운 용도 고르기(큰 버튼). 위 select 는 내부용으로만 유지한다.
+    var USES = [
+      { k: 'sq', i: '💬', t: '카카오톡·인스타에 올리기', d: '정사각 사진 · 가장 많이 써요', star: 1 },
+      { k: 'phone', i: '📱', t: '휴대폰 배경화면', d: '아이폰·갤럭시 긴 화면' },
+      { k: 'profile', i: '👤', t: '프로필 사진', d: '카톡·SNS 동그란 프로필' },
+      { k: 'pc', i: '🖥️', t: '컴퓨터 배경화면', d: '넓은 화면(16:9)' },
+      { k: 'a4', i: '🖨️', t: '종이로 인쇄하기', d: 'A4 큰 종이 한 장' },
+      { k: 'a6', i: '✉️', t: '엽서·주보에 넣기', d: 'A6 작은 크기' },
+      { k: 'mark', i: '📑', t: '책갈피', d: '길쭉한 세로 모양' }
+    ], MORE = ['ig45', 'story', 'pc2', 'link', 'a5'];
+    var ug = $('vsUse'), um = $('vsUseMore'), un = $('vsUseNote');
+    function pick(k) { S.preset = k; sel.value = k; track('studio_preset', { preset: k }); umark(); refresh(); }
+    function umark() {
+      [].forEach.call(root.querySelectorAll('[data-pk]'), function (b) { b.classList.toggle('on', b.dataset.pk === S.preset); });
+      var p = preset(), u = USES.filter(function (q) { return q.k === p.k; })[0]; if (un) un.textContent = '지금 선택: ' + (u ? u.t : p.n);
+    }
+    if (ug) {
+      USES.forEach(function (u) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'vs-u'; b.dataset.pk = u.k;
+        b.innerHTML = '<i>' + u.i + '</i><div><b>' + u.t + (u.star ? '<em>기본</em>' : '') + '</b><span>' + u.d + '</span></div>';
+        b.addEventListener('click', function () { pick(u.k); }); ug.appendChild(b);
+      });
+      MORE.forEach(function (k) {
+        var p = PRESETS.filter(function (q) { return q.k === k; })[0]; if (!p) return;
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'vs-chip'; b.dataset.pk = k; b.textContent = p.n;
+        b.addEventListener('click', function () { pick(k); }); um.appendChild(b);
+      });
+      umark();
+    }
 
     // 장식
     (function () {

@@ -125,6 +125,16 @@ CSS = """
 .vs-pro{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:10px;background:#ffd43b;color:#5b4a00;font-size:11px;font-weight:700;vertical-align:middle}
 .vs-th canvas{width:100%;height:auto;display:block;border-radius:8px}.vs-th span{display:block;font-size:11.5px;color:#445;padding:3px 0}
 .vs-th.on{border-color:#0073e6}
+.vs-use{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:8px 0 10px}
+.vs-u{position:relative;display:flex;align-items:center;gap:10px;padding:14px 40px 14px 12px;border:2px solid #cdd7e4;border-radius:14px;background:#fff;cursor:pointer;text-align:left;font-family:inherit;min-height:64px}
+.vs-u i{font-style:normal;font-size:28px;flex:none}.vs-u b{display:block;font-size:16px;color:#16325c;line-height:1.3}.vs-u span{display:block;font-size:12.5px;color:#667;line-height:1.4;margin-top:2px}
+.vs-u.on{border-color:#0073e6;background:#eaf3ff;box-shadow:0 0 0 2px rgba(0,115,230,.18)}
+.vs-u.on::after{content:"✔";position:absolute;top:50%;right:10px;transform:translateY(-50%);width:24px;height:24px;border-radius:50%;background:#0073e6;color:#fff;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.vs-u em{font-style:normal;display:inline-block;margin-left:6px;padding:0 7px;border-radius:9px;background:#ffd43b;color:#5b4a00;font-size:11px;font-weight:800;vertical-align:middle}
+.vs-usemore{margin:0 0 6px;border:0!important}.vs-usemore summary{padding:6px 2px;font-size:14px;color:#0b5cad;font-weight:600}
+.vs-usegrid{display:flex;flex-wrap:wrap;gap:8px;padding:4px 0 8px}
+.vs-usegrid .vs-chip{font-size:14px;padding:9px 14px}
+@media(max-width:520px){.vs-use{grid-template-columns:1fr}.vs-u{padding:12px 42px 12px 12px}}
 .vs-cust textarea{width:100%;min-height:96px;padding:10px;border:1px solid #cdd7e4;border-radius:9px;font-size:15px;font-family:inherit;box-sizing:border-box;resize:vertical}
 .vs-cust input[type=text]{width:100%;padding:9px 10px;border:1px solid #cdd7e4;border-radius:9px;font-size:15px;font-family:inherit;box-sizing:border-box}
 .vs-lock{background:#fffbea;border:1px solid #ffd43b;border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.7;color:#5b4a00}.vs-lock a{color:#0b5cad;font-weight:700}
@@ -317,8 +327,11 @@ def render(data):
   <p class="vs-note" style="text-align:center">공유가 안 되는 기기에서는 이미지가 저장됩니다. 저장한 사진을 카톡·인스타에 올리세요.</p>
  </div>
  <div class="vs-ctl">
-  <label for="vsPreset">① 용도·크기</label>
-  <select id="vsPreset"></select>
+  <label style="font-size:16px">① 어디에 쓰실 건가요?</label>
+  <div class="vs-use" id="vsUse"></div>
+  <details class="vs-usemore"><summary>다른 크기 더 보기</summary><div class="vs-usegrid" id="vsUseMore"></div></details>
+  <p class="vs-note" id="vsUseNote" style="text-align:center;margin-bottom:6px"></p>
+  <select id="vsPreset" style="display:none" aria-hidden="true" tabindex="-1"></select>
   <details open><summary>② 배경</summary><div class="vs-in">
    <label style="margin-top:2px">📷 사진 <span style="font-weight:400;color:#889">(무료 라이선스 사진 {NPH}장)</span></label>
    <div class="vs-row" id="vsPhotoThemes" style="margin-bottom:4px"></div>
