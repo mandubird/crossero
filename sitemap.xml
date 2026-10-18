@@ -2467,4 +2467,13 @@
     <priority>0.8</priority>
   </url>
   <!-- VERSE-END -->
+
+  <!-- NYGUIDE-START -->
+  <url>
+    <loc>https://crossero.com/verse/new-year/guide/</loc>
+    <lastmod>2026-10-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- NYGUIDE-END -->
 </urlset>

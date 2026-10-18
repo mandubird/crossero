@@ -155,6 +155,7 @@ def render(key, cfg, text):
 <div style="text-align:left;margin-top:34px">{''.join(f'<p style="font-size:16px;line-height:1.9;margin:0 0 14px">{esc(p)}</p>' for p in cfg['intro'])}</div>
 <h2 style="text-align:left;margin-top:30px">이렇게 해 보세요</h2>
 <ol class="steps">{''.join(f'<li>{esc(s)}</li>' for s in cfg['how'])}</ol>
+{'<a href="/verse/new-year/guide/" data-ga="season_to_nyguide" style="display:block;text-align:left;margin-top:26px;padding:14px 18px;background:#f4f8ff;border:1px solid #cfe0f5;border-radius:14px;text-decoration:none;color:#0b3d73"><b>⛪ 송구영신예배 말씀 뽑기 진행 가이드</b><br><span style="font-size:14px;color:#556">준비물, 인원별 카드 수, 30분 시간표, 유의할 점을 정리했어요 →</span></a>' if key == 'new-year' else ''}
 <h2 style="text-align:left;margin-top:30px">교회·모임용 전체 카드 인쇄</h2>
 <p style="text-align:left;font-size:15.5px">이 페이지의 말씀 {len(pool)}장을 A4 용지에 한 번에 인쇄해 잘라서 쓸 수 있습니다. 예배 후 한 장씩 뽑는 말씀 상자, 주일학교 활동, 소그룹 나눔에 활용해 보세요.</p>
 <button class="vbtn sub" id="vprintall" data-ga="season_print_all_click">🖨️ 말씀 카드 {len(pool)}장 전체 인쇄</button>
