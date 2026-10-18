@@ -75,6 +75,7 @@ def render_index(ctx):
 
 
 CATS_BY_TYPE = {c[0]: c[2] for c in CATS}
+INTRO = {'places': '성경 지명은 사건이 일어난 무대입니다. 각 항목에서 지명의 뜻과 성경 속 사건, 오늘의 위치와 현재 사진·지도를 볼 수 있고, 성경 지도에서 모든 지명의 위치를 한 번에 비교할 수 있습니다. 위치는 학자들의 식별을 따르며 학설이 갈리는 곳은 그렇게 표시했습니다. 궁금한 지명을 골라 읽고 관련 퍼즐로 복습해 보세요.', 'people': '성경 인물 항목은 인물의 삶을 핵심 정보, 본문 해설, 관련 구절, 자주 묻는 질문으로 정리했습니다. 아브라함에서 바울까지 구약과 신약의 주요 인물을 골랐고, 가계도와 연대표에서 그 인물이 어느 시대에 속하는지 함께 볼 수 있습니다. 성경 구절은 모두 장·절 표기로 안내해 직접 읽어 보실 수 있습니다.', 'events': '성경 사건 항목은 천지창조에서 부활과 승천까지 큰 사건을 시간 순서의 맥락 속에서 설명합니다. 각 사건의 배경, 핵심 구절, 등장인물과 지명, 오늘의 적용을 담았고, 성경 지도와 연대표로 이어집니다. 사건에 대한 이해가 교단마다 다른 경우에는 그렇게 밝혀 두었습니다.', 'terms': '신앙 용어 항목은 구원, 은혜, 칭의, 성령처럼 교회에서 자주 쓰지만 뜻이 막연한 말을 쉬운 말로 풀었습니다. 각 항목은 정의, 성경 근거 구절, 자주 하는 질문으로 구성했고, 세례나 성찬처럼 교단마다 이해가 다른 용어는 그 차이를 밝혀 두었습니다. 새신자 교육이나 소그룹 공부에서 쉽게 쓸 수 있습니다.', 'books': '66권 요약은 창세기부터 요한계시록까지 책마다 기록 목적, 핵심 메시지, 구조, 핵심 구절, 읽을 때의 팁을 정리했습니다. 성경 통독 계획을 세우거나 공과 본문을 미리 살펴볼 때 활용하세요. 각 책에서 이어지는 인물·지명 항목과 퍼즐로 복습할 수 있습니다.'}
 
 
 def render_category(cat, ctx):
@@ -90,6 +91,7 @@ def render_category(cat, ctx):
     out = [head(title, desc, path, ld).replace("</head>", SEARCH_CSS + "\n</head>", 1), '<main class="wrap">']
     out.append(f'<div class="crumb"><a href="/">홈</a> › <a href="/dictionary/">성경사전</a> › {label}</div>')
     out.append(f'<h1>{icon} {label}</h1><div class="sub">{esc(d)}</div>')
+    out.append('<div class="summary">' + esc(INTRO[folder]) + '</div>')
     if folder == "places":
         out.append('<a class="cta" href="/dictionary/map/">🗺️ 지도에서 한눈에 보기<small>모든 지명을 지도 위 핀으로, 오늘의 위치와 사진까지</small></a>')
     out.append(f'<div class="dsearch"><input id="dq" type="search" placeholder="🔍 {label} 안에서 찾기" autocomplete="off"><div class="dres" id="dres"></div></div>')

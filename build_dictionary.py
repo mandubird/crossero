@@ -364,7 +364,7 @@ def update_sitemap():
     urls += [("/christmas/" if x == "index" else f"/christmas/{x}.html", "0.8" if x in ("index", "guide", "props", "activities", "puzzles") else "0.7") for x in globals().get("CHRISTMAS_PAGES", [])]
     urls += [("/dictionary/genealogy/", "0.8")]
     urls += [("/dictionary/timeline/", "0.8")] + [(f"/dictionary/timeline/{x}.html", "0.7") for x in globals().get("TIMELINE_ERAS", [])]
-    urls += [("/dictionary/verses/", "0.8")] + [(f"/dictionary/verses/{m['slug']}.html", "0.6") for m in globals().get("VERSE_BOOKS", [])]
+    urls += [("/dictionary/verses/", "0.8")] + [(f"/dictionary/verses/{m['slug']}.html", "0.6") for m in globals().get("VERSE_BOOKS", []) if not m.get("thin")]
     urls += [(f"/dictionary/{e['slug']}.html", "0.7") for e in ENTRIES]
     def _img(u):
         import re as _re

@@ -221,7 +221,7 @@ def get_book_slug_ko(book):
 
 def get_semantic_quiz_url(book, pid):
     slug = get_book_slug_ko(book)
-    return f"{DOMAIN}/bible-quiz/{slug}?id={pid}"
+    return f"{DOMAIN}/play.html?id={pid}"
 
 def extract_quiz_qa_from_data_js(pid, max_items=8):
     """data.js에서 특정 퍼즐의 clue/answer 쌍을 직접 추출."""

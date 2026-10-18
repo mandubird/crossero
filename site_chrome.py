@@ -233,6 +233,15 @@ def pilgrim_html():
             'addEventListener("scroll",chk,{passive:true});chk();})();</script><!--/PILGRIM-->')
 
 
+def playinfo_html():
+    return ('<!--PLAYINFO--><section class="playinfo" style="max-width:820px;margin:28px auto 0;padding:18px 18px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;line-height:1.8;font-size:14.5px;color:#374151">'
+            '<h2 style="font-size:17px;margin:0 0 8px">성경 가로세로 퍼즐 이용 안내</h2>'
+            '<p style="margin:0 0 8px"><b>풀이 방법</b> 빈칸을 누르고 힌트를 읽은 뒤 글자를 입력합니다. 방향키로 칸을 옮기고 Backspace로 고칠 수 있으며, 모바일에서도 같은 방식으로 풉니다.</p>'
+            '<p style="margin:0 0 8px"><b>난이도</b> 가볍게(5문항), 보통(12문항), 어렵게(25문항) 중에서 고를 수 있고, 초등 저학년은 가볍게, 청소년·성인은 보통 이상을 권합니다.</p>'
+            '<p style="margin:0 0 8px"><b>정답 확인·인쇄</b> 정답 보기와 인쇄 기능은 후원자에게 제공되며, 퍼즐 풀이 자체는 무료입니다. 인쇄한 퍼즐은 주보나 주일학교 활동으로 쓸 수 있습니다.</p>'
+            '<p style="margin:0"><b>함께 보면 좋은 곳</b> <a href="/list.html">퍼즐 목록</a> · <a href="/dictionary/">성경사전</a> · <a href="/dictionary/map/">성경 지도</a> · <a href="/teachers/">교사 허브</a> · <a href="/faq.html">자주 묻는 질문</a></p></section><!--/PLAYINFO-->')
+
+
 def peek_html():
     # 위치: 메뉴(서브메뉴) 바닥 기준 오프셋. 페이지마다 본문 시작 높이가 달라 콘텐츠를 덜 가리도록 조정한다.
     return ('<!--PEEK--><a class="peek" id="crsPeek" href="/support.html" data-ga="peek_support_click" aria-label="후원하기">'
@@ -304,6 +313,12 @@ def apply(path, s):
         legacy = (k + len('<div class="footer-divider"></div>')) if k >= 0 else len("<footer>")
     foot = foot[:legacy] + block + foot[legacy:]
     s = s[:f0] + foot + s[f1:]
+    # 퍼즐 화면 정적 이용 안내(얇은 JS 화면 보강)
+    s = _strip(s, "PLAYINFO")
+    if path == "play.html":
+        f0 = s.find("<footer")
+        if f0 > 0:
+            s = s[:f0] + playinfo_html() + "\n" + s[f0:]
     # 우측 마스코트 후원 안내(게임 화면 제외)
     s = _strip(s, "PEEK")
     if not path.startswith(("play.html", "play2.html", "support.html")) and "</body>" in s:

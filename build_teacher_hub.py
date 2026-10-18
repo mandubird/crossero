@@ -121,6 +121,7 @@ def hub():
 <div class="sub">퍼즐, 성경사전, 게시글을 한 번에 검색하세요</div>
 <div class="summary">이번 주 공과에 쓸 자료를 빨리 찾고 싶은 교사와 리더를 위해 만들었습니다. 본문 이름이나 인물, 주제를 입력하면 퍼즐·사전·게시글에서 한꺼번에 찾아 줍니다. 예) 다윗, 요나, 십계명, 로마서</div>
 
+<div class="summary" style="margin-top:12px">교사 허브에서 찾을 수 있는 자료: 성경 가로세로 퍼즐 200여 개(책별·인물별·주제별), 인물·지명·사건 사전 256항목, 성경 66권 요약, 퍼즐 해설 게시글 230여 개입니다. 학년(유치부·초등부·중고등부·청년·장년)에 맞춰 고르려면 아래 대상별 모음을 이용하세요. 성탄 시즌에는 <a href="/christmas/">성탄 성극 대본·소품·활동지</a>도 함께 쓰실 수 있습니다.</div>
 <div id="hub-search" style="margin:18px 0 6px;">
   <input id="q" type="search" placeholder="인물·책·주제 검색 (예: 다윗, 시편, 십계명)" aria-label="자료 검색" style="width:100%;padding:14px 16px;border:2px solid #bcd3f0;border-radius:12px;font-size:16px;">
   <div id="chips" style="margin:10px 0;display:flex;gap:8px;flex-wrap:wrap;">

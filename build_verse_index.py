@@ -108,6 +108,12 @@ def render_all(ctx):
         out.append(f'<div class="crumb"><a href="/">홈</a> › <a href="/dictionary/">성경사전</a> › <a href="/dictionary/verses/">구절로 찾기</a> › {esc(b)}</div>')
         out.append(f'<h1>{esc(b)} 구절 찾아보기</h1><div class="sub">구절에서 인물·사건·지명 항목으로 바로 이동하세요</div>')
         out.append('<div class="vi-msg" id="vimsg"></div>')
+        be = next((x for x in ENTRIES if x["slug"] == "book-" + slug), None)
+        if be:
+            facts = "".join(f"<li><b>{esc(k)}</b> {esc(v)}</li>" for k, v in be["facts"])
+            para = be["sections"][0][1][0] if be["sections"] and be["sections"][0][1] else ""
+            out.append(f'<h2>{esc(b)} 소개</h2><p>{esc(be["summary"])}</p>' + (f"<ul>{facts}</ul>" if facts else "") + (f"<p>{esc(para)}</p>" if para else "")
+                       + f'<p><a href="/dictionary/{be["slug"]}.html">{esc(b)} 요약 전체 보기 →</a> · 아래는 사전 항목에서 인용한 {esc(b)}의 구절과 관련 항목입니다.</p>')
         cur = None
         used = set()
         for p, items in lst:
@@ -123,6 +129,10 @@ def render_all(ctx):
             used.add(rid)
             out.append(f'<div class="vrow"{idattr} data-c1="{p[1]}" data-v1="{p[2]}" data-c2="{p[3]}" data-v2="{p[4]}">'
                        f'<div class="vr">{esc(label(p))}</div>' + (f'<div class="vt">{tx}</div>' if tx else "") + f'<div class="vents">{ents}</div></div>')
+        body_txt = re.sub(r"\s+", "", re.sub(r"<[^>]+>", "", re.sub(r"<script.*?</script>|<style.*?</style>", "", "".join(out[1:]), flags=re.S)))
+        thin = len(body_txt) < 800
+        if thin:
+            out[0] = out[0].replace("</head>", '<meta name="robots" content="noindex,follow">\n</head>', 1)
         out.append("</main>")
         out.append(FOOTER)
         out.append("""<script>(function(){var m=location.hash.match(/^#c(\\d+)v(\\d+)$/);if(!m)return;var c=+m[1],v=+m[2],f=null;
@@ -132,7 +142,7 @@ if(f){f.scrollIntoView({block:'center'});}else{var b=document.getElementById('vi
 var q='""" + b + """ '+c+':'+v;b.innerHTML='이 구절('+q+')과 연결된 사전 항목은 아직 없어요.<br><a href="mailto:mandubird@naver.com?subject='+encodeURIComponent('[십자가로세로] 구절 연결 요청: '+q)+'&body='+encodeURIComponent('요청 구절: '+q+'\\n페이지: '+location.href)+'" data-ga="verse_request">✉️ 이 구절에 대한 항목을 요청하기</a>';}})();</script>""")
         out.append('<script src="/ga-events.js"></script><script src="/subscribe.js"></script>\n</body>\n</html>\n')
         open(os.path.join(vdir, f"{slug}.html"), "w", encoding="utf-8").write("\n".join(out))
-        books_meta.append({"b": b, "slug": slug, "n": len(lst), "testament": "구약" if bidx[b] <= 39 else "신약"})
+        books_meta.append({"b": b, "slug": slug, "n": len(lst), "testament": "구약" if bidx[b] <= 39 else "신약", "thin": thin})
     # 인덱스
     path = "/dictionary/verses/"
     title = "구절로 찾기 - 성경 구절에서 인물·사건·지명 찾기 | 성경사전 | 십자가로세로"

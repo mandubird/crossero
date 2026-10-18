@@ -1,5 +1,46 @@
 {
   "redirects": [
-    { "source": "/bible-quiz/:slug([^/.]+)", "destination": "/bible-quiz/", "permanent": true }
+    {
+      "source": "/bible-quiz/genesis(\\.html)?",
+      "destination": "/play.html?id=gen_001",
+      "permanent": true
+    },
+    {
+      "source": "/bible-quiz/exodus(\\.html)?",
+      "destination": "/play.html?id=exo_011",
+      "permanent": true
+    },
+    {
+      "source": "/bible-quiz/moses-crossword(\\.html)?",
+      "destination": "/play.html?id=exo_011",
+      "permanent": true
+    },
+    {
+      "source": "/bible-quiz/:slug",
+      "has": [
+        {
+          "type": "query",
+          "key": "id",
+          "value": "(?<pid>[A-Za-z0-9_]+)"
+        }
+      ],
+      "destination": "/play.html?id=:pid",
+      "permanent": true
+    },
+    {
+      "source": "/bible-quiz",
+      "destination": "/list.html",
+      "permanent": true
+    },
+    {
+      "source": "/bible-quiz/",
+      "destination": "/list.html",
+      "permanent": true
+    },
+    {
+      "source": "/bible-quiz/:slug([^/.]+)",
+      "destination": "/list.html",
+      "permanent": true
+    }
   ]
 }
