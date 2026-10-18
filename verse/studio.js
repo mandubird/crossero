@@ -485,11 +485,28 @@
     if (bsel && blay) {
       var SETS = window.__SETS || [];
       SETS.forEach(function (st, i) { var o = document.createElement('option'); o.value = i; o.textContent = st.n + ' (' + st.v.length + '장)'; bsel.appendChild(o); });
+      var oc = document.createElement('option'); oc.value = 'c'; oc.textContent = '✍️ 내가 붙여넣은 구절 (후원 기능)'; bsel.appendChild(oc);
       LAY.forEach(function (l, i) { var o = document.createElement('option'); o.value = i; o.textContent = l.n; blay.appendChild(o); });
-      var bsum = function () { var st = SETS[bsel.value], l = LAY[blay.value]; if (!st) return; var n = st.v.length * (+bcp.value), per = l.c * l.r; binfo.textContent = '총 ' + n + '장 · A4 ' + Math.ceil(n / per) + '쪽이에요. 같은 구절이 겹치지 않게 섞어서 상자에 담으세요.'; bpr.disabled = true; bprev.innerHTML = ''; bpages = null; };
-      [bsel, blay, bcp].forEach(function (e) { e.addEventListener('change', bsum); }); bsum();
+      function curSet() {
+        if (bsel.value !== 'c') return SETS[bsel.value];
+        var v = [];
+        ($('vsBCustText').value || '').split(/\n/).forEach(function (ln) {
+          ln = ln.trim(); if (!ln) return; var p = ln.split('|'), t = p[0].trim(), r = (p.slice(1).join('|') || '').trim();
+          if (t) v.push({ text: t, ref: r });
+        });
+        return { k: 'custom', n: '내 구절', v: v };
+      }
+      function cmode() {
+        var c = bsel.value === 'c', d = isDonor(); $('vsBCustWrap').style.display = c ? 'block' : 'none';
+        $('vsBLock').style.display = c && !d ? 'block' : 'none'; $('vsBCustBox').style.display = c && d ? 'block' : 'none';
+        bgo.disabled = c && !d;
+      }
+      var bsum = function () { cmode(); var st = curSet(), l = LAY[blay.value]; if (!st) return;
+        if (!st.v.length) { binfo.textContent = bsel.value === 'c' ? (isDonor() ? '구절을 붙여넣으면 장수가 계산돼요.' : '') : ''; bpr.disabled = true; bprev.innerHTML = ''; bpages = null; return; } var n = st.v.length * (+bcp.value), per = l.c * l.r; binfo.textContent = '총 ' + n + '장 · A4 ' + Math.ceil(n / per) + '쪽이에요. 같은 구절이 겹치지 않게 섞어서 상자에 담으세요.'; bpr.disabled = true; bprev.innerHTML = ''; bpages = null; };
+      [bsel, blay, bcp].forEach(function (e) { e.addEventListener('change', bsum); }); $('vsBCustText').addEventListener('input', bsum); bsum();
       bgo.addEventListener('click', function () {
-        var st = SETS[bsel.value], l = LAY[blay.value], copies = +bcp.value, cut = $('vsBCut').checked, list = [];
+        var st = curSet(), l = LAY[blay.value], copies = +bcp.value, cut = $('vsBCut').checked, list = [];
+        if (!st || !st.v.length || (bsel.value === 'c' && !isDonor())) return;
         st.v.forEach(function (v) { for (var i = 0; i < copies; i++) list.push(v); });
         bgo.disabled = true; bpr.disabled = true; bprev.innerHTML = ''; var urls = [], sv = S.verse, k = 0, cvs = document.createElement('canvas');
         loadFont(S.font).then(function step() {

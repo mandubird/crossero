@@ -367,6 +367,12 @@ def render(data):
   <div><label for="vsBLay">용지당 카드</label><select id="vsBLay"></select></div>
   <div><label for="vsBCopies">구절당 장수</label><select id="vsBCopies"><option>1</option><option>2</option><option>3</option><option>5</option></select></div>
  </div>
+ <div id="vsBCustWrap" style="display:none">
+  <div class="vs-lock" id="vsBLock" style="display:none">🔒 후원하시면 교회가 쓰는 번역본(개역개정·새번역·영어 등)으로 <b>구절 여러 개를 붙여넣어 한꺼번에 인쇄</b>할 수 있어요. <a href="/support.html" data-ga="batch_custom_to_support">후원 안내 보기 →</a></div>
+  <div id="vsBCustBox"><label for="vsBCustText" style="font-size:13px;font-weight:600;color:#334">구절 붙여넣기 (한 줄에 카드 한 장)</label>
+  <textarea id="vsBCustText" style="width:100%;min-height:130px;padding:10px;border:1px solid #cdd7e4;border-radius:9px;font-size:14.5px;font-family:inherit;box-sizing:border-box" placeholder="본문 | 출처&#10;예) 여호와는 나의 목자시니 내가 부족함이 없으리로다 | 시편 23:1 · 개역개정&#10;출처는 생략해도 돼요."></textarea>
+  <p class="vs-note">한 줄에 한 구절씩 쓰고, 본문과 출처는 | 로 나눠요. 번역본의 저작권과 사용 허락은 사용하시는 분이 확인해 주세요.</p></div>
+ </div>
  <label class="vs-chk"><input type="checkbox" id="vsBCut" checked> 자르는 선(점선) 넣기</label>
  <p class="vs-note" id="vsBInfo"></p>
  <div class="vs-act"><button type="button" id="vsBGo">🖨️ 인쇄 미리보기 만들기</button><button type="button" class="alt" id="vsBPrint" disabled>인쇄하기 (PDF 저장 가능)</button></div>
