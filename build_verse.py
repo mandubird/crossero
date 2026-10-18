@@ -86,7 +86,7 @@ def build_sets(data):
 
 
 CSS = """
-.vwrap{max-width:1000px;margin:0 auto;padding:28px 20px 12px;text-align:center}
+.vwrap{max-width:1100px;margin:0 auto;padding:28px 20px 12px;text-align:center}
 .vchips{max-width:720px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:18px auto 22px}
 .vchip{padding:8px 16px;border:1px solid #bcd3f0;background:#fff;color:#0b5cad;border-radius:22px;font-size:15px;cursor:pointer;font-family:inherit}
 .vchip.on{background:#0073e6;color:#fff;border-color:#0073e6}
@@ -100,7 +100,7 @@ CSS = """
 .vtext{font-size:20px;line-height:1.9;color:#1f2d3d;word-break:keep-all;margin:0 0 16px}
 .vref{font-size:15px;color:#6b7b8d;font-weight:600}
 .vmark{margin-top:18px;font-size:12px;color:#99a}
-.vwrap>.crumb{max-width:760px;margin:0 auto 6px;text-align:left}
+.vwrap>.crumb{max-width:780px;margin:0 auto 6px;text-align:left}
 .vactions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:460px;margin:14px auto 6px}
 .vactions .vbtn.sub{flex:1 1 calc(50% - 8px);margin:0;text-align:center;box-sizing:border-box;text-decoration:none}
 .vactions .vhero{flex:1 1 100%;display:block;box-sizing:border-box;padding:16px 18px;border-radius:16px;background:linear-gradient(135deg,#0b5cad,#0073e6);color:#fff;text-decoration:none;font-weight:800;font-size:18px;line-height:1.4;box-shadow:0 8px 20px rgba(0,115,230,.28);text-align:center}
@@ -110,7 +110,7 @@ CSS = """
 .vs{text-align:left;margin:30px auto 10px;padding:18px 16px;background:#fff;border:1px solid #e5e7eb;border-radius:18px;box-shadow:0 6px 22px rgba(0,0,0,.05)}
 .vs h2{margin:0 0 4px;font-size:21px}.vs .vs-sub{margin:0 0 14px;color:#667;font-size:14px;line-height:1.6}
 .vs-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:18px}
-@media(min-width:900px){.vs{max-width:980px}.vs-grid{grid-template-columns:minmax(0,420px) minmax(0,1fr);align-items:start}.vs-prev{position:sticky;top:64px}}
+@media(min-width:900px){.vs{max-width:1060px}.vs-grid{grid-template-columns:minmax(0,420px) minmax(0,1fr);align-items:start}.vs-prev{position:sticky;top:64px}}
 .vs-prev canvas{width:100%;height:auto;max-height:78vh;display:block;margin:0 auto;border-radius:12px;box-shadow:0 8px 26px rgba(0,0,0,.22);background:#ddd;object-fit:contain}
 #vsInfo{margin:8px 0 10px;font-size:12.5px;color:#7b8794;text-align:center}
 .vs-act{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
