@@ -697,10 +697,10 @@ GEO = {
   "lon": 26.1586,
   "verses": 6,
   "where": "튀르키예 서북부 에게해 연안 알렉산드리아 트로아스 유적",
-  "img": None,
-  "license": None,
-  "credit": None,
-  "credit_url": None
+  "img": "/images/geo/troas.jpg",
+  "license": "CC-BY-SA-3.0",
+  "credit": "Elelicht",
+  "credit_url": "https://commons.wikimedia.org/wiki/File:Alexandria_Troas_Thermen.JPG"
  },
  "patmos": {
   "ob_id": "a8f60f3",
@@ -883,5 +883,75 @@ GEO = {
   "license": "PD",
   "credit": "Matson Collection",
   "credit_url": "https://commons.wikimedia.org/wiki/File:Sinai._Ain_Gedeirat,_near_source_of_the_spring._Num._20-11_LOC_matpc.23029.jpg"
+ },
+ "perga": {
+  "ob_id": "aff04b8",
+  "ob_slug": "perga",
+  "modern": "Perga (Perge)",
+  "score": 1000,
+  "lat": 36.9604,
+  "lon": 30.8537,
+  "verses": 3,
+  "where": "튀르키예 남부 안탈리아 근처 페르게 고대 유적",
+  "img": "/images/geo/perga.jpg",
+  "license": "CC-BY-SA-3.0",
+  "credit": "07özlem arlı",
+  "credit_url": "https://commons.wikimedia.org/wiki/File:Antalya,_PERGE.JPG"
+ },
+ "lystra": {
+  "ob_id": "af0719d",
+  "ob_slug": "lystra",
+  "modern": "Lystra (Hatunsaray)",
+  "score": 1000,
+  "lat": 37.6017,
+  "lon": 32.3384,
+  "verses": 6,
+  "where": "튀르키예 중남부 코니아 남서쪽(추정)",
+  "img": None,
+  "license": None,
+  "credit": None,
+  "credit_url": None
+ },
+ "derbe": {
+  "ob_id": "aa401a9",
+  "ob_slug": "derbe",
+  "modern": "Derbe (Kerti Hüyük?)",
+  "score": -123,
+  "lat": 37.3486,
+  "lon": 33.3615,
+  "verses": 5,
+  "where": "튀르키예 카라만 지방(위치 논의 중)",
+  "img": None,
+  "license": None,
+  "credit": None,
+  "credit_url": None
+ },
+ "miletus": {
+  "ob_id": "a55027d",
+  "ob_slug": "miletus",
+  "modern": "Miletus",
+  "score": 1000,
+  "lat": 37.5311,
+  "lon": 27.2756,
+  "verses": 3,
+  "where": "튀르키예 서부 아이든 지방 밀레투스 유적",
+  "img": "/images/geo/miletus.jpg",
+  "license": "CC-BY-SA-3.0",
+  "credit": "Bernard Gagnon",
+  "credit_url": "https://commons.wikimedia.org/wiki/File:Miletus_-_Ancient_Greek_theatre_02.jpg"
+ },
+ "malta": {
+  "ob_id": "a57835d",
+  "ob_slug": "malta",
+  "modern": "Malta",
+  "score": 1000,
+  "lat": 35.9335,
+  "lon": 14.4117,
+  "verses": 1,
+  "where": "지중해 몰타 공화국 세인트 폴스 만 일대",
+  "img": "/images/geo/malta.jpg",
+  "license": "CC-BY-SA-4.0",
+  "credit": "Txllxt TxllxT",
+  "credit_url": "https://commons.wikimedia.org/wiki/File:Malta_-_St._Paul%27s_Bay_-_Dawret_Il-Gzejjer_03.jpg"
  }
 }

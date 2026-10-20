@@ -48,7 +48,7 @@ corinth,고린도,바울이 1년 6개월 머문 항구 도시,37.9058,22.8787,Co
 philippi,빌립보,유럽에 세워진 첫 교회,41.0121,24.2846,Philippi,"그리스 북동부 마케도니아 지방, 카발라 인근",4,1000,https://crossero.com/dictionary/philippi.html,https://www.openbible.info/geo/ancient/a49e1d0/philippi,Carole Raddato,CC-BY-SA-2.0
 thessalonica,데살로니가,마게도냐의 주요 항구,40.6378,22.9458,Thessaloniki,그리스 북부 마케도니아 지방 테살로니키,9,1000,https://crossero.com/dictionary/thessalonica.html,https://www.openbible.info/geo/ancient/afa9d8e/thessalonica,Ziegler175,CC-BY-SA-3.0
 athens,아덴,아레오바고의 철학자들,37.9719,23.7267,Athens,그리스 수도 아테네,6,1000,https://crossero.com/dictionary/athens.html,https://www.openbible.info/geo/ancient/a1fe6e7/athens,George E. Koronaios,CC-BY-SA-4.0
-troas,드로아,마게도냐인의 환상이 있던 곳,39.7519,26.1586,Alexandria Troas,튀르키예 서북부 에게해 연안 알렉산드리아 트로아스 유적,6,1000,https://crossero.com/dictionary/troas.html,https://www.openbible.info/geo/ancient/a91c509/troas,,
+troas,드로아,마게도냐인의 환상이 있던 곳,39.7519,26.1586,Alexandria Troas,튀르키예 서북부 에게해 연안 알렉산드리아 트로아스 유적,6,1000,https://crossero.com/dictionary/troas.html,https://www.openbible.info/geo/ancient/a91c509/troas,Elelicht,CC-BY-SA-3.0
 patmos,밧모,요한계시록을 쓴 섬,37.325,26.5417,Patmos,그리스 에게해 도데카니사 제도 북쪽 섬,1,1000,https://crossero.com/dictionary/patmos.html,https://www.openbible.info/geo/ancient/a8f60f3/patmos,IWYLLPA,CC-BY-SA-3.0
 cyprus,구브로,"바나바의 고향, 1차 전도 여행의 첫 선교지",35.0,33.0,Cyprus,지중해 동부 섬나라 키프로스,12,1000,https://crossero.com/dictionary/cyprus.html,https://www.openbible.info/geo/ancient/a2e7601/cyprus,Deensel,CC-BY-2.0
 smyrna,서머나,죽도록 충성하라 하신 교회,38.4189,27.1378,Izmir,튀르키예 서부 에게해 연안 이즈미르,2,1000,https://crossero.com/dictionary/smyrna.html,https://www.openbible.info/geo/ancient/a2e65fb/smyrna,31774,CC-Zero
@@ -62,3 +62,8 @@ engedi,엔게디,사해 서쪽의 오아시스,31.45,35.3833,Ein Gedi,이스라�
 shunem,수넴,엘리사가 머문 여인의 마을,32.6056,35.3343,Sulam,이스라엘 북부 이스르엘 골짜기 남쪽 술람,9,1000,https://crossero.com/dictionary/shunem.html,https://www.openbible.info/geo/ancient/ac86af5/shunem,NaVisitor,CC-Zero
 gibeon,기브온,해야 멈추어라 한 전투의 땅,31.8475,35.1834,El Jib,"요르단강 서안지구, 예루살렘 북서쪽 약 10km 엘 집",39,912,https://crossero.com/dictionary/gibeon.html,https://www.openbible.info/geo/ancient/aede336/gibeon,Ar2332,CC-BY-SA-4.0
 kadesh-barnea,가데스 바네아,광야 38년의 출발점,30.6483,34.4222,Ain el Qudeirat,시나이 북부 이스라엘·이집트 국경 인근 아인 엘 쿠데이라트(위치 학설 있음),24,864,https://crossero.com/dictionary/kadesh-barnea.html,https://www.openbible.info/geo/ancient/ac2cef0/kadesh-barnea,Matson Collection,PD
+perga,버가,바울이 1차 여행에서 들른 팜필리아의 도시,36.9604,30.8537,Perga (Perge),튀르키예 남부 안탈리아 근처 페르게 고대 유적,3,1000,https://crossero.com/dictionary/perga.html,https://www.openbible.info/geo/ancient/aff04b8/perga,07özlem arlı,CC-BY-SA-3.0
+lystra,루스드라,나면서 못 걷는 사람이 일어난 도시,37.6017,32.3384,Lystra (Hatunsaray),튀르키예 중남부 코니아 남서쪽(추정),6,1000,https://crossero.com/dictionary/lystra.html,https://www.openbible.info/geo/ancient/af0719d/lystra,,
+derbe,더베,1차 전도 여행의 마지막 도시,37.3486,33.3615,Derbe (Kerti Hüyük?),튀르키예 카라만 지방(위치 논의 중),5,-123,https://crossero.com/dictionary/derbe.html,https://www.openbible.info/geo/ancient/aa401a9/derbe,,
+miletus,밀레도,에베소 장로들과 눈물로 작별한 항구,37.5311,27.2756,Miletus,튀르키예 서부 아이든 지방 밀레투스 유적,3,1000,https://crossero.com/dictionary/miletus.html,https://www.openbible.info/geo/ancient/a55027d/miletus,Bernard Gagnon,CC-BY-SA-3.0
+malta,멜리데,바울이 풍랑 끝에 오른 섬(몰타),35.9335,14.4117,Malta,지중해 몰타 공화국 세인트 폴스 만 일대,1,1000,https://crossero.com/dictionary/malta.html,https://www.openbible.info/geo/ancient/a57835d/malta,Txllxt TxllxT,CC-BY-SA-4.0

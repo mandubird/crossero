@@ -34,7 +34,7 @@ PLACES = {
   "name": "버가",
   "lat": 36.9604,
   "lon": 30.8537,
-  "dict": None,
+  "dict": "perga",
   "modern": "Perga"
  },
  "pisidia": {
@@ -55,14 +55,14 @@ PLACES = {
   "name": "루스드라",
   "lat": 37.6017,
   "lon": 32.3384,
-  "dict": None,
+  "dict": "lystra",
   "modern": "Tel Lystra"
  },
  "derbe": {
   "name": "더베",
   "lat": 37.3486,
   "lon": 33.3615,
-  "dict": None,
+  "dict": "derbe",
   "modern": "Kerti Hüyük"
  },
  "attalia": {
@@ -76,7 +76,7 @@ PLACES = {
   "name": "드로아",
   "lat": 39.7519,
   "lon": 26.1586,
-  "dict": None,
+  "dict": "troas",
   "modern": "Alexandria Troas"
  },
  "neapolis": {
@@ -174,7 +174,7 @@ PLACES = {
   "name": "밀레도",
   "lat": 37.5311,
   "lon": 27.2756,
-  "dict": None,
+  "dict": "miletus",
   "modern": "Miletus"
  },
  "cos": {
@@ -244,7 +244,7 @@ PLACES = {
   "name": "멜리데(몰타)",
   "lat": 35.9335,
   "lon": 14.4117,
-  "dict": None,
+  "dict": "malta",
   "modern": "Malta"
  },
  "syracuse": {

@@ -3,7 +3,7 @@
  "license": "CC BY 4.0",
  "attribution": "십자가로세로(crossero.com), 원자료 OpenBible.info 성경 지오코딩 데이터(CC BY 4.0)",
  "note": "위치는 학자들의 식별을 모은 것이며 일부는 학설에 따라 달라질 수 있습니다.",
- "count": 63,
+ "count": 68,
  "places": [
   {
    "slug": "jerusalem",
@@ -752,8 +752,8 @@
    "identification_confidence": 1000,
    "page_url": "https://crossero.com/dictionary/troas.html",
    "openbible_url": "https://www.openbible.info/geo/ancient/a91c509/troas",
-   "photo_credit": "",
-   "photo_license": ""
+   "photo_credit": "Elelicht",
+   "photo_license": "CC-BY-SA-3.0"
   },
   {
    "slug": "patmos",
@@ -949,6 +949,81 @@
    "openbible_url": "https://www.openbible.info/geo/ancient/ac2cef0/kadesh-barnea",
    "photo_credit": "Matson Collection",
    "photo_license": "PD"
+  },
+  {
+   "slug": "perga",
+   "name_ko": "버가",
+   "summary_ko": "바울이 1차 여행에서 들른 팜필리아의 도시",
+   "latitude": 36.9604,
+   "longitude": 30.8537,
+   "modern_name": "Perga (Perge)",
+   "location_ko": "튀르키예 남부 안탈리아 근처 페르게 고대 유적",
+   "bible_verse_mentions": 3,
+   "identification_confidence": 1000,
+   "page_url": "https://crossero.com/dictionary/perga.html",
+   "openbible_url": "https://www.openbible.info/geo/ancient/aff04b8/perga",
+   "photo_credit": "07özlem arlı",
+   "photo_license": "CC-BY-SA-3.0"
+  },
+  {
+   "slug": "lystra",
+   "name_ko": "루스드라",
+   "summary_ko": "나면서 못 걷는 사람이 일어난 도시",
+   "latitude": 37.6017,
+   "longitude": 32.3384,
+   "modern_name": "Lystra (Hatunsaray)",
+   "location_ko": "튀르키예 중남부 코니아 남서쪽(추정)",
+   "bible_verse_mentions": 6,
+   "identification_confidence": 1000,
+   "page_url": "https://crossero.com/dictionary/lystra.html",
+   "openbible_url": "https://www.openbible.info/geo/ancient/af0719d/lystra",
+   "photo_credit": "",
+   "photo_license": ""
+  },
+  {
+   "slug": "derbe",
+   "name_ko": "더베",
+   "summary_ko": "1차 전도 여행의 마지막 도시",
+   "latitude": 37.3486,
+   "longitude": 33.3615,
+   "modern_name": "Derbe (Kerti Hüyük?)",
+   "location_ko": "튀르키예 카라만 지방(위치 논의 중)",
+   "bible_verse_mentions": 5,
+   "identification_confidence": -123,
+   "page_url": "https://crossero.com/dictionary/derbe.html",
+   "openbible_url": "https://www.openbible.info/geo/ancient/aa401a9/derbe",
+   "photo_credit": "",
+   "photo_license": ""
+  },
+  {
+   "slug": "miletus",
+   "name_ko": "밀레도",
+   "summary_ko": "에베소 장로들과 눈물로 작별한 항구",
+   "latitude": 37.5311,
+   "longitude": 27.2756,
+   "modern_name": "Miletus",
+   "location_ko": "튀르키예 서부 아이든 지방 밀레투스 유적",
+   "bible_verse_mentions": 3,
+   "identification_confidence": 1000,
+   "page_url": "https://crossero.com/dictionary/miletus.html",
+   "openbible_url": "https://www.openbible.info/geo/ancient/a55027d/miletus",
+   "photo_credit": "Bernard Gagnon",
+   "photo_license": "CC-BY-SA-3.0"
+  },
+  {
+   "slug": "malta",
+   "name_ko": "멜리데",
+   "summary_ko": "바울이 풍랑 끝에 오른 섬(몰타)",
+   "latitude": 35.9335,
+   "longitude": 14.4117,
+   "modern_name": "Malta",
+   "location_ko": "지중해 몰타 공화국 세인트 폴스 만 일대",
+   "bible_verse_mentions": 1,
+   "identification_confidence": 1000,
+   "page_url": "https://crossero.com/dictionary/malta.html",
+   "openbible_url": "https://www.openbible.info/geo/ancient/a57835d/malta",
+   "photo_credit": "Txllxt TxllxT",
+   "photo_license": "CC-BY-SA-4.0"
   }
  ]
 }

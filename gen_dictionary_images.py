@@ -10,6 +10,7 @@ from dictionary_data_events_places import EVENTS, PLACES
 from dictionary_data_events2 import EVENTS2
 from dictionary_data_places2 import PLACES2
 from dictionary_data_places3 import PLACES3
+from dictionary_data_places4 import PLACES4
 from dictionary_data_terms import TERMS
 from dictionary_data_books_ot import OT
 from dictionary_data_books_nt import NT
@@ -94,7 +95,7 @@ def card(e, w, h):
 def main():
     os.makedirs(OUT, exist_ok=True)
     n = 0
-    for e in PEOPLE + PEOPLE2 + PEOPLE3 + EVENTS + EVENTS2 + PLACES + PLACES2 + PLACES3 + TERMS + OT + NT:
+    for e in PEOPLE + PEOPLE2 + PEOPLE3 + EVENTS + EVENTS2 + PLACES + PLACES2 + PLACES3 + PLACES4 + TERMS + OT + NT:
         card(e, 1200, 630).save(os.path.join(OUT, f"{e['slug']}-bible-dictionary.png"), optimize=True)
         card(e, 1000, 1000).save(os.path.join(OUT, f"{e['slug']}-bible-dictionary-square.png"), optimize=True)
         n += 1

@@ -15,8 +15,8 @@
 - 내용은 교회 지도자의 피드백을 받아 수정하며 이력은 [검수·수정 이력](https://crossero.com/feedback/)에 공개합니다.
 
 ## 성경사전
-- [성경사전 홈](https://crossero.com/dictionary/): 지명·인물·사건·신앙 용어·66권 요약 256개 항목
-- [성경 지명](https://crossero.com/dictionary/places/): 65개, 지명마다 오늘의 위치·사진·지도 이미지 포함
+- [성경사전 홈](https://crossero.com/dictionary/): 지명·인물·사건·신앙 용어·66권 요약 261개 항목
+- [성경 지명](https://crossero.com/dictionary/places/): 70개, 지명마다 오늘의 위치·사진·지도 이미지 포함
 - [성경 인물](https://crossero.com/dictionary/people/): 78개
 - [성경 사건](https://crossero.com/dictionary/events/): 32개
 - [신앙 용어](https://crossero.com/dictionary/terms/): 15개
@@ -26,7 +26,7 @@
 - [구절로 찾기](https://crossero.com/dictionary/verses/): 성경 구절에서 관련 인물·사건·지명 항목으로 연결
 
 ## 성경 지도
-- [성경 지도](https://crossero.com/dictionary/map/): 성경 지명 63곳의 오늘의 위치 (인터랙티브 지도)
+- [성경 지도](https://crossero.com/dictionary/map/): 성경 지명 68곳의 오늘의 위치 (인터랙티브 지도)
 - [바울 1차 전도 여행](https://crossero.com/dictionary/map/paul-journey-1.html)
 - [바울 2차 전도 여행](https://crossero.com/dictionary/map/paul-journey-2.html)
 - [바울 3차 전도 여행](https://crossero.com/dictionary/map/paul-journey-3.html)
