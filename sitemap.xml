@@ -2429,54 +2429,6 @@
   </url>
   <!-- DICT-END -->
 
-  <!-- VERSE-START -->
-  <url>
-    <loc>https://crossero.com/verse/</loc>
-    <lastmod>2026-10-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- VERSE-END -->
-
-  <!-- TODAY-START -->
-  <url>
-    <loc>https://crossero.com/today/</loc>
-    <lastmod>2026-10-20</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- TODAY-END -->
-
-  <!-- SEASON-START -->
-  <url>
-    <loc>https://crossero.com/verse/new-year/</loc>
-    <lastmod>2026-10-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://crossero.com/verse/christmas/</loc>
-    <lastmod>2026-10-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://crossero.com/verse/thanksgiving/</loc>
-    <lastmod>2026-10-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- SEASON-END -->
-
-  <!-- NYGUIDE-START -->
-  <url>
-    <loc>https://crossero.com/verse/new-year/guide/</loc>
-    <lastmod>2026-10-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- NYGUIDE-END -->
-
   <!-- GUIDES-START -->
   <url>
     <loc>https://crossero.com/guide/</loc>
@@ -2689,4 +2641,52 @@
     <priority>0.8</priority>
   </url>
   <!-- GUIDES-END -->
+
+  <!-- VERSE-START -->
+  <url>
+    <loc>https://crossero.com/verse/</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- VERSE-END -->
+
+  <!-- TODAY-START -->
+  <url>
+    <loc>https://crossero.com/today/</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- TODAY-END -->
+
+  <!-- SEASON-START -->
+  <url>
+    <loc>https://crossero.com/verse/new-year/</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://crossero.com/verse/christmas/</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://crossero.com/verse/thanksgiving/</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- SEASON-END -->
+
+  <!-- NYGUIDE-START -->
+  <url>
+    <loc>https://crossero.com/verse/new-year/guide/</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- NYGUIDE-END -->
 </urlset>

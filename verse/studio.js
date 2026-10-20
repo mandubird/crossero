@@ -54,8 +54,26 @@
     { k: 'Sunflower', n: '해바라기 (부드러운 고딕)', w: '500', css: 'Sunflower:wght@500' },
     { k: 'Nanum Gothic', n: '나눔고딕', w: '400;700', css: 'Nanum+Gothic:wght@400;700' },
     { k: 'IBM Plex Sans KR', n: 'IBM 플렉스 산스 KR', w: '400;700', css: 'IBM+Plex+Sans+KR:wght@400;700' },
-    { k: 'Orbit', n: '오르빗 (둥근 현대체)', w: '400', css: 'Orbit' }
+    { k: 'Orbit', n: '오르빗 (둥근 현대체)', w: '400', css: 'Orbit' },
+    { k: 'Pretendard Variable', n: '프리텐다드 (세련된 현대 고딕)', w: '400', u: 'https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css' },
+    { k: 'SUIT Variable', n: '수트 (단정한 고딕)', w: '400', u: 'https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css' },
+    { k: 'Gothic A1', n: '고딕 A1 (깔끔한 고딕)', w: '400;700', css: 'Gothic+A1:wght@400;700' },
+    { k: 'Cormorant Garamond', n: '코모란트 (영문 · 우아한 세리프)', w: '400;600', css: 'Cormorant+Garamond:wght@400;600' },
+    { k: 'Playfair Display', n: '플레이페어 (영문 · 클래식)', w: '400;700', css: 'Playfair+Display:wght@400;700' },
+    { k: 'Lora', n: '로라 (영문 · 읽기 편한 세리프)', w: '400;600', css: 'Lora:wght@400;600' },
+    { k: 'Libre Baskerville', n: '바스커빌 (영문 · 단정한 세리프)', w: '400', css: 'Libre+Baskerville' },
+    { k: 'Great Vibes', n: '그레이트 바이브스 (영문 · 필기체)', w: '400', css: 'Great+Vibes' },
+    { k: 'Dancing Script', n: '댄싱 스크립트 (영문 · 캘리)', w: '400;600', css: 'Dancing+Script:wght@400;600' },
+    { k: 'Caveat', n: '카비트 (영문 · 손글씨)', w: '400;600', css: 'Caveat:wght@400;600' }
   ];
+  // 글꼴 분류(고르기 쉽게 묶어서 보여 준다)
+  var FGROUPS = [['고딕', '깔끔한 고딕체'], ['명조', '단정한 명조·바탕체'], ['손글씨', '손글씨·붓글씨'], ['제목', '굵은 제목체·장식체'], ['영문', '영문 말씀용 (한글은 기본 글꼴로 표시)']];
+  var FG = { 'Noto Sans KR': 0, 'Gowun Dodum': 0, 'Pretendard Variable': 0, 'SUIT Variable': 0, 'Gothic A1': 0, 'Nanum Gothic': 0, 'IBM Plex Sans KR': 0, 'Sunflower': 0, 'Orbit': 0,
+    'Noto Serif KR': 1, 'Nanum Myeongjo': 1, 'Gowun Batang': 1, 'Hahmlet': 1, 'Song Myung': 1, 'Diphylleia': 1,
+    'Nanum Pen Script': 2, 'Gaegu': 2, 'Hi Melody': 2, 'Gamja Flower': 2, 'East Sea Dokdo': 2, 'Yeon Sung': 2, 'Nanum Brush Script': 2, 'Dokdo': 2, 'Poor Story': 2, 'Single Day': 2, 'Cute Font': 2, 'Kirang Haerang': 2, 'Dongle': 2, 'Stylish': 2, 'Black And White Picture': 2,
+    'Jua': 3, 'Do Hyeon': 3, 'Black Han Sans': 3, 'Gasoek One': 3, 'Gugi': 3,
+    'Cormorant Garamond': 4, 'Playfair Display': 4, 'Lora': 4, 'Libre Baskerville': 4, 'Great Vibes': 4, 'Dancing Script': 4, 'Caveat': 4 };
+  function fontUrl(f, text) { return f.u ? f.u : 'https://fonts.googleapis.com/css2?family=' + f.css + '&display=swap' + (text ? '&text=' + encodeURIComponent(text) : ''); }
 
   var SCENES = [
     { k: 'sunrise', n: '노을 산', light: false }, { k: 'sea', n: '푸른 바다', light: false }, { k: 'forest', n: '숲길 햇살', light: false },
@@ -63,6 +81,7 @@
     { k: 'lake', n: '호수·선착장', light: false }, { k: 'cross', n: '십자가 언덕', light: false }, { k: 'spring', n: '봄 꽃빛', light: true },
     { k: 'desert', n: '광야의 새벽', light: false }, { k: 'cloud', n: '하늘 구름', light: false }, { k: 'olive', n: '올리브 숲', light: true }
   ];
+  if (window.crsBgScenes) window.crsBgScenes.list.forEach(function (q) { SCENES.push(q); });
   var GRADS = [
     ['#f6d365', '#fda085'], ['#a1c4fd', '#c2e9fb'], ['#84fab0', '#8fd3f4'], ['#fbc2eb', '#a6c1ee'], ['#232526', '#414345'], ['#0f2027', '#2c5364'],
     ['#ffecd2', '#fcb69f'], ['#e0c3fc', '#8ec5fc'], ['#fdfbfb', '#ebedee'], ['#667eea', '#764ba2'], ['#134e5e', '#71b280'], ['#f093fb', '#f5576c']
@@ -195,7 +214,7 @@
   var imgCache = null;
   function drawBg(x, w, h) {
     var b = S.bg;
-    if (b.type === 'scene') { var R = rng(b.seed * 9973 + b.k.length * 31); (SCENE[b.k] || SCENE.sunrise)(x, w, h, R, b.seed * 7); }
+    if (b.type === 'scene') { var R = rng(b.seed * 9973 + b.k.length * 31); (SCENE[b.k] || (window.crsBgScenes && window.crsBgScenes.draw[b.k]) || SCENE.sunrise)(x, w, h, R, b.seed * 7); }
     else if (b.type === 'grad') { var g = GRADS[b.i] || GRADS[0]; var gg = x.createLinearGradient(0, 0, w * 0.3, h); gg.addColorStop(0, g[0]); gg.addColorStop(1, g[1]); x.fillStyle = gg; x.fillRect(0, 0, w, h); }
     else if (b.type === 'solid') { x.fillStyle = b.c; x.fillRect(0, 0, w, h); }
     else if ((b.type === 'image' && S.img) || (b.type === 'photo' && S.pimg)) { var SI = b.type === 'photo' ? S.pimg : S.img; var iw = SI.width, ih = SI.height, sc = Math.max(w / iw, h / ih), dw = iw * sc, dh = ih * sc; x.drawImage(SI, (w - dw) / 2, (h - dh) / 2, dw, dh); }
@@ -246,7 +265,7 @@
     var portraitish = h >= w;
     var padX = w * (portraitish ? 0.12 : 0.16);
     var maxW = w - padX * 2, maxH = h * (portraitish ? 0.62 : 0.6);
-    var MUL = { 'Nanum Pen Script': 1.55, 'Gaegu': 1.3, 'Hi Melody': 1.3, 'Gamja Flower': 1.3, 'East Sea Dokdo': 1.6, 'Yeon Sung': 1.15, 'Black Han Sans': 0.95, 'Song Myung': 1.05, 'Nanum Brush Script': 1.5, 'Dokdo': 1.5, 'Poor Story': 1.3, 'Single Day': 1.3, 'Cute Font': 1.3, 'Kirang Haerang': 1.15, 'Dongle': 1.9, 'Stylish': 1.15, 'Gasoek One': 0.95, 'Black And White Picture': 1.05, 'Orbit': 1.05 };
+    var MUL = { 'Nanum Pen Script': 1.55, 'Gaegu': 1.3, 'Hi Melody': 1.3, 'Gamja Flower': 1.3, 'East Sea Dokdo': 1.6, 'Yeon Sung': 1.15, 'Black Han Sans': 0.95, 'Song Myung': 1.05, 'Nanum Brush Script': 1.5, 'Dokdo': 1.5, 'Poor Story': 1.3, 'Single Day': 1.3, 'Cute Font': 1.3, 'Kirang Haerang': 1.15, 'Dongle': 1.9, 'Stylish': 1.15, 'Gasoek One': 0.95, 'Black And White Picture': 1.05, 'Orbit': 1.05, 'Great Vibes': 1.4, 'Dancing Script': 1.2, 'Caveat': 1.35, 'Cormorant Garamond': 1.15, 'Libre Baskerville': 0.92 };
     var fs = Math.min(w, h) * (portraitish ? 0.058 : 0.07) * S.scale * (MUL[S.font] || 1), lines, lh, total;
     var fam = fontStack();
     for (var it = 0; it < 30; it++) {
@@ -285,7 +304,7 @@
     if (!f) return Promise.resolve();
     if (!loaded[k]) {
       loaded[k] = new Promise(function (res) {
-        var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = 'https://fonts.googleapis.com/css2?family=' + f.css + '&display=swap';
+        var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = fontUrl(f);
         l.onload = function () { res(); }; l.onerror = function () { res(); }; document.head.appendChild(l);
         setTimeout(res, 4000);
       });
@@ -428,15 +447,19 @@
 
     // 글꼴
     var fl = $('vsFonts');
-    FONTS.forEach(function (f) {
-      var b = document.createElement('button'); b.type = 'button'; b.className = 'vs-font'; b.dataset.k = f.k; b.innerHTML = '<span class="n">' + f.n + '</span><span class="s" style="font-family:\'' + f.k + '\',sans-serif">여호와는 나의 목자시니</span>';
-      b.addEventListener('click', function () { S.font = f.k; fmark(); track('studio_font', { font: f.k }); refresh(); });
-      fl.appendChild(b);
+    FGROUPS.forEach(function (g, gi) {
+      var hd = document.createElement('div'); hd.className = 'vs-fgh'; hd.textContent = g[1]; fl.appendChild(hd);
+      FONTS.filter(function (f) { return (FG[f.k] === undefined ? 0 : FG[f.k]) === gi; }).forEach(function (f) {
+        var b = document.createElement('button'); b.type = 'button'; b.className = 'vs-font'; b.dataset.k = f.k;
+        b.innerHTML = '<span class="n">' + f.n + '</span><span class="s" style="font-family:\'' + f.k + '\',sans-serif">' + (gi === 4 ? 'The Lord is my shepherd' : '여호와는 나의 목자시니') + '</span>';
+        b.addEventListener('click', function () { S.font = f.k; fmark(); track('studio_font', { font: f.k }); refresh(); });
+        fl.appendChild(b);
+      });
     });
     function fmark() { [].forEach.call(root.querySelectorAll('.vs-font'), function (b) { b.classList.toggle('on', b.dataset.k === S.font); }); }
     fmark();
     var fontsOpened = false;
-    $('vsFontBox').addEventListener('toggle', function () { if (this.open && !fontsOpened) { fontsOpened = true; FONTS.forEach(function (f) { var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = 'https://fonts.googleapis.com/css2?family=' + f.css + '&display=swap&text=' + encodeURIComponent('여호와는나의목자시니' + f.n); document.head.appendChild(l); }); } });
+    $('vsFontBox').addEventListener('toggle', function () { if (this.open && !fontsOpened) { fontsOpened = true; FONTS.forEach(function (f) { var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = fontUrl(f, '여호와는나의목자시니' + f.n + 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'); document.head.appendChild(l); }); } });
 
     // 글자색
     var tl = $('vsTcolor');

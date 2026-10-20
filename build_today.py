@@ -87,7 +87,7 @@ def render(day, data):
 <div class="sub" id="tdate">{ko_date(day)}</div>
 <div class="vcard" id="vcard"><div class="vtag" id="vtag">{esc(cur['topic'])}</div><p class="vtext" id="vtext">{esc(cur['text'])}</p><div class="vref" id="vref">{esc(today_ref)}</div><div class="vmark">십자가로세로 · crossero.com</div></div>
 <div class="vactions" id="vactions">
-<a class="vhero" id="vstudiolink" href="/verse/?v={urllib.parse.quote(today_ref)}" data-ga="today_to_studio">🎨 사진·글꼴로 꾸며 저장<small>사진 200여 장 · 글꼴 31종 · 카톡·인스타·배경화면·인쇄</small></a>
+<a class="vhero" id="vstudiolink" href="/verse/?v={urllib.parse.quote(today_ref)}" data-ga="today_to_studio">🎨 사진·글꼴로 꾸며 저장<small>사진 200여 장 · 글꼴 42종 · 카톡·인스타·배경화면·인쇄</small></a>
 {guide_link}
 <button class="vbtn sub" id="vsave">📑 책갈피 이미지 저장</button>
 <button class="vbtn sub" id="vsavesq">🖼️ 카드 이미지 저장</button>

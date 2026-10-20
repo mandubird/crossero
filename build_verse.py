@@ -145,6 +145,7 @@ CSS = """
 .vs-phs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-height:300px;overflow-y:auto;padding:2px}.vs-ph{padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;cursor:pointer;background:#e9eef5;aspect-ratio:1}.vs-ph img{width:100%;height:100%;object-fit:cover;display:block}.vs-ph.on{border-color:#0073e6}
 .vs-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
 .vs-sw{width:36px;height:36px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #cdd7e4;cursor:pointer;padding:0}.vs-sw.on{box-shadow:0 0 0 3px #0073e6}
+.vs-fgh{margin:14px 0 6px;padding-top:8px;border-top:1px solid #e5e9f0;font-size:13px;font-weight:800;color:#0b3d73}.vs-fgh:first-child{border-top:0;margin-top:0;padding-top:0}
 .vs-font{width:100%;text-align:left;border:1px solid #e1e7ef;background:#fff;border-radius:10px;padding:8px 12px;margin:0 0 6px;cursor:pointer;font-family:inherit}
 .vs-font .n{display:block;font-size:11.5px;color:#7b8794}.vs-font .s{display:block;font-size:19px;color:#223;line-height:1.5}.vs-font.on{border-color:#0073e6;background:#f0f6ff}
 .vs-chip{padding:7px 13px;border:1px solid #cdd7e4;background:#fff;border-radius:18px;font-size:13.5px;cursor:pointer;font-family:inherit}.vs-chip.on{background:#0073e6;color:#fff;border-color:#0073e6}
@@ -266,7 +267,7 @@ JS = r"""
 """
 
 
-FAQ = [["말씀 카드는 무료인가요?", "네, 말씀 뽑기와 카드 만들기, 이미지 저장·공유·인쇄는 모두 무료입니다. 후원하시면 이미지에서 십자가로세로 워터마크를 뺄 수 있어요."], ["어떤 크기로 저장할 수 있나요?", "카카오톡·인스타그램 정사각(1080×1080)과 4:5, 스토리·휴대폰 배경화면(9:16), 아이폰·갤럭시 긴 화면, 프로필(정사각), PC 배경화면(FHD·QHD), 링크 미리보기(가로), 인쇄용 A4·A5·A6, 책갈피까지 12가지 크기를 지원합니다."], ["배경 이미지는 저작권 문제가 없나요?", "배경 사진은 위키미디어 커먼즈의 자유 이용 사진(CC BY, CC BY-SA, CC0, 퍼블릭 도메인)만 골랐고, 촬영자와 라이선스는 사진을 고르면 카드 아래쪽에 자동으로 적힙니다. CC BY-SA 사진으로 만든 카드는 같은 조건(출처 표시, 동일 조건 공유)으로 자유롭게 나눠 쓰실 수 있어요. 일러스트 풍경과 십자가·비둘기·올리브 가지 같은 장식 도안, 테두리, 분위기 효과는 십자가로세로가 직접 그린 그래픽이고, 내 사진을 올려 배경으로 쓸 수도 있습니다(올린 사진은 기기 안에서만 처리)."], ["글꼴도 무료로 쓸 수 있나요?", "노토 산스·노토 세리프·나눔명조·고운바탕·나눔 손글씨 등 구글 폰트의 무료(SIL OFL) 글꼴 31종을 제공합니다."], ["교회 주보나 주일학교에서 인쇄해도 되나요?", "교회·주일학교·가정에서의 비상업적 인쇄와 사용은 자유롭게 하실 수 있습니다. 판매는 하지 말아 주세요. 인쇄 크기로 A4·A5·A6를 고르면 인쇄 창이 열립니다."], ["성경 본문은 어떤 번역인가요?", "저작권이 만료된 성경전서 개역한글판을 사용합니다."]]
+FAQ = [["말씀 카드는 무료인가요?", "네, 말씀 뽑기와 카드 만들기, 이미지 저장·공유·인쇄는 모두 무료입니다. 후원하시면 이미지에서 십자가로세로 워터마크를 뺄 수 있어요."], ["어떤 크기로 저장할 수 있나요?", "카카오톡·인스타그램 정사각(1080×1080)과 4:5, 스토리·휴대폰 배경화면(9:16), 아이폰·갤럭시 긴 화면, 프로필(정사각), PC 배경화면(FHD·QHD), 링크 미리보기(가로), 인쇄용 A4·A5·A6, 책갈피까지 12가지 크기를 지원합니다."], ["배경 이미지는 저작권 문제가 없나요?", "배경 사진은 위키미디어 커먼즈의 자유 이용 사진(CC BY, CC BY-SA, CC0, 퍼블릭 도메인)만 골랐고, 촬영자와 라이선스는 사진을 고르면 카드 아래쪽에 자동으로 적힙니다. CC BY-SA 사진으로 만든 카드는 같은 조건(출처 표시, 동일 조건 공유)으로 자유롭게 나눠 쓰실 수 있어요. 일러스트 풍경과 십자가·비둘기·올리브 가지 같은 장식 도안, 테두리, 분위기 효과는 십자가로세로가 직접 그린 그래픽이고, 내 사진을 올려 배경으로 쓸 수도 있습니다(올린 사진은 기기 안에서만 처리)."], ["글꼴도 무료로 쓸 수 있나요?", "노토 산스·노토 세리프·나눔명조·고운바탕·나눔 손글씨 등 구글 폰트의 무료(SIL OFL) 글꼴 42종을 제공합니다."], ["교회 주보나 주일학교에서 인쇄해도 되나요?", "교회·주일학교·가정에서의 비상업적 인쇄와 사용은 자유롭게 하실 수 있습니다. 판매는 하지 말아 주세요. 인쇄 크기로 A4·A5·A6를 고르면 인쇄 창이 열립니다."], ["성경 본문은 어떤 번역인가요?", "저작권이 만료된 성경전서 개역한글판을 사용합니다."]]
 
 
 def render(data):
@@ -349,7 +350,7 @@ def render(data):
    <label style="margin-top:12px">배경 어둡게 <span style="font-weight:400;color:#889">(글자가 잘 보이게)</span></label>
    <input type="range" id="vsDim" min="0" max="70" value="15">
   </div></details>
-  <details id="vsFontBox"><summary>③ 글꼴 (무료 글꼴 31종)</summary><div class="vs-in"><div id="vsFonts"></div><p class="vs-note">모든 글꼴은 구글 폰트의 무료(SIL OFL) 글꼴이에요.</p></div></details>
+  <details id="vsFontBox"><summary>③ 글꼴 (무료 글꼴 42종)</summary><div class="vs-in"><div id="vsFonts"></div><p class="vs-note">모든 글꼴은 구글 폰트의 무료(SIL OFL) 글꼴이에요.</p></div></details>
   <details open><summary>④ 글자 꾸미기</summary><div class="vs-in">
    <label>글자 크기</label><input type="range" id="vsScale" min="60" max="160" value="100">
    <label style="margin-top:10px">글자 색</label><div class="vs-row" id="vsTcolor"></div>
@@ -397,14 +398,14 @@ def render(data):
 </section>
 {credits}
 {guide}
-<h2 style="margin-top:34px;text-align:left">자주 묻는 질문</h2><div class="faq" style="text-align:left;max-width:760px"><details><summary>말씀 카드는 무료인가요?</summary><p>네, 말씀 뽑기와 카드 만들기, 이미지 저장·공유·인쇄는 모두 무료입니다. 후원하시면 이미지에서 십자가로세로 워터마크를 뺄 수 있어요.</p></details><details><summary>어떤 크기로 저장할 수 있나요?</summary><p>카카오톡·인스타그램 정사각(1080×1080)과 4:5, 스토리·휴대폰 배경화면(9:16), 아이폰·갤럭시 긴 화면, 프로필(정사각), PC 배경화면(FHD·QHD), 링크 미리보기(가로), 인쇄용 A4·A5·A6, 책갈피까지 12가지 크기를 지원합니다.</p></details><details><summary>배경 이미지는 저작권 문제가 없나요?</summary><p>풍경 배경은 십자가로세로가 직접 그린 그래픽이라 저작권 걱정 없이 쓰실 수 있습니다. 내 사진을 올려 배경으로 쓸 수도 있고, 올린 사진은 기기 안에서만 처리됩니다.</p></details><details><summary>글꼴도 무료로 쓸 수 있나요?</summary><p>노토 산스·노토 세리프·나눔명조·고운바탕·나눔 손글씨 등 구글 폰트의 무료(SIL OFL) 글꼴 31종을 제공합니다.</p></details><details><summary>교회 주보나 주일학교에서 인쇄해도 되나요?</summary><p>교회·주일학교·가정에서의 비상업적 인쇄와 사용은 자유롭게 하실 수 있습니다. 판매는 하지 말아 주세요. 인쇄 크기로 A4·A5·A6를 고르면 인쇄 창이 열립니다.</p></details><details><summary>성경 본문은 어떤 번역인가요?</summary><p>저작권이 만료된 성경전서 개역한글판을 사용합니다.</p></details></div>
+<h2 style="margin-top:34px;text-align:left">자주 묻는 질문</h2><div class="faq" style="text-align:left;max-width:760px"><details><summary>말씀 카드는 무료인가요?</summary><p>네, 말씀 뽑기와 카드 만들기, 이미지 저장·공유·인쇄는 모두 무료입니다. 후원하시면 이미지에서 십자가로세로 워터마크를 뺄 수 있어요.</p></details><details><summary>어떤 크기로 저장할 수 있나요?</summary><p>카카오톡·인스타그램 정사각(1080×1080)과 4:5, 스토리·휴대폰 배경화면(9:16), 아이폰·갤럭시 긴 화면, 프로필(정사각), PC 배경화면(FHD·QHD), 링크 미리보기(가로), 인쇄용 A4·A5·A6, 책갈피까지 12가지 크기를 지원합니다.</p></details><details><summary>배경 이미지는 저작권 문제가 없나요?</summary><p>풍경 배경은 십자가로세로가 직접 그린 그래픽이라 저작권 걱정 없이 쓰실 수 있습니다. 내 사진을 올려 배경으로 쓸 수도 있고, 올린 사진은 기기 안에서만 처리됩니다.</p></details><details><summary>글꼴도 무료로 쓸 수 있나요?</summary><p>노토 산스·노토 세리프·나눔명조·고운바탕·나눔 손글씨 등 구글 폰트의 무료(SIL OFL) 글꼴 42종을 제공합니다.</p></details><details><summary>교회 주보나 주일학교에서 인쇄해도 되나요?</summary><p>교회·주일학교·가정에서의 비상업적 인쇄와 사용은 자유롭게 하실 수 있습니다. 판매는 하지 말아 주세요. 인쇄 크기로 A4·A5·A6를 고르면 인쇄 창이 열립니다.</p></details><details><summary>성경 본문은 어떤 번역인가요?</summary><p>저작권이 만료된 성경전서 개역한글판을 사용합니다.</p></details></div>
 <p class="vnote">성경 본문은 성경전서 개역한글판(대한성서공회)을 사용했습니다. 개인 묵상과 소모임 나눔을 위한 용도로 제공하며, 판매용으로 이용하실 수 없습니다. 구절은 주제별로 직접 골랐고, 앞으로 계속 늘려 갑니다. 말씀을 더 깊이 읽고 싶다면 <a href="/dictionary/">성경사전</a>에서 해당 책의 요약을 확인해 보세요.</p>
 <div class="vprint" aria-hidden="true">{prints}</div>
 </main>"""
     data_js = ("<script>window.__VERSES=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";"
                "window.__SETS=" + json.dumps(build_sets(data), ensure_ascii=False, separators=(",", ":")) + ";window.__GUIDE=" + json.dumps(guide_map, ensure_ascii=False, separators=(",", ":")) + ";</script>")
     return "\n".join([h, body, FOOTER, data_js,
-                      '<script src="/ga-events.js"></script><script src="/subscribe.js"></script><script src="/auth.js"></script><script src="/pilgrim-cta.js"></script><script src="/verse/studio_deco.js"></script><script src="/verse/studio.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])
+                      '<script src="/ga-events.js"></script><script src="/subscribe.js"></script><script src="/auth.js"></script><script src="/pilgrim-cta.js"></script><script src="/verse/studio_bg.js"></script><script src="/verse/studio_deco.js"></script><script src="/verse/studio.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])
 
 
 def update_sitemap():
