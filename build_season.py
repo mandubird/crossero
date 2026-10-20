@@ -38,6 +38,7 @@ JS = r"""
     $('vtag').textContent=d.topic; $('vtext').textContent=d.text; $('vref').textContent=d.ref;
     var sl=$('vstudiolink'); if(sl) sl.href='/verse/?v='+encodeURIComponent(d.ref);
     $('vactions').style.display='block'; $('vbox').style.display='none'; $('vdraw').textContent='🎴 다시 뽑기';
+    if(window.crsPilgrimCta) window.crsPilgrimCta({host:'pgCtaSeason',campaign:'season_after_draw'});
     [].forEach.call(document.querySelectorAll('.vprint .pc'),function(p){p.querySelector('.pt').textContent=d.text;p.querySelector('.pr').textContent=d.ref;});
     if(fromDraw&&window.crsTrack) window.crsTrack('season_draw',{season:window.__SEASON,ref:d.ref});
   }
@@ -154,6 +155,7 @@ def render(key, cfg, text):
 <button class="vbtn sub" id="vprint">🖨️ 책갈피 인쇄(4장)</button>
 <button class="vbtn sub" id="vshare">🔗 링크 공유</button>
 </div>
+<div id="pgCtaSeason"></div>
 <div style="text-align:left;margin-top:34px">{''.join(f'<p style="font-size:16px;line-height:1.9;margin:0 0 14px">{esc(p)}</p>' for p in cfg['intro'])}</div>
 <h2 style="text-align:left;margin-top:30px">이렇게 해 보세요</h2>
 <ol class="steps">{''.join(f'<li>{esc(s)}</li>' for s in cfg['how'])}</ol>
@@ -178,7 +180,7 @@ def render(key, cfg, text):
     data_js = ("<script>window.__POOL=" + json.dumps(pool, ensure_ascii=False, separators=(",", ":")) +
                f";window.__SEASON={json.dumps(key)};window.__LABEL={json.dumps(cfg['label'], ensure_ascii=False)};</script>")
     return "\n".join([h, body, FOOTER, data_js,
-                      '<script src="/ga-events.js"></script><script src="/subscribe.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])
+                      '<script src="/ga-events.js"></script><script src="/subscribe.js"></script><script src="/pilgrim-cta.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])
 
 
 def update_sitemap(keys):

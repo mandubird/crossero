@@ -70,6 +70,9 @@
   var SOLIDS = ['#ffffff', '#f5efe2', '#1b2a41', '#0b5cad', '#2f3e2e', '#7a2e2e', '#222222', '#c8a24a'];
   var TEXTCOLORS = [['자동', 'auto'], ['흰색', '#ffffff'], ['크림', '#fff4d8'], ['검정', '#1d1d1d'], ['남색', '#16325c'], ['금색', '#f2c75c']];
 
+  // 카드를 저장·공유·인쇄한 직후, 말씀에 마음이 열린 순간에 순례 게임 연결을 보여 준다.
+  function pgDone() { if (window.crsPilgrimCta) window.crsPilgrimCta({ host: 'vsPgCta', campaign: 'studio_after_save' }); }
+
   /* ---------- 상태 ---------- */
   var S = { verse: null, preset: 'sq', bg: { type: 'scene', k: 'sunrise', seed: 7 }, font: 'Noto Serif KR', tcolor: 'auto', scale: 1, dim: 15, shadow: true, box: false,
             showRef: true, align: 'center', mark: true, img: null };
@@ -464,13 +467,13 @@
       var D2 = window.crsDeco; if (D2) { S.orn = r() < 0.55 ? D2.ORN[1 + ((r() * (D2.ORN.length - 1)) | 0)].k : 'none'; S.frame = r() < 0.4 ? D2.FRAMES[1 + ((r() * (D2.FRAMES.length - 1)) | 0)].k : 'none'; S.fx = r() < 0.35 ? D2.FX[1 + ((r() * (D2.FX.length - 1)) | 0)].k : 'none'; S.dcolor = 'text'; if (window.__dmark) window.__dmark(); }
       mark(); fmark(); cmark(); track('studio_random'); refresh();
     });
-    $('vsSave').addEventListener('click', function () { exportBlob('image/png').then(function (b) { download(b, fname('png')); track('studio_save', { preset: S.preset, font: S.font, bg: S.bg.type === 'scene' ? S.bg.k : S.bg.type, donor: isDonor() }); }); });
-    $('vsSaveJpg').addEventListener('click', function () { exportBlob('image/jpeg').then(function (b) { download(b, fname('jpg')); track('studio_save', { preset: S.preset, type: 'jpg' }); }); });
+    $('vsSave').addEventListener('click', function () { exportBlob('image/png').then(function (b) { download(b, fname('png')); pgDone(); track('studio_save', { preset: S.preset, font: S.font, bg: S.bg.type === 'scene' ? S.bg.k : S.bg.type, donor: isDonor() }); }); });
+    $('vsSaveJpg').addEventListener('click', function () { exportBlob('image/jpeg').then(function (b) { download(b, fname('jpg')); pgDone(); track('studio_save', { preset: S.preset, type: 'jpg' }); }); });
     $('vsShare').addEventListener('click', function () {
       exportBlob('image/png').then(function (b) {
         var f = new File([b], fname('png'), { type: 'image/png' });
-        if (navigator.canShare && navigator.canShare({ files: [f] })) { navigator.share({ files: [f], title: S.verse ? S.verse.ref : '말씀 카드', text: (S.verse ? S.verse.ref + ' ' : '') + '십자가로세로 crossero.com' }).catch(function () {}); track('studio_share', { via: 'native' }); }
-        else { download(b, fname('png')); alert('이 기기에서는 바로 공유가 어려워 이미지를 저장했어요. 카카오톡·인스타그램에서 저장된 사진을 올려 주세요.'); track('studio_share', { via: 'download' }); }
+        if (navigator.canShare && navigator.canShare({ files: [f] })) { navigator.share({ files: [f], title: S.verse ? S.verse.ref : '말씀 카드', text: (S.verse ? S.verse.ref + ' ' : '') + '십자가로세로 crossero.com' }).catch(function () {}); pgDone(); track('studio_share', { via: 'native' }); }
+        else { download(b, fname('png')); alert('이 기기에서는 바로 공유가 어려워 이미지를 저장했어요. 카카오톡·인스타그램에서 저장된 사진을 올려 주세요.'); pgDone(); track('studio_share', { via: 'download' }); }
       });
     });
     $('vsPrint').addEventListener('click', function () {
@@ -481,7 +484,7 @@
         fr.srcdoc = '<!doctype html><html><head><style>@page{size:' + size + ';margin:0}html,body{margin:0;height:100%}img{width:100%;height:100%;object-fit:contain;display:block}</style></head><body><img src="' + url + '"></body></html>';
         document.body.appendChild(fr);
         fr.onload = function () { setTimeout(function () { try { fr.contentWindow.focus(); fr.contentWindow.print(); } catch (e) { download(b, fname('png')); } setTimeout(function () { fr.remove(); }, 60000); }, 400); };
-        track('studio_print', { preset: S.preset });
+        pgDone(); track('studio_print', { preset: S.preset });
       });
     });
 

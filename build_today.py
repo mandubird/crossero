@@ -94,6 +94,7 @@ def render(day, data):
 <button class="vbtn sub" id="vprint">🖨️ 책갈피 인쇄(4장)</button>
 <button class="vbtn sub" id="vshare">🔗 링크 공유</button>
 </div>
+<div id="pgCtaToday"></div>
 <div id="tctx">{ctx}</div>
 <div style="margin-top:26px">{bv.season_banner()}</div>
 <a class="cta" href="/verse/" data-ga="today_to_draw" style="margin-top:8px">🎴 다른 말씀도 뽑아 보기<small>위로·평안·용기·감사·소망 등 12가지 주제</small></a>
@@ -151,7 +152,7 @@ def render(day, data):
 })();
 """
     return "\n".join([h, body, FOOTER, data_js,
-                      '<script src="/ga-events.js"></script><script src="/subscribe.js"></script>', "<script>" + js + "</script>", "</body>\n</html>\n"])
+                      '<script src="/ga-events.js"></script><script src="/subscribe.js"></script><script src="/pilgrim-cta.js"></script><script>if(window.crsPilgrimCta)crsPilgrimCta({host:"pgCtaToday",campaign:"today_verse"});</script>', "<script>" + js + "</script>", "</body>\n</html>\n"])
 
 
 def update_sitemap(day):

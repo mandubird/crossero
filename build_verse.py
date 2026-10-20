@@ -173,6 +173,7 @@ JS = r"""
     c.style.display='block'; c.style.animation='none'; void c.offsetWidth; c.style.animation='';
     $('vtag').textContent=d.topic; $('vtext').textContent=d.text; $('vref').textContent=d.ref;
     $('vactions').style.display='block'; $('vbox').style.display='none';
+    if(window.crsPilgrimCta) window.crsPilgrimCta({host:'pgCtaVerse',campaign:'verse_after_draw'});
     $('vdraw').textContent='🎴 다시 뽑기';
     var mu=window.__GUIDE[d.ref]; var mo=$('vmore'); if(mu){mo.href=mu; mo.style.display='inline-block';} else {mo.style.display='none';}
     var pc=document.querySelectorAll('.vprint .pc');
@@ -311,6 +312,7 @@ def render(data):
 <button class="vbtn sub" id="vprint">🖨️ 책갈피 인쇄(4장)</button>
 <button class="vbtn sub" id="vshare">🔗 링크 공유</button>
 </div>
+<div id="pgCtaVerse"></div>
 <section class="vs" id="vstudio" style="display:none" aria-label="말씀 카드 만들기">
 <h2>✨ 말씀 카드 만들기</h2>
 <p class="vs-sub"><a href="#church-print" style="color:#0b5cad;font-weight:700">⛪ 교회 행사용: 카드 여러 장 한꺼번에 인쇄 ↓</a><br>뽑은 말씀으로 카드를 꾸며 보세요. 풍경 배경과 무료 글꼴을 고르고, 카카오톡·인스타그램·프로필·휴대폰/PC 배경화면·교회 인쇄용 크기로 저장할 수 있어요.</p>
@@ -318,6 +320,7 @@ def render(data):
  <div class="vs-prev">
   <canvas id="vsCanvas" width="540" height="540"></canvas>
   <div id="vsInfo"></div>
+  <div id="vsPgCta"></div>
   <div class="vs-act">
    <button type="button" id="vsSave" data-ga="studio_save_click">💾 이미지 저장</button>
    <button type="button" id="vsShare" class="alt" data-ga="studio_share_click">📤 공유하기</button>
@@ -401,7 +404,7 @@ def render(data):
     data_js = ("<script>window.__VERSES=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";"
                "window.__SETS=" + json.dumps(build_sets(data), ensure_ascii=False, separators=(",", ":")) + ";window.__GUIDE=" + json.dumps(guide_map, ensure_ascii=False, separators=(",", ":")) + ";</script>")
     return "\n".join([h, body, FOOTER, data_js,
-                      '<script src="/ga-events.js"></script><script src="/subscribe.js"></script><script src="/auth.js"></script><script src="/verse/studio_deco.js"></script><script src="/verse/studio.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])
+                      '<script src="/ga-events.js"></script><script src="/subscribe.js"></script><script src="/auth.js"></script><script src="/pilgrim-cta.js"></script><script src="/verse/studio_deco.js"></script><script src="/verse/studio.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])
 
 
 def update_sitemap():
