@@ -12,6 +12,7 @@ from season_picks import SEASONS
 from verse_lib import KO_BOOKS, load_text, verse_slug
 
 CSS = bv.CSS + """
+.vwrap{max-width:var(--w-read,820px)}.vcard,.vactions{max-width:560px}
 .sgrid{display:grid;grid-template-columns:1fr;gap:8px;text-align:left;margin:10px 0 0}
 .sgrid .it{background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:10px 14px;font-size:15px;line-height:1.7}
 .sgrid .it b{color:#0b5cad;font-size:13.5px;margin-right:6px}

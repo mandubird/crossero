@@ -56,28 +56,30 @@ MORE = [  # key, 아이콘, 제목, 설명, href
 SUPPORT = ("support", "💝", "후원하기", "무료로 운영되는 이 사역을 응원해 주세요", "/support.html")
 
 CSS = """
+:root{--w-read:820px;--w-col:780px;--w-wide:1100px}
 .nav{position:sticky;top:0;z-index:100;display:flex!important;justify-content:center;gap:4px!important;flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
 .nav .nav-item{flex:0 0 auto;padding:11px 15px!important;font-size:15px!important}
 @media (max-width:640px){.nav{justify-content:space-between!important;gap:0!important;padding:2px 4px!important}.nav .nav-item{padding:11px 5px!important;font-size:13px!important}}
 .subnav{background:#fff;border-bottom:1px solid #e5e5e5}
-.subnav-in{display:flex;gap:8px;overflow-x:auto;padding:10px 14px;max-width:820px;margin:0 auto;scrollbar-width:none}
-.subnav-in::-webkit-scrollbar{display:none}
-.sn-chip{flex:0 0 auto;padding:7px 13px;border-radius:18px;border:1px solid #d6e2f1;background:#f5f9ff;color:#33506e!important;font-size:13.5px;text-decoration:none!important;white-space:nowrap}
+.subnav-in{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;padding:10px 12px;max-width:var(--w-read);margin:0 auto}
+.sn-chip{flex:0 0 auto;padding:6px 11px;border-radius:16px;border:1px solid #d6e2f1;background:#f5f9ff;color:#33506e!important;font-size:13px;text-decoration:none!important;white-space:nowrap}
 .sn-chip:hover{background:#e6f0ff}
+@media (min-width:641px){.subnav-in{display:grid;grid-template-columns:repeat(5,1fr);gap:6px 8px}.sn-chip{text-align:center}}
+@media (max-width:640px){.subnav-in{gap:5px;padding:8px 8px}.sn-chip{padding:5px 9px;font-size:12.5px}}
 .sn-chip.on{background:#0073e6;border-color:#0073e6;color:#fff!important;font-weight:700}
-.site-more{max-width:820px;margin:34px auto 8px;padding:0 16px}
+.site-more{max-width:var(--w-read);margin:34px auto 8px;padding:0 16px}
 .site-more h2{font-size:16px;margin:0 0 10px;color:#334}
 .sm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .sm-card{display:block;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 12px;text-decoration:none!important;color:#222!important}
 .sm-card:hover{border-color:#0073e6;background:#f5f9ff}
 .sm-card b{display:block;font-size:14px}
 .sm-card span{display:block;font-size:12px;color:#667;margin-top:2px;line-height:1.4}
-.fnav{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 14px;max-width:820px;margin:0 auto 16px;padding:0 16px;text-align:left}
+.fnav{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 14px;max-width:var(--w-read);margin:0 auto 16px;padding:0 16px;text-align:left}
 .fnav h3{font-size:13px;color:#334;margin:0 0 8px}
 .fnav a{display:block;font-size:13px;color:#666;text-decoration:none;padding:4px 0}
 .fnav a:hover{color:#0073e6}
-.vsb{max-width:780px;margin:6px auto 22px;text-align:left}
+.vsb{max-width:var(--w-col);margin:6px auto 22px;text-align:left}
 .vsb-h{font-weight:800;font-size:17px;color:#0b3d73;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:6px 8px;flex-wrap:wrap;text-align:center}.vsb-h span{font-weight:500;font-size:13px;color:#667}
 .vsb-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .vsb-c{position:relative;display:flex;flex-direction:column;align-items:center;gap:3px;padding:18px 8px 14px;background:var(--g,#0b5cad);color:#fff;border-radius:16px;text-decoration:none;text-align:center;box-shadow:0 6px 16px rgba(0,0,0,.16);transition:transform .15s}
@@ -85,9 +87,9 @@ CSS = """
 .vsb-c i{font-style:normal;font-size:30px;line-height:1.1}.vsb-c b{font-size:16px}.vsb-c span{font-size:12px;opacity:.92;line-height:1.4}
 .vsb-c em{position:absolute;top:-9px;right:10px;font-style:normal;background:#ffd43b;color:#5b4a00;font-size:11px;font-weight:800;padding:2px 9px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 @media(max-width:560px){.vsb-row{gap:7px}.vsb-c{padding:14px 4px 11px}.vsb-c b{font-size:13.5px}.vsb-c span{font-size:10.5px}.vsb-c i{font-size:26px}.vsb-h{font-size:15px}}
-.wrap{max-width:820px!important}
+.wrap{max-width:var(--w-read)!important}
 @media (max-width:640px){.playinfo{max-width:calc(100% - 20px)!important;box-sizing:border-box!important}}
-.home-hub{max-width:780px;margin:0 auto 22px}
+.home-hub{max-width:var(--w-col);margin:0 auto 22px}
 .home-hub h2{font-size:18px;margin:6px 0 10px;text-align:center}
 .hh-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .hh-card{display:block;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px 8px;text-align:center;text-decoration:none!important;color:#222!important}
@@ -176,7 +178,7 @@ def footer_html():
     return f'<!--FL--><nav class="fnav" aria-label="사이트 전체 메뉴">{cols}</nav>{ALIGN_JS}<!--/FL-->'
 
 
-ALIGN_JS = ('<script>(function(){var m=document.querySelector("main");if(!m)return;'
+ALIGN_JS = ('<script>(function(){var m=document.querySelector("main")||document.querySelector(".container,.section");if(!m)return;'
             'function a(){var c=getComputedStyle(m),w=m.getBoundingClientRect().width-parseFloat(c.paddingLeft)-parseFloat(c.paddingRight),on=w>280&&innerWidth>640,cap=m.classList.contains("vwrap")?780:99999;'
             'document.querySelectorAll(".site-more,.fnav,.playinfo").forEach(function(e){var pi=e.classList.contains("playinfo");'
             'if(on){e.style.boxSizing="border-box";e.style.maxWidth=Math.min(w,cap)+"px";if(!pi)e.style.padding="0"}'

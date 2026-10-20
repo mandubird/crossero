@@ -386,7 +386,7 @@ body {{ margin: 0; font-family: -apple-system, "Pretendard", sans-serif; backgro
 .nav-item:not(.nav-active):hover {{ background: #f0f6ff; color: #0073e6; }}
 .nav-active {{ background: #0073e6; color: #fff !important; font-weight: 600; }}
 @media (max-width: 768px) {{ .nav {{ padding: 8px 6px; gap: 6px; }} .nav-item {{ padding: 6px 10px; font-size: 12px; }} }}
-main {{ max-width: 800px; margin: 40px auto; padding: 0 20px; }}
+main {{ max-width: 820px; margin: 40px auto; padding: 0 20px; }}
 article {{ background: #fff; border-radius: 12px; padding: 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }}
 h1 {{ font-size: 28px; font-weight: 800; color: #222; margin: 0 0 16px 0; }}
 .meta {{ color: #888; font-size: 14px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #eee; }}
@@ -411,7 +411,7 @@ h1 {{ font-size: 28px; font-weight: 800; color: #222; margin: 0 0 16px 0; }}
 .related h3 {{ font-size: 20px; margin: 0 0 16px 0; }}
 .related-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }}
 .related-link {{ display: block; padding: 14px; background: #f8f9fa; border: 1px solid #e1e4e8; border-radius: 8px; text-decoration: none; color: #0073e6; font-weight: 600; }}
-footer {{ max-width: 800px; margin: 60px auto 40px; padding: 30px 20px; text-align: center; color: #888; font-size: 13px; }}
+footer {{ max-width: 820px; margin: 60px auto 40px; padding: 30px 20px; text-align: center; color: #888; font-size: 13px; }}
 footer a {{ color: #0073e6; text-decoration: none; }}
 .footer-divider {{ height: 1px; background: linear-gradient(to right, transparent, #ccc, transparent); margin-bottom: 30px; }}
 .footer-branding {{ font-size: 14px; color: #888; margin-bottom: 10px; text-align: center; }}

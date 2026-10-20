@@ -65,7 +65,7 @@ def render(day, data):
         "@context": "https://schema.org", "@type": "WebPage", "name": "오늘의 말씀", "url": SITE + path,
         "inLanguage": "ko", "dateModified": day.isoformat(), "description": desc}, ensure_ascii=False) + "</script>"
     h = head(title, desc, path, ld, f"{SITE}/images/verse/{verse_slug(today_ref)}.jpg").replace(NAV, NAV.replace(" nav-active", "")).replace('og:type" content="article"', 'og:type" content="website"')
-    h = h.replace("</head>", f"<style>{bv.CSS}\n.tday{{font-size:15px;color:#6b7b8d;margin:4px 0 0}}.past a{{color:inherit}}</style>\n</head>", 1)
+    h = h.replace("</head>", f"<style>{bv.CSS}\n.tday{{font-size:15px;color:#6b7b8d;margin:4px 0 0}}.vwrap{{max-width:var(--w-read,820px)}}.vcard,.vactions{{max-width:560px}}.past a{{color:inherit}}</style>\n</head>", 1)
     sm = summary_of(today_ref)
     ctx = ""
     if sm:

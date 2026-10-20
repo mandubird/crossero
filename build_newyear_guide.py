@@ -38,7 +38,7 @@ HOWTO = [
 ]
 
 CSS = bv.CSS + """
-.gd{max-width:820px;margin:0 auto;padding:26px 20px 14px;text-align:left;color:#222}
+.gd{max-width:var(--w-read,820px);margin:0 auto;padding:26px 20px 14px;text-align:left;color:#222}
 .gd h1{font-size:28px;line-height:1.4;margin:10px 0 6px}.gd h2{font-size:21px;margin:34px 0 10px;color:#0b3d73}.gd h3{font-size:17px;margin:20px 0 6px}
 .gd p,.gd li{font-size:16px;line-height:1.95;word-break:keep-all}.gd p{margin:0 0 12px}
 .gd .lead{font-size:17px;color:#445}
