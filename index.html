@@ -405,45 +405,24 @@ footer {
   </div>
 </footer>
 
-<script src="data.js"></script>
+<script src="home_picks.js"></script>
 
 <script>
 
 
 window.addEventListener('load', () => {
+    // 추천 퍼즐: 가벼운 목록(home_picks.js, 단어 풀 50개 이상인 퍼즐)에서 무작위로 고른다. 큰 data.js 는 불러오지 않는다.
+    const titleEl = document.getElementById('recommend-title');
+    const linkEl = document.getElementById('recommend-link');
     try {
-        if (typeof QUIZ_DATABASE === 'undefined') {
-            console.error("data.js를 찾을 수 없습니다.");
-            return;
-        }
-
-        const keys = Object.keys(QUIZ_DATABASE);
-        if (keys.length === 0) return;
-
-        // 2. 35개 꽉 찬 퍼즐만 추천 (단어 풀 50개 이상)
-        const MIN_WORDS = 50;
-        let pool = keys;
-        if (typeof getWordPoolSizeForQuiz === 'function') {
-            const fullKeys = keys.filter(id => getWordPoolSizeForQuiz(id) >= MIN_WORDS);
-            if (fullKeys.length > 0) pool = fullKeys;
-        }
-
-        const randomKey = pool[Math.floor(Math.random() * pool.length)];
-        const selectedQuiz = QUIZ_DATABASE[randomKey];
-        if (!selectedQuiz) return;
-
-        // 3. 화면 UI 업데이트
-        const titleEl = document.getElementById('recommend-title');
-        const linkEl = document.getElementById('recommend-link');
-
+        const picks = window.HOME_PICKS || [];
+        if (!picks.length) throw new Error('no picks');
+        const p = picks[Math.floor(Math.random() * picks.length)];
         if (titleEl && linkEl) {
-            titleEl.innerText = `"${selectedQuiz.title || randomKey}"`;
-            linkEl.href = `play.html?id=${randomKey}`;
+            titleEl.innerText = `"${p[1]}"`;
+            linkEl.href = `play.html?id=${p[0]}`;
         }
     } catch (e) {
-        console.error("추천 퍼즐 로드 오류:", e);
-        const titleEl = document.getElementById('recommend-title');
-        const linkEl = document.getElementById('recommend-link');
         if (titleEl) titleEl.innerText = '"말씀 가로세로 퍼즐"';
         if (linkEl) linkEl.href = 'play.html';
     }
