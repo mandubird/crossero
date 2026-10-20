@@ -164,6 +164,7 @@ def render(key, cfg, text):
 <h2 style="text-align:left;margin-top:30px">교회·모임용 전체 카드 인쇄</h2>
 <p style="text-align:left;font-size:15.5px">이 페이지의 말씀 {len(pool)}장을 A4 용지에 한 번에 인쇄해 잘라서 쓸 수 있습니다. 예배 후 한 장씩 뽑는 말씀 상자, 주일학교 활동, 소그룹 나눔에 활용해 보세요.</p>
 <button class="vbtn sub" id="vprintall" data-ga="season_print_all_click">🖨️ 말씀 카드 {len(pool)}장 전체 인쇄</button>
+{'<a class="vbtn sub" href="/cards/' + ('new-year' if key == 'new-year' else key) + '/" data-ga="season_to_cards" style="text-decoration:none">🖼️ 샘플 카드 갤러리 보기</a>' if key in ('new-year', 'christmas', 'thanksgiving') else ''}
 <a class="vbtn sub" href="/verse/#church-print" data-ga="season_to_batch" style="text-decoration:none">🎨 사진·글꼴 골라 예쁘게 인쇄 (A4 4~12장씩)</a>
 <h2 style="text-align:left;margin-top:30px">자주 묻는 질문</h2>
 <div class="faq" style="text-align:left">{''.join(f'<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q, a in cfg['faq'])}</div>

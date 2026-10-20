@@ -259,6 +259,14 @@
       tc = lum > 168 ? '#1d1d1d' : '#ffffff';
     }
     var dark = tc === '#1d1d1d' || tc === '#16325c';
+    var autoLum = (S.tcolor === 'auto') ? (typeof lum === 'number' ? lum : null) : null;
+    if (autoLum !== null) {
+      // 밝기가 애매한 배경(중간 밝기)에서는 글 뒤에 은은한 번짐을 깔아 글씨가 또렷하게 보이게 한다.
+      var veil = null;
+      if (autoLum < 150 && autoLum > 80) veil = 'rgba(0,0,0,' + (0.34 * (autoLum - 80) / 70).toFixed(3) + ')';
+      else if (autoLum >= 150 && autoLum < 215) veil = 'rgba(255,255,255,' + (0.4 * (215 - autoLum) / 65).toFixed(3) + ')';
+      if (veil) { x.save(); x.translate(w / 2, h * 0.5); x.scale(1, (h * 0.42) / (w * 0.7)); var vg = x.createRadialGradient(0, 0, 0, 0, 0, w * 0.7); vg.addColorStop(0, veil); vg.addColorStop(0.6, veil.replace(/[\d.]+\)$/, function (m) { return (parseFloat(m) * 0.55) + ')'; })); vg.addColorStop(1, veil.replace(/[\d.]+\)$/, '0)')); x.fillStyle = vg; x.beginPath(); x.arc(0, 0, w * 0.7, 0, 7); x.fill(); x.restore(); }
+    }
     var D = window.crsDeco, dcol = S.dcolor === 'text' ? tc : S.dcolor;
     if (D && S.fx !== 'none') D.fx(x, w, h, S.fx);
     if (D && S.frame !== 'none') D.frame(x, w, h, S.frame, S.frame === 'mat' ? '#fbf8f1' : dcol);
@@ -411,12 +419,12 @@
       });
       mark();
     }
-    fetch('/verse/studio_photos.json').then(function (r) { return r.json(); }).then(function (d) {
+    fetch('/verse/studio_photos.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
       PH = d;
       var all = [['all', '전체']].concat(Object.keys(d.themes).map(function (k) { return [k, d.themes[k]]; }));
       all.forEach(function (t) { var c = document.createElement('button'); c.type = 'button'; c.className = 'vs-chip' + (t[0] === 'all' ? ' on' : ''); c.textContent = t[1]; c.addEventListener('click', function () { pcur = t[0]; [].forEach.call(pt.children, function (q) { q.classList.toggle('on', q === c); }); drawPhotos(); }); pt.appendChild(c); });
       drawPhotos();
-      if (!window.__studioInit) { window.__studioInit = 1; var pool = ['sunrise2', 'lake4', 'forest6', 'mountain4', 'sky7', 'autumn2', 'field1', 'flower4', 'sunrise4', 'night2', 'desert5', 'lake7']; var id = pool[(Math.random() * pool.length) | 0]; var p = d.photos.filter(function (q) { return q.id === id; })[0]; if (p && S.bg.type === 'scene' && S.bg.k === 'sunrise' && S.bg.seed === 7) usePhoto(p); }
+      if (!window.__studioInit && !/[?&]b=/.test(location.search)) { window.__studioInit = 1; var pool = ['sunrise2', 'lake4', 'forest6', 'mountain4', 'sky7', 'autumn2', 'field1', 'flower4', 'sunrise4', 'night2', 'desert5', 'lake7']; var id = pool[(Math.random() * pool.length) | 0]; var p = d.photos.filter(function (q) { return q.id === id; })[0]; if (p && S.bg.type === 'scene' && S.bg.k === 'sunrise' && S.bg.seed === 7) usePhoto(p); }
       $('vsRandom').dataset.ph = 1;
     }).catch(function () {});
 
@@ -586,8 +594,37 @@
     }
   }
 
+  /* 디자인 지정(갤러리 카드 → 같은 디자인으로 열기, 샘플 카드 자동 생성에 쓴다) */
+  var PHJ = null;
+  function phMeta() { return PHJ ? Promise.resolve(PHJ) : fetch('/verse/studio_photos.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) { PHJ = d; return d; }); }
+  function applyDesign(o) {
+    var ps = [];
+    if (o.font) S.font = o.font;
+    ['orn', 'frame', 'fx', 'dcolor', 'tcolor', 'align', 'box', 'shadow', 'showRef'].forEach(function (k) { if (o[k] !== undefined) S[k] = o[k]; });
+    if (o.dim !== undefined) S.dim = o.dim;
+    if (o.scale !== undefined) S.scale = o.scale;
+    if (o.bg) {
+      if (o.bg.type === 'photo') {
+        ps.push(phMeta().then(function (d) {
+          var p = d.photos.filter(function (q) { return q.id === o.bg.id; })[0]; if (!p) return;
+          return new Promise(function (res) { var im = new Image(); im.onload = function () { S.pimg = im; S.pcredit = '사진: ' + p.artist + ' · ' + p.lic + ' · Wikimedia Commons'; S.bg = { type: 'photo', id: p.id }; res(); }; im.onerror = res; im.src = '/images/studio/' + p.id + '.jpg'; });
+        }));
+      } else S.bg = o.bg;
+    }
+    return Promise.all(ps);
+  }
   var api = {
     setVerse: function (d) { S.verse = d; root.style.display = 'block'; refresh(); },
+    applyDesign: applyDesign,
+    renderCard: function (o) {
+      var keys = ['verse', 'bg', 'font', 'orn', 'frame', 'fx', 'dcolor', 'dim', 'tcolor', 'align', 'scale', 'showRef', 'box', 'shadow', 'mark', 'pimg', 'pcredit'], keep = {};
+      keys.forEach(function (k) { keep[k] = S[k]; });
+      S.verse = o.verse; S.mark = o.mark !== false;
+      return applyDesign(o).then(function () { return loadFont(S.font); }).then(function () {
+        var c = document.createElement('canvas'); render(c, o.w, o.h, true);
+        var url = c.toDataURL(o.type || 'image/jpeg', o.q || 0.86); keys.forEach(function (k) { S[k] = keep[k]; }); return url;
+      });
+    },
     state: S
   };
   window.crsStudio = api;
@@ -598,6 +635,12 @@
     var ref = decodeURIComponent(m[1]).replace(/\+/g, ' ').trim(), hit = null;
     (window.__SETS || []).forEach(function (st) { st.v.forEach(function (v) { if (!hit && v.ref === ref) hit = v; }); });
     (window.__VERSES || []).forEach(function (v) { if (!hit && v.ref === ref) hit = v; });
+    if (hit) {
+      var q = function (k) { var mm = new RegExp('[?&]' + k + '=([^&#]+)').exec(location.search); return mm ? decodeURIComponent(mm[1].replace(/\+/g, ' ')) : null; }, d = {}, b = q('b');
+      if (b) { var bp = b.split(':'); if (bp[0] === 'photo') d.bg = { type: 'photo', id: bp[1] }; else if (bp[0] === 'scene') d.bg = { type: 'scene', k: bp[1], seed: +bp[2] || 7 }; }
+      if (q('f')) d.font = q('f'); if (q('o')) d.orn = q('o'); if (q('fr')) d.frame = q('fr'); if (q('fx')) d.fx = q('fx'); if (q('dm')) d.dim = +q('dm'); if (q('dc')) d.dcolor = q('dc');
+      applyDesign(d).then(function () { refresh(); });
+    }
     if (hit) { api.setVerse({ ref: hit.ref, text: hit.text, topic: hit.topic || '' }); setTimeout(function () { var e = document.getElementById('vstudio'); if (e) e.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 700); }
   })();
   if (location.hash === '#church-print' && window.__VERSES && window.__VERSES.length) {

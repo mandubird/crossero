@@ -47,9 +47,9 @@ CSS = bv.CSS + """
 .gd table{width:100%;border-collapse:collapse;margin:12px 0;font-size:15px}
 .gd th,.gd td{border:1px solid #dfe6ef;padding:9px 10px;text-align:left;line-height:1.7;vertical-align:top}
 .gd th{background:#f1f5fb;white-space:nowrap}
-.gd .cta{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
-.gd .cta a{display:inline-block;padding:13px 20px;border-radius:12px;background:#0073e6;color:#fff;text-decoration:none;font-weight:700;font-size:15.5px}
-.gd .cta a.alt{background:#fff;color:#0b5cad;border:1px solid #bcd3f0}
+.gd .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.gd .btnrow a{display:inline-block;padding:13px 20px;border-radius:12px;background:#0073e6;color:#fff;text-decoration:none;font-weight:700;font-size:15.5px}
+.gd .btnrow a.alt{background:#fff;color:#0b5cad;border:1px solid #bcd3f0}
 .gd .warn{background:#fff8ec;border:1px solid #f0d9a8;border-radius:14px;padding:14px 18px;margin:16px 0}
 .gd .tl td:first-child{white-space:nowrap;font-weight:700;color:#0b5cad;width:92px}
 """
@@ -110,7 +110,7 @@ def render():
 <li>비용: 십자가로세로의 카드 만들기·인쇄 기능은 무료</li>
 </ul></div>
 
-<div class="cta">
+<div class="btnrow">
 <a href="/verse/#church-print" data-ga="nyguide_to_batch">🖨️ 말씀 카드 한꺼번에 인쇄하기</a>
 <a class="alt" href="/verse/new-year/" data-ga="nyguide_to_newyear">🎍 새해 말씀 뽑기 해 보기</a>
 </div>
@@ -181,7 +181,7 @@ def render():
 {''.join(f'<li><b>{esc(n)}</b> — {esc(t)}</li>' for n, t in HOWTO)}
 </ol>
 <p>사진 배경 200여 장, 글꼴 42종, 십자가·비둘기·올리브 가지 같은 장식과 테두리를 고를 수 있고, 새해·성탄·추수감사 구절과 12가지 주제 구절 묶음을 제공합니다. 인쇄 창에서 'PDF로 저장'을 고르면 파일로 보관하거나 인쇄소에 전달할 수 있습니다.</p>
-<div class="cta">
+<div class="btnrow">
 <a href="/verse/#church-print" data-ga="nyguide_to_batch2">🖨️ 지금 카드 만들기</a>
 <a class="alt" href="/verse/" data-ga="nyguide_to_verse">🎴 말씀 카드 스튜디오</a>
 </div>

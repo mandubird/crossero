@@ -26,9 +26,9 @@ CSS = bv.CSS + """
 .gd .note{background:#fff8ec;border:1px solid #f0d9a8;border-radius:12px;padding:12px 16px;margin:14px 0;font-size:15px}
 .gd .rel{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
 .gd .rel a{padding:8px 14px;border:1px solid #bcd3f0;border-radius:20px;background:#fff;color:#0b5cad;text-decoration:none;font-size:14.5px}
-.gd .cta{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
-.gd .cta a{display:inline-block;padding:13px 20px;border-radius:12px;background:#0073e6;color:#fff;text-decoration:none;font-weight:700;font-size:15.5px}
-.gd .cta a.alt{background:#fff;color:#0b5cad;border:1px solid #bcd3f0}
+.gd .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+.gd .btnrow a{display:inline-block;padding:13px 20px;border-radius:12px;background:#0073e6;color:#fff;text-decoration:none;font-weight:700;font-size:15.5px}
+.gd .btnrow a.alt{background:#fff;color:#0b5cad;border:1px solid #bcd3f0}
 .gd .gcard{display:block;padding:14px 16px;border:1px solid #d6e4f7;border-radius:14px;background:#fff;text-decoration:none;color:#0b3d73;margin:8px 0}
 .gd .gcard b{display:block;font-size:16.5px}.gd .gcard span{display:block;font-size:13.5px;color:#667;margin-top:3px;line-height:1.6}
 .gd .gm{font-size:13px;color:#778;margin:0 0 4px}
@@ -139,7 +139,7 @@ def page(a, arts):
 <h2>더 알아보기</h2>
 <p>이 글에 나오는 인물, 장소, 사건을 성경사전에서 더 찾아볼 수 있습니다.</p>
 <div class="rel">{rel}</div>
-<div class="cta"><a href="/list.html" data-ga="guide_to_puzzle">🧩 낱말 퍼즐로 복습하기</a><a class="alt" href="/verse/" data-ga="guide_to_verse">🎴 말씀 카드 만들기</a></div>
+<div class="btnrow"><a href="/list.html" data-ga="guide_to_puzzle">🧩 낱말 퍼즐로 복습하기</a><a class="alt" href="/verse/" data-ga="guide_to_verse">🎴 말씀 카드 만들기</a></div>
 <h2>자주 묻는 질문</h2>
 <div class="faq">{faq}</div>
 <h2>함께 읽으면 좋은 글</h2>
@@ -174,7 +174,7 @@ def hub(arts):
 <h1>성경공부 가이드</h1>
 <p class="lead">성경을 처음 읽는 분, 주일학교 교사, 소그룹 리더가 바로 쓸 수 있도록 성경 전체의 구조와 흐름, 주요 본문, 읽고 가르치는 방법을 쉬운 말로 정리한 글 모음입니다. 모든 글은 성경사전, 지도, 퍼즐과 연결되어 있어 읽고 나서 바로 확인하고 복습할 수 있습니다.</p>
 {groups}
-<div class="cta"><a href="/dictionary/" data-ga="guidehub_to_dict">📖 성경사전 보기</a><a class="alt" href="/list.html" data-ga="guidehub_to_puzzle">🧩 퍼즐 풀기</a></div>
+<div class="btnrow"><a href="/dictionary/" data-ga="guidehub_to_dict">📖 성경사전 보기</a><a class="alt" href="/list.html" data-ga="guidehub_to_puzzle">🧩 퍼즐 풀기</a></div>
 </main>"""
     return "\n".join([h, body, FOOTER, '<script src="/ga-events.js"></script><script src="/subscribe.js"></script>', "</body>\n</html>\n"])
 

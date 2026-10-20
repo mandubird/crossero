@@ -5,3 +5,5 @@ site_audit.py
 thin_audit.py
 blog_drafts/
 DESIGN_RULES.md
+tools/
+cards_plan.json

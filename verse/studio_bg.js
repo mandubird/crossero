@@ -28,8 +28,8 @@
     /* 수묵 산수 */
     ink: function (x, w, h, R, s) {
       field(x, w, h, 240, function (u, v) { var n = fbm(u * 8, v * 8, s, 4); var b = 238 + n * 12; return [b, b - 4, b - 14, 255]; });
-      var sx = w * (0.62 + R() * 0.2), sy = h * (0.2 + R() * 0.08); x.fillStyle = 'rgba(190,60,45,0.85)'; x.beginPath(); x.arc(sx, sy, w * 0.055, 0, 7); x.fill();
-      var layers = [[0.5, 0.18, 0.12, 0.55], [0.62, 0.14, 0.2, 0.7], [0.74, 0.1, 0.32, 0.85]];
+      var sx = w * (0.62 + R() * 0.2), sy = h * (0.13 + R() * 0.05); x.fillStyle = 'rgba(190,60,45,0.85)'; x.beginPath(); x.arc(sx, sy, w * 0.055, 0, 7); x.fill();
+      var layers = [[0.66, 0.13, 0.12, 0.5], [0.77, 0.1, 0.2, 0.68], [0.88, 0.08, 0.32, 0.85]];
       layers.forEach(function (L, li) {
         var base = h * L[0]; x.beginPath(); x.moveTo(0, h);
         for (var i = 0; i <= 60; i++) { var u = i / 60, ridge = Math.pow(fbm(u * 3 + li * 5, li * 3.1, s, 4), 1.3); x.lineTo(u * w, base - ridge * h * L[1] * 2.4); }

@@ -302,7 +302,7 @@ def render(data):
 <div class="crumb" style="text-align:left"><a href="/">홈</a> › 말씀 뽑기</div>
 <h1 style="margin-top:10px">말씀 뽑기 · 말씀 카드 만들기</h1>
 <div class="sub">말씀을 한 장 뽑고, 배경과 글꼴을 골라 나만의 카드로 만들어 보세요</div>
-<div class="sub" style="margin-top:-6px"><a href="/today/" data-ga="verse_to_today">📅 오늘의 말씀 보기</a></div>
+<div class="sub" style="margin-top:-6px"><a href="/today/" data-ga="verse_to_today">📅 오늘의 말씀 보기</a> &nbsp;·&nbsp; <a href="/cards/" data-ga="verse_to_cards">🖼️ 샘플 카드 갤러리</a></div>
 {seasons}
 <div class="vchips" id="vchips">{chips}</div>
 <div class="vbox" id="vbox" title="눌러서 뽑기">🎴</div>

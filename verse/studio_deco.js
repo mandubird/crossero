@@ -131,16 +131,16 @@
     x.save();
     if (k === 'rays') {
       var ox = w * 0.82, oy = -h * 0.06;
-      for (var i = 0; i < 7; i++) {
+      for (var i = 0; i < 5; i++) {
         var a = 1.78 + i * 0.13 + R() * 0.05, sp = 0.025 + R() * 0.035, len = Math.max(w, h) * 1.5;
-        var g = x.createLinearGradient(ox, oy, ox + Math.cos(a) * len, oy + Math.sin(a) * len); g.addColorStop(0, 'rgba(255,248,225,' + (0.2 + R() * 0.12) + ')'); g.addColorStop(1, 'rgba(255,248,225,0)');
+        var g = x.createLinearGradient(ox, oy, ox + Math.cos(a) * len, oy + Math.sin(a) * len); g.addColorStop(0, 'rgba(255,248,225,' + (0.09 + R() * 0.07) + ')'); g.addColorStop(1, 'rgba(255,248,225,0)');
         x.fillStyle = g; x.beginPath(); x.moveTo(ox, oy); x.lineTo(ox + Math.cos(a - sp) * len, oy + Math.sin(a - sp) * len); x.lineTo(ox + Math.cos(a + sp) * len, oy + Math.sin(a + sp) * len); x.closePath(); x.fill();
       }
-      var gl = x.createRadialGradient(ox, oy, 0, ox, oy, m * 0.7); gl.addColorStop(0, 'rgba(255,248,225,0.45)'); gl.addColorStop(1, 'rgba(255,248,225,0)'); x.fillStyle = gl; x.fillRect(0, 0, w, h);
+      var gl = x.createRadialGradient(ox, oy, 0, ox, oy, m * 0.7); gl.addColorStop(0, 'rgba(255,248,225,0.28)'); gl.addColorStop(1, 'rgba(255,248,225,0)'); x.fillStyle = gl; x.fillRect(0, 0, w, h);
     }
     else if (k === 'sparkle') {
-      for (var j = 0; j < 46; j++) {
-        var sx = R() * w, sy = R() * h, s = m * (0.004 + R() * R() * 0.016); x.globalAlpha = 0.45 + R() * 0.5; x.fillStyle = '#fff';
+      for (var j = 0; j < 34; j++) {
+        var sx = R() * w, sy = R() * h, s = m * (0.003 + R() * R() * 0.0085); x.globalAlpha = 0.3 + R() * 0.45; x.fillStyle = '#fff';
         x.beginPath(); x.moveTo(sx, sy - s * 2.4); x.quadraticCurveTo(sx, sy, sx + s * 2.4, sy); x.quadraticCurveTo(sx, sy, sx, sy + s * 2.4); x.quadraticCurveTo(sx, sy, sx - s * 2.4, sy); x.quadraticCurveTo(sx, sy, sx, sy - s * 2.4); x.fill();
       }
     }
