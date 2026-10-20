@@ -86,6 +86,7 @@ CSS = """
 .vsb-c em{position:absolute;top:-9px;right:10px;font-style:normal;background:#ffd43b;color:#5b4a00;font-size:11px;font-weight:800;padding:2px 9px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.2)}
 @media(max-width:560px){.vsb-row{gap:7px}.vsb-c{padding:14px 4px 11px}.vsb-c b{font-size:13.5px}.vsb-c span{font-size:10.5px}.vsb-c i{font-size:26px}.vsb-h{font-size:15px}}
 .wrap{max-width:820px!important}
+@media (max-width:640px){.playinfo{max-width:calc(100% - 20px)!important;box-sizing:border-box!important}}
 .home-hub{max-width:780px;margin:0 auto 22px}
 .home-hub h2{font-size:18px;margin:6px 0 10px;text-align:center}
 .hh-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
@@ -172,12 +173,14 @@ def subnav_html(path, s):
 def footer_html():
     cols = "".join(
         f'<div><h3>{h}</h3>' + "".join(f'<a href="{u}">{t}</a>' for t, u in links) + "</div>" for h, links in FOOT_COLS)
-    return f'<!--FL--><nav class="fnav" aria-label="사이트 전체 메뉴">{cols}</nav><!--/FL-->'
+    return f'<!--FL--><nav class="fnav" aria-label="사이트 전체 메뉴">{cols}</nav>{ALIGN_JS}<!--/FL-->'
 
 
-ALIGN_JS = ('<script>(function(){var s=document.querySelector(".site-more");var m=document.querySelector("main");if(!s||!m)return;'
-            'function a(){var c=getComputedStyle(m),w=m.getBoundingClientRect().width-parseFloat(c.paddingLeft)-parseFloat(c.paddingRight);'
-            'if(w>280&&innerWidth>640){s.style.maxWidth=Math.min(w,m.classList.contains("vwrap")?780:99999)+"px";s.style.padding="0"}else{s.style.maxWidth="";s.style.padding=""}}'
+ALIGN_JS = ('<script>(function(){var m=document.querySelector("main");if(!m)return;'
+            'function a(){var c=getComputedStyle(m),w=m.getBoundingClientRect().width-parseFloat(c.paddingLeft)-parseFloat(c.paddingRight),on=w>280&&innerWidth>640,cap=m.classList.contains("vwrap")?780:99999;'
+            'document.querySelectorAll(".site-more,.fnav,.playinfo").forEach(function(e){var pi=e.classList.contains("playinfo");'
+            'if(on){e.style.boxSizing="border-box";e.style.maxWidth=Math.min(w,cap)+"px";if(!pi)e.style.padding="0"}'
+            'else{e.style.maxWidth="";e.style.boxSizing="";if(!pi)e.style.padding=""}})}'
             'a();addEventListener("resize",a)})();</script>')
 
 
@@ -192,7 +195,7 @@ def more_html(key, path=""):
     else:
         cards = [m for m in MORE if m[0] != key][:4]
     g = "".join(f'<a class="sm-card" href="{h}" data-ga="more_click" data-ga-label="{k}"><b>{i} {t}</b><span>{d}</span></a>' for k, i, t, d, h in cards)
-    return f'<!--MORE--><section class="site-more"><h2>계속 둘러보기</h2><div class="sm-grid">{g}</div></section>{ALIGN_JS}<!--/MORE-->'
+    return f'<!--MORE--><section class="site-more"><h2>계속 둘러보기</h2><div class="sm-grid">{g}</div></section><!--/MORE-->'
 
 
 def season_html():
