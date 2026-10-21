@@ -307,7 +307,7 @@
 
   /* ---------- 글꼴 로딩 ---------- */
   var loaded = {};
-  function loadFont(k) {
+  function loadFont(k, sample0) {
     var f = FONTS.filter(function (q) { return q.k === k; })[0];
     if (!f) return Promise.resolve();
     if (!loaded[k]) {
@@ -318,7 +318,7 @@
       });
     }
     return loaded[k].then(function () {
-      var sample = (S.verse ? S.verse.text + S.verse.ref : '여호와는 나의 목자시니 내게 부족함이 없으리로다 시편 23:1 십자가로세로 crossero.com');
+      var sample = sample0 || (S.verse ? S.verse.text + S.verse.ref : '여호와는 나의 목자시니 내게 부족함이 없으리로다 시편 23:1 십자가로세로 crossero.com');
       return document.fonts && document.fonts.load ? document.fonts.load('40px "' + k + '"', sample).catch(function () {}) : null;
     });
   }
@@ -488,6 +488,16 @@
     var dl = $('vsRefs'); (window.__VERSES || []).forEach(function (d) { var o = document.createElement('option'); o.value = d.ref; dl.appendChild(o); });
     $('vsPick').addEventListener('change', function () { var d = (window.__VERSES || []).filter(function (q) { return q.ref === $('vsPick').value.trim(); })[0]; if (d) { api.setVerse(d); track('studio_pick', { ref: d.ref }); } });
 
+    syncUI = function () { mark(); fmark(); cmark(); if (window.__dmark) window.__dmark(); try { $('vsDim').value = S.dim; $('vsScale').value = Math.round(S.scale * 100); } catch (e) {} };
+    var ctl = root.querySelector('.vs-ctl'); if (ctl) ctl.addEventListener('click', function () { touched = true; });
+    if ($('vsShuffle')) $('vsShuffle').addEventListener('click', function () { touched = false; applyRandom().then(function () { syncUI(); refresh(); track('studio_shuffle'); }); });
+    if ($('vsLink')) $('vsLink').addEventListener('click', function () {
+      var u = deepLink(), b = $('vsLink');
+      var done = function () { b.textContent = '✅ 링크 복사됨'; setTimeout(function () { b.textContent = '🔗 링크 복사'; }, 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(u).then(done, function () { prompt('링크를 복사하세요', u); }); else prompt('링크를 복사하세요', u);
+      track('studio_link_copy');
+    });
+
     // 스타일 랜덤
     $('vsRandom').addEventListener('click', function () {
       var r = Math.random;
@@ -613,16 +623,58 @@
     }
     return Promise.all(ps);
   }
+  /* 뽑는 순간 완성된 카드를 보여 주기: 갤러리와 같은 추천 디자인(__RECIPES)을 무작위로 적용하고, 같은 말씀의 다른 디자인 미리보기를 보여 준다 */
+  var RECIPES = window.__RECIPES || [], touched = false, stripTok = 0, syncUI = function () {};
+  function rnd(n) { return (Math.random() * n) | 0; }
+  var BASE = { tcolor: 'auto', box: false, align: 'center', scale: 1, showRef: true, shadow: true };
+  function withBase(r) { var o = {}, k; for (k in BASE) o[k] = BASE[k]; for (k in r) o[k] = r[k]; return o; }
+  function applyRandom() { if (!RECIPES.length) return Promise.resolve(); return applyDesign(withBase(RECIPES[rnd(RECIPES.length)])); }
+  function deepLink() {
+    var q = [], b = S.bg;
+    q.push('v=' + encodeURIComponent(S.verse ? S.verse.ref : ''));
+    if (b.type === 'photo') q.push('b=' + encodeURIComponent('photo:' + b.id)); else if (b.type === 'scene') q.push('b=' + encodeURIComponent('scene:' + b.k + ':' + (b.seed || 7)));
+    q.push('f=' + encodeURIComponent(S.font)); if (S.orn !== 'none') q.push('o=' + S.orn); if (S.frame !== 'none') q.push('fr=' + S.frame); if (S.fx !== 'none') q.push('fx=' + S.fx); q.push('dm=' + S.dim);
+    return location.origin + '/verse/?' + q.join('&');
+  }
+  function buildStrip() {
+    var el = $('vsStrip'); if (!el || !RECIPES.length || !S.verse) return;
+    var tok = ++stripTok, p = preset(), tw = 240, th = Math.round(240 * p.h / p.w), picks = [], used = {};
+    el.innerHTML = '';
+    for (var n = 0; n < 60 && picks.length < 6; n++) { var r = RECIPES[rnd(RECIPES.length)], key = JSON.stringify(r.bg); if (used[key]) continue; used[key] = 1; picks.push(r); }
+    var btns = picks.map(function (r) { var b = document.createElement('button'); b.type = 'button'; b.className = 'vs-sth ld'; b.title = '이 디자인으로 바꾸기'; b.style.paddingBottom = (p.h / p.w * 100).toFixed(2) + '%'; el.appendChild(b); return b; });
+    picks.reduce(function (pr, r, i) {
+      return pr.then(function () {
+        if (tok !== stripTok) return;
+        return api.renderCard(Object.assign(withBase(r), { verse: S.verse, w: tw, h: th, thumb: true, type: 'image/jpeg', q: 0.8, mark: false })).then(function (url) {
+          if (tok !== stripTok) return; var im = new Image(); im.alt = '다른 디자인 미리보기'; im.src = url; btns[i].appendChild(im); btns[i].classList.remove('ld');
+          btns[i].onclick = function () { touched = true; applyDesign(withBase(r)).then(function () { syncUI(); refresh(); track('studio_strip_pick'); }); };
+        }).catch(function () { btns[i].classList.remove('ld'); });
+      });
+    }, Promise.resolve());
+  }
   var api = {
-    setVerse: function (d) { S.verse = d; root.style.display = 'block'; refresh(); },
+    setVerse: function (d, o) {
+      S.verse = d; root.style.display = 'block';
+      var pr = (o && o.random && !touched) ? applyRandom() : Promise.resolve();
+      pr.then(function () { syncUI(); refresh(); buildStrip(); });
+    },
     applyDesign: applyDesign,
     renderCard: function (o) {
-      var keys = ['verse', 'bg', 'font', 'orn', 'frame', 'fx', 'dcolor', 'dim', 'tcolor', 'align', 'scale', 'showRef', 'box', 'shadow', 'mark', 'pimg', 'pcredit'], keep = {};
-      keys.forEach(function (k) { keep[k] = S[k]; });
-      S.verse = o.verse; S.mark = o.mark !== false;
-      return applyDesign(o).then(function () { return loadFont(S.font); }).then(function () {
-        var c = document.createElement('canvas'); render(c, o.w, o.h, true);
-        var url = c.toDataURL(o.type || 'image/jpeg', o.q || 0.86); keys.forEach(function (k) { S[k] = keep[k]; }); return url;
+      // 상태(S)를 건드리지 않고 사진·글꼴을 먼저 불러온 뒤, 한 번에(동기) 그려서 화면의 메인 카드와 겹치지 않게 한다.
+      var f = o.font || S.font, v = o.verse || S.verse || { text: '', ref: '' };
+      var pp = (o.bg && o.bg.type === 'photo') ? phMeta().then(function (d) {
+        var p = d.photos.filter(function (q) { return q.id === o.bg.id; })[0]; if (!p) return null;
+        return new Promise(function (res) { var im = new Image(); im.onload = function () { res({ im: im, p: p }); }; im.onerror = function () { res(null); }; im.src = '/images/studio/' + p.id + (o.thumb ? '_t' : '') + '.jpg'; });
+      }) : Promise.resolve(null);
+      return Promise.all([pp, loadFont(f, (v.text || '') + (v.ref || ''))]).then(function (r) {
+        var keys = ['verse', 'bg', 'font', 'orn', 'frame', 'fx', 'dcolor', 'dim', 'tcolor', 'align', 'scale', 'showRef', 'box', 'shadow', 'mark', 'pimg', 'pcredit'], keep = {};
+        keys.forEach(function (k) { keep[k] = S[k]; });
+        S.verse = v; S.mark = o.mark !== false; S.font = f;
+        ['orn', 'frame', 'fx', 'dcolor', 'tcolor', 'align', 'box', 'shadow', 'showRef', 'dim', 'scale'].forEach(function (k) { if (o[k] !== undefined) S[k] = o[k]; });
+        if (o.bg) { if (o.bg.type === 'photo') { if (r[0]) { S.pimg = r[0].im; S.pcredit = '사진: ' + r[0].p.artist + ' · ' + r[0].p.lic + ' · Wikimedia Commons'; S.bg = { type: 'photo', id: o.bg.id }; } } else S.bg = o.bg; }
+        var c = document.createElement('canvas'), url;
+        try { render(c, o.w, o.h, true); url = c.toDataURL(o.type || 'image/jpeg', o.q || 0.86); } finally { keys.forEach(function (k) { S[k] = keep[k]; }); }
+        return url;
       });
     },
     state: S

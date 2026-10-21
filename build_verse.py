@@ -5,6 +5,7 @@ import csv
 import html
 import json
 import os
+import random
 import re
 
 import build_dictionary as bd
@@ -125,6 +126,14 @@ CSS = """
 .vs-pro{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:10px;background:#ffd43b;color:#5b4a00;font-size:11px;font-weight:700;vertical-align:middle}
 .vs-th canvas{width:100%;height:auto;display:block;border-radius:8px}.vs-th span{display:block;font-size:11.5px;color:#445;padding:3px 0}
 .vs-th.on{border-color:#0073e6}
+#vcard,#vactions{display:none!important}
+.vs-shuf{width:100%;max-width:340px;padding:13px 18px!important;font-size:16px!important;background:linear-gradient(135deg,#7c3aed,#2563eb)!important;box-shadow:0 6px 16px rgba(76,60,200,.28)}
+.vs-lnk{display:inline-block;padding:11px 16px;border:1px solid #bcd3f0;border-radius:12px;background:#fff;color:#0b5cad;font-weight:700;font-size:14.5px;text-decoration:none}
+.vs-strip{margin-top:14px}.vs-strip-h{font-weight:800;font-size:14.5px;color:#223;margin-bottom:8px;text-align:left}.vs-strip-h span{font-weight:400;font-size:12.5px;color:#889;margin-left:6px}
+.vs-strip-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.vs-sth{display:block;width:100%;height:0;padding:0 0 100%;border:2px solid transparent;border-radius:10px;overflow:hidden;background:#e9eef5;cursor:pointer;position:relative;box-sizing:content-box}
+.vs-sth img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;display:block}.vs-sth:hover{border-color:#0073e6}.vs-sth.ld{animation:vsld 1.2s ease-in-out infinite}
+@keyframes vsld{0%,100%{opacity:.55}50%{opacity:1}}
 .vs-use{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:8px 0 10px}
 .vs-u{position:relative;display:flex;align-items:center;gap:10px;padding:14px 40px 14px 12px;border:2px solid #cdd7e4;border-radius:14px;background:#fff;cursor:pointer;text-align:left;font-family:inherit;min-height:64px}
 .vs-u i{font-style:normal;font-size:28px;flex:none}.vs-u b{display:block;font-size:16px;color:#16325c;line-height:1.3}.vs-u span{display:block;font-size:12.5px;color:#667;line-height:1.4;margin-top:2px}
@@ -142,7 +151,7 @@ CSS = """
 .vs-batch h3{margin:0 0 8px;font-size:18px;color:#0b3d73}.vs-brow{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 8px}.vs-brow>div{flex:1 1 170px}.vs-brow label{display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:#334}
 .vs-brow select{width:100%;padding:9px 10px;border:1px solid #cdd7e4;border-radius:9px;font-size:14.5px;font-family:inherit;background:#fff}.vs-chk{display:block;font-size:14px;margin:8px 0}
 .vs-bprev{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.vs-bprev img{width:calc(25% - 6px);min-width:120px;border:1px solid #cdd7e4;border-radius:4px;background:#fff}
-.vs-phs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-height:300px;overflow-y:auto;padding:2px}.vs-ph{padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;cursor:pointer;background:#e9eef5;aspect-ratio:1}.vs-ph img{width:100%;height:100%;object-fit:cover;display:block}.vs-ph.on{border-color:#0073e6}
+.vs-phs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-height:300px;overflow-y:auto;padding:2px}.vs-ph{display:block;position:relative;width:100%;height:0;padding:0 0 100%;border:2px solid transparent;border-radius:8px;overflow:hidden;cursor:pointer;background:#e9eef5;box-sizing:content-box}.vs-ph img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;display:block}.vs-ph.on{border-color:#0073e6}
 .vs-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
 .vs-sw{width:36px;height:36px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #cdd7e4;cursor:pointer;padding:0}.vs-sw.on{box-shadow:0 0 0 3px #0073e6}
 .vs-fgh{margin:14px 0 6px;padding-top:8px;border-top:1px solid #e5e9f0;font-size:13px;font-weight:800;color:#0b3d73}.vs-fgh:first-child{border-top:0;margin-top:0;padding-top:0}
@@ -174,12 +183,13 @@ JS = r"""
     c.style.display='block'; c.style.animation='none'; void c.offsetWidth; c.style.animation='';
     $('vtag').textContent=d.topic; $('vtext').textContent=d.text; $('vref').textContent=d.ref;
     $('vactions').style.display='block'; $('vbox').style.display='none';
-    if(window.crsPilgrimCta) window.crsPilgrimCta({host:'pgCtaVerse',campaign:'verse_after_draw'});
+    if(window.crsPilgrimCta) window.crsPilgrimCta({host:'vsPgCta',campaign:'verse_after_draw'});
+    var m2=$('vsMore'); var gu=window.__GUIDE[d.ref]; if(m2){ if(gu){m2.href=gu;m2.style.display='inline-block';} else m2.style.display='none'; }
     $('vdraw').textContent='🎴 다시 뽑기';
     var mu=window.__GUIDE[d.ref]; var mo=$('vmore'); if(mu){mo.href=mu; mo.style.display='inline-block';} else {mo.style.display='none';}
     var pc=document.querySelectorAll('.vprint .pc');
     [].forEach.call(pc,function(p){p.querySelector('.pt').textContent=d.text;p.querySelector('.pr').textContent=d.ref;});
-    if(window.crsStudio) window.crsStudio.setVerse(d);
+    if(window.crsStudio){ window.crsStudio.setVerse(d,{random:!!fromDraw}); if(fromDraw) setTimeout(function(){var st=$('vstudio'); if(st) st.scrollIntoView({behavior:'smooth',block:'start'});},350); }
     if(fromDraw&&window.crsTrack) window.crsTrack('verse_draw',{topic:d.topic,ref:d.ref});
   }
 
@@ -313,21 +323,23 @@ def render(data):
 <button class="vbtn sub" id="vprint">🖨️ 책갈피 인쇄(4장)</button>
 <button class="vbtn sub" id="vshare">🔗 링크 공유</button>
 </div>
-<div id="pgCtaVerse"></div>
 <section class="vs" id="vstudio" style="display:none" aria-label="말씀 카드 만들기">
-<h2>✨ 말씀 카드 만들기</h2>
-<p class="vs-sub"><a href="#church-print" style="color:#0b5cad;font-weight:700">⛪ 교회 행사용: 카드 여러 장 한꺼번에 인쇄 ↓</a><br>뽑은 말씀으로 카드를 꾸며 보세요. 풍경 배경과 무료 글꼴을 고르고, 카카오톡·인스타그램·프로필·휴대폰/PC 배경화면·교회 인쇄용 크기로 저장할 수 있어요.</p>
+<h2>🎴 뽑은 말씀 카드</h2>
+<p class="vs-sub">마음에 드는 디자인을 고르고 저장·공유·인쇄하세요. <a href="#church-print" style="color:#0b5cad;font-weight:700">⛪ 교회 행사용 여러 장 인쇄 ↓</a> · <a href="/cards/" style="color:#0b5cad;font-weight:700">🖼️ 샘플 카드 둘러보기</a></p>
 <div class="vs-grid">
  <div class="vs-prev">
   <canvas id="vsCanvas" width="540" height="540"></canvas>
   <div id="vsInfo"></div>
-  <div id="vsPgCta"></div>
+  <div class="vs-act" style="margin-bottom:8px"><button type="button" id="vsShuffle" class="vs-shuf" data-ga="studio_shuffle">🎲 다른 디자인으로</button></div>
   <div class="vs-act">
    <button type="button" id="vsSave" data-ga="studio_save_click">💾 이미지 저장</button>
    <button type="button" id="vsShare" class="alt" data-ga="studio_share_click">📤 공유하기</button>
    <button type="button" id="vsPrint" class="alt" data-ga="studio_print_click">🖨️ 인쇄하기</button>
    <button type="button" id="vsSaveJpg" class="alt">JPG로 저장</button>
   </div>
+  <div class="vs-act" style="margin-top:6px"><a id="vsMore" class="vs-lnk" href="#" style="display:none" data-ga="verse_to_guide">📖 이 말씀 해설 읽기</a><button type="button" id="vsLink" class="alt" data-ga="verse_share_link">🔗 링크 복사</button></div>
+  <div id="vsPgCta"></div>
+  <div class="vs-strip"><div class="vs-strip-h">같은 말씀, 다른 디자인 <span>눌러서 바꿔 보세요</span></div><div class="vs-strip-row" id="vsStrip"></div></div>
   <p class="vs-note" style="text-align:center">공유가 안 되는 기기에서는 이미지가 저장됩니다. 저장한 사진을 카톡·인스타에 올리세요.</p>
  </div>
  <div class="vs-ctl">
@@ -402,7 +414,21 @@ def render(data):
 <p class="vnote">성경 본문은 성경전서 개역한글판(대한성서공회)을 사용했습니다. 개인 묵상과 소모임 나눔을 위한 용도로 제공하며, 판매용으로 이용하실 수 없습니다. 구절은 주제별로 직접 골랐고, 앞으로 계속 늘려 갑니다. 말씀을 더 깊이 읽고 싶다면 <a href="/dictionary/">성경사전</a>에서 해당 책의 요약을 확인해 보세요.</p>
 <div class="vprint" aria-hidden="true">{prints}</div>
 </main>"""
-    data_js = ("<script>window.__VERSES=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";"
+    try:
+        _pl = json.load(open("cards_plan.json", encoding="utf-8"))
+        _seen, _rec = set(), []
+        for _c in _pl:
+            _d = dict(_c["design"])
+            _k = json.dumps(_d, sort_keys=True)
+            if _k in _seen:
+                continue
+            _seen.add(_k)
+            _rec.append(_d)
+        random.Random(11).shuffle(_rec)
+        _rec = _rec[:90]
+    except Exception:
+        _rec = []
+    data_js = ("<script>window.__RECIPES=" + json.dumps(_rec, ensure_ascii=False, separators=(",", ":")) + ";window.__VERSES=" + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";"
                "window.__SETS=" + json.dumps(build_sets(data), ensure_ascii=False, separators=(",", ":")) + ";window.__GUIDE=" + json.dumps(guide_map, ensure_ascii=False, separators=(",", ":")) + ";</script>")
     return "\n".join([h, body, FOOTER, data_js,
                       '<script src="/ga-events.js"></script><script src="/subscribe.js"></script><script src="/auth.js"></script><script src="/pilgrim-cta.js"></script><script src="/verse/studio_bg.js"></script><script src="/verse/studio_deco.js"></script><script src="/verse/studio.js"></script>', "<script>" + JS + "</script>", "</body>\n</html>\n"])

@@ -25,8 +25,8 @@ CSS = bv.CSS + """
 .cgw .lead{font-size:17.5px;color:#334}
 .cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;margin:16px 0}
 .cg figure{margin:0;background:#fff;border:1px solid #e3eaf3;border-radius:14px;overflow:hidden;box-shadow:0 3px 10px rgba(0,0,0,.05)}
-.cg figure a.im{display:block;background:#e9eef5;aspect-ratio:4/5}
-.cg img{width:100%;height:100%;object-fit:cover;display:block}
+.cg figure a.im{display:block;position:relative;height:0;padding-bottom:125%;background:#e9eef5}
+.cg img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;display:block}
 .cg figcaption{padding:10px 12px 12px;font-size:13.5px;line-height:1.65;color:#445}
 .cg figcaption b{display:block;color:#0b3d73;font-size:14.5px}
 .cg figcaption small{display:block;color:#889;font-size:11.5px;margin-top:4px;line-height:1.5}
@@ -34,7 +34,7 @@ CSS = bv.CSS + """
 .cg .acts a.p{background:#0073e6;border-color:#0073e6;color:#fff;font-weight:700}
 .cgw .hubg{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin:16px 0}
 .cgw .hubg a{display:block;text-decoration:none;color:#0b3d73;border:1px solid #d6e4f7;border-radius:14px;overflow:hidden;background:#fff}
-.cgw .hubg img{width:100%;aspect-ratio:4/5;object-fit:cover;display:block}.cgw .hubg b{display:block;padding:10px 12px 2px;font-size:16px}.cgw .hubg span{display:block;padding:0 12px 12px;font-size:13px;color:#667}
+.cgw .hubg img{width:100%;height:auto;display:block}.cgw .hubg b{display:block;padding:10px 12px 2px;font-size:16px}.cgw .hubg span{display:block;padding:0 12px 12px;font-size:13px;color:#667}
 .cgw .box{background:#f4f8ff;border:1px solid #cfe0f5;border-radius:14px;padding:14px 18px;margin:16px 0}
 .cgw .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}.cgw .btnrow a{display:inline-block;padding:13px 20px;border-radius:12px;background:#0073e6;color:#fff;text-decoration:none;font-weight:700;font-size:15.5px}.cgw .btnrow a.alt{background:#fff;color:#0b5cad;border:1px solid #bcd3f0}
 @media(max-width:560px){.cg{grid-template-columns:repeat(2,1fr);gap:10px}.cg figcaption{padding:8px 9px 10px;font-size:12.5px}.cg .acts{flex-direction:column}}
