@@ -2815,15 +2815,6 @@
   </url>
   <!-- SEASON-END -->
 
-  <!-- VERSE-START -->
-  <url>
-    <loc>https://crossero.com/verse/</loc>
-    <lastmod>2026-10-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- VERSE-END -->
-
   <!-- GUIDES-START -->
   <url>
     <loc>https://crossero.com/guide/</loc>
@@ -3054,4 +3045,13 @@
     <priority>0.8</priority>
   </url>
   <!-- GUIDES-END -->
+
+  <!-- VERSE-START -->
+  <url>
+    <loc>https://crossero.com/verse/</loc>
+    <lastmod>2026-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- VERSE-END -->
 </urlset>

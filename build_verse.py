@@ -131,6 +131,11 @@ CSS = """
 .vs-tabs button span{font-size:24px;line-height:1.1}.vs-tabs button.on{background:linear-gradient(135deg,#0b5cad,#0073e6);color:#fff;border-color:#0b5cad;box-shadow:0 6px 14px rgba(0,115,230,.35);transform:translateY(-1px)}
 .vs-tabbox{margin:16px 0 14px;padding:12px 12px 12px;background:linear-gradient(180deg,#eaf3ff,#f6faff);border:2px solid #b9d3f5;border-radius:18px}
 .vs-tabh{font-weight:800;font-size:16px;color:#0b3d73;margin:0 2px 10px}.vs-tabh span{font-weight:600;font-size:13px;color:#4a6fa5;margin-left:4px}
+.vs-tabbox{position:sticky;top:var(--navh,52px);z-index:50;transition:box-shadow .2s}
+.vs-tabbox.stuck{box-shadow:0 6px 16px rgba(0,60,140,.22);padding:8px 10px;margin-top:8px}.vs-tabbox.stuck .vs-tabh{display:none}.vs-tabbox.stuck .vs-tabs button{padding:7px 2px 6px;font-size:13px}.vs-tabbox.stuck .vs-tabs button span{font-size:18px}
+@keyframes crsWig{0%,100%{transform:rotate(0)}15%{transform:rotate(-9deg)}35%{transform:rotate(8deg)}55%{transform:rotate(-6deg)}75%{transform:rotate(4deg)}}
+.crs-wig{animation:crsWig .9s ease-in-out 1}
+@media(prefers-reduced-motion:reduce){.crs-wig{animation:none}}
 @media(max-width:420px){.vs-tabs button{font-size:13px;padding:10px 0 9px}.vs-tabs button span{font-size:22px}.vs-tabh span{display:block;margin:2px 0 0}}
 .vs-ctl details.vs-pane{display:none;border:0;margin:0}.vs-ctl details.vs-pane.cur{display:block}.vs-ctl details.vs-pane>summary{display:none}.vs-ctl details.vs-pane>.vs-in{padding:0}
 #vsPhotoThemes select{width:100%;padding:11px 12px;border:1px solid #cdd7e4;border-radius:10px;font-size:15px;font-family:inherit;background:#fff}
@@ -233,6 +238,18 @@ JS = r"""
   }
   $('vdraw').addEventListener('click',draw);
   $('vbox').addEventListener('click',draw);
+  (function(){try{
+    var nav=document.querySelector('.nav'),tb=document.querySelector('.vs-tabbox');
+    function nh(){var h=nav?nav.getBoundingClientRect().height:52;document.documentElement.style.setProperty('--navh',Math.round(h)+'px');return h}
+    if(tb){var ph=document.createElement('div');ph.style.cssText='height:1px;margin-top:-1px';tb.parentNode.insertBefore(ph,tb);
+      var chk=function(){var h=nh();tb.classList.toggle('stuck',!!tb.offsetParent&&ph.getBoundingClientRect().top<h-1)};
+      addEventListener('scroll',chk,{passive:true});addEventListener('resize',chk);chk();}
+    var seen=false;try{seen=localStorage.getItem('crs_wig')}catch(e){}
+    if(!seen){setTimeout(function(){var v=$('vbox'),d=$('vdraw');if(!v||v.style.display==='none')return;
+      [v,d].forEach(function(e){if(e)e.classList.add('crs-wig')});
+      try{localStorage.setItem('crs_wig','1')}catch(e){}},1200);}
+  }catch(e){}})();
+
   $('vchips').addEventListener('click',function(e){
     if(!e.target.classList.contains('vchip'))return;
     [].forEach.call(document.querySelectorAll('.vchip'),function(c){c.classList.remove('on');});
