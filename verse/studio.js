@@ -404,14 +404,16 @@
     })();
 
     // 사진 배경
-    var PH = null, pg = $('vsPhotos'), pt = $('vsPhotoThemes'), pcur = 'all';
+    var PH = null, pg = $('vsPhotos'), pt = $('vsPhotoThemes'), pcur = 'all', pshow = 12;
     function usePhoto(p) {
       var im = new Image(); im.onload = function () { S.pimg = im; S.pcredit = '사진: ' + p.artist + ' · ' + p.lic + ' · Wikimedia Commons'; S.bg = { type: 'photo', id: p.id }; mark(); pinfo(p); refresh(); }; im.src = '/images/studio/' + p.id + '.jpg';
     }
     function pinfo(p) { var e = $('vsPhotoCredit'); if (!e) return; e.innerHTML = '사진: <a href="' + p.src + '" target="_blank" rel="noopener nofollow">' + p.title.replace(/</g, '') + '</a> · ' + p.artist.replace(/</g, '') + ' · <a href="' + p.licurl + '" target="_blank" rel="noopener nofollow">' + p.lic + '</a>'; }
     function drawPhotos() {
       pg.innerHTML = '';
-      PH.photos.filter(function (p) { return pcur === 'all' || p.theme === pcur; }).forEach(function (p) {
+      var plist = PH.photos.filter(function (p) { return pcur === 'all' || p.theme === pcur; });
+      var pm = $('vsPhMore'); if (pm) { pm.style.display = plist.length > pshow ? 'inline-block' : 'none'; pm.textContent = '사진 더 보기 (' + Math.min(24, plist.length - pshow) + '장 추가 · 남은 ' + (plist.length - pshow) + '장)'; }
+      plist.slice(0, pshow).forEach(function (p) {
         var b = document.createElement('button'); b.type = 'button'; b.className = 'vs-ph'; b.dataset.id = p.id; b.title = p.title + ' / ' + p.artist;
         var i = document.createElement('img'); i.loading = 'lazy'; i.alt = p.title; i.src = '/images/studio/' + p.id + '_t.jpg'; b.appendChild(i);
         b.addEventListener('click', function () { usePhoto(p); track('studio_photo', { id: p.id, theme: p.theme }); });
@@ -422,7 +424,9 @@
     fetch('/verse/studio_photos.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
       PH = d;
       var all = [['all', '전체']].concat(Object.keys(d.themes).map(function (k) { return [k, d.themes[k]]; }));
-      all.forEach(function (t) { var c = document.createElement('button'); c.type = 'button'; c.className = 'vs-chip' + (t[0] === 'all' ? ' on' : ''); c.textContent = t[1]; c.addEventListener('click', function () { pcur = t[0]; [].forEach.call(pt.children, function (q) { q.classList.toggle('on', q === c); }); drawPhotos(); }); pt.appendChild(c); });
+      var sel = document.createElement('select'); sel.id = 'vsPhotoSel'; sel.setAttribute('aria-label', '사진 주제'); all.forEach(function (t) { var o = document.createElement('option'); o.value = t[0]; o.textContent = t[1] + (t[0] === 'all' ? ' ' + d.photos.length + '장' : ' (' + d.photos.filter(function (q) { return q.theme === t[0]; }).length + ')'); sel.appendChild(o); });
+      sel.addEventListener('change', function () { pcur = sel.value; pshow = 12; drawPhotos(); }); pt.appendChild(sel);
+      if ($('vsPhMore')) $('vsPhMore').addEventListener('click', function () { pshow += 24; drawPhotos(); });
       drawPhotos();
       if (!window.__studioInit && !/[?&]b=/.test(location.search)) { window.__studioInit = 1; var pool = ['sunrise2', 'lake4', 'forest6', 'mountain4', 'sky7', 'autumn2', 'field1', 'flower4', 'sunrise4', 'night2', 'desert5', 'lake7']; var id = pool[(Math.random() * pool.length) | 0]; var p = d.photos.filter(function (q) { return q.id === id; })[0]; if (p && S.bg.type === 'scene' && S.bg.k === 'sunrise' && S.bg.seed === 7) usePhoto(p); }
       $('vsRandom').dataset.ph = 1;
@@ -432,12 +436,16 @@
     var sg = $('vsScenes');
     SCENES.forEach(function (s) {
       var b = document.createElement('button'); b.type = 'button'; b.className = 'vs-th'; b.title = s.n; b.dataset.k = s.k;
-      var c = document.createElement('canvas'); c.width = 96; c.height = 128; b.appendChild(c);
-      var sv = S.bg; S.bg = { type: 'scene', k: s.k, seed: 7 }; var sd = S.dim; S.dim = 0; drawBg(c.getContext('2d'), 96, 128); S.bg = sv; S.dim = sd;
+      var c = document.createElement('canvas'); c.width = 96; c.height = 96; b.appendChild(c);
+      var sv = S.bg; S.bg = { type: 'scene', k: s.k, seed: 7 }; var sd = S.dim; S.dim = 0; drawBg(c.getContext('2d'), 96, 96); S.bg = sv; S.dim = sd;
       var sp = document.createElement('span'); sp.textContent = s.n; b.appendChild(sp);
       b.addEventListener('click', function () { S.bg = { type: 'scene', k: s.k, seed: (S.bg.type === 'scene' && S.bg.k === s.k) ? S.bg.seed + 1 : 7 }; mark(); track('studio_bg', { bg: s.k }); refresh(); });
+      if (sg.children.length >= 12) b.className += ' vs-extra';
       sg.appendChild(b);
     });
+    sg.className += ' vs-sgrid vs-col';
+    var scm = $('vsScMore'); if (scm) scm.addEventListener('click', function () { var c = sg.classList.toggle('vs-col'); scm.textContent = c ? '질감·일러스트 ' + (SCENES.length - 12) + '종 더 보기' : '접기'; });
+    if (scm) scm.textContent = '질감·일러스트 ' + (SCENES.length - 12) + '종 더 보기';
     var gg = $('vsGrads');
     GRADS.forEach(function (g, i) { var b = document.createElement('button'); b.type = 'button'; b.className = 'vs-sw'; b.style.background = 'linear-gradient(135deg,' + g[0] + ',' + g[1] + ')'; b.dataset.g = i; b.addEventListener('click', function () { S.bg = { type: 'grad', i: i }; mark(); refresh(); }); gg.appendChild(b); });
     SOLIDS.forEach(function (c) { var b = document.createElement('button'); b.type = 'button'; b.className = 'vs-sw'; b.style.background = c; b.dataset.c = c; b.addEventListener('click', function () { S.bg = { type: 'solid', c: c }; mark(); refresh(); }); gg.appendChild(b); });
@@ -459,7 +467,7 @@
       var hd = document.createElement('div'); hd.className = 'vs-fgh'; hd.textContent = g[1]; fl.appendChild(hd);
       FONTS.filter(function (f) { return (FG[f.k] === undefined ? 0 : FG[f.k]) === gi; }).forEach(function (f) {
         var b = document.createElement('button'); b.type = 'button'; b.className = 'vs-font'; b.dataset.k = f.k;
-        b.innerHTML = '<span class="n">' + f.n + '</span><span class="s" style="font-family:\'' + f.k + '\',sans-serif">' + (gi === 4 ? 'The Lord is my shepherd' : '여호와는 나의 목자시니') + '</span>';
+        b.innerHTML = '<span class="n">' + f.n + '</span><span class="s" style="font-family:\'' + f.k + '\',sans-serif">' + (gi === 4 ? 'The Lord is my' : '여호와는 나의') + '</span>';
         b.addEventListener('click', function () { S.font = f.k; fmark(); track('studio_font', { font: f.k }); refresh(); });
         fl.appendChild(b);
       });
@@ -467,7 +475,16 @@
     function fmark() { [].forEach.call(root.querySelectorAll('.vs-font'), function (b) { b.classList.toggle('on', b.dataset.k === S.font); }); }
     fmark();
     var fontsOpened = false;
-    $('vsFontBox').addEventListener('toggle', function () { if (this.open && !fontsOpened) { fontsOpened = true; FONTS.forEach(function (f) { var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = fontUrl(f, '여호와는나의목자시니' + f.n + 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'); document.head.appendChild(l); }); } });
+    function loadFontPreviews() { if (fontsOpened) return; fontsOpened = true; FONTS.forEach(function (f) { var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = fontUrl(f, '여호와는나의목자시니' + f.n + 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'); document.head.appendChild(l); }); }
+    // 꾸미기 탭: 한 번에 한 가지만 보여 준다
+    var tabs = $('vsTabs');
+    function showTab(t) {
+      [].forEach.call(tabs.querySelectorAll('button'), function (b) { b.classList.toggle('on', b.dataset.t === t); });
+      [].forEach.call(root.querySelectorAll('details.vs-pane'), function (d) { d.classList.toggle('cur', d.dataset.tab === t); });
+      if (t === 'font') loadFontPreviews();
+      track('studio_tab', { tab: t });
+    }
+    if (tabs) { [].forEach.call(tabs.querySelectorAll('button'), function (b) { b.addEventListener('click', function () { showTab(b.dataset.t); }); }); showTab('bg'); }
 
     // 글자색
     var tl = $('vsTcolor');

@@ -58,6 +58,13 @@
 .vs-pro{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:10px;background:#ffd43b;color:#5b4a00;font-size:11px;font-weight:700;vertical-align:middle}
 .vs-th canvas{width:100%;height:auto;display:block;border-radius:8px}.vs-th span{display:block;font-size:11.5px;color:#445;padding:3px 0}
 .vs-th.on{border-color:#0073e6}
+.vs-tabs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:14px 0 12px}
+.vs-tabs button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 2px;border:1px solid #cdd7e4;background:#fff;border-radius:12px;font-weight:700;font-size:13.5px;color:#334;cursor:pointer;font-family:inherit}
+.vs-tabs button span{font-size:19px;line-height:1.1}.vs-tabs button.on{background:#0073e6;color:#fff;border-color:#0073e6;box-shadow:0 4px 10px rgba(0,115,230,.25)}
+.vs-ctl details.vs-pane{display:none;border:0;margin:0}.vs-ctl details.vs-pane.cur{display:block}.vs-ctl details.vs-pane>summary{display:none}.vs-ctl details.vs-pane>.vs-in{padding:0}
+#vsPhotoThemes select{width:100%;padding:11px 12px;border:1px solid #cdd7e4;border-radius:10px;font-size:15px;font-family:inherit;background:#fff}
+.vs-sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.vs-sgrid .vs-th{width:auto;max-width:none}.vs-sgrid .vs-th canvas{aspect-ratio:auto}.vs-sgrid.vs-col .vs-extra{display:none}
+.vs-sgrid .vs-th span{font-size:11px;padding:2px 0}
 .vs-shuf{width:100%;max-width:340px;padding:13px 18px!important;font-size:16px!important;background:linear-gradient(135deg,#7c3aed,#2563eb)!important;box-shadow:0 6px 16px rgba(76,60,200,.28)}
 .vs-lnk{display:inline-block;padding:11px 16px;border:1px solid #bcd3f0;border-radius:12px;background:#fff;color:#0b5cad;font-weight:700;font-size:14.5px;text-decoration:none}
 .vs-strip{margin-top:14px}.vs-strip-h{font-weight:800;font-size:14.5px;color:#223;margin-bottom:8px;text-align:left}.vs-strip-h span{font-weight:400;font-size:12.5px;color:#889;margin-left:6px}
@@ -82,9 +89,10 @@
 .vs-batch h3{margin:0 0 8px;font-size:18px;color:#0b3d73}.vs-brow{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0 8px}.vs-brow>div{flex:1 1 170px}.vs-brow label{display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:#334}
 .vs-brow select{width:100%;padding:9px 10px;border:1px solid #cdd7e4;border-radius:9px;font-size:14.5px;font-family:inherit;background:#fff}.vs-chk{display:block;font-size:14px;margin:8px 0}
 .vs-bprev{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.vs-bprev img{width:calc(25% - 6px);min-width:120px;border:1px solid #cdd7e4;border-radius:4px;background:#fff}
-.vs-phs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-height:300px;overflow-y:auto;padding:2px}.vs-ph{display:block;position:relative;width:100%;height:0;padding:0 0 100%;border:2px solid transparent;border-radius:8px;overflow:hidden;cursor:pointer;background:#e9eef5;box-sizing:content-box}.vs-ph img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;display:block}.vs-ph.on{border-color:#0073e6}
+.vs-phs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:2px}.vs-ph{display:block;position:relative;width:100%;height:0;padding:0 0 100%;border:2px solid transparent;border-radius:8px;overflow:hidden;cursor:pointer;background:#e9eef5;box-sizing:content-box}.vs-ph img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;display:block}.vs-ph.on{border-color:#0073e6}
 .vs-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
 .vs-sw{width:36px;height:36px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #cdd7e4;cursor:pointer;padding:0}.vs-sw.on{box-shadow:0 0 0 3px #0073e6}
+#vsFonts{display:grid;grid-template-columns:1fr 1fr;gap:6px}#vsFonts .vs-font{margin:0;padding:7px 9px;min-width:0}#vsFonts .vs-font .s{font-size:16px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}#vsFonts .vs-font .n{font-size:11px!important;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#vsFonts .vs-fgh{grid-column:1/-1}
 .vs-fgh{margin:14px 0 6px;padding-top:8px;border-top:1px solid #e5e9f0;font-size:13px;font-weight:800;color:#0b3d73}.vs-fgh:first-child{border-top:0;margin-top:0;padding-top:0}
 .vs-font{width:100%;text-align:left;border:1px solid #e1e7ef;background:#fff;border-radius:10px;padding:8px 12px;margin:0 0 6px;cursor:pointer;font-family:inherit}
 .vs-font .n{display:block;font-size:11.5px;color:#7b8794}.vs-font .s{display:block;font-size:19px;color:#223;line-height:1.5}.vs-font.on{border-color:#0073e6;background:#f0f6ff}
@@ -235,13 +243,16 @@
   <details class="vs-usemore"><summary>다른 크기 더 보기</summary><div class="vs-usegrid" id="vsUseMore"></div></details>
   <p class="vs-note" id="vsUseNote" style="text-align:center;margin-bottom:6px"></p>
   <select id="vsPreset" style="display:none" aria-hidden="true" tabindex="-1"></select>
-  <details open><summary>② 배경</summary><div class="vs-in">
+  <div class="vs-tabs" id="vsTabs"><button type="button" class="on" data-t="bg"><span>🖼️</span>배경</button><button type="button" data-t="font"><span>🔤</span>글꼴</button><button type="button" data-t="text"><span>✍️</span>글자</button><button type="button" data-t="deco"><span>✨</span>장식</button><button type="button" data-t="more"><span>⋯</span>더보기</button></div>
+  <details open class="vs-pane cur" data-tab="bg"><summary>② 배경</summary><div class="vs-in">
    <label style="margin-top:2px">📷 사진 <span style="font-weight:400;color:#889">(무료 라이선스 사진 270장)</span></label>
-   <div class="vs-row" id="vsPhotoThemes" style="margin-bottom:4px"></div>
+   <div id="vsPhotoThemes" style="margin:6px 0 8px"></div>
    <div class="vs-phs" id="vsPhotos"></div>
+   <button type="button" class="vs-chip" id="vsPhMore" style="display:none;margin:10px auto 0">사진 더 보기</button>
    <p class="vs-note" id="vsPhotoCredit">사진을 고르면 촬영자와 라이선스가 여기와 카드 아래쪽에 표시돼요.</p>
    <label style="margin-top:12px">🎨 일러스트 풍경</label>
-   <div class="vs-row" id="vsScenes"></div>
+   <div id="vsScenes"></div>
+   <button type="button" class="vs-chip" id="vsScMore" style="margin:10px 0 0">질감·일러스트 더 보기</button>
    <button type="button" class="vs-chip" id="vsVar">🔀 같은 풍경, 다른 느낌</button>
    <div class="vs-row" id="vsGrads" style="margin-top:12px"></div>
    <label class="vs-up">📷 내 사진으로 배경 만들기<input type="file" id="vsUpload" accept="image/*" style="display:none"></label>
@@ -249,8 +260,8 @@
    <label style="margin-top:12px">배경 어둡게 <span style="font-weight:400;color:#889">(글자가 잘 보이게)</span></label>
    <input type="range" id="vsDim" min="0" max="70" value="15">
   </div></details>
-  <details id="vsFontBox"><summary>③ 글꼴 (무료 글꼴 42종)</summary><div class="vs-in"><div id="vsFonts"></div><p class="vs-note">모든 글꼴은 구글 폰트의 무료(SIL OFL) 글꼴이에요.</p></div></details>
-  <details open><summary>④ 글자 꾸미기</summary><div class="vs-in">
+  <details open class="vs-pane" data-tab="font" id="vsFontBox"><summary>③ 글꼴 (무료 글꼴 42종)</summary><div class="vs-in"><div id="vsFonts"></div><p class="vs-note">모든 글꼴은 구글 폰트의 무료(SIL OFL) 글꼴이에요.</p></div></details>
+  <details open class="vs-pane" data-tab="text"><summary>④ 글자 꾸미기</summary><div class="vs-in">
    <label>글자 크기</label><input type="range" id="vsScale" min="60" max="160" value="100">
    <label style="margin-top:10px">글자 색</label><div class="vs-row" id="vsTcolor"></div>
    <label style="margin-top:10px" for="vsAlign">정렬</label>
@@ -261,14 +272,14 @@
    <label class="vs-ck"><input type="checkbox" id="vsMark" disabled> 십자가로세로 워터마크</label>
    <p class="vs-note" id="vsMarkNote"></p>
   </div></details>
-  <details><summary>⑤ 장식 (십자가·비둘기·테두리·효과)</summary><div class="vs-in">
+  <details open class="vs-pane" data-tab="deco"><summary>⑤ 장식 (십자가·비둘기·테두리·효과)</summary><div class="vs-in">
    <label>글 위 장식 <span style="font-weight:400;color:#889">(직접 그린 도안)</span></label><div class="vs-row" id="vsOrn"></div>
    <label style="margin-top:10px">테두리</label><div class="vs-row" id="vsFrame"></div>
    <label style="margin-top:10px">분위기 효과</label><div class="vs-row" id="vsFx"></div>
    <label style="margin-top:10px">장식 색</label><div class="vs-row" id="vsDcolor"></div>
   </div></details>
-  <details id="vsCustBox"><summary>⑥ ✍️ 내가 쓴 말씀 직접 입력 <span class="vs-pro">후원 기능</span></summary><div class="vs-in vs-cust" id="vsCust"></div></details>
-  <details><summary>⑦ 다른 말씀으로 바꾸기</summary><div class="vs-in">
+  <details open class="vs-pane" data-tab="more" id="vsCustBox"><summary>⑥ ✍️ 내가 쓴 말씀 직접 입력 <span class="vs-pro">후원 기능</span></summary><div class="vs-in vs-cust" id="vsCust"></div></details>
+  <details open class="vs-pane" data-tab="more"><summary>⑦ 다른 말씀으로 바꾸기</summary><div class="vs-in">
    <label for="vsPick">구절 선택</label><input list="vsRefs" id="vsPick" placeholder="예: 시편 23:1"><datalist id="vsRefs"></datalist>
    <p class="vs-note">원하는 구절을 목록에서 골라도 되고, 위의 '말씀 뽑기'로 다시 뽑아도 돼요.</p>
   </div></details>
