@@ -626,15 +626,6 @@
   </url>
   <!-- NYGUIDE-END -->
 
-  <!-- TODAY-START -->
-  <url>
-    <loc>https://crossero.com/today/</loc>
-    <lastmod>2026-10-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- TODAY-END -->
-
   <!-- SEASON-START -->
   <url>
     <loc>https://crossero.com/verse/new-year/</loc>
@@ -3060,4 +3051,13 @@
     <priority>0.8</priority>
   </url>
   <!-- GUIDES-END -->
+
+  <!-- TODAY-START -->
+  <url>
+    <loc>https://crossero.com/today/</loc>
+    <lastmod>2026-10-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- TODAY-END -->
 </urlset>

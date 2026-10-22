@@ -49,6 +49,15 @@ def summary_of(ref):
     return c["who"], first
 
 
+TODAY_FAQ = [
+    ("오늘의 말씀은 어떻게 정해지나요?", "준비된 성경 구절 목록을 정해진 순서로 돌려 가며 날짜마다 한 구절씩 보여 줍니다. 같은 날에는 누구에게나 같은 말씀이 나옵니다."),
+    ("오늘의 말씀은 몇 시에 바뀌나요?", "한국 시간 기준으로 자정에 다음 날 말씀으로 바뀝니다."),
+    ("오늘의 말씀으로 카드를 만들 수 있나요?", "네, 아래의 '사진·글꼴로 꾸며 저장' 버튼을 누르면 사진과 글꼴을 골라 카카오톡·인스타그램·배경화면·인쇄용 카드로 저장할 수 있습니다. 모두 무료입니다."),
+    ("오늘의 말씀을 직접 뽑고 싶어요.", "말씀 뽑기 페이지에서 위로·평안·용기·감사·소망 같은 주제별로 말씀을 뽑을 수 있습니다. 뽑힌 말씀은 점괘가 아니라 묵상의 시작입니다."),
+    ("성경 본문은 어떤 번역인가요?", "저작권이 만료된 성경전서 개역한글판을 사용합니다."),
+]
+
+
 def render(day, data):
     by_ref = {d["ref"]: d for d in data}
     refs = order(data)
@@ -63,7 +72,8 @@ def render(day, data):
     desc = f"{ko_date(day)}의 말씀은 {today_ref}입니다. \"{cur['text'][:40]}…\" 오늘의 말씀 카드를 책갈피로 저장하고 나눠 보세요."
     ld = '<script type="application/ld+json">' + json.dumps({
         "@context": "https://schema.org", "@type": "WebPage", "name": "오늘의 말씀", "url": SITE + path,
-        "inLanguage": "ko", "dateModified": day.isoformat(), "description": desc}, ensure_ascii=False) + "</script>"
+        "inLanguage": "ko", "dateModified": day.isoformat(), "description": desc}, ensure_ascii=False) + "</script>" + \
+        '<script type="application/ld+json">' + json.dumps({"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in TODAY_FAQ]}, ensure_ascii=False) + "</script>"
     h = head(title, desc, path, ld, f"{SITE}/images/verse/{verse_slug(today_ref)}.jpg").replace(NAV, NAV.replace(" nav-active", "")).replace('og:type" content="article"', 'og:type" content="website"')
     h = h.replace("</head>", f"<style>{bv.CSS}\n.tday{{font-size:15px;color:#6b7b8d;margin:4px 0 0}}.vwrap{{max-width:var(--w-read,820px)}}.vcard,.vactions{{max-width:560px}}.past a{{color:inherit}}</style>\n</head>", 1)
     sm = summary_of(today_ref)
@@ -80,6 +90,8 @@ def render(day, data):
         r = ref_for(dd, refs)
         past += f'<a class="card" href="/verse/?v={esc(r)}" data-ga="today_past_click"><b>{esc(r)}</b><span>{dd.month}월 {dd.day}일({WEEK[dd.weekday()]}) · {esc(by_ref[r]["text"][:26])}…</span></a>'
     prints = "".join('<div class="pc"><div class="pt"></div><div class="pr"></div><div class="pf">십자가로세로 · crossero.com</div></div>' for _ in range(4))
+    import html as _h
+    faq_html = "".join(f"<details><summary>{_h.escape(q)}</summary><p>{_h.escape(a)}</p></details>" for q, a in TODAY_FAQ)
     body = f"""<main class="vwrap">
 <div class="crumb" style="text-align:left"><a href="/">홈</a> › 오늘의 말씀</div>
 <span class="badge">매일 새로운 말씀</span>
@@ -100,6 +112,7 @@ def render(day, data):
 <a class="cta" href="/verse/" data-ga="today_to_draw" style="margin-top:8px">🎴 다른 말씀도 뽑아 보기<small>위로·평안·용기·감사·소망 등 12가지 주제</small></a>
 <h2 style="text-align:left;margin-top:34px">지난 7일의 말씀</h2>
 <div class="cards past" style="text-align:left">{past}</div>
+<h2 style="text-align:left;margin-top:34px">자주 묻는 질문</h2><div class="faq" style="text-align:left;max-width:760px">{faq_html}</div>
 <p class="vnote">성경 본문은 성경전서 개역한글판(대한성서공회)을 사용했습니다. 개인 묵상과 소모임 나눔을 위한 용도로 제공하며, 판매용으로 이용하실 수 없습니다. 오늘의 말씀은 매일 아침 바뀝니다.</p>
 <div class="vprint" aria-hidden="true">{prints}</div>
 </main>"""
