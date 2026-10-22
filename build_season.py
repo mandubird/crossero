@@ -174,7 +174,7 @@ def render(key, cfg, text):
 <div class="cards" style="text-align:left">{''.join(f'<a class="card" href="/verse/{k}/"><b>{c["emoji"]} {esc(c["label"])}</b><span>{esc(c["sub"])}</span></a>' for k, c in others)}
 <a class="card" href="/verse/"><b>📖 주제별 말씀 뽑기</b><span>위로·평안·용기·감사·소망 등 12가지 주제</span></a>
 <a class="card" href="/today/"><b>📅 오늘의 말씀</b><span>매일 아침 바뀌는 말씀 한 장</span></a>
-{'<a class="card" href="/christmas/"><b>🎭 성탄절 성극 대본</b><span>어린이 성극·낭독극 10편과 준비 가이드</span></a>' if cfg['topic'] == '성탄' else ''}</div>
+{'<a class="card" href="/christmas/"><b>🎭 성탄절 성극 대본</b><span>어린이 성극·낭독극·스킷 13편과 준비 가이드</span></a>' if cfg['topic'] == '성탄' else ''}</div>
 <p class="vnote">성경 본문은 성경전서 개역한글판(대한성서공회)을 사용했습니다. 개인 묵상과 소모임 나눔을 위한 용도로 제공하며, 판매용으로 이용하실 수 없습니다.</p>
 <div class="vprint" aria-hidden="true">{prints}</div>
 <div class="vprintall" aria-hidden="true"></div>

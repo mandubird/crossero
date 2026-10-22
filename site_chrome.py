@@ -41,7 +41,7 @@ FOOT_COLS = [
                    ("십자말풀이 하는 법", "/how-to-crossword.html"), ("교사 허브", "/teachers/"), ("주일학교 자료", "/sunday-school-materials.html"),
                    ("교회·주일학교 활용", "/church-bulletin-puzzle.html")]),
     ("십자가로세로", [("서비스 소개", "/about.html"), ("후원하기", "/support.html"), ("⭐ 후원자", "/supporters.html"), ("FAQ", "/faq.html"),
-                  ("콘텐츠 제작 원칙", "/editorial-policy.html"), ("검수·의견 보내기", "/feedback/"), ("이용약관", "/terms.html"), ("개인정보처리방침", "/privacy.html"),
+                  ("콘텐츠 제작 원칙", "/editorial-policy.html"), ("홍보·제휴 문의", "/partner.html"), ("검수·의견 보내기", "/feedback/"), ("이용약관", "/terms.html"), ("개인정보처리방침", "/privacy.html"),
                   ("문의", "mailto:mandubird@naver.com")]),
 ]
 

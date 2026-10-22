@@ -213,8 +213,57 @@ def howto():
                 "십자말풀이(가로세로 낱말퀴즈) 기본 규칙, 단계별 푸는 요령, 한글 크로스워드의 특징과 유래를 쉽게 정리했습니다. 초보도 바로 시작할 수 있어요.", body, faq_ld(faqs, howto_ld))
 
 
+def partner():
+    import urllib.parse as up
+    mail = "mailto:mandubird@naver.com?subject=" + up.quote("[십자가로세로] 홍보·제휴 문의") + "&body=" + up.quote("단체·행사·서비스 이름:\n소개하고 싶은 내용(일정·장소·대상):\n안내 링크:\n연락받을 방법:\n")
+    faqs = [
+        ("홍보 비용은 얼마인가요?", "정해진 요금표는 없습니다. 소개 형태, 게재 기간, 노출 위치에 따라 문의 주시면 협의합니다. 행사 규모와 공익성에 따라 무료 소개로 진행하기도 합니다."),
+        ("어떤 곳에 소개되나요?", "성경 공부·교회 교육과 관련된 안내 영역과 안내 글에 행사명, 일정, 장소, 대상, 신청 링크를 정리해 소개하는 방식을 우선 검토합니다. 퍼즐 풀이 화면과 본문 사이에 광고 배너를 넣지 않습니다."),
+        ("개인 정보를 받나요?", "문의는 메일로만 받고 별도의 입력 양식이나 회원 정보 수집은 하지 않습니다. 후원자 정보는 홍보 목적으로 사용하거나 제공하지 않습니다."),
+        ("게재를 거절하는 경우가 있나요?", "있습니다. 성경적 정체성과 맞지 않거나 과장·허위 표현, 다단계·투자 권유, 정치적 선전, 개인 정보를 모으는 서비스는 소개하지 않습니다. 게재 여부는 사이트 운영 기준에 따라 결정합니다."),
+        ("광고라는 표시가 붙나요?", "네. 홍보로 게재하는 내용은 읽는 분이 알 수 있도록 '홍보' 또는 '제휴' 표시를 붙입니다."),
+    ]
+    ld = faq_ld(faqs)
+    body = f"""
+<div class="crumb"><a href="/">홈</a> › 홍보·제휴 문의</div>
+<h1>홍보·제휴 문의</h1>
+<div class="summary">성경 공부와 교회 교육에 도움이 되는 행사, 교육 자료, 출판물, 공익 캠페인을 소개합니다. 문의는 메일로 받습니다.</div>
+
+<h2>소개할 수 있는 내용</h2>
+<ul class="refs">
+<li><b>행사·세미나</b> — 성경 세미나, 성경학교, 교사 강습회, 기독교 전시회 등 (행사명·일정·장소·대상·신청 링크)</li>
+<li><b>교육 자료·출판물</b> — 성경 공부 교재, 주일학교 자료, 기독교 교육 서비스</li>
+<li><b>공익 캠페인</b> — 어린이 보호, 나눔, 사회 공헌 활동 등 공개된 캠페인 안내</li>
+</ul>
+
+<h2>소개하지 않는 내용</h2>
+<ul class="refs">
+<li>과장·허위 표현이 있는 광고, 다단계·투자 권유</li>
+<li>정치적 선전, 특정 인물·단체 비방</li>
+<li>방문자의 개인 정보를 모으는 서비스</li>
+<li>성경적 정체성과 맞지 않는 상품과 서비스</li>
+</ul>
+
+<h2>진행 방법</h2>
+<ol class="refs">
+<li>아래 메일로 단체·행사 이름, 소개하고 싶은 내용, 안내 링크를 보내 주세요.</li>
+<li>사이트 운영 기준에 맞는지 검토하고 답을 드립니다.</li>
+<li>소개 형태와 기간, 비용(필요한 경우)을 협의합니다.</li>
+<li>게재할 때 '홍보' 또는 '제휴' 표시를 붙이고, 기간이 끝나면 내립니다.</li>
+</ol>
+<p><a class="cta" href="{mail}" data-ga="partner_mail">✉️ 홍보·제휴 메일 보내기<small>mandubird@naver.com</small></a></p>
+
+<div class="note">현재 상시 배너 광고는 운영하지 않습니다. 단체의 로고와 홍보물은 사용 허락을 받은 경우에만 게재하며, 제휴나 후원 관계가 없는 단체가 있는 것처럼 보이게 하지 않습니다. 문의는 메일로만 받고 별도의 양식으로 개인 정보를 수집하지 않습니다.</div>
+
+<div class="faq"><h2>자주 묻는 질문</h2>{"".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in faqs)}</div>
+<p class="note">사이트의 광고와 후원 운영 원칙은 <a href="/editorial-policy.html">콘텐츠 제작 원칙</a>에서 볼 수 있습니다.</p>
+"""
+    return page("/partner.html", "홍보·제휴 문의 - 기독교 행사·교육 자료 소개 | 십자가로세로",
+                "성경 공부와 교회 교육에 도움이 되는 행사, 세미나, 교육 자료, 출판물, 공익 캠페인 홍보·제휴 문의 안내입니다. 문의는 메일로만 받습니다.", body, ld)
+
+
 if __name__ == "__main__":
     for name, fn in (("church-bulletin-puzzle.html", church), ("editorial-policy.html", policy),
-                     ("bible-crossword.html", bible_crossword), ("how-to-crossword.html", howto)):
+                     ("bible-crossword.html", bible_crossword), ("how-to-crossword.html", howto), ("partner.html", partner)):
         open(os.path.join(ROOT, name), "w", encoding="utf-8").write(fn())
     print("생성 완료")

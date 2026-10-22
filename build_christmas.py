@@ -23,9 +23,10 @@ CSS = """<style>
 </style>"""
 
 AGE_GROUPS = [("유치부·유년부", ["first-christmas", "annunciation", "little-shepherd"]), ("초등부", ["bethlehem-inn", "shepherds-night", "wise-men", "simeon-anna"]),
-              ("청소년·청년·장년·가정", ["reading-luke2", "reading-matthew2", "interview"])]
+              ("청소년·청년·장년·가정", ["reading-luke2", "reading-matthew2", "interview"]),
+              ("짧은 스킷(촌극) 3~4분", ["gift-shop-skit", "busy-christmas-skit", "empty-chair-skit"])]
 GUIDE_FAQ = [
-    ("성탄 연극 대본이나 스킷드라마로도 쓸 수 있나요?", "네. 성극 대본은 성탄 연극 대본으로 그대로 쓸 수 있습니다. 짧은 순서가 필요하면 5분짜리 '첫 성탄 이야기'를 스킷처럼 올리고, 시간이 있으면 목자·박사 이야기 같은 초등부 대본을 쓰세요."),
+    ("성탄 연극 대본이나 스킷드라마로도 쓸 수 있나요?", "네. 성극 대본은 성탄 연극 대본으로 그대로 쓸 수 있습니다. 짧은 순서가 필요하면 3~4분짜리 스킷(성탄 선물 가게, 바쁜 성탄 준비, 빈 의자 하나)을 쓰거나 5분짜리 '첫 성탄 이야기'를 올려 보세요."),
     ("성탄절 성극은 언제부터 준비하면 되나요?", "보통 공연 4주 전에 대본을 정하고, 3주 전 배역을 확정해 읽기 연습을 시작하며, 1주 전에 의상과 소품을 포함한 리허설을 하면 여유 있게 마칠 수 있습니다."),
     ("대본을 외우기 어려운 어린이는 어떻게 하나요?", "대사가 한두 줄인 역을 맡기거나 해설이 읽어 주는 방식으로 진행하고, 낭독극 대본을 활용하면 외우지 않고도 참여할 수 있습니다."),
     ("성경에 없는 상상 대사를 넣어도 되나요?", "연극적 재미를 위해 가능하지만, 성경 본문과 구별하는 것이 좋습니다. 이 사이트의 대본은 상상 대사를 ✱ 표시로 구분했습니다."),
@@ -82,7 +83,7 @@ def render_all(ctx):
     # ----- 허브
     path = "/christmas/"
     title = "성탄절 성극 대본 · 성탄 연극 대본 - 성탄 발표회, 어린이 주일학교 | 십자가로세로"
-    desc = "성탄절 성극·성탄 연극·성탄 발표회 대본 10편(유치부·초등부·청소년·가정 낭독극)과 준비 가이드, 소품 도안, 성탄 활동지를 무료로 제공합니다. 교회와 주일학교에서 인쇄해 쓸 수 있는 성경 기반 어린이 성극 대본입니다."
+    desc = "성탄절 성극·성탄 연극·성탄 발표회 대본 13편(유치부·초등부·청소년·가정 낭독극·짧은 스킷)과 준비 가이드, 소품 도안, 성탄 활동지를 무료로 제공합니다. 교회와 주일학교에서 인쇄해 쓸 수 있는 성경 기반 어린이 성극 대본입니다."
     faq = GUIDE_FAQ + [("이 대본은 어디서 가져온 건가요?", "십자가로세로가 직접 작성했거나 저작권이 만료된 개역한글 성경 본문을 그대로 사용한 대본입니다. 다른 사이트의 대본을 옮긴 것이 아닙니다."),
                        ("교회에서 인쇄해서 써도 되나요?", "교회·주일학교·가정에서의 비상업적 사용은 자유롭게 인쇄해 쓰셔도 됩니다. 판매나 재배포는 하지 말아 주세요.")]
     ld = "".join('<script type="application/ld+json">' + json.dumps(x, ensure_ascii=False) + "</script>\n" for x in (
@@ -92,7 +93,7 @@ def render_all(ctx):
     out = [head(title, desc, path, ld).replace("</head>", CSS + "\n</head>", 1), '<main class="wrap">']
     out.append('<div class="crumb"><a href="/">홈</a> › 성탄 성극</div>')
     out.append('<h1>🎭 성탄절 성극 대본 모음</h1><div class="sub">크리스마스 성극, 이렇게 준비해 보세요</div>')
-    out.append('<div class="summary">성탄절 성극 대본 10편을 연령별로 모았습니다. 모두 성경 본문을 바탕으로 십자가로세로가 직접 작성했거나 개역한글 본문을 그대로 낭독하도록 구성했습니다. 교회 주일학교와 가정 예배에서 인쇄해 사용하세요.</div>')
+    out.append('<div class="summary">성탄절 성극 대본 10편과 3~4분 스킷 3편을 연령별로 모았습니다. 모두 성경 본문을 바탕으로 십자가로세로가 직접 작성했거나 개역한글 본문을 그대로 낭독하도록 구성했습니다. 교회 주일학교와 가정 예배에서 인쇄해 사용하세요.</div>')
     out.append('<a class="cta" href="/christmas/guide.html" data-ga="christmas_guide">📋 성극 준비 가이드 보기<small>일정, 배역, 소품, 무대, 연습 팁 한눈에</small></a>')
     out.append('<a class="cta" href="/christmas/puzzles.html" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)" data-ga="christmas_puzzles">🧩 성탄 가로세로 퍼즐<small>탄생·목자·박사·마리아와 요셉·상식 퍼즐 온라인으로 풀기</small></a>')
     out.append('<a class="cta" href="/christmas/activities.html" style="background:linear-gradient(135deg,#059669,#047857)" data-ga="christmas_acts">🎨 성탄 활동지 인쇄하기<small>색칠·미로·낱말 찾기·빈칸 채우기·OX 퀴즈 PDF 무료</small></a>')
@@ -155,7 +156,7 @@ def render_all(ctx):
         ("angel", "천사 날개와 후광", "날개 한 쌍과 후광 머리띠 도안입니다.", ["annunciation", "shepherds-night", "first-christmas"]),
         ("manger", "구유와 아기 예수님", "구유를 접어 세우고 아기 포대기를 오려 올려 놓는 도안입니다.", ["bethlehem-inn", "first-christmas", "simeon-anna"]),
         ("gifts", "동방 박사의 선물 상자", "황금·유향·몰약 상자 세 개를 색칠해 오려 선물로 사용합니다.", ["wise-men", "reading-matthew2"]),
-        ("nametags", "배역 이름표", "10개 대본에 나오는 모든 배역의 이름표입니다. 오려서 목걸이처럼 겁니다.", [s["slug"] for s in SCRIPTS]),
+        ("nametags", "배역 이름표", "성극 대본 10편에 나오는 모든 배역의 이름표입니다. 오려서 목걸이처럼 겁니다.", [s["slug"] for s in SCRIPTS]),
         ("poster", "성극 안내 포스터(빈칸 쓰기)", "제목, 일시, 장소, 참여자를 직접 써서 교회 게시판에 붙이는 포스터입니다.", []),
     ]
     path = "/christmas/props.html"
@@ -251,7 +252,7 @@ def render_all(ctx):
     out.append("<h2>주제별 성탄 퍼즐</h2>")
     for k, t, lv, d_ in PZ:
         out.append(f'<a class="cx-card" href="/play.html?id={k}" data-ga="christmas_puzzle" data-ga-label="{k}"><b>{esc(t)}</b><em>{lv}</em><span>{esc(d_)} — 퍼즐 풀기 →</span></a>')
-    out.append('<h2>함께 쓰면 좋은 자료</h2><div class="cards"><a class="card" href="/christmas/"><b>🎭 성탄 성극 대본</b><span>10편</span></a><a class="card" href="/christmas/activities.html"><b>🎨 성탄 활동지</b><span>색칠·미로·퀴즈</span></a><a class="card" href="/christmas/props.html"><b>✂️ 소품 도안</b><span>별·왕관·구유</span></a><a class="card" href="/verse/christmas/"><b>⭐ 성탄 말씀 뽑기</b><span>말씀 카드</span></a></div>')
+    out.append('<h2>함께 쓰면 좋은 자료</h2><div class="cards"><a class="card" href="/christmas/"><b>🎭 성탄 성극 대본</b><span>13편</span></a><a class="card" href="/christmas/activities.html"><b>🎨 성탄 활동지</b><span>색칠·미로·퀴즈</span></a><a class="card" href="/christmas/props.html"><b>✂️ 소품 도안</b><span>별·왕관·구유</span></a><a class="card" href="/verse/christmas/"><b>⭐ 성탄 말씀 뽑기</b><span>말씀 카드</span></a></div>')
     out.append('<h2>자주 묻는 질문</h2><div class="faq">' + "".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in faq) + "</div>")
     out.append("</main>")
     out.append(tail())
