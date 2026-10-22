@@ -331,7 +331,23 @@
     var w = Math.round(p.w * sc), h = Math.round(p.h * sc);
     var S2 = S.scale; render(cv, w, h);
     cv.style.aspectRatio = p.w + ' / ' + p.h;
+    try { var mc = $('vsMiniCv'); if (mc) { mc.width = 192; mc.height = Math.round(192 * h / w); mc.getContext('2d').drawImage(cv, 0, 0, mc.width, mc.height); } } catch (e) {}
     $('vsInfo').textContent = p.n + ' · ' + p.w + '×' + p.h + 'px' + (p.mm ? ' · ' + p.mm : '');
+  }
+  /* 디자인 되돌리기(이전 디자인) */
+  var HIST = [], DKEYS = ['bg', 'font', 'orn', 'frame', 'fx', 'dcolor', 'dim', 'tcolor', 'align', 'scale', 'showRef', 'box', 'shadow', 'pimg', 'pcredit'];
+  function snap() { var o = {}; DKEYS.forEach(function (k) { o[k] = (k === 'bg' && S.bg) ? JSON.parse(JSON.stringify(S.bg)) : S[k]; }); return o; }
+  function pushHist() { HIST.push(snap()); if (HIST.length > 20) HIST.shift(); backBtn(); }
+  function backBtn() { var b = $('vsBack'); if (b) b.disabled = !HIST.length; }
+  function popHist() { var o = HIST.pop(); if (o) { DKEYS.forEach(function (k) { S[k] = o[k]; }); } backBtn(); return !!o; }
+  /* 저장: 휴대폰에서는 공유 창(사진첩 저장 포함)을 열고, 안 되면 파일로 내려받기 */
+  var isTouch = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+  function saveImage(b, name, type) {
+    if (isTouch && navigator.canShare && window.File) {
+      var f = new File([b], name, { type: type });
+      try { if (navigator.canShare({ files: [f] })) { return navigator.share({ files: [f] }).then(function () { return 'shared'; }, function (e) { return (e && e.name === 'AbortError') ? 'cancel' : (download(b, name), 'download'); }); } } catch (e) {}
+    }
+    download(b, name); return Promise.resolve('download');
   }
   function refresh() {
     persist();
@@ -507,7 +523,8 @@
 
     syncUI = function () { mark(); fmark(); cmark(); if (window.__dmark) window.__dmark(); try { $('vsDim').value = S.dim; $('vsScale').value = Math.round(S.scale * 100); } catch (e) {} };
     var ctl = root.querySelector('.vs-ctl'); if (ctl) ctl.addEventListener('click', function () { touched = true; });
-    if ($('vsShuffle')) $('vsShuffle').addEventListener('click', function () { touched = false; applyRandom().then(function () { syncUI(); refresh(); track('studio_shuffle'); }); });
+    if ($('vsBack')) $('vsBack').addEventListener('click', function () { if (popHist()) { touched = true; syncUI(); refresh(); track('studio_back'); } });
+    if ($('vsShuffle')) $('vsShuffle').addEventListener('click', function () { touched = false; pushHist(); applyRandom().then(function () { syncUI(); refresh(); track('studio_shuffle'); }); });
     if ($('vsLink')) $('vsLink').addEventListener('click', function () {
       var u = deepLink(), b = $('vsLink');
       var done = function () { b.textContent = '✅ 링크 복사됨'; setTimeout(function () { b.textContent = '🔗 링크 복사'; }, 1800); };
@@ -517,6 +534,7 @@
 
     // 스타일 랜덤
     $('vsRandom').addEventListener('click', function () {
+      pushHist();
       var r = Math.random;
       var usedPhoto = false;
       if (PH && r() < 0.7) { var pp = PH.photos[(r() * PH.photos.length) | 0]; usePhoto(pp); usedPhoto = true; }
@@ -525,8 +543,8 @@
       var D2 = window.crsDeco; if (D2) { S.orn = r() < 0.55 ? D2.ORN[1 + ((r() * (D2.ORN.length - 1)) | 0)].k : 'none'; S.frame = r() < 0.4 ? D2.FRAMES[1 + ((r() * (D2.FRAMES.length - 1)) | 0)].k : 'none'; S.fx = r() < 0.35 ? D2.FX[1 + ((r() * (D2.FX.length - 1)) | 0)].k : 'none'; S.dcolor = 'text'; if (window.__dmark) window.__dmark(); }
       mark(); fmark(); cmark(); track('studio_random'); refresh();
     });
-    $('vsSave').addEventListener('click', function () { exportBlob('image/png').then(function (b) { download(b, fname('png')); pgDone(); track('studio_save', { preset: S.preset, font: S.font, bg: S.bg.type === 'scene' ? S.bg.k : S.bg.type, donor: isDonor() }); }); });
-    $('vsSaveJpg').addEventListener('click', function () { exportBlob('image/jpeg').then(function (b) { download(b, fname('jpg')); pgDone(); track('studio_save', { preset: S.preset, type: 'jpg' }); }); });
+    $('vsSave').addEventListener('click', function () { exportBlob('image/png').then(function (b) { return saveImage(b, fname('png'), 'image/png'); }).then(function (r) { if (r === 'cancel') return; pgDone(); track('studio_save', { preset: S.preset, font: S.font, bg: S.bg.type === 'scene' ? S.bg.k : S.bg.type, donor: isDonor() }); }); });
+    $('vsSaveJpg').addEventListener('click', function () { exportBlob('image/jpeg').then(function (b) { return saveImage(b, fname('jpg'), 'image/jpeg'); }).then(function (r) { if (r === 'cancel') return; pgDone(); track('studio_save', { preset: S.preset, type: 'jpg' }); }); });
     $('vsShare').addEventListener('click', function () {
       exportBlob('image/png').then(function (b) {
         var f = new File([b], fname('png'), { type: 'image/png' });
@@ -664,7 +682,7 @@
         if (tok !== stripTok) return;
         return api.renderCard(Object.assign(withBase(r), { verse: S.verse, w: tw, h: th, thumb: true, type: 'image/jpeg', q: 0.8, mark: false })).then(function (url) {
           if (tok !== stripTok) return; var im = new Image(); im.alt = '다른 디자인 미리보기'; im.src = url; btns[i].appendChild(im); btns[i].classList.remove('ld');
-          btns[i].onclick = function () { touched = true; applyDesign(withBase(r)).then(function () { syncUI(); refresh(); track('studio_strip_pick'); }); };
+          btns[i].onclick = function () { touched = true; pushHist(); applyDesign(withBase(r)).then(function () { syncUI(); refresh(); track('studio_strip_pick'); }); };
         }).catch(function () { btns[i].classList.remove('ld'); });
       });
     }, Promise.resolve());
@@ -672,7 +690,7 @@
   var api = {
     setVerse: function (d, o) {
       S.verse = d; root.style.display = 'block';
-      var pr = (o && o.random && !touched) ? applyRandom() : Promise.resolve();
+      var pr = (o && o.random && !touched) ? (pushHist(), applyRandom()) : Promise.resolve();
       pr.then(function () { syncUI(); refresh(); buildStrip(); });
     },
     applyDesign: applyDesign,
@@ -696,6 +714,22 @@
     },
     state: S
   };
+  /* 모바일: 아래 꾸미기 메뉴를 보는 동안 카드가 화면 밖으로 나가면 오른쪽에 작은 미리보기를 띄운다 */
+  (function () {
+    try {
+      var cvEl = $('vsCanvas'); if (!cvEl) return;
+      var m = document.createElement('div'); m.className = 'vs-mini'; m.id = 'vsMini'; m.setAttribute('role', 'button'); m.setAttribute('aria-label', '카드 미리보기, 누르면 카드 위치로 이동');
+      m.innerHTML = '<canvas id="vsMiniCv" width="192" height="192"></canvas><span>미리보기</span>'; document.body.appendChild(m);
+      m.addEventListener('click', function () { cvEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+      var out = false;
+      function upd() {
+        var r = cvEl.getBoundingClientRect(), rr = root.getBoundingClientRect(), vh = window.innerHeight;
+        var cardOff = r.bottom < 70 || r.top > vh - 20, inStudio = rr.top < vh * 0.6 && rr.bottom > 120 && root.offsetParent !== null;
+        m.classList.toggle('on', cardOff && inStudio && window.innerWidth < 900);
+      }
+      addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); setInterval(upd, 800);
+    } catch (e) {}
+  })();
   window.crsStudio = api;
   build();
   refresh();

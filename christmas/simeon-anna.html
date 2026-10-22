@@ -106,10 +106,10 @@
 .pg-pill img{width:34px;height:auto;image-rendering:pixelated;display:block}
 .pg-side{display:none!important}
 }
-.peek{position:fixed;right:0;top:112px;z-index:90;display:flex;align-items:flex-end;text-decoration:none!important;transform:translateX(0);animation:peek-in 7s ease-in-out infinite}
-.peek img{width:62px;height:auto;display:block;margin-right:-8px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+.peek{position:fixed;right:0;top:112px;height:78px;pointer-events:none;-webkit-tap-highlight-color:transparent;z-index:90;display:flex;align-items:flex-end;text-decoration:none!important;transform:translateX(0);animation:peek-in 7s ease-in-out infinite}
+.peek img{pointer-events:auto;width:62px;height:auto;display:block;margin-right:-8px;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
 .peek-b{background:#fff;color:#c2410c;border:2px solid #fdba74;border-radius:14px 14px 0 14px;padding:6px 10px;font-size:13px;font-weight:800;margin-bottom:34px;box-shadow:0 3px 10px rgba(0,0,0,.15);white-space:nowrap;animation:peek-blink 1.6s ease-in-out infinite}
-.peek-x{position:absolute;left:-6px;top:-8px;width:20px;height:20px;border-radius:50%;border:0;background:#556;color:#fff;font-size:12px;line-height:20px;padding:0;cursor:pointer;opacity:.0}
+.peek-x{pointer-events:auto;position:absolute;left:-6px;top:-8px;width:20px;height:20px;border-radius:50%;border:0;background:#556;color:#fff;font-size:12px;line-height:20px;padding:0;cursor:pointer;opacity:.0}
 .peek:hover .peek-x,.peek:focus-within .peek-x{opacity:.85}
 @keyframes peek-in{0%,12%{transform:translateX(105%)}22%,78%{transform:translateX(0)}90%,100%{transform:translateX(105%)}}
 @keyframes peek-blink{0%,100%{opacity:1}50%{opacity:.35}}

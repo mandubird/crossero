@@ -63,7 +63,7 @@ JS = r"""
     setTimeout(function(){
       clearInterval(iv); ov.style.opacity='0';
       setTimeout(function(){ if(ov.parentNode) ov.parentNode.removeChild(ov); busy=false; done(); },300);
-    }, reduce?1200:3200);
+    }, 3200);
   }
   function draw(){ ritual(drawNow); }
   function drawNow(){

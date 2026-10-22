@@ -131,6 +131,9 @@ CSS = """
 .vs-tabs button span{font-size:24px;line-height:1.1}.vs-tabs button.on{background:linear-gradient(135deg,#0b5cad,#0073e6);color:#fff;border-color:#0b5cad;box-shadow:0 6px 14px rgba(0,115,230,.35);transform:translateY(-1px)}
 .vs-tabbox{margin:16px 0 14px;padding:12px 12px 12px;background:linear-gradient(180deg,#eaf3ff,#f6faff);border:2px solid #b9d3f5;border-radius:18px}
 .vs-tabh{font-weight:800;font-size:16px;color:#0b3d73;margin:0 2px 10px}.vs-tabh span{font-weight:600;font-size:13px;color:#4a6fa5;margin-left:4px}
+.vs-act .vs-back{background:#fff;color:#0b5cad;border:1px solid #bcd3f0;margin-left:8px}.vs-act .vs-back:disabled{opacity:.4}
+.vs-mini{display:none}
+@media(max-width:899px){.vs-mini{position:fixed;right:10px;top:calc(var(--navh,52px) + 96px);z-index:70;width:96px;border-radius:12px;background:#fff;border:2px solid #0b5cad;box-shadow:0 8px 22px rgba(0,40,100,.35);padding:0;cursor:pointer;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .2s,transform .2s}.vs-mini.on{display:block;opacity:1;pointer-events:auto;transform:none}.vs-mini canvas{display:block;width:100%;height:auto}.vs-mini span{display:block;background:#0b5cad;color:#fff;font-size:11px;font-weight:800;text-align:center;padding:2px 0}}
 .vs-tabbox{position:sticky;top:var(--navh,52px);z-index:50;transition:box-shadow .2s}
 .vs-tabbox.stuck{box-shadow:0 6px 16px rgba(0,60,140,.22);padding:8px 10px;margin-top:8px}.vs-tabbox.stuck .vs-tabh{display:none}.vs-tabbox.stuck .vs-tabs button{padding:7px 2px 6px;font-size:13px}.vs-tabbox.stuck .vs-tabs button span{font-size:18px}
 @keyframes crsWig{0%,100%{transform:rotate(0)}15%{transform:rotate(-9deg)}35%{transform:rotate(8deg)}55%{transform:rotate(-6deg)}75%{transform:rotate(4deg)}}
@@ -227,7 +230,7 @@ JS = r"""
     setTimeout(function(){
       clearInterval(iv); ov.style.opacity='0';
       setTimeout(function(){ if(ov.parentNode) ov.parentNode.removeChild(ov); busy=false; done(); },300);
-    }, reduce?1200:3200);
+    }, 3200);
   }
   function draw(){ ritual(drawNow); }
   function drawNow(){
@@ -346,7 +349,7 @@ def render(data):
 <div class="vchips" id="vchips">{chips}</div>
 <div class="vbox" id="vbox" title="눌러서 뽑기">🎴</div>
 <button class="vbtn" id="vdraw" data-ga="verse_draw_click">🎴 말씀 뽑기</button>
-<p class="vnote" style="margin:8px 0 0">뽑힌 말씀은 점괘가 아니라 묵상의 시작이에요. <a href="/guide/bible-verse-drawing-guide/" data-ga="verse_to_drawguide">말씀 뽑기, 건강하게 쓰는 법</a></p>
+<p class="vnote" style="margin:8px 0 0">뽑힌 말씀은 묵상의 시작이에요. <a href="/guide/bible-verse-drawing-guide/" data-ga="verse_to_drawguide">말씀 뽑기, 건강하게 쓰는 법</a></p>
 <div class="vcard" id="vcard" style="display:none"><div class="vtag" id="vtag"></div><p class="vtext" id="vtext"></p><div class="vref" id="vref"></div><div class="vmark">십자가로세로 · crossero.com</div></div>
 <div class="vactions" id="vactions" style="display:none">
 <a class="vbtn sub" id="vmore" href="#" style="display:none;text-decoration:none" data-ga="verse_to_guide">📖 이 말씀 해설 읽기</a>
@@ -360,7 +363,7 @@ def render(data):
  <div class="vs-prev">
   <canvas id="vsCanvas" width="540" height="540"></canvas>
   <div id="vsInfo"></div>
-  <div class="vs-act" style="margin-bottom:8px"><button type="button" id="vsShuffle" class="vs-shuf" data-ga="studio_shuffle">🎲 다른 디자인으로</button></div>
+  <div class="vs-act" style="margin-bottom:8px"><button type="button" id="vsShuffle" class="vs-shuf" data-ga="studio_shuffle">🎲 다른 디자인으로</button><button type="button" id="vsBack" class="vs-back" data-ga="studio_back" disabled>↩ 이전 디자인</button></div>
   <div class="vs-act">
    <button type="button" id="vsSave" data-ga="studio_save_click">💾 이미지 저장</button>
    <button type="button" id="vsShare" class="alt" data-ga="studio_share_click">📤 공유하기</button>
@@ -373,14 +376,9 @@ def render(data):
   <p class="vs-note" style="text-align:center">공유가 안 되는 기기에서는 이미지가 저장됩니다. 저장한 사진을 카톡·인스타에 올리세요.</p>
  </div>
  <div class="vs-ctl">
-  <label style="font-size:16px">① 어디에 쓰실 건가요?</label>
-  <div class="vs-use" id="vsUse"></div>
-  <details class="vs-usemore"><summary>다른 크기 더 보기</summary><div class="vs-usegrid" id="vsUseMore"></div></details>
-  <p class="vs-note" id="vsUseNote" style="text-align:center;margin-bottom:6px"></p>
-  <select id="vsPreset" style="display:none" aria-hidden="true" tabindex="-1"></select>
-  <div class="vs-tabbox"><div class="vs-tabh">② 어떻게 꾸밀까요? <span>아래 버튼을 눌러 바꿔 보세요 👇</span></div>
+  <div class="vs-tabbox"><div class="vs-tabh">① 어떻게 꾸밀까요? <span>아래 버튼을 눌러 바꿔 보세요 👇</span></div>
   <div class="vs-tabs" id="vsTabs"><button type="button" class="on" data-t="bg"><span>🖼️</span>배경</button><button type="button" data-t="font"><span>🔤</span>글꼴</button><button type="button" data-t="text"><span>✍️</span>글자</button><button type="button" data-t="deco"><span>✨</span>장식</button><button type="button" data-t="more"><span>⋯</span>더보기</button></div></div>
-  <details open class="vs-pane cur" data-tab="bg"><summary>② 배경</summary><div class="vs-in">
+  <details open class="vs-pane cur" data-tab="bg"><summary>배경</summary><div class="vs-in">
    <label style="margin-top:2px">📷 사진 <span style="font-weight:400;color:#889">(무료 라이선스 사진 {NPH}장)</span></label>
    <div id="vsPhotoThemes" style="margin:6px 0 8px"></div>
    <div class="vs-phs" id="vsPhotos"></div>
@@ -396,8 +394,8 @@ def render(data):
    <label style="margin-top:12px">배경 어둡게 <span style="font-weight:400;color:#889">(글자가 잘 보이게)</span></label>
    <input type="range" id="vsDim" min="0" max="70" value="15">
   </div></details>
-  <details open class="vs-pane" data-tab="font" id="vsFontBox"><summary>③ 글꼴 (무료 글꼴 42종)</summary><div class="vs-in"><div id="vsFonts"></div><p class="vs-note">모든 글꼴은 구글 폰트의 무료(SIL OFL) 글꼴이에요.</p></div></details>
-  <details open class="vs-pane" data-tab="text"><summary>④ 글자 꾸미기</summary><div class="vs-in">
+  <details open class="vs-pane" data-tab="font" id="vsFontBox"><summary>글꼴 (무료 글꼴 42종)</summary><div class="vs-in"><div id="vsFonts"></div><p class="vs-note">모든 글꼴은 구글 폰트의 무료(SIL OFL) 글꼴이에요.</p></div></details>
+  <details open class="vs-pane" data-tab="text"><summary>글자 꾸미기</summary><div class="vs-in">
    <label>글자 크기</label><input type="range" id="vsScale" min="60" max="160" value="100">
    <label style="margin-top:10px">글자 색</label><div class="vs-row" id="vsTcolor"></div>
    <label style="margin-top:10px" for="vsAlign">정렬</label>
@@ -408,18 +406,25 @@ def render(data):
    <label class="vs-ck"><input type="checkbox" id="vsMark" disabled> 십자가로세로 워터마크</label>
    <p class="vs-note" id="vsMarkNote"></p>
   </div></details>
-  <details open class="vs-pane" data-tab="deco"><summary>⑤ 장식 (십자가·비둘기·테두리·효과)</summary><div class="vs-in">
+  <details open class="vs-pane" data-tab="deco"><summary>장식 (십자가·비둘기·테두리·효과)</summary><div class="vs-in">
    <label>글 위 장식 <span style="font-weight:400;color:#889">(직접 그린 도안)</span></label><div class="vs-row" id="vsOrn"></div>
    <label style="margin-top:10px">테두리</label><div class="vs-row" id="vsFrame"></div>
    <label style="margin-top:10px">분위기 효과</label><div class="vs-row" id="vsFx"></div>
    <label style="margin-top:10px">장식 색</label><div class="vs-row" id="vsDcolor"></div>
   </div></details>
-  <details open class="vs-pane" data-tab="more" id="vsCustBox"><summary>⑥ ✍️ 내가 쓴 말씀 직접 입력 <span class="vs-pro">후원 기능</span></summary><div class="vs-in vs-cust" id="vsCust"></div></details>
-  <details open class="vs-pane" data-tab="more"><summary>⑦ 다른 말씀으로 바꾸기</summary><div class="vs-in">
+  <details open class="vs-pane" data-tab="more" id="vsCustBox"><summary>✍️ 내가 쓴 말씀 직접 입력 <span class="vs-pro">후원 기능</span></summary><div class="vs-in vs-cust" id="vsCust"></div></details>
+  <details open class="vs-pane" data-tab="more"><summary>다른 말씀으로 바꾸기</summary><div class="vs-in">
    <label for="vsPick">구절 선택</label><input list="vsRefs" id="vsPick" placeholder="예: 시편 23:1"><datalist id="vsRefs"></datalist>
    <p class="vs-note">원하는 구절을 목록에서 골라도 되고, 위의 '말씀 뽑기'로 다시 뽑아도 돼요.</p>
   </div></details>
   <div class="vs-act" style="margin-top:8px"><button type="button" class="alt" id="vsRandom">🎲 스타일 랜덤으로 바꾸기</button></div>
+  <div class="vs-usebox" style="margin-top:16px;padding-top:14px;border-top:2px dashed #cfe0f5">
+  <label style="font-size:16px;margin-top:6px">② 어디에 쓰실 건가요? <span style="font-weight:600;font-size:13px;color:#4a6fa5">저장할 크기를 고르세요</span></label>
+  <div class="vs-use" id="vsUse"></div>
+  <details class="vs-usemore"><summary>다른 크기 더 보기</summary><div class="vs-usegrid" id="vsUseMore"></div></details>
+  <p class="vs-note" id="vsUseNote" style="text-align:center;margin-bottom:6px"></p>
+  <select id="vsPreset" style="display:none" aria-hidden="true" tabindex="-1"></select>
+  </div>
  </div>
 </div>
 <div class="vs-batch" id="church-print">
