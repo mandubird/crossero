@@ -373,6 +373,60 @@ def ox_pages():
     return draw(False), draw(True)
 
 
+def wrap_text(d, text, f, maxw):
+    lines, cur = [], ""
+    for ch in text:
+        if d.textlength(cur + ch, font=f) > maxw and cur:
+            lines.append(cur)
+            cur = ch.lstrip()
+        else:
+            cur += ch
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def skit_talk_pages():
+    """성탄 스킷 3편 뒤에 쓰는 이야기 나눔 활동지(성경 본문 + 관찰·해석·적용 질문 + 쓰기 칸)."""
+    sets = [
+        ("성탄 선물 가게", "초등 고학년·청소년", [("요한복음", 3, 16), ("누가복음", 2, 11)],
+         ["(관찰) 스킷에서 두 친구가 이야기한 가장 큰 선물은 무엇이었나요?", "(해석) 요한복음 3장 16절에서 하나님이 선물을 주신 이유는 무엇인가요?", "(적용) 올해 성탄에 하나님과 가족에게 어떤 감사를 전하고 싶나요?"]),
+        ("바쁜 성탄 준비", "청년·장년·가정", [("누가복음", 10, 41), ("누가복음", 10, 42), ("누가복음", 2, 19)],
+         ["(관찰) 엄마가 하던 일을 멈추게 된 계기는 무엇이었나요?", "(해석) 마르다와 마리아의 이야기에서 '한 가지'는 무엇을 가리킬까요?", "(적용) 이번 성탄 준비에서 내려놓고 싶은 것과 붙들고 싶은 것은 무엇인가요?"]),
+        ("빈 의자 하나", "초등 고학년~장년", [("요한계시록", 3, 20)],
+         ["(관찰) 식탁에 빈 의자를 남겨 둔 이유는 무엇이었나요?", "(해석) 문 밖에서 두드리시는 예수님을 모신다는 것은 무슨 뜻일까요?", "(적용) 내 마음의 문을 여는 일에서 오늘 할 수 있는 한 가지는 무엇인가요?"]),
+    ]
+    pages = []
+    for title, age, refs, qs in sets:
+        im, d = page()
+        head(d, "스킷 나눔지", title + " · " + age + " · 스킷을 본 뒤 함께 나누어요")
+        y = 430
+        d.text((220, y), "함께 읽을 말씀 (개역한글)", font=font(66, True), fill=INK, anchor="lm")
+        y += 90
+        for b, c, v in refs:
+            t = TEXT[(BIDX[b], c, v)]
+            for ln in wrap_text(d, f"{b} {c}:{v}  {t}", font(52), PW - 440):
+                d.text((240, y), ln, font=font(52), fill=(70, 55, 45), anchor="lm")
+                y += 74
+            y += 20
+        y += 40
+        for i, q in enumerate(qs):
+            for k, ln in enumerate(wrap_text(d, f"{i + 1}. {q}", font(56, True), PW - 440)):
+                d.text((220, y), ln, font=font(56, True), fill=INK, anchor="lm")
+                y += 80
+            for _ in range(2):
+                y += 90
+                d.line([(240, y), (PW - 220, y)], fill=(170, 150, 130), width=4)
+            y += 80
+        d.rounded_rectangle((220, y, PW - 220, y + 420), 40, outline=INK, width=LW)
+        d.text((280, y + 70), "이번 성탄에 내가 실천할 한 가지", font=font(58, True), fill=INK, anchor="lm")
+        d.line([(280, y + 230), (PW - 280, y + 230)], fill=(170, 150, 130), width=4)
+        d.line([(280, y + 340), (PW - 280, y + 340)], fill=(170, 150, 130), width=4)
+        foot(d)
+        pages.append(im)
+    return pages
+
+
 def save(name, imgs):
     os.makedirs(PDF_DIR, exist_ok=True)
     os.makedirs(IMG_DIR, exist_ok=True)
@@ -403,4 +457,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] == "skit":
+        save("skit-talk", skit_talk_pages())
+        print("스킷 나눔 활동지 생성")
+    else:
+        main()

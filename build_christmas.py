@@ -51,6 +51,7 @@ PROPS_FAQ = [
 ACTS_FAQ = [
     ("성탄 활동지는 무료인가요?", "네, 색칠 공부·미로·낱말 찾기·빈칸 채우기·순서 카드·OX 퀴즈 활동지를 A4 PDF로 무료로 받아 인쇄할 수 있습니다."),
     ("정답도 함께 있나요?", "미로, 낱말 찾기, 빈칸 채우기, OX 퀴즈는 정답 쪽이 함께 들어 있습니다. 교사용으로 따로 보관하세요."),
+    ("스킷 나눔지는 어떻게 쓰나요?", "성탄 스킷(성탄 선물 가게, 바쁜 성탄 준비, 빈 의자 하나)을 본 뒤 성경 본문을 함께 읽고 관찰·해석·적용 질문에 답하며 나누는 소그룹·가정용 활동지입니다. 한 장에 스킷 한 편씩 들어 있습니다."),
     ("어느 연령에 맞나요?", "색칠 공부와 순서 맞추기 카드는 유치부·유년부, 미로와 낱말 찾기는 초등, 빈칸 채우기와 OX 퀴즈는 초등 고학년·청소년에게 맞습니다."),
     ("성탄 예배에서 어떻게 쓰나요?", "성극 연습 전후 대기 시간이나 성탄 공과 복습 활동으로 10~20분 안에 쓸 수 있습니다. 성극 대본과 소품 도안도 함께 활용해 보세요."),
 ]
@@ -173,7 +174,7 @@ def render_all(ctx):
     out.append('<div class="crumb"><a href="/">홈</a> › <a href="/christmas/">성탄 성극</a> › 소품 도안</div>')
     out.append('<h1>✂️ 성탄 성극 소품 도안</h1><div class="sub">인쇄해서 색칠하고 오리면 바로 쓰는 A4 도안</div>')
     out.append('<div class="summary">별, 왕관, 양 머리띠, 천사 날개, 구유, 선물 상자, 배역 이름표, 안내 포스터 도안입니다. 두꺼운 종이(180g 이상)에 인쇄하면 튼튼하고, 어린이들이 직접 색칠하면 성극 준비 시간이 신앙 활동이 됩니다.</div>')
-    out.append('<a class="cta" href="/christmas/props/all.pdf" target="_blank" data-ga="christmas_props_all">📥 전체 도안 한 번에 받기 (PDF 10쪽)<small>모든 소품을 한 파일로 인쇄</small></a>')
+    out.append('<a class="cta" href="/christmas/props/all.pdf" target="_blank" data-ga="christmas_props_all">📥 전체 도안 한 번에 받기 (PDF 11쪽)<small>모든 소품을 한 파일로 인쇄</small></a>')
     for k, n, d_, slugs in PROPS:
         used = "".join(f'<a href="/christmas/{sl}.html" style="margin-right:8px">{esc(by_slug[sl]["title"])}</a>' for sl in slugs[:3])
         out.append(f'<div class="cx-card" style="display:flex;gap:14px;align-items:flex-start;cursor:default"><img src="/images/christmas/props-{k}.png" alt="{esc(n)} 도안 미리보기" loading="lazy" width="120" style="width:120px;height:auto;border:1px solid #eee;border-radius:8px;flex:none;background:#fff">'
@@ -196,10 +197,11 @@ def render_all(ctx):
         ("cloze", "빈칸 채우기 · 누가복음 2:8-14", "개역한글 본문의 핵심 낱말을 채웁니다(정답 쪽 포함).", "초등 고학년·청소년", True),
         ("sequence", "이야기 순서 맞추기 카드", "6장의 카드를 오려 탄생 이야기를 순서대로 놓습니다.", "유년부·초등", False),
         ("ox-quiz", "성탄 OX 퀴즈 10문제", "성경 구절 출처가 달린 정답 쪽이 포함된 퀴즈입니다.", "초등·청소년", True),
+        ("skit-talk", "스킷 이야기 나눔지 (3편)", "성탄 스킷 3편 뒤에 쓰는 성경 본문, 관찰·해석·적용 질문, 쓰기 칸이 있는 나눔지입니다.", "초등 고학년~장년", False),
     ]
     path = "/christmas/activities.html"
     title = "성탄 활동지 · 크리스마스 주일학교 활동지 - 색칠 공부·미로·낱말 찾기 무료 PDF | 십자가로세로"
-    desc = "성탄 주일학교 활동지를 A4 PDF로 무료 제공합니다. 크리스마스 색칠 공부, 미로, 낱말 찾기, 누가복음 빈칸 채우기, 이야기 순서 카드, OX 퀴즈(정답 포함)."
+    desc = "성탄 주일학교 활동지를 A4 PDF로 무료 제공합니다. 크리스마스 색칠 공부, 미로, 낱말 찾기, 누가복음 빈칸 채우기, 이야기 순서 카드, OX 퀴즈(정답 포함), 스킷 이야기 나눔지."
     ld = "".join('<script type="application/ld+json">' + json.dumps(x, ensure_ascii=False) + "</script>\n" for x in (
         {"@context": "https://schema.org", "@type": "CollectionPage", "name": "성탄 활동지", "description": desc, "inLanguage": "ko", "url": SITE + path,
          "hasPart": [{"@type": "LearningResource", "name": n, "url": f"{SITE}/christmas/activities/{k}.pdf", "encodingFormat": "application/pdf", "isAccessibleForFree": True, "audience": {"@type": "Audience", "audienceType": a}} for k, n, _, a, _ in ACTS]},
@@ -209,9 +211,9 @@ def render_all(ctx):
         _faq_ld(ACTS_FAQ)))
     out = [head(title, desc, path, ld, f"{SITE}/images/christmas/act-maze.png").replace("</head>", CSS + "\n</head>", 1), '<main class="wrap">']
     out.append('<div class="crumb"><a href="/">홈</a> › <a href="/christmas/">성탄 성극</a> › 활동지</div>')
-    out.append('<h1>🎨 성탄 활동지 모음</h1><div class="sub">색칠하고, 찾고, 풀어 보는 성탄 활동 8종</div>')
+    out.append('<h1>🎨 성탄 활동지 모음</h1><div class="sub">색칠하고, 찾고, 풀어 보고, 나누는 성탄 활동 9종</div>')
     out.append('<div class="summary">성탄 예배 전후 10~20분 활동으로 쓰기 좋은 활동지입니다. 연령에 맞춰 골라 인쇄하고, 정답이 있는 활동지는 정답 쪽이 함께 들어 있습니다(교사용으로 따로 보관하세요).</div>')
-    out.append('<a class="cta" href="/christmas/activities/all.pdf" target="_blank" data-ga="christmas_acts_all">📥 활동지 전체 한 번에 받기 (PDF 12쪽)<small>색칠 3종 · 미로 · 낱말 찾기 · 빈칸 채우기 · 순서 카드 · OX 퀴즈</small></a>')
+    out.append('<a class="cta" href="/christmas/activities/all.pdf" target="_blank" data-ga="christmas_acts_all">📥 활동지 전체 한 번에 받기 (PDF 12쪽)<small>색칠 3종 · 미로 · 낱말 찾기 · 빈칸 채우기 · 순서 카드 · OX 퀴즈 (스킷 나눔지는 아래 별도 PDF)</small></a>')
     for k, n, d_, age, ans in ACTS:
         out.append(f'<div class="cx-card" style="display:flex;gap:14px;align-items:flex-start;cursor:default"><img src="/images/christmas/act-{k}.png" alt="{esc(n)} 활동지 미리보기" loading="lazy" width="120" style="width:120px;height:auto;border:1px solid #eee;border-radius:8px;flex:none;background:#fff">'
                    f'<div><b>{esc(n)}</b><em>{esc(age)}</em><span>{esc(d_)}</span><span style="margin-top:8px"><a href="/christmas/activities/{k}.pdf" target="_blank" data-ga="christmas_acts_download" data-ga-label="{k}" style="font-weight:700;color:#c2410c">📥 PDF 받기' + (" (정답 포함)" if ans else "") + '</a></span></div></div>')
