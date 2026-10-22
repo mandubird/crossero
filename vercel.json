@@ -1,6 +1,17 @@
 {
   "redirects": [
     {
+      "source": "/:path(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "crossero.vercel.app"
+        }
+      ],
+      "destination": "https://crossero.com/:path",
+      "permanent": true
+    },
+    {
       "source": "/bible-quiz/genesis(\\.html)?",
       "destination": "/play.html?id=gen_001",
       "permanent": true

@@ -312,8 +312,8 @@ FAQ = [["말씀뽑기란 무엇인가요?", "미리 준비한 성경 구절 중 
 
 def render(data):
     path = "/verse/"
-    title = "말씀뽑기 · 말씀카드 만들기 - 새해 말씀 뽑기, 성경 구절 카톡·인쇄 카드 | 십자가로세로"
-    desc = "말씀뽑기로 위로·평안·용기·감사·소망의 말씀을 뽑고 사진·풍경 배경과 무료 글꼴로 말씀 카드를 만들어 보세요. 카카오톡·인스타그램 공유, 프로필, 휴대폰·PC 배경화면, 교회 인쇄용 A4·A5 크기로 저장할 수 있어요."
+    title = "말씀뽑기 · 랜덤 말씀카드 뽑기 - 오늘의 말씀, 새해 말씀뽑기 2027 | 십자가로세로"
+    desc = "랜덤 말씀뽑기로 위로·평안·용기·감사·소망의 말씀카드를 한 장 뽑고 사진·풍경 배경과 무료 글꼴로 말씀 카드를 만들어 보세요. 카카오톡·인스타그램 공유, 프로필, 휴대폰·PC 배경화면, 교회 인쇄용 A4·A5 크기로 저장할 수 있어요."
     ld = '<script type="application/ld+json">' + json.dumps({
         "@context": "https://schema.org", "@type": "WebApplication", "name": "말씀 뽑기", "url": SITE + path,
         "applicationCategory": "LifestyleApplication", "inLanguage": "ko", "operatingSystem": "Web",
