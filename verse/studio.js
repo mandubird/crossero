@@ -97,7 +97,7 @@
             showRef: true, align: 'center', mark: true, img: null };
   try { var sv = JSON.parse(localStorage.getItem('crsStudio') || 'null'); if (sv) { for (var k0 in sv) if (k0 !== 'img' && k0 !== 'verse') S[k0] = sv[k0]; if (S.bg.type === 'image' || S.bg.type === 'photo') S.bg = { type: 'scene', k: 'sunrise', seed: 7 }; } } catch (e) {}
   function persist() { try { var c = {}; for (var k in S) if (k !== 'img' && k !== 'verse') c[k] = S[k]; localStorage.setItem('crsStudio', JSON.stringify(c)); } catch (e) {} }
-  S.frame = S.frame || 'none'; S.orn = S.orn || 'none'; S.fx = S.fx || 'none'; S.dcolor = S.dcolor || 'text';
+  S.church = S.church || ''; S.frame = S.frame || 'none'; S.orn = S.orn || 'none'; S.fx = S.fx || 'none'; S.dcolor = S.dcolor || 'text';
   function isDonor() { try { return typeof checkAuthStatus === 'function' && !!checkAuthStatus(); } catch (e) { return false; } }
   function track(n, p) { if (window.crsTrack) window.crsTrack(n, p || {}); }
 
@@ -300,6 +300,11 @@
     x.shadowColor = 'transparent'; x.shadowBlur = 0;
     if (D && S.orn !== 'none') { var mm = Math.min(w, h), osz = mm * (portraitish ? 0.12 : 0.1), top = startY - lh * 0.55 - (S.box ? fs * 0.8 : 0), oy = Math.max(top - osz * 0.7 - mm * 0.02, osz * 0.6 + mm * 0.07); D.orn(x, left ? padX + osz * 0.5 : w / 2, oy, osz, S.orn, dcol); }
     if (S.bg.type === 'photo' && S.pcredit) { x.font = Math.round(Math.min(w, h) * 0.017) + 'px "Noto Sans KR",sans-serif'; x.textAlign = 'center'; x.globalAlpha = 0.65; x.fillStyle = dark ? '#333' : '#fff'; x.fillText(S.pcredit, w / 2, h - Math.min(w, h) * 0.016); x.globalAlpha = 1; }
+    if (S.church && isDonor()) {
+      var cm = Math.min(w, h); x.font = Math.round(cm * 0.037) + 'px ' + fam; x.textAlign = 'center'; x.globalAlpha = 0.95; x.fillStyle = dark ? '#222' : '#fff';
+      if (!dark) { x.shadowColor = 'rgba(0,0,0,.5)'; x.shadowBlur = cm * 0.008; }
+      x.fillText(S.church, w / 2, h - cm * ((S.bg.type === 'photo' && S.pcredit) ? 0.055 : 0.04)); x.shadowColor = 'transparent'; x.shadowBlur = 0; x.globalAlpha = 1;
+    }
     if (S.mark && !isDonor()) { x.font = Math.round(Math.min(w, h) * 0.026) + 'px "Noto Sans KR",sans-serif'; x.textAlign = 'center'; x.globalAlpha = 0.7; x.fillStyle = dark ? '#333' : '#fff'; x.fillText('십자가로세로 · crossero.com', w / 2, h - Math.min(w, h) * 0.045); x.globalAlpha = 1; }
     else if (S.mark && isDonor() && false) { /* 후원자: 워터마크 없음 */ }
   }
@@ -579,6 +584,23 @@
         });
       } else {
         cu.innerHTML = '<div class="vs-lock">🔒 후원하시면 개역개정·새번역·영어 등 <b>원하는 본문을 직접 붙여넣어</b> 카드로 만들 수 있어요. 후원 이용권을 사용하시는 동안 열립니다.<br><a href="/support.html" data-ga="studio_custom_to_support">후원 안내 보기 →</a></div>';
+      }
+    }
+
+
+    // 교회 이름 넣기 (후원자 전용: 카드 아래쪽에 교회·모임 이름 표시, 묶음 인쇄에도 적용)
+    var ch = $('vsChurch');
+    if (ch) {
+      if (isDonor()) {
+        ch.innerHTML = '<p class="vs-note" style="margin-top:0">카드 아래쪽에 교회·모임 이름이 들어가요. 저장·인쇄와 아래 <b>교회·모임용 여러 장 인쇄</b>에도 같은 이름이 들어갑니다.</p>' +
+          '<label for="vsChurchIn">교회·모임 이름</label><input type="text" id="vsChurchIn" maxlength="24" placeholder="예: 은혜교회 청년부">' +
+          '<div class="vs-act" style="margin-top:10px"><button type="button" class="alt" id="vsChurchClr">이름 지우기</button></div>';
+        var ci = $('vsChurchIn'); ci.value = S.church || '';
+        ci.addEventListener('input', function () { S.church = ci.value.trim().slice(0, 24); touched = true; refresh(); });
+        $('vsChurchClr').addEventListener('click', function () { ci.value = ''; S.church = ''; refresh(); });
+        ci.addEventListener('change', function () { track('studio_church_name', { len: S.church.length }); });
+      } else {
+        ch.innerHTML = '<div class="vs-lock">🔒 후원하시면 <b>우리 교회·모임 이름</b>을 카드 아래에 넣어 저장·인쇄할 수 있어요. 새해 말씀 카드를 교회명과 함께 한꺼번에 인쇄해 나눠 보세요.<br><a href="/support.html" data-ga="studio_church_to_support">후원 안내 보기 →</a></div>';
       }
     }
 
