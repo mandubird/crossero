@@ -304,13 +304,13 @@ JS = r"""
 """
 
 
-FAQ = [["말씀 카드는 무료인가요?", "네, 말씀 뽑기와 카드 만들기, 이미지 저장·공유·인쇄는 모두 무료입니다. 후원하시면 이미지에서 십자가로세로 워터마크를 뺄 수 있어요."], ["어떤 크기로 저장할 수 있나요?", "카카오톡·인스타그램 정사각(1080×1080)과 4:5, 스토리·휴대폰 배경화면(9:16), 아이폰·갤럭시 긴 화면, 프로필(정사각), PC 배경화면(FHD·QHD), 링크 미리보기(가로), 인쇄용 A4·A5·A6, 책갈피까지 12가지 크기를 지원합니다."], ["배경 이미지는 저작권 문제가 없나요?", "배경 사진은 위키미디어 커먼즈의 자유 이용 사진(CC BY, CC BY-SA, CC0, 퍼블릭 도메인)만 골랐고, 촬영자와 라이선스는 사진을 고르면 카드 아래쪽에 자동으로 적힙니다. CC BY-SA 사진으로 만든 카드는 같은 조건(출처 표시, 동일 조건 공유)으로 자유롭게 나눠 쓰실 수 있어요. 일러스트 풍경과 십자가·비둘기·올리브 가지 같은 장식 도안, 테두리, 분위기 효과는 십자가로세로가 직접 그린 그래픽이고, 내 사진을 올려 배경으로 쓸 수도 있습니다(올린 사진은 기기 안에서만 처리)."], ["글꼴도 무료로 쓸 수 있나요?", "노토 산스·노토 세리프·나눔명조·고운바탕·나눔 손글씨 등 구글 폰트의 무료(SIL OFL) 글꼴 42종을 제공합니다."], ["교회 주보나 주일학교에서 인쇄해도 되나요?", "교회·주일학교·가정에서의 비상업적 인쇄와 사용은 자유롭게 하실 수 있습니다. 판매는 하지 말아 주세요. 인쇄 크기로 A4·A5·A6를 고르면 인쇄 창이 열립니다."], ["성경 본문은 어떤 번역인가요?", "저작권이 만료된 성경전서 개역한글판을 사용합니다."]]
+FAQ = [["말씀뽑기란 무엇인가요?", "미리 준비한 성경 구절 중 한 구절을 골라 읽고 묵상하는 활동입니다. 이 페이지에서는 버튼 한 번으로 위로·평안·용기·감사·소망 같은 주제의 말씀을 뽑고, 그 말씀으로 카드를 만들 수 있습니다."], ["말씀뽑기로 나온 구절이 내 한 해를 정해 주나요?", "아닙니다. 뽑힌 말씀은 점괘나 약속이 아니라 묵상의 시작입니다. 구절의 앞뒤 문맥을 함께 읽고 기도하며 삶에 적용해 보세요. 자세한 안내는 '말씀 뽑기, 해도 될까요?' 글을 참고하세요."], ["새해 말씀 뽑기는 어디서 하나요?", "새해 말씀 뽑기 페이지(/verse/new-year/)에서 새해에 맞는 구절만 모아 뽑을 수 있고, 송구영신예배 진행 순서는 송구영신 진행 가이드에 정리되어 있습니다. 교회에서 쓸 카드는 여러 장을 한꺼번에 인쇄할 수 있습니다."], ["말씀 카드는 무료인가요?", "네, 말씀 뽑기와 카드 만들기, 이미지 저장·공유·인쇄는 모두 무료입니다. 후원하시면 이미지에서 십자가로세로 워터마크를 뺄 수 있어요."], ["어떤 크기로 저장할 수 있나요?", "카카오톡·인스타그램 정사각(1080×1080)과 4:5, 스토리·휴대폰 배경화면(9:16), 아이폰·갤럭시 긴 화면, 프로필(정사각), PC 배경화면(FHD·QHD), 링크 미리보기(가로), 인쇄용 A4·A5·A6, 책갈피까지 12가지 크기를 지원합니다."], ["배경 이미지는 저작권 문제가 없나요?", "배경 사진은 위키미디어 커먼즈의 자유 이용 사진(CC BY, CC BY-SA, CC0, 퍼블릭 도메인)만 골랐고, 촬영자와 라이선스는 사진을 고르면 카드 아래쪽에 자동으로 적힙니다. CC BY-SA 사진으로 만든 카드는 같은 조건(출처 표시, 동일 조건 공유)으로 자유롭게 나눠 쓰실 수 있어요. 일러스트 풍경과 십자가·비둘기·올리브 가지 같은 장식 도안, 테두리, 분위기 효과는 십자가로세로가 직접 그린 그래픽이고, 내 사진을 올려 배경으로 쓸 수도 있습니다(올린 사진은 기기 안에서만 처리)."], ["글꼴도 무료로 쓸 수 있나요?", "노토 산스·노토 세리프·나눔명조·고운바탕·나눔 손글씨 등 구글 폰트의 무료(SIL OFL) 글꼴 42종을 제공합니다."], ["교회 주보나 주일학교에서 인쇄해도 되나요?", "교회·주일학교·가정에서의 비상업적 인쇄와 사용은 자유롭게 하실 수 있습니다. 판매는 하지 말아 주세요. 인쇄 크기로 A4·A5·A6를 고르면 인쇄 창이 열립니다."], ["성경 본문은 어떤 번역인가요?", "저작권이 만료된 성경전서 개역한글판을 사용합니다."]]
 
 
 def render(data):
     path = "/verse/"
-    title = "말씀 카드 만들기 - 성경 구절 카톡·인스타·배경화면·인쇄 이미지 | 십자가로세로"
-    desc = "위로·평안·용기·감사·소망의 말씀을 뽑아 풍경 배경과 무료 글꼴로 말씀 카드를 만들어 보세요. 카카오톡·인스타그램 공유, 프로필, 휴대폰·PC 배경화면, 교회 인쇄용 A4·A5 크기로 저장할 수 있어요."
+    title = "말씀뽑기 · 말씀카드 만들기 - 새해 말씀 뽑기, 성경 구절 카톡·인쇄 카드 | 십자가로세로"
+    desc = "말씀뽑기로 위로·평안·용기·감사·소망의 말씀을 뽑고 사진·풍경 배경과 무료 글꼴로 말씀 카드를 만들어 보세요. 카카오톡·인스타그램 공유, 프로필, 휴대폰·PC 배경화면, 교회 인쇄용 A4·A5 크기로 저장할 수 있어요."
     ld = '<script type="application/ld+json">' + json.dumps({
         "@context": "https://schema.org", "@type": "WebApplication", "name": "말씀 뽑기", "url": SITE + path,
         "applicationCategory": "LifestyleApplication", "inLanguage": "ko", "operatingSystem": "Web",
@@ -335,6 +335,8 @@ def render(data):
         for ts in topics.values() for d in ts) + '</div>'
     from season_picks import SEASONS as _SEASONS
     seasons = season_banner()
+    import html as _h
+    faq_html = "".join(f"<details><summary>{_h.escape(q)}</summary><p>{_h.escape(a)}</p></details>" for q, a in FAQ)
     body = f"""<main class="vwrap">
 <div class="crumb" style="text-align:left"><a href="/">홈</a> › 말씀 뽑기</div>
 <h1 style="margin-top:10px">말씀 뽑기 · 말씀 카드 만들기</h1>
@@ -344,6 +346,7 @@ def render(data):
 <div class="vchips" id="vchips">{chips}</div>
 <div class="vbox" id="vbox" title="눌러서 뽑기">🎴</div>
 <button class="vbtn" id="vdraw" data-ga="verse_draw_click">🎴 말씀 뽑기</button>
+<p class="vnote" style="margin:8px 0 0">뽑힌 말씀은 점괘가 아니라 묵상의 시작이에요. <a href="/guide/bible-verse-drawing-guide/" data-ga="verse_to_drawguide">말씀 뽑기, 건강하게 쓰는 법</a></p>
 <div class="vcard" id="vcard" style="display:none"><div class="vtag" id="vtag"></div><p class="vtext" id="vtext"></p><div class="vref" id="vref"></div><div class="vmark">십자가로세로 · crossero.com</div></div>
 <div class="vactions" id="vactions" style="display:none">
 <a class="vbtn sub" id="vmore" href="#" style="display:none;text-decoration:none" data-ga="verse_to_guide">📖 이 말씀 해설 읽기</a>
@@ -441,7 +444,7 @@ def render(data):
 </section>
 {credits}
 {guide}
-<h2 style="margin-top:34px;text-align:left">자주 묻는 질문</h2><div class="faq" style="text-align:left;max-width:760px"><details><summary>말씀 카드는 무료인가요?</summary><p>네, 말씀 뽑기와 카드 만들기, 이미지 저장·공유·인쇄는 모두 무료입니다. 후원하시면 이미지에서 십자가로세로 워터마크를 뺄 수 있어요.</p></details><details><summary>어떤 크기로 저장할 수 있나요?</summary><p>카카오톡·인스타그램 정사각(1080×1080)과 4:5, 스토리·휴대폰 배경화면(9:16), 아이폰·갤럭시 긴 화면, 프로필(정사각), PC 배경화면(FHD·QHD), 링크 미리보기(가로), 인쇄용 A4·A5·A6, 책갈피까지 12가지 크기를 지원합니다.</p></details><details><summary>배경 이미지는 저작권 문제가 없나요?</summary><p>풍경 배경은 십자가로세로가 직접 그린 그래픽이라 저작권 걱정 없이 쓰실 수 있습니다. 내 사진을 올려 배경으로 쓸 수도 있고, 올린 사진은 기기 안에서만 처리됩니다.</p></details><details><summary>글꼴도 무료로 쓸 수 있나요?</summary><p>노토 산스·노토 세리프·나눔명조·고운바탕·나눔 손글씨 등 구글 폰트의 무료(SIL OFL) 글꼴 42종을 제공합니다.</p></details><details><summary>교회 주보나 주일학교에서 인쇄해도 되나요?</summary><p>교회·주일학교·가정에서의 비상업적 인쇄와 사용은 자유롭게 하실 수 있습니다. 판매는 하지 말아 주세요. 인쇄 크기로 A4·A5·A6를 고르면 인쇄 창이 열립니다.</p></details><details><summary>성경 본문은 어떤 번역인가요?</summary><p>저작권이 만료된 성경전서 개역한글판을 사용합니다.</p></details></div>
+<h2 style="margin-top:34px;text-align:left">자주 묻는 질문</h2><div class="faq" style="text-align:left;max-width:760px">{faq_html}</div>
 <p class="vnote">성경 본문은 성경전서 개역한글판(대한성서공회)을 사용했습니다. 개인 묵상과 소모임 나눔을 위한 용도로 제공하며, 판매용으로 이용하실 수 없습니다. 구절은 주제별로 직접 골랐고, 앞으로 계속 늘려 갑니다. 말씀을 더 깊이 읽고 싶다면 <a href="/dictionary/">성경사전</a>에서 해당 책의 요약을 확인해 보세요.</p>
 <div class="vprint" aria-hidden="true">{prints}</div>
 </main>"""

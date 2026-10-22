@@ -32,6 +32,37 @@ GUIDE_FAQ = [
 ]
 
 
+def _faq_ld(faq):
+    return {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}
+
+
+def _faq_html(esc, faq):
+    return '<h2>자주 묻는 질문</h2><div class="faq">' + "".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in faq) + "</div>"
+
+
+PROPS_FAQ = [
+    ("성탄 성극 소품 도안은 무료인가요?", "네, 모든 도안은 무료 A4 PDF로 받아 인쇄할 수 있습니다. 교회·주일학교·가정에서 비상업적으로 쓰시면 됩니다."),
+    ("소품 도안은 어떤 종이에 인쇄하나요?", "A4 용지에 배율 100%로 인쇄하세요. 왕관과 머리띠는 180g 이상 두꺼운 종이에 인쇄하면 튼튼합니다."),
+    ("어떤 소품이 있나요?", "별, 동방 박사 왕관, 양 머리띠, 천사 날개와 후광, 구유와 아기 예수님, 선물 상자, 배역 이름표, 성극 안내 포스터 도안이 있습니다."),
+    ("성탄 성극 대본과 함께 쓸 수 있나요?", "네, 각 성극 대본 페이지의 준비물 목록에서 해당 소품 도안으로 바로 이동할 수 있습니다."),
+]
+ACTS_FAQ = [
+    ("성탄 활동지는 무료인가요?", "네, 색칠 공부·미로·낱말 찾기·빈칸 채우기·순서 카드·OX 퀴즈 활동지를 A4 PDF로 무료로 받아 인쇄할 수 있습니다."),
+    ("정답도 함께 있나요?", "미로, 낱말 찾기, 빈칸 채우기, OX 퀴즈는 정답 쪽이 함께 들어 있습니다. 교사용으로 따로 보관하세요."),
+    ("어느 연령에 맞나요?", "색칠 공부와 순서 맞추기 카드는 유치부·유년부, 미로와 낱말 찾기는 초등, 빈칸 채우기와 OX 퀴즈는 초등 고학년·청소년에게 맞습니다."),
+    ("성탄 예배에서 어떻게 쓰나요?", "성극 연습 전후 대기 시간이나 성탄 공과 복습 활동으로 10~20분 안에 쓸 수 있습니다. 성극 대본과 소품 도안도 함께 활용해 보세요."),
+]
+
+
+def _script_faq(s):
+    return [
+        (f"{s['title']}은 몇 분짜리 성극인가요?", f"약 {s['minutes']}분이며 대상은 {s['age']}, 인원은 {s['cast_n']}입니다."),
+        ("필요한 소품은 무엇인가요?", ", ".join(s["props"]) + " 소품 도안은 성극 소품 도안 페이지에서 인쇄할 수 있습니다."),
+        ("어떤 성경 본문을 바탕으로 하나요?", ", ".join(r for r, _ in s["refs"]) + " 본문을 바탕으로 했습니다."),
+        ("인쇄해서 써도 되나요?", "교회·주일학교·가정에서의 비상업적 사용은 자유롭게 인쇄해 쓰셔도 됩니다. 판매나 재배포는 하지 말아 주세요."),
+    ]
+
+
 def _cast_chips(esc, cast):
     return " ".join(f'<span style="display:inline-block;background:#f1f6ff;border-radius:14px;padding:3px 11px;margin:3px 3px 3px 0;font-size:14px">{esc(c)}</span>' for c in cast)
 
@@ -49,8 +80,8 @@ def render_all(ctx):
 
     # ----- 허브
     path = "/christmas/"
-    title = "성탄절 성극 대본 · 크리스마스 성극 대본 모음 - 어린이 주일학교 성극 | 십자가로세로"
-    desc = "성탄절 성극과 크리스마스 성극 대본 10편(유치부·초등부·청소년·가정 낭독극)과 준비 가이드를 제공합니다. 교회와 주일학교에서 인쇄해 쓸 수 있는 성경 기반 대본입니다."
+    title = "성탄절 성극 대본 · 성탄 발표회 대본 - 크리스마스 어린이 성극·활동지 | 십자가로세로"
+    desc = "성탄절 성극·성탄 발표회 대본 10편(유치부·초등부·청소년·가정 낭독극)과 준비 가이드, 소품 도안, 성탄 활동지를 무료로 제공합니다. 교회와 주일학교에서 인쇄해 쓸 수 있는 성경 기반 어린이 성극 대본입니다."
     faq = GUIDE_FAQ + [("이 대본은 어디서 가져온 건가요?", "십자가로세로가 직접 작성했거나 저작권이 만료된 개역한글 성경 본문을 그대로 사용한 대본입니다. 다른 사이트의 대본을 옮긴 것이 아닙니다."),
                        ("교회에서 인쇄해서 써도 되나요?", "교회·주일학교·가정에서의 비상업적 사용은 자유롭게 인쇄해 쓰셔도 됩니다. 판매나 재배포는 하지 말아 주세요.")]
     ld = "".join('<script type="application/ld+json">' + json.dumps(x, ensure_ascii=False) + "</script>\n" for x in (
@@ -134,7 +165,8 @@ def render_all(ctx):
          "hasPart": [{"@type": "CreativeWork", "name": n, "url": f"{SITE}/christmas/props/{k}.pdf", "encodingFormat": "application/pdf", "isAccessibleForFree": True} for k, n, _, _ in PROPS]},
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "홈", "item": SITE + "/"}, {"@type": "ListItem", "position": 2, "name": "성탄 성극", "item": SITE + "/christmas/"},
-            {"@type": "ListItem", "position": 3, "name": "소품 도안", "item": SITE + path}]}))
+            {"@type": "ListItem", "position": 3, "name": "소품 도안", "item": SITE + path}]},
+        _faq_ld(PROPS_FAQ)))
     out = [head(title, desc, path, ld, f"{SITE}/images/christmas/props-star.png").replace("</head>", CSS + "\n</head>", 1), '<main class="wrap">']
     out.append('<div class="crumb"><a href="/">홈</a> › <a href="/christmas/">성탄 성극</a> › 소품 도안</div>')
     out.append('<h1>✂️ 성탄 성극 소품 도안</h1><div class="sub">인쇄해서 색칠하고 오리면 바로 쓰는 A4 도안</div>')
@@ -147,6 +179,7 @@ def render_all(ctx):
                    f'<span style="margin-top:8px"><a href="/christmas/props/{k}.pdf" target="_blank" data-ga="christmas_props_download" data-ga-label="{k}" style="font-weight:700;color:#c2410c">📥 PDF 받기</a></span></div></div>')
     out.append('<div class="note2">모든 도안은 십자가로세로가 만들었으며, 교회·주일학교·가정에서 비상업적으로 인쇄해 쓸 수 있습니다. 판매나 재배포는 하지 말아 주세요.</div>')
     out.append('<h2>인쇄 팁</h2><ul><li>A4 용지, 배율 100%(실제 크기)로 인쇄하세요.</li><li>점선은 오리는 선입니다. 어린이는 가위질을 어른이 도와주세요.</li><li>왕관과 머리띠는 머리 둘레에 맞춰 붙임 부분을 조절하세요.</li></ul>')
+    out.append(_faq_html(esc, PROPS_FAQ))
     out.append("</main>")
     out.append(tail())
     open(os.path.join(out_dir, "props.html"), "w", encoding="utf-8").write("\n".join(out))
@@ -163,14 +196,15 @@ def render_all(ctx):
         ("ox-quiz", "성탄 OX 퀴즈 10문제", "성경 구절 출처가 달린 정답 쪽이 포함된 퀴즈입니다.", "초등·청소년", True),
     ]
     path = "/christmas/activities.html"
-    title = "성탄 활동지 - 크리스마스 색칠 공부·미로·낱말 찾기·빈칸 채우기·OX 퀴즈 PDF | 십자가로세로"
+    title = "성탄 활동지 · 크리스마스 주일학교 활동지 - 색칠 공부·미로·낱말 찾기 무료 PDF | 십자가로세로"
     desc = "성탄 주일학교 활동지를 A4 PDF로 무료 제공합니다. 크리스마스 색칠 공부, 미로, 낱말 찾기, 누가복음 빈칸 채우기, 이야기 순서 카드, OX 퀴즈(정답 포함)."
     ld = "".join('<script type="application/ld+json">' + json.dumps(x, ensure_ascii=False) + "</script>\n" for x in (
         {"@context": "https://schema.org", "@type": "CollectionPage", "name": "성탄 활동지", "description": desc, "inLanguage": "ko", "url": SITE + path,
          "hasPart": [{"@type": "LearningResource", "name": n, "url": f"{SITE}/christmas/activities/{k}.pdf", "encodingFormat": "application/pdf", "isAccessibleForFree": True, "audience": {"@type": "Audience", "audienceType": a}} for k, n, _, a, _ in ACTS]},
         {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": 1, "name": "홈", "item": SITE + "/"}, {"@type": "ListItem", "position": 2, "name": "성탄 성극", "item": SITE + "/christmas/"},
-            {"@type": "ListItem", "position": 3, "name": "활동지", "item": SITE + path}]}))
+            {"@type": "ListItem", "position": 3, "name": "활동지", "item": SITE + path}]},
+        _faq_ld(ACTS_FAQ)))
     out = [head(title, desc, path, ld, f"{SITE}/images/christmas/act-maze.png").replace("</head>", CSS + "\n</head>", 1), '<main class="wrap">']
     out.append('<div class="crumb"><a href="/">홈</a> › <a href="/christmas/">성탄 성극</a> › 활동지</div>')
     out.append('<h1>🎨 성탄 활동지 모음</h1><div class="sub">색칠하고, 찾고, 풀어 보는 성탄 활동 8종</div>')
@@ -181,6 +215,7 @@ def render_all(ctx):
                    f'<div><b>{esc(n)}</b><em>{esc(age)}</em><span>{esc(d_)}</span><span style="margin-top:8px"><a href="/christmas/activities/{k}.pdf" target="_blank" data-ga="christmas_acts_download" data-ga-label="{k}" style="font-weight:700;color:#c2410c">📥 PDF 받기' + (" (정답 포함)" if ans else "") + '</a></span></div></div>')
     out.append('<div class="note2">모든 활동지는 십자가로세로가 만들었으며 교회·주일학교·가정에서 비상업적으로 인쇄해 쓸 수 있습니다. 성경 본문은 저작권이 만료된 개역한글판입니다. 판매나 재배포는 하지 말아 주세요.</div>')
     out.append('<h2>활용 팁</h2><ul><li><b>유치부</b>: 색칠 공부와 순서 맞추기 카드(교사가 읽어 주기)</li><li><b>초등 저학년</b>: 미로, 낱말 찾기</li><li><b>초등 고학년·청소년</b>: 빈칸 채우기와 OX 퀴즈를 소그룹 대항전으로</li><li>성극 연습 전후 대기 시간에 활용하면 좋습니다. <a href="/christmas/">성극 대본</a>·<a href="/christmas/props.html">소품 도안</a>과 함께 쓰세요.</li></ul>')
+    out.append(_faq_html(esc, ACTS_FAQ))
     out.append("</main>")
     out.append(tail())
     open(os.path.join(out_dir, "activities.html"), "w", encoding="utf-8").write("\n".join(out))
@@ -244,7 +279,8 @@ def render_all(ctx):
              "author": {"@type": "Organization", "name": "십자가로세로"}, "url": SITE + path},
             {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
                 {"@type": "ListItem", "position": 1, "name": "홈", "item": SITE + "/"}, {"@type": "ListItem", "position": 2, "name": "성탄 성극", "item": SITE + "/christmas/"},
-                {"@type": "ListItem", "position": 3, "name": s["title"], "item": SITE + path}]}))
+                {"@type": "ListItem", "position": 3, "name": s["title"], "item": SITE + path}]},
+            _faq_ld(_script_faq(s))))
         out = [head(title, desc, path, ld).replace("</head>", CSS + "\n</head>", 1), '<main class="wrap">']
         out.append(f'<div class="crumb"><a href="/">홈</a> › <a href="/christmas/">성탄 성극</a> › {esc(s["title"])}</div>')
         out.append(f'<h1>🎭 {esc(s["title"])}</h1><div class="sub">{esc(s["sub"])}</div>')
@@ -269,6 +305,7 @@ def render_all(ctx):
             f'<a class="card" href="/christmas/{o["slug"]}.html"><b>{esc(o["title"])}</b><span>{o["minutes"]}분 · {esc(o["age"])}</span></a>' for o in others) + '</div><p><a href="/christmas/">대본 전체 보기 →</a> · <a href="/christmas/guide.html">준비 가이드</a></p>')
         out.append('<div class="note2">이 대본은 십자가로세로가 작성했습니다. 교회·주일학교·가정에서 비상업적으로 인쇄해 사용하실 수 있고, 판매나 재배포는 하지 말아 주세요. 성경 본문은 저작권이 만료된 개역한글판입니다.</div>')
         out.append(_fb("../christmas/" + s["slug"], s["title"], False))
+        out.append(_faq_html(esc, _script_faq(s)))
         out.append("</main>")
         out.append(tail())
         open(os.path.join(out_dir, f"{s['slug']}.html"), "w", encoding="utf-8").write("\n".join(out))
