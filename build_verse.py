@@ -311,6 +311,12 @@ FAQ = [["말씀뽑기란 무엇인가요?", "미리 준비한 성경 구절 중 
 
 
 def render(data):
+    from book_key_verses import BOOK_KEY
+    _have = {d["ref"] for d in data}; _txt = load_text(); data = list(data)
+    for _b, (_c, _v) in BOOK_KEY.items():
+        _ref = f"{_b} {_c}:{_v}"
+        if _ref not in _have:
+            data.append({"topic": "대표 구절", "ref": _ref, "text": _txt[(BOOKS.index(_b) + 1, _c, _v)]})
     path = "/verse/"
     title = "말씀뽑기 · 랜덤 말씀카드 뽑기 - 오늘의 말씀, 새해 말씀뽑기 2027 | 십자가로세로"
     desc = "랜덤 말씀뽑기로 위로·평안·용기·감사·소망의 말씀카드를 한 장 뽑고 사진·풍경 배경과 무료 글꼴로 말씀 카드를 만들어 보세요. 카카오톡·인스타그램 공유, 프로필, 휴대폰·PC 배경화면, 교회 인쇄용 A4·A5 크기로 저장할 수 있어요."

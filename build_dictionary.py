@@ -290,6 +290,13 @@ def render_entry(e):
     from feedback_box import box as _fbbox, SENSITIVE as _SENS
     out.append(_fbbox(e["slug"], e["name"], e["slug"] in _SENS))
 
+    if e["type"] == "성경 책":
+        from book_key_verses import BOOK_KEY
+        import urllib.parse as _up
+        if e["name"] in BOOK_KEY:
+            _c, _v = BOOK_KEY[e["name"]]
+            out.append(f'<a class="cta" href="/verse/?v={_up.quote(e["name"] + " " + str(_c) + ":" + str(_v))}" data-ga="book_to_verse_card" data-ga-label="{esc(e["slug"])}" style="background:linear-gradient(135deg,#7c3aed,#2563eb)">'
+                       f'📖 {esc(e["name"])}의 대표 구절 말씀 카드 만들기<small>{esc(e["name"])} {_c}:{_v} · 사진·글꼴을 골라 카톡·인쇄용 카드로 저장</small></a>')
     if not e["puzzles"]:
         out.append(f'<a class="cta" href="/bible-crossword.html" data-ga="dictionary_to_puzzle" data-ga-label="{esc(e["slug"])}">🧩 성경 퍼즐 둘러보기<small>66권과 인물·사건 주제로 풀어 보는 가로세로 낱말퀴즈</small></a>')
     if e["puzzles"]:
