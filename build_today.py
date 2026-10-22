@@ -109,7 +109,7 @@ def render(day, data):
 <div id="pgCtaToday"></div>
 <div id="tctx">{ctx}</div>
 <div style="margin-top:26px">{bv.season_banner()}</div>
-<a class="cta" href="/verse/" data-ga="today_to_draw" style="margin-top:8px">🎴 다른 말씀도 뽑아 보기<small>위로·평안·용기·감사·소망 등 12가지 주제</small></a>
+<a class="cta" href="/verse/" data-ga="today_to_draw" style="margin-top:8px">📖 다른 말씀도 뽑아 보기<small>위로·평안·용기·감사·소망 등 12가지 주제</small></a>
 <h2 style="text-align:left;margin-top:34px">지난 7일의 말씀</h2>
 <div class="cards past" style="text-align:left">{past}</div>
 <h2 style="text-align:left;margin-top:34px">자주 묻는 질문</h2><div class="faq" style="text-align:left;max-width:760px">{faq_html}</div>

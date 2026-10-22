@@ -331,7 +331,7 @@
     var w = Math.round(p.w * sc), h = Math.round(p.h * sc);
     var S2 = S.scale; render(cv, w, h);
     cv.style.aspectRatio = p.w + ' / ' + p.h;
-    try { var mc = $('vsMiniCv'); if (mc) { mc.width = 192; mc.height = Math.round(192 * h / w); mc.getContext('2d').drawImage(cv, 0, 0, mc.width, mc.height); } } catch (e) {}
+    try { var mc = $('vsMiniCv'); if (mc) { mc.width = 248; mc.height = Math.round(248 * h / w); mc.getContext('2d').drawImage(cv, 0, 0, mc.width, mc.height); } } catch (e) {}
     $('vsInfo').textContent = p.n + ' · ' + p.w + '×' + p.h + 'px' + (p.mm ? ' · ' + p.mm : '');
   }
   /* 디자인 되돌리기(이전 디자인) */
@@ -690,7 +690,7 @@
   var api = {
     setVerse: function (d, o) {
       S.verse = d; root.style.display = 'block';
-      var pr = (o && o.random && !touched) ? (pushHist(), applyRandom()) : Promise.resolve();
+      var pr = (o && o.random && !touched) ? (HIST.length = 0, backBtn(), applyRandom()) : Promise.resolve();
       pr.then(function () { syncUI(); refresh(); buildStrip(); });
     },
     applyDesign: applyDesign,
@@ -719,7 +719,7 @@
     try {
       var cvEl = $('vsCanvas'); if (!cvEl) return;
       var m = document.createElement('div'); m.className = 'vs-mini'; m.id = 'vsMini'; m.setAttribute('role', 'button'); m.setAttribute('aria-label', '카드 미리보기, 누르면 카드 위치로 이동');
-      m.innerHTML = '<canvas id="vsMiniCv" width="192" height="192"></canvas><span>미리보기</span>'; document.body.appendChild(m);
+      m.innerHTML = '<canvas id="vsMiniCv" width="248" height="248"></canvas><span>미리보기</span>'; document.body.appendChild(m);
       m.addEventListener('click', function () { cvEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
       var out = false;
       function upd() {

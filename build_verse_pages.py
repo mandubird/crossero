@@ -79,7 +79,7 @@ def render_page(ref, data, text, same_topic):
     out.append("<h2>묵상 질문</h2><ul class=\"qs\">" + "".join(f"<li>{esc(q)}</li>" for q in data["points"]) + "</ul>")
     out.append('<h2>자주 묻는 질문</h2><div class="faq">' + "".join(
         f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in data["faq"]) + "</div>")
-    out.append(f'<a class="cta" href="/verse/?v={esc(ref)}" data-ga="versepage_to_card" data-ga-label="{esc(ref)}">🎴 이 말씀을 카드·책갈피로 저장하기<small>이미지 저장, 인쇄, 링크 공유</small></a>')
+    out.append(f'<a class="cta" href="/verse/?v={esc(ref)}" data-ga="versepage_to_card" data-ga-label="{esc(ref)}">📖 이 말씀을 카드·책갈피로 저장하기<small>이미지 저장, 인쇄, 링크 공유</small></a>')
     rel = [r for r in same_topic if r != ref][:4]
     if rel:
         out.append(f'<h2>{esc(topic)} 주제의 다른 말씀</h2><div class="cards">' + "".join(

@@ -139,7 +139,7 @@ def page(a, arts):
 <h2>더 알아보기</h2>
 <p>이 글에 나오는 인물, 장소, 사건을 성경사전에서 더 찾아볼 수 있습니다.</p>
 <div class="rel">{rel}</div>
-<div class="btnrow"><a href="/list.html" data-ga="guide_to_puzzle">🧩 낱말 퍼즐로 복습하기</a><a class="alt" href="/verse/" data-ga="guide_to_verse">🎴 말씀 카드 만들기</a></div>
+<div class="btnrow"><a href="/list.html" data-ga="guide_to_puzzle">🧩 낱말 퍼즐로 복습하기</a><a class="alt" href="/verse/" data-ga="guide_to_verse">📖 말씀 카드 만들기</a></div>
 <h2>자주 묻는 질문</h2>
 <div class="faq">{faq}</div>
 <h2>함께 읽으면 좋은 글</h2>

@@ -183,7 +183,7 @@ def render():
 <p>사진 배경 200여 장, 글꼴 42종, 십자가·비둘기·올리브 가지 같은 장식과 테두리를 고를 수 있고, 새해·성탄·추수감사 구절과 12가지 주제 구절 묶음을 제공합니다. 인쇄 창에서 'PDF로 저장'을 고르면 파일로 보관하거나 인쇄소에 전달할 수 있습니다.</p>
 <div class="btnrow">
 <a href="/verse/#church-print" data-ga="nyguide_to_batch2">🖨️ 지금 카드 만들기</a>
-<a class="alt" href="/verse/" data-ga="nyguide_to_verse">🎴 말씀 카드 스튜디오</a>
+<a class="alt" href="/verse/" data-ga="nyguide_to_verse">📖 말씀 카드 스튜디오</a>
 </div>
 <p>묵상 안내문을 함께 나눠 주고 싶다면 해설이 있는 말씀 페이지도 활용해 보세요. <a href="/verse/jeremiah-29-11.html">예레미야 29:11</a>, <a href="/verse/joshua-1-9.html">여호수아 1:9</a>, <a href="/verse/isaiah-41-10.html">이사야 41:10</a> 같은 새해에 자주 뽑히는 구절의 해설을 읽어 볼 수 있습니다.</p>
 

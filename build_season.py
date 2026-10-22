@@ -38,7 +38,7 @@ JS = r"""
     cur=d; var c=$('vcard'); c.style.display='block'; c.style.animation='none'; void c.offsetWidth; c.style.animation='';
     $('vtag').textContent=d.topic; $('vtext').textContent=d.text; $('vref').textContent=d.ref;
     var sl=$('vstudiolink'); if(sl) sl.href='/verse/?v='+encodeURIComponent(d.ref);
-    $('vactions').style.display='block'; $('vbox').style.display='none'; $('vdraw').textContent='🎴 다시 뽑기';
+    $('vactions').style.display='block'; $('vbox').style.display='none'; $('vdraw').textContent='📖 다시 뽑기';
     if(window.crsPilgrimCta) window.crsPilgrimCta({host:'pgCtaSeason',campaign:'season_after_draw'});
     [].forEach.call(document.querySelectorAll('.vprint .pc'),function(p){p.querySelector('.pt').textContent=d.text;p.querySelector('.pr').textContent=d.ref;});
     if(fromDraw&&window.crsTrack) window.crsTrack('season_draw',{season:window.__SEASON,ref:d.ref});
@@ -147,7 +147,7 @@ def render(key, cfg, text):
 <h1 style="margin-top:10px">{esc(cfg['h1'])}</h1>
 <div class="sub">{esc(cfg['sub'])}</div>
 <div class="vbox" id="vbox" title="눌러서 뽑기">{cfg['emoji']}</div>
-<button class="vbtn" id="vdraw" data-ga="season_draw_click">🎴 말씀 뽑기</button>
+<button class="vbtn" id="vdraw" data-ga="season_draw_click">📖 말씀 뽑기</button>
 <div class="vcard" id="vcard" style="display:none"><div class="vtag" id="vtag"></div><p class="vtext" id="vtext"></p><div class="vref" id="vref"></div><div class="vmark">{esc(cfg['label'])} · 십자가로세로</div></div>
 <div class="vactions" id="vactions" style="display:none">
 <a class="vhero" id="vstudiolink" href="/verse/" data-ga="season_to_studio">🎨 사진·글꼴로 꾸며 저장<small>사진 200여 장 · 글꼴 42종 · 카톡·인스타·배경화면·인쇄</small></a>
@@ -172,7 +172,7 @@ def render(key, cfg, text):
 <div class="sgrid">{verses}</div>
 <h2 style="text-align:left;margin-top:30px">다른 절기 말씀 뽑기</h2>
 <div class="cards" style="text-align:left">{''.join(f'<a class="card" href="/verse/{k}/"><b>{c["emoji"]} {esc(c["label"])}</b><span>{esc(c["sub"])}</span></a>' for k, c in others)}
-<a class="card" href="/verse/"><b>🎴 주제별 말씀 뽑기</b><span>위로·평안·용기·감사·소망 등 12가지 주제</span></a>
+<a class="card" href="/verse/"><b>📖 주제별 말씀 뽑기</b><span>위로·평안·용기·감사·소망 등 12가지 주제</span></a>
 <a class="card" href="/today/"><b>📅 오늘의 말씀</b><span>매일 아침 바뀌는 말씀 한 장</span></a>
 {'<a class="card" href="/christmas/"><b>🎭 성탄절 성극 대본</b><span>어린이 성극·낭독극 10편과 준비 가이드</span></a>' if cfg['topic'] == '성탄' else ''}</div>
 <p class="vnote">성경 본문은 성경전서 개역한글판(대한성서공회)을 사용했습니다. 개인 묵상과 소모임 나눔을 위한 용도로 제공하며, 판매용으로 이용하실 수 없습니다.</p>

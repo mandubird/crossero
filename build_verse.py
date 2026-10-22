@@ -131,9 +131,9 @@ CSS = """
 .vs-tabs button span{font-size:24px;line-height:1.1}.vs-tabs button.on{background:linear-gradient(135deg,#0b5cad,#0073e6);color:#fff;border-color:#0b5cad;box-shadow:0 6px 14px rgba(0,115,230,.35);transform:translateY(-1px)}
 .vs-tabbox{margin:16px 0 14px;padding:12px 12px 12px;background:linear-gradient(180deg,#eaf3ff,#f6faff);border:2px solid #b9d3f5;border-radius:18px}
 .vs-tabh{font-weight:800;font-size:16px;color:#0b3d73;margin:0 2px 10px}.vs-tabh span{font-weight:600;font-size:13px;color:#4a6fa5;margin-left:4px}
-.vs-act .vs-back{background:#fff;color:#0b5cad;border:1px solid #bcd3f0;margin-left:8px}.vs-act .vs-back:disabled{opacity:.4}
+.vs-act .vs-back{flex:0 0 auto;padding:13px 16px!important;font-size:15px!important;background:#fff;color:#0b5cad;border:1px solid #bcd3f0}.vs-act .vs-back:disabled{opacity:.4}
 .vs-mini{display:none}
-@media(max-width:899px){.vs-mini{position:fixed;right:10px;top:calc(var(--navh,52px) + 96px);z-index:70;width:96px;border-radius:12px;background:#fff;border:2px solid #0b5cad;box-shadow:0 8px 22px rgba(0,40,100,.35);padding:0;cursor:pointer;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .2s,transform .2s}.vs-mini.on{display:block;opacity:1;pointer-events:auto;transform:none}.vs-mini canvas{display:block;width:100%;height:auto}.vs-mini span{display:block;background:#0b5cad;color:#fff;font-size:11px;font-weight:800;text-align:center;padding:2px 0}}
+@media(max-width:899px){.vs-mini{position:fixed;left:10px;top:calc(var(--navh,52px) + 96px);z-index:70;width:124px;border-radius:12px;background:#fff;border:2px solid #0b5cad;box-shadow:0 8px 22px rgba(0,40,100,.35);padding:0;cursor:pointer;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .2s,transform .2s}.vs-mini.on{display:block;opacity:1;pointer-events:auto;transform:none}.vs-mini canvas{display:block;width:100%;height:auto}.vs-mini span{display:block;background:#0b5cad;color:#fff;font-size:11px;font-weight:800;text-align:center;padding:2px 0}}
 .vs-tabbox{position:sticky;top:var(--navh,52px);z-index:50;transition:box-shadow .2s}
 .vs-tabbox.stuck{box-shadow:0 6px 16px rgba(0,60,140,.22);padding:8px 10px;margin-top:8px}.vs-tabbox.stuck .vs-tabh{display:none}.vs-tabbox.stuck .vs-tabs button{padding:7px 2px 6px;font-size:13px}.vs-tabbox.stuck .vs-tabs button span{font-size:18px}
 @keyframes crsWig{0%,100%{transform:rotate(0)}15%{transform:rotate(-9deg)}35%{transform:rotate(8deg)}55%{transform:rotate(-6deg)}75%{transform:rotate(4deg)}}
@@ -144,7 +144,7 @@ CSS = """
 #vsPhotoThemes select{width:100%;padding:11px 12px;border:1px solid #cdd7e4;border-radius:10px;font-size:15px;font-family:inherit;background:#fff}
 .vs-sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.vs-sgrid .vs-th{width:auto;max-width:none}.vs-sgrid .vs-th canvas{aspect-ratio:auto}.vs-sgrid.vs-col .vs-extra{display:none}
 .vs-sgrid .vs-th span{font-size:11px;padding:2px 0}
-.vs-shuf{width:100%;max-width:340px;padding:13px 18px!important;font-size:16px!important;background:linear-gradient(135deg,#7c3aed,#2563eb)!important;box-shadow:0 6px 16px rgba(76,60,200,.28)}
+.vs-shuf{flex:1 1 150px;min-width:0;padding:13px 18px!important;font-size:16px!important;background:linear-gradient(135deg,#7c3aed,#2563eb)!important;box-shadow:0 6px 16px rgba(76,60,200,.28)}
 .vs-lnk{display:inline-block;padding:11px 16px;border:1px solid #bcd3f0;border-radius:12px;background:#fff;color:#0b5cad;font-weight:700;font-size:14.5px;text-decoration:none}
 .vs-strip{margin-top:14px}.vs-strip-h{font-weight:800;font-size:14.5px;color:#223;margin-bottom:8px;text-align:left}.vs-strip-h span{font-weight:400;font-size:12.5px;color:#889;margin-left:6px}
 .vs-strip-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -203,7 +203,7 @@ JS = r"""
     $('vactions').style.display='block'; $('vbox').style.display='none';
     if(window.crsPilgrimCta) window.crsPilgrimCta({host:'vsPgCta',campaign:'verse_after_draw'});
     var m2=$('vsMore'); var gu=window.__GUIDE[d.ref]; if(m2){ if(gu){m2.href=gu;m2.style.display='inline-block';} else m2.style.display='none'; }
-    $('vdraw').textContent='🎴 다시 뽑기';
+    $('vdraw').textContent='📖 다시 뽑기';
     var mu=window.__GUIDE[d.ref]; var mo=$('vmore'); if(mu){mo.href=mu; mo.style.display='inline-block';} else {mo.style.display='none';}
     var pc=document.querySelectorAll('.vprint .pc');
     [].forEach.call(pc,function(p){p.querySelector('.pt').textContent=d.text;p.querySelector('.pr').textContent=d.ref;});
@@ -347,8 +347,8 @@ def render(data):
 <div class="sub" style="margin-top:-6px"><a href="/today/" data-ga="verse_to_today">📅 오늘의 말씀 보기</a> &nbsp;·&nbsp; <a href="/cards/" data-ga="verse_to_cards">🖼️ 샘플 카드 갤러리</a></div>
 {seasons}
 <div class="vchips" id="vchips">{chips}</div>
-<div class="vbox" id="vbox" title="눌러서 뽑기">🎴</div>
-<button class="vbtn" id="vdraw" data-ga="verse_draw_click">🎴 말씀 뽑기</button>
+<div class="vbox" id="vbox" title="눌러서 뽑기">📖</div>
+<button class="vbtn" id="vdraw" data-ga="verse_draw_click">📖 말씀 뽑기</button>
 <p class="vnote" style="margin:8px 0 0">뽑힌 말씀은 묵상의 시작이에요. <a href="/guide/bible-verse-drawing-guide/" data-ga="verse_to_drawguide">말씀 뽑기, 건강하게 쓰는 법</a></p>
 <div class="vcard" id="vcard" style="display:none"><div class="vtag" id="vtag"></div><p class="vtext" id="vtext"></p><div class="vref" id="vref"></div><div class="vmark">십자가로세로 · crossero.com</div></div>
 <div class="vactions" id="vactions" style="display:none">
@@ -357,13 +357,13 @@ def render(data):
 <button class="vbtn sub" id="vshare">🔗 링크 공유</button>
 </div>
 <section class="vs" id="vstudio" style="display:none" aria-label="말씀 카드 만들기">
-<h2>🎴 뽑은 말씀 카드</h2>
+<h2>📖 뽑은 말씀 카드</h2>
 <p class="vs-sub">마음에 드는 디자인을 고르고 저장·공유·인쇄하세요. <a href="#church-print" style="color:#0b5cad;font-weight:700">⛪ 교회 행사용 여러 장 인쇄 ↓</a> · <a href="/cards/" style="color:#0b5cad;font-weight:700">🖼️ 샘플 카드 둘러보기</a></p>
 <div class="vs-grid">
  <div class="vs-prev">
   <canvas id="vsCanvas" width="540" height="540"></canvas>
   <div id="vsInfo"></div>
-  <div class="vs-act" style="margin-bottom:8px"><button type="button" id="vsShuffle" class="vs-shuf" data-ga="studio_shuffle">🎲 다른 디자인으로</button><button type="button" id="vsBack" class="vs-back" data-ga="studio_back" disabled>↩ 이전 디자인</button></div>
+  <div class="vs-act" style="margin-bottom:8px"><button type="button" id="vsBack" class="vs-back" data-ga="studio_back" disabled>↩ 이전 디자인</button><button type="button" id="vsShuffle" class="vs-shuf" data-ga="studio_shuffle">🎲 다른 디자인으로</button></div>
   <div class="vs-act">
    <button type="button" id="vsSave" data-ga="studio_save_click">💾 이미지 저장</button>
    <button type="button" id="vsShare" class="alt" data-ga="studio_share_click">📤 공유하기</button>
