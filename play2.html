@@ -1376,7 +1376,7 @@ function renderClues(){
 }
 
 function focusCell(x, y) {
-  if (solution[y][x] === null) return;
+  if (!solution[y] || solution[y][x] === undefined || solution[y][x] === null) return;
 
   // 조합 중이던 글자 확정
   if (composingChar && cursor.x !== null && cursor.y !== null) {
