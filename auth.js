@@ -79,7 +79,7 @@ window.addEventListener('DOMContentLoaded', updatePremiumUI);
 
 const VALID_CODES_D1 = [
   "CRS-D1-X3G6",  // [발송] 2026-09-03 최현주
-  "CRS-D1-FHVX",
+  "CRS-D1-FHVX",  // [발송] 2026-10-30 송예원
   "CRS-D1-6KST",
   "CRS-D1-9SGZ",
   "CRS-D1-Q6SF",
