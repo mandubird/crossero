@@ -137,6 +137,36 @@
 <h2>4. 무대 배치</h2><ul><li>왼쪽에 구유(탄생 장면), 오른쪽에 들판(목자 장면)을 두면 동선이 자연스럽습니다.</li><li>해설은 무대 옆 독서대에서 읽게 하면 연기하는 어린이가 부담이 줄어듭니다.</li><li>천사는 가장 마지막에 높은 곳(계단 위)에서 등장하면 효과가 큽니다.</li></ul>
 <h2>5. 연습 팁</h2><ul><li>처음에는 대본을 보며 읽고, 두 번째부터 동작을 붙입니다.</li><li>대사를 외우지 못해도 큰 글씨 대본을 들고 연기할 수 있게 합니다.</li><li>마지막 장면은 모두가 함께 성탄 찬송을 부르며 마무리합니다.</li></ul>
 <h2>6. 시간표 예시(성탄 예배 20분)</h2><ul><li>성극 8~10분 + 찬양 5분 + 말씀 5분</li><li>낭독극은 5~8분으로 가장 짧고 부담이 적습니다.</li><li>준비 시간이 부족하면 '낭독극 + 찬양'으로 구성합니다.</li></ul>
+<h2>인원별 준비 계산기</h2>
+<div class="note2" id="cxCalc" style="background:#f7faff;border-color:#cfe0f5;color:#223"><b style="color:#0b3d73">우리 부서에 맞는 인쇄 수량 계산하기</b>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:12px">
+<label style="font-size:14px;font-weight:700">성극 참여 어린이(명)<input id="xA" type="number" inputmode="numeric" min="1" max="200" value="10" style="width:100%;box-sizing:border-box;padding:10px;font-size:16px;border:1px solid #cdd7e4;border-radius:10px;margin-top:4px"></label>
+<label style="font-size:14px;font-weight:700">활동지 받을 어린이(명)<input id="xB" type="number" inputmode="numeric" min="1" max="500" value="20" style="width:100%;box-sizing:border-box;padding:10px;font-size:16px;border:1px solid #cdd7e4;border-radius:10px;margin-top:4px"></label>
+<label style="font-size:14px;font-weight:700">연령대<select id="xC" style="width:100%;box-sizing:border-box;padding:10px;font-size:16px;border:1px solid #cdd7e4;border-radius:10px;margin-top:4px"><option value="0">유치부·유년부</option><option value="1" selected>초등 저학년</option><option value="2">초등 고학년·청소년</option></select></label>
+</div>
+<table style="width:100%;border-collapse:collapse;margin-top:14px;font-size:15px"><tr><th style="text-align:left;padding:8px;border:1px solid #dfe6ef;background:#f1f5fb">대본 인쇄 부수</th><td id="yA" style="padding:8px;border:1px solid #dfe6ef"></td></tr>
+<tr><th style="text-align:left;padding:8px;border:1px solid #dfe6ef;background:#f1f5fb">배역 이름표</th><td id="yB" style="padding:8px;border:1px solid #dfe6ef"></td></tr>
+<tr><th style="text-align:left;padding:8px;border:1px solid #dfe6ef;background:#f1f5fb">추천 활동지</th><td id="yC" style="padding:8px;border:1px solid #dfe6ef"></td></tr>
+<tr><th style="text-align:left;padding:8px;border:1px solid #dfe6ef;background:#f1f5fb">활동지 인쇄 용지(A4)</th><td id="yD" style="padding:8px;border:1px solid #dfe6ef"></td></tr></table>
+<p style="font-size:13px;color:#667;margin:8px 0 0">대본은 참여자 수에 교사·해설용 3부를 더하고, 활동지는 받을 인원의 1.1배로 계산한 권장값입니다. 이름표는 한 쪽에 10개입니다.</p>
+<p style="margin:10px 0 0"><a href="/christmas/activities.html" data-ga="cxcalc_to_acts">🎨 활동지 받기</a> · <a href="/christmas/props.html" data-ga="cxcalc_to_props">✂️ 이름표·소품 도안 받기</a></p>
+</div>
+<script>
+(function(){
+  function $(i){return document.getElementById(i)}
+  var REC=[["색칠 공부 3종","순서 맞추기 카드"],["미로","낱말 찾기","색칠 공부 1종"],["빈칸 채우기","OX 퀴즈","스킷 이야기 나눔지"]];
+  function calc(){
+    var a=Math.max(1,Math.min(200,parseInt($('xA').value,10)||0)),b=Math.max(1,Math.min(500,parseInt($('xB').value,10)||0)),c=+$('xC').value;
+    var copies=Math.ceil(b*1.1),rec=REC[c];
+    $('yA').textContent=(a+3)+'부 (참여 '+a+'명 + 교사·해설 3부)';
+    $('yB').textContent=a+'개 (A4 '+Math.ceil(a/10)+'쪽)';
+    $('yC').textContent=rec.join(' · ');
+    $('yD').textContent=(copies*rec.length)+'쪽 (활동지 '+rec.length+'종 × '+copies+'부)';
+  }
+  ['xA','xB','xC'].forEach(function(i){$(i).addEventListener('input',calc);$(i).addEventListener('change',function(){calc();if(window.crsTrack)window.crsTrack('cx_calc',{a:+$('xA').value,b:+$('xB').value,c:+$('xC').value});});});
+  calc();
+})();
+</script>
 <p><a href="/christmas/props.html" data-ga="guide_to_props">✂️ 별·왕관·구유 등 <b>소품 도안(PDF)</b> 인쇄하기 →</a></p>
 <h2>추천 대본</h2><div class="cards"><a class="card" href="/christmas/first-christmas.html"><b>첫 성탄 이야기</b><span>5분 · 유치부·유년부</span></a><a class="card" href="/christmas/annunciation.html"><b>마리아와 천사</b><span>5분 · 유년부·초등 저학년</span></a><a class="card" href="/christmas/bethlehem-inn.html"><b>베들레헴의 마구간</b><span>7분 · 초등 저학년</span></a><a class="card" href="/christmas/shepherds-night.html"><b>목자들의 밤</b><span>8분 · 초등 전학년</span></a><a class="card" href="/christmas/wise-men.html"><b>동방 박사와 별</b><span>10분 · 초등 고학년</span></a><a class="card" href="/christmas/simeon-anna.html"><b>성전에서 만난 아기 예수</b><span>10분 · 초등 고학년·청소년</span></a></div><p><a href="/christmas/">대본 전체 보기 →</a></p>
 <h2>자주 묻는 질문</h2><div class="faq"><details><summary>성탄 연극 대본이나 스킷드라마로도 쓸 수 있나요?</summary><p>네. 성극 대본은 성탄 연극 대본으로 그대로 쓸 수 있습니다. 짧은 순서가 필요하면 3~4분짜리 스킷(성탄 선물 가게, 바쁜 성탄 준비, 빈 의자 하나)을 쓰거나 5분짜리 &#x27;첫 성탄 이야기&#x27;를 올려 보세요.</p></details><details><summary>성탄절 성극은 언제부터 준비하면 되나요?</summary><p>보통 공연 4주 전에 대본을 정하고, 3주 전 배역을 확정해 읽기 연습을 시작하며, 1주 전에 의상과 소품을 포함한 리허설을 하면 여유 있게 마칠 수 있습니다.</p></details><details><summary>대본을 외우기 어려운 어린이는 어떻게 하나요?</summary><p>대사가 한두 줄인 역을 맡기거나 해설이 읽어 주는 방식으로 진행하고, 낭독극 대본을 활용하면 외우지 않고도 참여할 수 있습니다.</p></details><details><summary>성경에 없는 상상 대사를 넣어도 되나요?</summary><p>연극적 재미를 위해 가능하지만, 성경 본문과 구별하는 것이 좋습니다. 이 사이트의 대본은 상상 대사를 ✱ 표시로 구분했습니다.</p></details><details><summary>소품은 무엇을 준비하나요?</summary><p>구유(작은 상자), 아기 인형, 목자 지팡이, 별 막대, 천 의상 정도면 충분합니다. 각 대본 페이지에 소품 목록이 있습니다.</p></details></div>

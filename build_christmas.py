@@ -66,6 +66,38 @@ def _script_faq(s):
         ("인쇄해서 써도 되나요?", "교회·주일학교·가정에서의 비상업적 사용은 자유롭게 인쇄해 쓰셔도 됩니다. 판매나 재배포는 하지 말아 주세요."),
     ]
 
+CALC2 = '''<h2>인원별 준비 계산기</h2>
+<div class="note2" id="cxCalc" style="background:#f7faff;border-color:#cfe0f5;color:#223"><b style="color:#0b3d73">우리 부서에 맞는 인쇄 수량 계산하기</b>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:12px">
+<label style="font-size:14px;font-weight:700">성극 참여 어린이(명)<input id="xA" type="number" inputmode="numeric" min="1" max="200" value="10" style="width:100%;box-sizing:border-box;padding:10px;font-size:16px;border:1px solid #cdd7e4;border-radius:10px;margin-top:4px"></label>
+<label style="font-size:14px;font-weight:700">활동지 받을 어린이(명)<input id="xB" type="number" inputmode="numeric" min="1" max="500" value="20" style="width:100%;box-sizing:border-box;padding:10px;font-size:16px;border:1px solid #cdd7e4;border-radius:10px;margin-top:4px"></label>
+<label style="font-size:14px;font-weight:700">연령대<select id="xC" style="width:100%;box-sizing:border-box;padding:10px;font-size:16px;border:1px solid #cdd7e4;border-radius:10px;margin-top:4px"><option value="0">유치부·유년부</option><option value="1" selected>초등 저학년</option><option value="2">초등 고학년·청소년</option></select></label>
+</div>
+<table style="width:100%;border-collapse:collapse;margin-top:14px;font-size:15px"><tr><th style="text-align:left;padding:8px;border:1px solid #dfe6ef;background:#f1f5fb">대본 인쇄 부수</th><td id="yA" style="padding:8px;border:1px solid #dfe6ef"></td></tr>
+<tr><th style="text-align:left;padding:8px;border:1px solid #dfe6ef;background:#f1f5fb">배역 이름표</th><td id="yB" style="padding:8px;border:1px solid #dfe6ef"></td></tr>
+<tr><th style="text-align:left;padding:8px;border:1px solid #dfe6ef;background:#f1f5fb">추천 활동지</th><td id="yC" style="padding:8px;border:1px solid #dfe6ef"></td></tr>
+<tr><th style="text-align:left;padding:8px;border:1px solid #dfe6ef;background:#f1f5fb">활동지 인쇄 용지(A4)</th><td id="yD" style="padding:8px;border:1px solid #dfe6ef"></td></tr></table>
+<p style="font-size:13px;color:#667;margin:8px 0 0">대본은 참여자 수에 교사·해설용 3부를 더하고, 활동지는 받을 인원의 1.1배로 계산한 권장값입니다. 이름표는 한 쪽에 10개입니다.</p>
+<p style="margin:10px 0 0"><a href="/christmas/activities.html" data-ga="cxcalc_to_acts">🎨 활동지 받기</a> · <a href="/christmas/props.html" data-ga="cxcalc_to_props">✂️ 이름표·소품 도안 받기</a></p>
+</div>
+<script>
+(function(){
+  function $(i){return document.getElementById(i)}
+  var REC=[["색칠 공부 3종","순서 맞추기 카드"],["미로","낱말 찾기","색칠 공부 1종"],["빈칸 채우기","OX 퀴즈","스킷 이야기 나눔지"]];
+  function calc(){
+    var a=Math.max(1,Math.min(200,parseInt($('xA').value,10)||0)),b=Math.max(1,Math.min(500,parseInt($('xB').value,10)||0)),c=+$('xC').value;
+    var copies=Math.ceil(b*1.1),rec=REC[c];
+    $('yA').textContent=(a+3)+'부 (참여 '+a+'명 + 교사·해설 3부)';
+    $('yB').textContent=a+'개 (A4 '+Math.ceil(a/10)+'쪽)';
+    $('yC').textContent=rec.join(' · ');
+    $('yD').textContent=(copies*rec.length)+'쪽 (활동지 '+rec.length+'종 × '+copies+'부)';
+  }
+  ['xA','xB','xC'].forEach(function(i){$(i).addEventListener('input',calc);$(i).addEventListener('change',function(){calc();if(window.crsTrack)window.crsTrack('cx_calc',{a:+$('xA').value,b:+$('xB').value,c:+$('xC').value});});});
+  calc();
+})();
+</script>'''
+
+
 
 def _cast_chips(esc, cast):
     return " ".join(f'<span style="display:inline-block;background:#f1f6ff;border-radius:14px;padding:3px 11px;margin:3px 3px 3px 0;font-size:14px">{esc(c)}</span>' for c in cast)
@@ -142,6 +174,7 @@ def render_all(ctx):
     ]
     for h, items in sections:
         out.append(f"<h2>{esc(h)}</h2><ul>" + "".join(f"<li>{i}</li>" for i in items) + "</ul>")
+    out.append(CALC2)
     out.append('<p><a href="/christmas/props.html" data-ga="guide_to_props">✂️ 별·왕관·구유 등 <b>소품 도안(PDF)</b> 인쇄하기 →</a></p>')
     out.append('<h2>추천 대본</h2><div class="cards">' + "".join(
         f'<a class="card" href="/christmas/{s["slug"]}.html"><b>{esc(s["title"])}</b><span>{s["minutes"]}분 · {esc(s["age"])}</span></a>' for s in SCRIPTS[:6]) + '</div><p><a href="/christmas/">대본 전체 보기 →</a></p>')

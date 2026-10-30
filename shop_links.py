@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """준비물 안내 블록(성극 소품·활동지·송구영신 카드 인쇄 페이지용).
 기본은 네이버 쇼핑 검색 링크(제휴 아님). 쿠팡 파트너스에서 만든 짧은 링크(https://link.coupang.com/a/...)를
-ITEMS의 'partner'에 넣으면 그 링크로 바뀌고, 광고 표시 문구가 자동으로 붙는다."""
+ITEMS의 'partner'에 넣으면 그 링크로 바뀌고, 광고 표시 문구가 자동으로 붙는다.
+링크 만드는 순서(권장): 1) paper200 2) paper180 3) colorpencil 4) box 5) laminate 6) cutter 7) scissors 8) glue 9) headband 10) string
+(카드 인쇄·활동지 준비는 용지와 색연필이 가장 많이 쓰이는 품목이라 앞에 둠). 링크 추가 후 python3 build_dictionary.py(성탄 페이지)와 python3 build_newyear_guide.py 실행."""
 import html
 import urllib.parse as up
 
