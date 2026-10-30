@@ -80,6 +80,14 @@ def build_sets(data):
             seen.add(ref)
             items.append({"ref": ref, "text": text[(BOOKS.index(name) + 1, c, v)]})
         sets.append({"k": key, "n": cfg["label"], "v": items})
+    bad = ("죽", "원수", "멸망", "음란", "심판", "저주", "진노", "벌하", "대적", "죄", "피", "칼", "악", "남자")
+    seen_k, kids = set(), []
+    for d in sorted(data, key=lambda x: len(x["text"])):
+        if len(d["text"]) <= 46 and not any(w in d["text"] for w in bad) and d["text"] not in seen_k:
+            seen_k.add(d["text"])
+            kids.append({"ref": d["ref"], "text": d["text"]})
+    if len(kids) >= 12:
+        sets.append({"k": "kids", "n": "어린이·주일학교용 짧은 말씀", "v": kids[:40]})
     for t in PICKS:
         sets.append({"k": "t-" + t, "n": t + " 말씀", "v": [{"ref": d["ref"], "text": d["text"]} for d in data if d["topic"] == t]})
     sets.append({"k": "all", "n": "전체 말씀", "v": [{"ref": d["ref"], "text": d["text"]} for d in data]})
