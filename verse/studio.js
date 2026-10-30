@@ -300,7 +300,7 @@
     x.shadowColor = 'transparent'; x.shadowBlur = 0;
     if (D && S.orn !== 'none') { var mm = Math.min(w, h), osz = mm * (portraitish ? 0.12 : 0.1), top = startY - lh * 0.55 - (S.box ? fs * 0.8 : 0), oy = Math.max(top - osz * 0.7 - mm * 0.02, osz * 0.6 + mm * 0.07); D.orn(x, left ? padX + osz * 0.5 : w / 2, oy, osz, S.orn, dcol); }
     if (S.bg.type === 'photo' && S.pcredit) { x.font = Math.round(Math.min(w, h) * 0.017) + 'px "Noto Sans KR",sans-serif'; x.textAlign = 'center'; x.globalAlpha = 0.65; x.fillStyle = dark ? '#333' : '#fff'; x.fillText(S.pcredit, w / 2, h - Math.min(w, h) * 0.016); x.globalAlpha = 1; }
-    if (S.church && isDonor()) {
+    if (S.church && (isDonor() || !forExport)) {
       var cm = Math.min(w, h); x.font = Math.round(cm * 0.037) + 'px ' + fam; x.textAlign = 'center'; x.globalAlpha = 0.95; x.fillStyle = dark ? '#222' : '#fff';
       if (!dark) { x.shadowColor = 'rgba(0,0,0,.5)'; x.shadowBlur = cm * 0.008; }
       x.fillText(S.church, w / 2, h - cm * ((S.bg.type === 'photo' && S.pcredit) ? 0.055 : 0.04)); x.shadowColor = 'transparent'; x.shadowBlur = 0; x.globalAlpha = 1;
@@ -588,20 +588,21 @@
     }
 
 
-    // 교회 이름 넣기 (후원자 전용: 카드 아래쪽에 교회·모임 이름 표시, 묶음 인쇄에도 적용)
+    // 교회 이름 넣기: 누구나 미리보기는 가능, 저장·인쇄·공유에 넣는 것은 후원자 전용
     var ch = $('vsChurch');
+    function churchNote() { var n = $('vsChurchNote'); if (n) n.style.display = (S.church && !isDonor()) ? 'block' : 'none'; }
     if (ch) {
-      if (isDonor()) {
-        ch.innerHTML = '<p class="vs-note" style="margin-top:0">카드 아래쪽에 교회·모임 이름이 들어가요. 저장·인쇄와 아래 <b>교회·모임용 여러 장 인쇄</b>에도 같은 이름이 들어갑니다.</p>' +
-          '<label for="vsChurchIn">교회·모임 이름</label><input type="text" id="vsChurchIn" maxlength="24" placeholder="예: 은혜교회 청년부">' +
-          '<div class="vs-act" style="margin-top:10px"><button type="button" class="alt" id="vsChurchClr">이름 지우기</button></div>';
-        var ci = $('vsChurchIn'); ci.value = S.church || '';
-        ci.addEventListener('input', function () { S.church = ci.value.trim().slice(0, 24); touched = true; refresh(); });
-        $('vsChurchClr').addEventListener('click', function () { ci.value = ''; S.church = ''; refresh(); });
-        ci.addEventListener('change', function () { track('studio_church_name', { len: S.church.length }); });
-      } else {
-        ch.innerHTML = '<div class="vs-lock">🔒 후원하시면 <b>우리 교회·모임 이름</b>을 카드 아래에 넣어 저장·인쇄할 수 있어요. 새해 말씀 카드를 교회명과 함께 한꺼번에 인쇄해 나눠 보세요.<br><a href="/support.html" data-ga="studio_church_to_support">후원 안내 보기 →</a></div>';
-      }
+      var donor = isDonor();
+      ch.innerHTML = '<p class="vs-note" style="margin-top:0">' + (donor ? '카드 아래쪽에 교회·모임 이름이 들어가요. 저장·인쇄와 아래 <b>교회·모임용 여러 장 인쇄</b>에도 같은 이름이 들어갑니다.'
+        : '이름을 입력하면 카드 위에서 <b>미리보기</b>로 볼 수 있어요. 저장·인쇄·공유한 이미지에 이름을 넣는 것은 후원 기능입니다.') + '</p>' +
+        '<label for="vsChurchIn">교회·모임 이름</label><input type="text" id="vsChurchIn" maxlength="24" placeholder="예: 은혜교회 청년부">' +
+        '<div class="vs-act" style="margin-top:10px"><button type="button" class="alt" id="vsChurchClr">이름 지우기</button></div>' +
+        (donor ? '' : '<div class="vs-lock" style="margin-top:10px">🔒 후원하시면 <b>우리 교회·모임 이름</b>이 저장·인쇄에 들어갑니다. 새해 말씀 카드를 교회명과 함께 한꺼번에 인쇄해 나눠 보세요.<br><a href="/support.html" data-ga="studio_church_to_support">후원 안내 보기 →</a></div>');
+      var ci = $('vsChurchIn'); ci.value = S.church || '';
+      ci.addEventListener('input', function () { S.church = ci.value.trim().slice(0, 24); touched = true; churchNote(); refresh(); });
+      $('vsChurchClr').addEventListener('click', function () { ci.value = ''; S.church = ''; churchNote(); refresh(); });
+      ci.addEventListener('change', function () { track('studio_church_name', { len: S.church.length, donor: donor }); });
+      churchNote();
     }
 
     // 교회·모임용 묶음 인쇄 (현재 디자인으로 여러 구절을 A4에 모아 인쇄)

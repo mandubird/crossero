@@ -7,6 +7,7 @@ import re
 
 import build_dictionary as bd
 import build_verse as bv
+from shop_links import shop_block
 from build_dictionary import esc, head, FOOTER, NAV, SITE, ROOT
 
 PATH = "/verse/new-year/guide/"
@@ -53,6 +54,40 @@ CSS = bv.CSS + """
 .gd .warn{background:#fff8ec;border:1px solid #f0d9a8;border-radius:14px;padding:14px 18px;margin:16px 0}
 .gd .tl td:first-child{white-space:nowrap;font-weight:700;color:#0b5cad;width:92px}
 """
+
+
+CALC = '''
+<h2>준비 계산기</h2>
+<div class="box" id="nyCalc"><b>우리 교회에 맞는 수량 계산하기</b>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:12px">
+<label style="font-size:14px;font-weight:700">참석 인원(명)<input id="cInp" type="number" inputmode="numeric" min="1" max="2000" value="100" style="width:100%;box-sizing:border-box;padding:10px;font-size:16px;border:1px solid #cdd7e4;border-radius:10px;margin-top:4px"></label>
+<label style="font-size:14px;font-weight:700">A4 한 장에 카드<select id="cPer" style="width:100%;box-sizing:border-box;padding:10px;font-size:16px;border:1px solid #cdd7e4;border-radius:10px;margin-top:4px"><option value="4">4장</option><option value="6">6장</option><option value="8" selected>8장</option><option value="10">10장</option><option value="12">12장</option></select></label>
+<label style="font-size:14px;font-weight:700">진행 시간<select id="cMin" style="width:100%;box-sizing:border-box;padding:10px;font-size:16px;border:1px solid #cdd7e4;border-radius:10px;margin-top:4px"><option value="10">10분</option><option value="20">20분</option><option value="30" selected>30분</option></select></label>
+</div>
+<table style="margin-top:14px"><tr><th>준비할 카드</th><td id="rCards"></td></tr><tr><th>인쇄 용지(A4)</th><td id="rSheets"></td></tr><tr><th>말씀 상자</th><td id="rBoxes"></td></tr><tr><th>봉사자</th><td id="rVol"></td></tr><tr><th>시간표</th><td id="rTime"></td></tr></table>
+<p style="font-size:13px;color:#667;margin:0">카드는 참석 인원의 1.2배, 상자는 50명당 1개, 봉사자는 100명까지 3명(이후 100명마다 1명 추가)을 기준으로 한 권장값입니다. 교회 사정에 맞게 조정하세요.</p>
+<div class="btnrow"><a href="/verse/#church-print" data-ga="nyguide_calc_to_print">🖨️ 이 수량으로 카드 만들기</a></div>
+</div>
+<script>
+(function(){
+  function $(i){return document.getElementById(i)}
+  function calc(){
+    var n=Math.max(1,Math.min(2000,parseInt($('cInp').value,10)||0)),per=+$('cPer').value,t=+$('cMin').value;
+    var cards=Math.ceil(n*1.2),sheets=Math.ceil(cards/per),boxes=Math.max(1,Math.ceil(n/50)),vol=3+Math.max(0,Math.ceil((n-100)/100));
+    $('rCards').textContent=cards+'장 (인원 '+n+'명 × 1.2)';
+    $('rSheets').textContent=sheets+'쪽 (한 장에 '+per+'장)';
+    $('rBoxes').textContent=boxes+'개';
+    $('rVol').textContent=vol+'명';
+    var r=[['안내와 기도',1/6],['말씀 뽑기',1/6],['조용히 읽고 묵상',1/6],['짝·조별 나눔',1/3],['합심기도와 마무리',1/6]],at=0,out=[];
+    r.forEach(function(x,i){var m=i==r.length-1?t-at:Math.max(1,Math.round(t*x[1]));out.push(at+'~'+(at+m)+'분 '+x[0]);at+=m;});
+    $('rTime').innerHTML=out.join('<br>');
+    if(window.crsTrack&&window.__calcTrack!==n+'-'+per+'-'+t){window.__calcTrack=n+'-'+per+'-'+t;}
+  }
+  ['cInp','cPer','cMin'].forEach(function(i){$(i).addEventListener('input',calc);$(i).addEventListener('change',function(){calc();if(window.crsTrack)window.crsTrack('nyguide_calc',{n:+$('cInp').value,per:+$('cPer').value,min:+$('cMin').value});});});
+  calc();
+})();
+</script>
+'''
 
 
 def table(head_cells, rows, cls=""):
@@ -143,6 +178,7 @@ def render():
 {need}
 <p>구절이 100가지 미만이면 같은 구절을 2~3장씩 섞어서 준비하면 됩니다. 같은 구절을 받은 사람끼리 나누는 시간을 가지면 오히려 교제의 계기가 되기도 합니다.</p>
 
+{CALC}
 <h3>용지와 인쇄 팁</h3>
 <ul>
 <li>두꺼운 종이(120~200g)를 쓰면 접거나 상자에서 뽑을 때 편합니다.</li>
@@ -151,6 +187,7 @@ def render():
 <li>행사 전날이 아니라 최소 1주일 전에 시험 인쇄를 해 글자 크기와 잉크 상태를 확인하세요.</li>
 </ul>
 
+{shop_block(['paper200', 'cutter', 'box', 'laminate'], '카드 준비물 구경하기')}
 <h2>시간표 예시</h2>
 <h3>30분 진행안</h3>
 {flow}

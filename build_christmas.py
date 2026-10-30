@@ -5,6 +5,7 @@ import os
 
 from christmas_data import SCRIPTS
 from verse_lib import KO_BOOKS, load_text
+from shop_links import shop_block
 
 CSS = """<style>
 .cx-card{display:block;background:#fff;border:1px solid #e5e5e5;border-radius:14px;padding:14px 16px;margin:10px 0;text-decoration:none!important;color:#222!important}
@@ -182,6 +183,7 @@ def render_all(ctx):
                    f'<span style="margin-top:8px"><a href="/christmas/props/{k}.pdf" target="_blank" data-ga="christmas_props_download" data-ga-label="{k}" style="font-weight:700;color:#c2410c">📥 PDF 받기</a></span></div></div>')
     out.append('<div class="note2">모든 도안은 십자가로세로가 만들었으며, 교회·주일학교·가정에서 비상업적으로 인쇄해 쓸 수 있습니다. 판매나 재배포는 하지 말아 주세요.</div>')
     out.append('<h2>인쇄 팁</h2><ul><li>A4 용지, 배율 100%(실제 크기)로 인쇄하세요.</li><li>점선은 오리는 선입니다. 어린이는 가위질을 어른이 도와주세요.</li><li>왕관과 머리띠는 머리 둘레에 맞춰 붙임 부분을 조절하세요.</li></ul>')
+    out.append(shop_block(["paper180", "scissors", "glue", "headband", "string"], "소품 만들기 준비물"))
     out.append(_faq_html(esc, PROPS_FAQ))
     out.append("</main>")
     out.append(tail())
@@ -219,6 +221,7 @@ def render_all(ctx):
                    f'<div><b>{esc(n)}</b><em>{esc(age)}</em><span>{esc(d_)}</span><span style="margin-top:8px"><a href="/christmas/activities/{k}.pdf" target="_blank" data-ga="christmas_acts_download" data-ga-label="{k}" style="font-weight:700;color:#c2410c">📥 PDF 받기' + (" (정답 포함)" if ans else "") + '</a></span></div></div>')
     out.append('<div class="note2">모든 활동지는 십자가로세로가 만들었으며 교회·주일학교·가정에서 비상업적으로 인쇄해 쓸 수 있습니다. 성경 본문은 저작권이 만료된 개역한글판입니다. 판매나 재배포는 하지 말아 주세요.</div>')
     out.append('<h2>활용 팁</h2><ul><li><b>유치부</b>: 색칠 공부와 순서 맞추기 카드(교사가 읽어 주기)</li><li><b>초등 저학년</b>: 미로, 낱말 찾기</li><li><b>초등 고학년·청소년</b>: 빈칸 채우기와 OX 퀴즈를 소그룹 대항전으로</li><li>성극 연습 전후 대기 시간에 활용하면 좋습니다. <a href="/christmas/">성극 대본</a>·<a href="/christmas/props.html">소품 도안</a>과 함께 쓰세요.</li></ul>')
+    out.append(shop_block(["paper180", "colorpencil", "scissors", "glue"], "활동지 준비물"))
     out.append(_faq_html(esc, ACTS_FAQ))
     out.append("</main>")
     out.append(tail())
