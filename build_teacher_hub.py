@@ -109,6 +109,39 @@ def search_index():
         rows.append({"t": "게시글", "n": m["title"], "u": "/posts/" + urllib.parse.quote(m["slug"]) + ".html", "g": "", "d": m["date"]})
     return rows
 
+HELPER = '''<div id="tHelper" style="background:#f7faff;border:1px solid #cfe0f5;border-radius:16px;padding:18px 18px 16px;margin:18px 0 6px">
+<div style="font-weight:800;font-size:18px;color:#0b3d73">⏱️ 3문항으로 이번 주 자료 고르기</div>
+<div style="font-size:14px;color:#556;margin:4px 0 12px">연령과 인원, 시간만 고르면 알맞은 퍼즐·가이드·활동을 추천해 드려요.</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px">
+<label style="font-size:14px;font-weight:700">① 연령대<select id="hA" style="width:100%;box-sizing:border-box;padding:11px;font-size:16px;border:1px solid #cdd7e4;border-radius:10px;margin-top:4px"><option value="0">유치부·유년부</option><option value="1" selected>초등 저학년</option><option value="2">초등 고학년</option><option value="3">중고등부</option><option value="4">청년·장년·구역</option></select></label>
+<label style="font-size:14px;font-weight:700">② 인원<select id="hB" style="width:100%;box-sizing:border-box;padding:11px;font-size:16px;border:1px solid #cdd7e4;border-radius:10px;margin-top:4px"><option value="0">10명 이하</option><option value="1" selected>10~30명</option><option value="2">30명 이상</option></select></label>
+<label style="font-size:14px;font-weight:700">③ 쓸 수 있는 시간<select id="hC" style="width:100%;box-sizing:border-box;padding:11px;font-size:16px;border:1px solid #cdd7e4;border-radius:10px;margin-top:4px"><option value="0">10분</option><option value="1" selected>20분</option><option value="2">40분 이상</option></select></label>
+</div>
+<div id="hOut" class="cards" style="margin-top:14px"></div>
+<p style="font-size:12.5px;color:#667;margin:6px 0 0">추천은 연령·인원·시간 기준의 일반적인 제안입니다. 교회와 부서 사정에 맞게 바꿔 쓰세요.</p>
+</div>
+<script>
+(function(){
+  function $(i){return document.getElementById(i)}
+  var PZ=[['/teachers/sunday-school-puzzles.html','주일학교용 퍼즐','쉬운 인물·사건 퍼즐로 공과를 복습해요'],['/teachers/sunday-school-puzzles.html','주일학교용 퍼즐','쉬운 인물·사건 퍼즐로 공과를 복습해요'],['/teachers/sunday-school-puzzles.html','주일학교용 퍼즐','힌트를 함께 읽으며 풀기 좋아요'],['/teachers/youth-puzzles.html','중고등부용 퍼즐','조별 대결로 풀기 좋아요'],['/teachers/leader-puzzles.html','리더·구역용 퍼즐','모임을 여는 가벼운 활동으로 좋아요']];
+  var ACT=[
+   [['/today/','오늘의 말씀 한 구절','읽고 짝과 한 문장 나누기(10분)'],['/guide/bible-storytelling-for-children/','성경 이야기 들려주는 법','10분 안에 한 가지 메시지로 전하기']],
+   [['/verse/','말씀 카드 꾸미기','사진·글꼴을 골라 카드로 저장해요(20분)'],['/christmas/activities.html','활동지 모음','색칠·미로·OX 퀴즈 등을 골라 인쇄해요']],
+   [['/guide/small-group-discussion-questions/','소그룹 질문 만들기','관찰·해석·적용 질문으로 나눔(20~40분)'],['/christmas/guide.html','성극 준비 가이드','일정·배역·소품과 인원별 계산기']]];
+  var TIP=['인원이 적으면 모두 한 퍼즐을 함께 풀고 돌아가며 힌트를 읽어요.','10~30명이면 3~4조로 나눠 조별로 풀고, 조마다 한 사람이 발표해요.','인원이 많으면 조별 나눔 뒤 대표 발표로 시간을 맞추고, 인쇄물은 인원의 1.1배로 준비해요.'];
+  function card(r,tag){return '<a class="card" href="'+r[0]+'" data-ga="thelper_click" data-ga-label="'+tag+'"><b>'+r[1]+'</b><span>'+r[2]+'</span></a>';}
+  function go(){
+    var a=+$('hA').value,b=+$('hB').value,c=+$('hC').value,acts=ACT[c];
+    if(a===0&&c===2)acts=[ACT[2][1],ACT[1][1]];
+    if(a>=3&&c===1)acts=[ACT[1][0],ACT[2][0]];
+    if(a===4&&c===2)acts=[ACT[2][0],ACT[0][0]];
+    $('hOut').innerHTML=card(PZ[a],'puzzle')+acts.map(function(r){return card(r,'act');}).join('')+'<div class="card" style="cursor:default"><b>진행 팁</b><span>'+TIP[b]+'</span></div>';
+  }
+  ['hA','hB','hC'].forEach(function(i){$(i).addEventListener('change',function(){go();if(window.crsTrack)window.crsTrack('thelper',{a:$('hA').value,b:$('hB').value,c:$('hC').value});});});
+  go();
+})();
+</script>'''
+
 
 def hub():
     counts = {a["tag"]: sum(1 for p in PUZZLES if a["tag"] in p["tags"]) for a in AUDIENCES}
@@ -121,7 +154,8 @@ def hub():
 <div class="sub">퍼즐, 성경사전, 게시글을 한 번에 검색하세요</div>
 <div class="summary">이번 주 공과에 쓸 자료를 빨리 찾고 싶은 교사와 리더를 위해 만들었습니다. 본문 이름이나 인물, 주제를 입력하면 퍼즐·사전·게시글에서 한꺼번에 찾아 줍니다. 예) 다윗, 요나, 십계명, 로마서</div>
 
-<div class="summary" style="margin-top:12px">교사 허브에서 찾을 수 있는 자료: 성경 가로세로 퍼즐 200여 개(책별·인물별·주제별), 인물·지명·사건 사전 256항목, 성경 66권 요약, 퍼즐 해설 게시글 230여 개입니다. 학년(유치부·초등부·중고등부·청년·장년)에 맞춰 고르려면 아래 대상별 모음을 이용하세요. 성탄 시즌에는 <a href="/christmas/">성탄 성극 대본·소품·활동지</a>도 함께 쓰실 수 있습니다.</div>
+<div class="summary" style="margin-top:12px">교사 허브에서 찾을 수 있는 자료: 성경 가로세로 퍼즐 {len(PUZZLES)}개(책별·인물별·주제별), 인물·지명·사건 사전 {len(ENTRIES)}항목, 성경 66권 요약, 퍼즐 해설 게시글 230여 개입니다. 학년(유치부·초등부·중고등부·청년·장년)에 맞춰 고르려면 아래 대상별 모음을 이용하세요. 성탄 시즌에는 <a href="/christmas/">성탄 성극 대본·소품·활동지</a>도 함께 쓰실 수 있습니다.</div>
+{HELPER}
 <div id="hub-search" style="margin:18px 0 6px;">
   <input id="q" type="search" placeholder="인물·책·주제 검색 (예: 다윗, 시편, 십계명)" aria-label="자료 검색" style="width:100%;padding:14px 16px;border:2px solid #bcd3f0;border-radius:12px;font-size:16px;">
   <div id="chips" style="margin:10px 0;display:flex;gap:8px;flex-wrap:wrap;">

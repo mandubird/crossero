@@ -22,6 +22,16 @@ function checkAuthStatus() {
     }
 }
 
+// 남은 이용 시간 문구 (만료를 재촉하지 않고 사실만 알려 준다)
+function getRemainingText(user) {
+    const ms = user.expiry - new Date().getTime();
+    if (ms <= 0) return '이용 종료';
+    const min = Math.floor(ms / 60000), hour = Math.floor(min / 60), day = Math.floor(hour / 24);
+    if (day >= 2) return `남은 ${day}일`;
+    if (hour >= 1) return `남은 ${hour}시간`;
+    return `남은 ${Math.max(1, min)}분`;
+}
+
 // 2. 우측 하단 후원자 배지 UI 업데이트
 function updatePremiumUI() {
     const user = checkAuthStatus();
@@ -35,7 +45,7 @@ function updatePremiumUI() {
         badge.id = "premium-badge";
         // 마스터 관리자인 경우와 일반 후원자 구분 표시 가능
         const printLabel = user.printCount === -1 ? "무제한" : `${user.printCount}회`;
-        badge.innerHTML = `🙏 ${user.typeName} (인쇄: ${printLabel})`;
+        badge.innerHTML = `🙏 ${user.typeName} · ${getRemainingText(user)} (인쇄: ${printLabel})`;
 
         // 스타일 적용 (우측 하단 고정 — nav 메뉴 클릭을 가리지 않도록 상단 배치 지양)
         Object.assign(badge.style, {
