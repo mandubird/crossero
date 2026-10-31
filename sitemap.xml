@@ -95,15 +95,6 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- TODAY-START -->
-  <url>
-    <loc>https://crossero.com/today/</loc>
-    <lastmod>2026-10-22</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- TODAY-END -->
-
   <!-- VERSEPG-START -->
   <url>
     <loc>https://crossero.com/verse/john-3-16.html</loc>
@@ -524,15 +515,6 @@
   </url>
   <!-- GUIDES-END -->
 
-  <!-- VERSE-START -->
-  <url>
-    <loc>https://crossero.com/verse/</loc>
-    <lastmod>2026-10-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- VERSE-END -->
-
   <!-- TEACH-START -->
   <url>
     <loc>https://crossero.com/teachers/</loc>
@@ -878,15 +860,6 @@
   </url>
   <!-- CARDS-END -->
 
-  <!-- NYGUIDE-START -->
-  <url>
-    <loc>https://crossero.com/verse/new-year/guide/</loc>
-    <lastmod>2026-10-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- NYGUIDE-END -->
-
   <!-- SEASON-START -->
   <url>
     <loc>https://crossero.com/verse/new-year/</loc>
@@ -907,6 +880,42 @@
     <priority>0.8</priority>
   </url>
   <!-- SEASON-END -->
+
+  <!-- QUIET-START -->
+  <url>
+    <loc>https://crossero.com/quiet/</loc>
+    <lastmod>2026-10-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <!-- QUIET-END -->
+
+  <!-- VERSE-START -->
+  <url>
+    <loc>https://crossero.com/verse/</loc>
+    <lastmod>2026-10-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- VERSE-END -->
+
+  <!-- TODAY-START -->
+  <url>
+    <loc>https://crossero.com/today/</loc>
+    <lastmod>2026-10-31</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- TODAY-END -->
+
+  <!-- NYGUIDE-START -->
+  <url>
+    <loc>https://crossero.com/verse/new-year/guide/</loc>
+    <lastmod>2026-10-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- NYGUIDE-END -->
 
   <!-- DICT-START -->
   <url>
@@ -3085,12 +3094,12 @@
   </url>
   <!-- DICT-END -->
 
-  <!-- QUIET-START -->
+  <!-- CDOWN-START -->
   <url>
-    <loc>https://crossero.com/quiet/</loc>
+    <loc>https://crossero.com/verse/new-year/countdown/</loc>
     <lastmod>2026-10-31</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
-  <!-- QUIET-END -->
+  <!-- CDOWN-END -->
 </urlset>

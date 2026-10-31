@@ -17,7 +17,7 @@ DESC = "잠시 멈추어 말씀 한 구절 앞에 서 보세요. 가입도 설�
 FAQ = [
     ("1분 쉼 묵상은 무엇인가요?", "말씀 한 구절을 보며 천천히 숨을 들이쉬고 내쉬는 짧은 묵상 시간입니다. 가입이나 입력 없이 버튼 하나로 1분 또는 3분 동안 조용히 쉴 수 있습니다."),
     ("예배를 대신하는 것인가요?", "아닙니다. 예배나 공동체 기도를 대신하지 않고, 하루 중 잠시 멈추어 말씀 앞에 서는 개인 묵상을 돕는 도구입니다."),
-    ("소리가 나나요?", "기본은 소리가 없습니다. 원하면 '시작과 끝에 작은 종소리'를 켤 수 있고, 이 설정은 이 화면에서만 적용됩니다."),
+    ("소리가 나나요?", "기본은 소리가 없습니다. 호흡 안내를 소리 내어 읽어 주는 기능은 기기에 설치된 한국어 음성을 쓰며 기기마다 목소리가 다릅니다. 원하면 '시작과 끝에 작은 종소리'를 켤 수 있고, 이 설정은 이 화면에서만 적용됩니다."),
     ("말씀은 어떻게 고르나요?", "위로와 평안의 말씀 가운데 하루에 한 구절이 정해져 있고, '다른 말씀'을 누르면 다른 구절로 바꿀 수 있습니다. 성경 본문은 개역한글판입니다."),
     ("화면이 꺼지지 않나요?", "지원하는 휴대폰과 브라우저에서는 쉬는 동안 화면이 꺼지지 않게 합니다. 지원하지 않는 기기에서는 화면 설정에 따라 꺼질 수 있습니다."),
 ]
@@ -72,7 +72,8 @@ JS = r"""
   function track(n,p){if(window.crsTrack)window.crsTrack(n,p||{});}
   function chime(){try{if(!$('qSound').checked)return;var a=new Audio('/quiet/church_bell.m4a');a.volume=0.5;var pr=a.play();if(pr&&pr.catch)pr.catch(function(){osc();});}catch(e){osc();}}
   function osc(){try{var C=window.AudioContext||window.webkitAudioContext,a=new C(),o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=528;g.gain.setValueAtTime(0.0001,a.currentTime);g.gain.exponentialRampToValueAtTime(0.18,a.currentTime+0.05);g.gain.exponentialRampToValueAtTime(0.0001,a.currentTime+2.6);o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+2.7);}catch(e){}}
-  function breathe(){var b=$('qBreath'),s=$('qSay'),inn=true;function step(){if(inn){b.className='q-breath in';s.textContent='천천히 들이쉬고…';breathT=setTimeout(step,4000);}else{b.className='q-breath out';s.textContent='길게 내쉬며 내려놓아요…';breathT=setTimeout(step,6000);}inn=!inn;}step();}
+  function say(t){try{if(!$('qVoice').checked||!window.speechSynthesis)return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='ko-KR';u.rate=0.8;u.pitch=0.95;u.volume=0.8;var vs=speechSynthesis.getVoices().filter(function(v){return /^ko/i.test(v.lang)});if(vs.length)u.voice=vs[0];speechSynthesis.speak(u);}catch(e){}}
+  function breathe(){var b=$('qBreath'),s=$('qSay'),inn=true;function step(){if(inn){b.className='q-breath in';s.textContent='천천히 들이쉬고…';say('천천히 들이쉬고');breathT=setTimeout(step,4000);}else{b.className='q-breath out';s.textContent='길게 내쉬며 내려놓아요…';say('길게 내쉬며 내려놓아요');breathT=setTimeout(step,6000);}inn=!inn;}step();}
 
   var W={on:false,f:0,vol:0.4,out:false,cur:null,oth:null,iv:null};
   function cl(x){return Math.max(0,Math.min(1,x));}
@@ -92,7 +93,7 @@ JS = r"""
   function start(min){total=min*60;left=total;wrap.className='q-wrap running';$('qTime').textContent=fmt(left);chime();windStart();breathe();track('quiet_start',{min:min});
     try{if(navigator.wakeLock)navigator.wakeLock.request('screen').then(function(l){wake=l;}).catch(function(){});}catch(e){}
     timer=setInterval(function(){left--;$('qTime').textContent=fmt(Math.max(0,left));if(left<=0)finish(true);},1000);}
-  function stop(){clearInterval(timer);windStop();clearTimeout(breathT);try{if(wake){wake.release();wake=null;}}catch(e){}$('qBreath').className='q-breath';}
+  function stop(){clearInterval(timer);windStop();try{if(window.speechSynthesis)speechSynthesis.cancel();}catch(e){}clearTimeout(breathT);try{if(wake){wake.release();wake=null;}}catch(e){}$('qBreath').className='q-breath';}
   function finish(ok){stop();wrap.className=ok?'q-wrap finished':'q-wrap';if(ok){chime();track('quiet_done',{min:total/60});}else{$('qSay').textContent='';$('qTime').textContent='';track('quiet_stop');}}
   $('q1').addEventListener('click',function(){start(1)});$('q3').addEventListener('click',function(){start(3)});
   $('qStop').addEventListener('click',function(){finish(false)});$('qAgain').addEventListener('click',function(){wrap.className='q-wrap';});
@@ -125,10 +126,11 @@ def render():
 <div class="q-btns q-menu"><button class="q-btn main" id="q1" type="button">🌿 1분 쉬기</button><button class="q-btn" id="q3" type="button">3분 쉬기</button></div>
 <div class="q-btns q-other"><button class="q-btn ghost" id="qOther" type="button">다른 말씀</button></div>
 <label class="q-opt"><input type="checkbox" id="qSound">시작과 끝에 작은 종소리</label>
+<label class="q-opt"><input type="checkbox" id="qVoice">호흡 안내를 소리 내어 읽어 주기(기기 음성)</label>
 <label class="q-opt"><input type="checkbox" id="qWind">쉬는 동안 잔잔한 숲 바람 소리</label>
 <button class="q-btn ghost" id="qStop" type="button" style="display:none">그만하기</button>
 <div class="q-done" id="qDone"><h2>잠시 쉬었어요 🌿</h2><p>수고했어요. 이 말씀을 오늘 하루 마음에 두어 보세요.</p>
-<div class="q-btns"><a class="q-btn main" id="qLink" href="/verse/" style="text-decoration:none" data-ga="quiet_card_link">🎨 이 말씀으로 카드 만들기</a><button class="q-btn" id="qShare" type="button">🔗 이 쉼 나누기</button><button class="q-btn ghost" id="qAgain" type="button">다시 쉬기</button></div></div>
+<div class="q-btns"><a class="q-btn main" id="qLink" href="/verse/" style="text-decoration:none" data-ga="quiet_card_link">🎨 이 말씀으로 카드 만들기</a><button class="q-btn" id="qShare" type="button">🔗 이 쉼 나누기</button><button class="q-btn ghost" id="qAgain" type="button">다시 쉬기</button></div><p style="margin:14px 0 0"><a href="https://dallyeoganora.vercel.app/prayer-room?utm_source=crossero&utm_medium=quiet_end&utm_campaign=quiet_prayer_room" target="_blank" rel="noopener" id="qPray" data-ga="quiet_to_prayer_room" style="color:#ffe08a;font-weight:700">🙏 다른 사람들과 함께 기도하고 싶다면 → 달려가노라 기도실</a></p></div>
 <p class="q-note">예배나 공동체 기도를 대신하지 않고, 하루 중 잠시 멈추어 말씀 앞에 서는 개인 묵상을 돕습니다. 성경 본문은 개역한글판(대한성서공회)입니다.</p>
 </section>
 <section class="q-info">

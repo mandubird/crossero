@@ -363,7 +363,7 @@ def render(data):
 <div class="vchips" id="vchips">{chips}</div>
 <div class="vbox" id="vbox" title="눌러서 뽑기">📖</div>
 <button class="vbtn" id="vdraw" data-ga="verse_draw_click">📖 말씀 뽑기</button>
-<p class="vnote" style="margin:8px 0 0">뽑힌 말씀은 묵상의 시작이에요. <a href="/guide/bible-verse-drawing-guide/" data-ga="verse_to_drawguide">말씀 뽑기, 건강하게 쓰는 법</a></p>
+<p class="vnote" style="margin:8px 0 0">뽑힌 말씀은 묵상의 시작이에요. <a href="/guide/bible-verse-drawing-guide/" data-ga="verse_to_drawguide">말씀 뽑기, 건강하게 쓰는 법</a> · <a href="/quiet/" data-ga="verse_to_quiet">🌿 잠시 쉬고 싶다면 1분 쉼</a></p>
 <div class="vcard" id="vcard" style="display:none"><div class="vtag" id="vtag"></div><p class="vtext" id="vtext"></p><div class="vref" id="vref"></div><div class="vmark">십자가로세로 · crossero.com</div></div>
 <div class="vactions" id="vactions" style="display:none">
 <a class="vbtn sub" id="vmore" href="#" style="display:none;text-decoration:none" data-ga="verse_to_guide">📖 이 말씀 해설 읽기</a>

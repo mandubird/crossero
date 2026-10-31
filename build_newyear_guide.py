@@ -149,6 +149,7 @@ def render():
 <div class="btnrow">
 <a href="/verse/#church-print" data-ga="nyguide_to_batch">🖨️ 말씀 카드 한꺼번에 인쇄하기</a>
 <a class="alt" href="/verse/new-year/" data-ga="nyguide_to_newyear">🎍 새해 말씀 뽑기 해 보기</a>
+<a class="alt" href="/verse/new-year/countdown/" data-ga="nyguide_to_countdown">⏱️ 예배 화면용 카운트다운</a>
 </div>
 
 <h2>송구영신예배와 말씀 뽑기</h2>

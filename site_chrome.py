@@ -35,7 +35,7 @@ ACTIVE_RULES = [  # (경로 접두어/이름, key) 위에서부터 첫 일치
 FOOT_COLS = [
     ("성경사전", [("📍 성경 지명", "/dictionary/places/"), ("👤 성경 인물", "/dictionary/people/"), ("📜 성경 사건", "/dictionary/events/"),
                  ("✝️ 신앙 용어", "/dictionary/terms/"), ("📚 66권 요약", "/dictionary/books/"), ("⏳ 연대표", "/dictionary/timeline/"), ("👪 가계도", "/dictionary/genealogy/"), ("📖 구절로 찾기", "/dictionary/verses/"), ("🗺️ 성경 지도", "/dictionary/map/")]),
-    ("말씀·묵상", [("🌿 1분 쉼 묵상", "/quiet/"), ("🖼️ 말씀 카드 갤러리", "/cards/"), ("📘 성경공부 가이드", "/guide/"), ("오늘의 말씀", "/today/"), ("말씀 뽑기", "/verse/"), ("🎭 성탄 성극 대본", "/christmas/"), ("✂️ 성극 소품 도안", "/christmas/props.html"), ("🎨 성탄 활동지", "/christmas/activities.html"), ("🧩 성탄 퍼즐", "/christmas/puzzles.html"), ("새해 말씀 뽑기", "/verse/new-year/"), ("송구영신 진행 가이드", "/verse/new-year/guide/"),
+    ("말씀·묵상", [("🌿 1분 쉼 묵상", "/quiet/"), ("🖼️ 말씀 카드 갤러리", "/cards/"), ("📘 성경공부 가이드", "/guide/"), ("오늘의 말씀", "/today/"), ("말씀 뽑기", "/verse/"), ("🎭 성탄 성극 대본", "/christmas/"), ("✂️ 성극 소품 도안", "/christmas/props.html"), ("🎨 성탄 활동지", "/christmas/activities.html"), ("🧩 성탄 퍼즐", "/christmas/puzzles.html"), ("새해 말씀 뽑기", "/verse/new-year/"), ("송구영신 진행 가이드", "/verse/new-year/guide/"), ("⏱️ 송구영신 카운트다운", "/verse/new-year/countdown/"),
                  ("성탄 말씀 뽑기", "/verse/christmas/"), ("추수감사 말씀 뽑기", "/verse/thanksgiving/")]),
     ("퍼즐·교사 자료", [("퍼즐 목록", "/list.html"), ("퍼즐 게시판", "/posts/index.html"), ("성경 십자말풀이", "/bible-crossword.html"),
                    ("십자말풀이 하는 법", "/how-to-crossword.html"), ("교사 허브", "/teachers/"), ("주일학교 자료", "/sunday-school-materials.html"),
@@ -212,7 +212,9 @@ def hub_html():
     cards = [("🧩", "퍼즐 풀기", "가로세로 낱말 퍼즐", "/list.html"), ("📍", "성경 지명", "오늘의 위치와 사진", "/dictionary/places/"),
              ("👤", "성경 인물", "삶과 핵심 구절", "/dictionary/people/"), ("📜", "성경 사건", "흐름으로 이해", "/dictionary/events/"),
              ("🗺️", "성경 지도", "지명이 지금은?", "/dictionary/map/"), ("🧑‍🏫", "교사 허브", "주일학교 자료", "/teachers/"),
-             ("📅", "오늘의 말씀", "매일 새로운 구절", "/today/"), ("📖", "말씀 뽑기", "내게 주시는 말씀", "/verse/")]
+             ("📅", "오늘의 말씀", "매일 새로운 구절", "/today/"), ("📖", "말씀 뽑기", "내게 주시는 말씀", "/verse/"),
+             ("🌿", "1분 쉼", "말씀과 호흡으로 쉬기", "/quiet/"), ("🕊️", "송구영신", "카운트다운·말씀 뽑기", "/verse/new-year/countdown/"),
+             ("🖼️", "말씀 카드", "샘플과 직접 만들기", "/cards/"), ("📘", "성경공부 가이드", "읽는 법·교사 자료", "/guide/")]
     g = "".join(f'<a class="hh-card" href="{h}" data-ga="home_hub_click" data-ga-label="{t}"><i>{ic}</i><b>{t}</b><span>{d}</span></a>' for ic, t, d, h in cards)
     return f'<!--HUB--><section class="home-hub">{season_html()}<h2>무엇을 찾으세요?</h2><div class="hh-grid">{g}</div></section><!--/HUB-->'
 
