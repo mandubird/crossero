@@ -50,17 +50,29 @@ def build_data():
 
 
 def season_banner():
-    """절기 말씀 뽑기 배너(말씀 뽑기·오늘의 말씀 페이지에서 공용)."""
+    """절기 말씀 뽑기 배너(말씀 뽑기·오늘의 말씀·홈 공용). 절기 기간(한국 시간)에 맞는 카드만 크게 보여 주고 나머지는 한 줄 링크로 줄인다."""
     from season_picks import SEASONS as _S
     badge = {"new-year": "송구영신 · 교회 인쇄", "christmas": "성극 · 주일학교", "thanksgiving": "추수감사절"}
     grad = {"new-year": "linear-gradient(135deg,#0b5cad,#0073e6)", "christmas": "linear-gradient(135deg,#8f1d1d,#c0392b)",
             "thanksgiving": "linear-gradient(135deg,#a8530a,#d98a1c)"}
+    # 노출 기간(월일, 시작~끝). 성탄은 성극 준비(6~8주 전)부터, 새해는 송구영신 준비(4~6주 전)부터, 추수감사는 11월 셋째 주일 전후.
+    win = {"thanksgiving": (1020, 1122), "christmas": (1028, 106), "new-year": (1120, 131)}
     cards = "".join(
-        f'<a class="vsb-c" style="--g:{grad.get(k, "#0b5cad")}" href="/verse/{k}/" data-ga="verse_to_season" data-ga-label="{k}">'
+        f'<a class="vsb-c" style="--g:{grad.get(k, "#0b5cad")}" href="/verse/{k}/" data-ga="verse_to_season" data-ga-label="{k}" data-s="{esc(c["label"].replace(" 뽑기", ""))}" data-f="{win[k][0]}" data-t="{win[k][1]}">'
         + ('<em>송구영신 인기</em>' if k == "new-year" else '')
         + f'<i>{c["emoji"]}</i><b>{esc(c["label"].replace(" 뽑기", ""))}</b><span>{esc(badge.get(k, c["sub"]))}</span></a>'
         for k, c in _S.items())
-    return '<div class="vsb"><div class="vsb-h">🎄 절기 말씀 뽑기 <span>교회 행사에 바로 쓰세요</span></div><div class="vsb-row">' + cards + '</div></div>'
+    js = ("<script>(function(){var K=new Date(Date.now()+((new Date().getTimezoneOffset()+540)*60000)),md=(K.getMonth()+1)*100+K.getDate();"
+          "[].forEach.call(document.querySelectorAll('.vsb:not([data-d])'),function(b){b.setAttribute('data-d','1');var cs=[].slice.call(b.querySelectorAll('.vsb-c')),on=[],off=[];"
+          "cs.forEach(function(c){var f=+c.dataset.f,t=+c.dataset.t,inn=f<=t?(md>=f&&md<=t):(md>=f||md<=t);(inn?on:off).push(c);});"
+          "var row=b.querySelector('.vsb-row'),h=b.querySelector('.vsb-h');"
+          "if(on.length){off.forEach(function(c){c.style.display='none';});row.style.gridTemplateColumns='repeat('+on.length+',1fr)';row.style.maxWidth=on.length<3?(on.length*250)+'px':'';row.style.margin='0 auto';"
+          "on.sort(function(a,b2){var d=function(c){var t=+c.dataset.t,m=md,e=(Math.floor(t/100)-1)*31+t%100,n=(Math.floor(m/100)-1)*31+m%100;return (e-n+372)%372;};return d(a)-d(b2);});on.forEach(function(c){row.appendChild(c);});"
+          "if(h)h.innerHTML='🎄 지금 쓰기 좋은 절기 말씀 뽑기 <span>교회 행사에 바로 쓰세요</span>';}"
+          "else{row.style.display='none';if(h)h.style.display='none';}"
+          "if(off.length||!on.length){var l=document.createElement('div');l.style.cssText='text-align:center;font-size:13.5px;color:#667;margin-top:10px';"
+          "l.innerHTML=(on.length?'다른 절기: ':'🎄 절기 말씀 뽑기: ')+(on.length?off:cs).map(function(c){return '<a href=\"'+c.getAttribute('href')+'\" data-ga=\"verse_to_season\" data-ga-label=\"'+c.dataset.s+'\" style=\"color:#0b5cad;font-weight:700\">'+c.dataset.s+'</a>';}).join(' · ');b.appendChild(l);}});})();</script>")
+    return '<div class="vsb"><div class="vsb-h">🎄 절기 말씀 뽑기 <span>교회 행사에 바로 쓰세요</span></div><div class="vsb-row">' + cards + '</div></div>' + js
 
 
 def build_sets(data):
