@@ -31,3 +31,5 @@ Disallow: /backup/
 # 사이트맵 (검색엔진이 수집할 URL 목록) — non-www 통일 (301 없이 적용 쉬움)
 Sitemap: https://crossero.com/sitemap.xml
 Sitemap: https://crossero.com/posts.xml
+
+#DaumWebMasterTool:f1778f3e77af02ce0c05274ef8941b7dc3af08eac55276c6c931e5da97cc665c:IvLhJkVn51ozGzUxUVcQlQ==
