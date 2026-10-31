@@ -17,7 +17,7 @@ DESC = "잠시 멈추어 말씀 한 구절 앞에 서 보세요. 가입도 설�
 FAQ = [
     ("1분 쉼 묵상은 무엇인가요?", "말씀 한 구절을 보며 천천히 숨을 들이쉬고 내쉬는 짧은 묵상 시간입니다. 가입이나 입력 없이 버튼 하나로 1분 또는 3분 동안 조용히 쉴 수 있습니다."),
     ("예배를 대신하는 것인가요?", "아닙니다. 예배나 공동체 기도를 대신하지 않고, 하루 중 잠시 멈추어 말씀 앞에 서는 개인 묵상을 돕는 도구입니다."),
-    ("소리가 나나요?", "기본은 소리가 없습니다. 원하면 '시작과 끝에 작은 싱잉볼 소리'를 켤 수 있고, 이 설정은 이 화면에서만 적용됩니다."),
+    ("소리가 나나요?", "기본은 소리가 없습니다. 원하면 '시작과 끝에 작은 종소리'를 켤 수 있고, 이 설정은 이 화면에서만 적용됩니다."),
     ("말씀은 어떻게 고르나요?", "위로와 평안의 말씀 가운데 하루에 한 구절이 정해져 있고, '다른 말씀'을 누르면 다른 구절로 바꿀 수 있습니다. 성경 본문은 개역한글판입니다."),
     ("화면이 꺼지지 않나요?", "지원하는 휴대폰과 브라우저에서는 쉬는 동안 화면이 꺼지지 않게 합니다. 지원하지 않는 기기에서는 화면 설정에 따라 꺼질 수 있습니다."),
 ]
@@ -70,14 +70,29 @@ JS = r"""
   function pick(){var q=new URLSearchParams(location.search).get('v');var f=V.filter(function(d){return d.ref===q})[0];if(f)return f;var d=new Date(),day=Math.floor((d-new Date(d.getFullYear(),0,0))/864e5);return V[day%V.length];}
   function show(d){cur=d;$('qText').textContent=d.text;$('qRef').textContent=d.ref;$('qLink').href='/verse/?v='+encodeURIComponent(d.ref);}
   function track(n,p){if(window.crsTrack)window.crsTrack(n,p||{});}
-  function chime(){try{if(!$('qSound').checked)return;var a=new Audio('/quiet/singing_bowl.m4a');a.volume=0.7;var pr=a.play();if(pr&&pr.catch)pr.catch(function(){osc();});}catch(e){osc();}}
+  function chime(){try{if(!$('qSound').checked)return;var a=new Audio('/quiet/church_bell.m4a');a.volume=0.5;var pr=a.play();if(pr&&pr.catch)pr.catch(function(){osc();});}catch(e){osc();}}
   function osc(){try{var C=window.AudioContext||window.webkitAudioContext,a=new C(),o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=528;g.gain.setValueAtTime(0.0001,a.currentTime);g.gain.exponentialRampToValueAtTime(0.18,a.currentTime+0.05);g.gain.exponentialRampToValueAtTime(0.0001,a.currentTime+2.6);o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+2.7);}catch(e){}}
   function breathe(){var b=$('qBreath'),s=$('qSay'),inn=true;function step(){if(inn){b.className='q-breath in';s.textContent='천천히 들이쉬고…';breathT=setTimeout(step,4000);}else{b.className='q-breath out';s.textContent='길게 내쉬며 내려놓아요…';breathT=setTimeout(step,6000);}inn=!inn;}step();}
+
+  var W={on:false,f:0,vol:0.4,out:false,cur:null,oth:null,iv:null};
+  function cl(x){return Math.max(0,Math.min(1,x));}
+  function windKill(){try{clearInterval(W.iv);if(W.cur)W.cur.pause();if(W.oth)W.oth.pause();}catch(e){}W.on=false;W.cur=W.oth=null;}
+  function windStart(){if(!$('qWind').checked)return;windKill();var mk=function(){var x=new Audio('/quiet/forest_wind.m4a');x.preload='auto';x.volume=0;return x;};W.cur=mk();W.oth=mk();W.f=0;W.out=false;W.on=true;
+    var p=W.cur.play();if(p&&p.catch)p.catch(function(){});var q=W.oth.play();if(q&&q.then)q.then(function(){W.oth.pause();W.oth.currentTime=0;}).catch(function(){});
+    W.iv=setInterval(windTick,100);track('quiet_wind');}
+  function windTick(){if(!W.on)return;var c=W.cur,o=W.oth,d=c.duration||0;
+    W.f=W.out?Math.max(0,W.f-0.1/1.5):Math.min(1,W.f+0.1/2);
+    var left=d?d-c.currentTime:99,cv=1,ov=0;
+    if(d&&left<=3){if(o.paused){o.currentTime=0;var pr=o.play();if(pr&&pr.catch)pr.catch(function(){});}ov=1-left/3;cv=left/3;}
+    if(d&&left<=0.15){c.pause();c.currentTime=0;W.cur=o;W.oth=c;}
+    c.volume=cl(W.vol*W.f*cv);o.volume=cl(W.vol*W.f*ov);
+    if(W.out&&W.f<=0)windKill();}
+  function windStop(){if(W.on)W.out=true;}
   function fmt(s){var m=Math.floor(s/60),r=s%60;return m+':'+(r<10?'0':'')+r;}
-  function start(min){total=min*60;left=total;wrap.className='q-wrap running';$('qTime').textContent=fmt(left);chime();breathe();track('quiet_start',{min:min});
+  function start(min){total=min*60;left=total;wrap.className='q-wrap running';$('qTime').textContent=fmt(left);chime();windStart();breathe();track('quiet_start',{min:min});
     try{if(navigator.wakeLock)navigator.wakeLock.request('screen').then(function(l){wake=l;}).catch(function(){});}catch(e){}
     timer=setInterval(function(){left--;$('qTime').textContent=fmt(Math.max(0,left));if(left<=0)finish(true);},1000);}
-  function stop(){clearInterval(timer);clearTimeout(breathT);try{if(wake){wake.release();wake=null;}}catch(e){}$('qBreath').className='q-breath';}
+  function stop(){clearInterval(timer);windStop();clearTimeout(breathT);try{if(wake){wake.release();wake=null;}}catch(e){}$('qBreath').className='q-breath';}
   function finish(ok){stop();wrap.className=ok?'q-wrap finished':'q-wrap';if(ok){chime();track('quiet_done',{min:total/60});}else{$('qSay').textContent='';$('qTime').textContent='';track('quiet_stop');}}
   $('q1').addEventListener('click',function(){start(1)});$('q3').addEventListener('click',function(){start(3)});
   $('qStop').addEventListener('click',function(){finish(false)});$('qAgain').addEventListener('click',function(){wrap.className='q-wrap';});
@@ -109,7 +124,8 @@ def render():
 <div class="q-time" id="qTime"></div>
 <div class="q-btns q-menu"><button class="q-btn main" id="q1" type="button">🌿 1분 쉬기</button><button class="q-btn" id="q3" type="button">3분 쉬기</button></div>
 <div class="q-btns q-other"><button class="q-btn ghost" id="qOther" type="button">다른 말씀</button></div>
-<label class="q-opt"><input type="checkbox" id="qSound">시작과 끝에 작은 싱잉볼 소리</label>
+<label class="q-opt"><input type="checkbox" id="qSound">시작과 끝에 작은 종소리</label>
+<label class="q-opt"><input type="checkbox" id="qWind">쉬는 동안 잔잔한 숲 바람 소리</label>
 <button class="q-btn ghost" id="qStop" type="button" style="display:none">그만하기</button>
 <div class="q-done" id="qDone"><h2>잠시 쉬었어요 🌿</h2><p>수고했어요. 이 말씀을 오늘 하루 마음에 두어 보세요.</p>
 <div class="q-btns"><a class="q-btn main" id="qLink" href="/verse/" style="text-decoration:none" data-ga="quiet_card_link">🎨 이 말씀으로 카드 만들기</a><button class="q-btn" id="qShare" type="button">🔗 이 쉼 나누기</button><button class="q-btn ghost" id="qAgain" type="button">다시 쉬기</button></div></div>
