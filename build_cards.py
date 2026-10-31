@@ -10,6 +10,7 @@ import build_dictionary as bd
 import build_verse as bv
 from build_dictionary import esc, head, FOOTER, NAV, SITE, ROOT
 from cards_plan import SETS
+from church_samples import church_sample_block
 
 PLAN = json.load(open("cards_plan.json", encoding="utf-8"))
 PH = {p["id"]: p for p in json.load(open("verse/studio_photos.json", encoding="utf-8"))["photos"]}
@@ -194,6 +195,7 @@ def set_page(S):
 <div class="txt">{''.join(f'<p class="{"lead" if i == 0 else ""}">{esc(p)}</p>' for i, p in enumerate(T['intro']))}</div>
 <div class="btnrow"><a href="/verse/" data-ga="cards_to_studio">🎨 내 말씀 카드 직접 만들기</a><a class="alt" href="/verse/new-year/guide/" data-ga="cards_to_guide">⛪ 교회 인쇄 가이드</a></div>
 <div class="cg">{figs}</div>
+{church_sample_block() if S["k"] == "new-year" else ""}
 <h2>이 카드는 이렇게 쓰세요</h2>
 <ul class="txt">{''.join(f'<li>{esc(t)}</li>' for t in T['tips'])}</ul>
 <h2>자주 묻는 질문</h2>

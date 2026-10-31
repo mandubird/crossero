@@ -6,6 +6,7 @@ import os
 import re
 
 import build_dictionary as bd
+from church_samples import church_sample_block
 import build_verse as bv
 from build_dictionary import esc, head, FOOTER, NAV, SITE, ROOT
 from season_picks import SEASONS
@@ -168,6 +169,7 @@ def render(key, cfg, text):
 {'<a class="vbtn sub" href="/cards/' + ('new-year' if key == 'new-year' else key) + '/" data-ga="season_to_cards" style="text-decoration:none">🖼️ 샘플 카드 갤러리 보기</a>' if key in ('new-year', 'christmas', 'thanksgiving') else ''}
 <p style="text-align:left;font-size:14.5px;color:#556;margin:10px 0 6px">🏷️ 후원하시면 카드 아래에 <b>우리 교회 이름</b>을 넣어 인쇄할 수 있어요(말씀 카드 만들기 → 더보기 → 교회 이름 넣기).</p>
 <a class="vbtn sub" href="/verse/#church-print" data-ga="season_to_batch" style="text-decoration:none">🎨 사진·글꼴 골라 예쁘게 인쇄 (A4 4~12장씩)</a>
+{church_sample_block() if key == 'new-year' else ''}
 <h2 style="text-align:left;margin-top:30px">자주 묻는 질문</h2>
 <div class="faq" style="text-align:left">{''.join(f'<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>' for q, a in cfg['faq'])}</div>
 <h2 style="text-align:left;margin-top:30px">{esc(cfg['topic'])} 말씀 모음 ({len(pool)}구절)</h2>

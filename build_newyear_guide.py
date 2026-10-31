@@ -8,6 +8,7 @@ import re
 import build_dictionary as bd
 import build_verse as bv
 from shop_links import shop_block
+from church_samples import church_sample_block
 from build_dictionary import esc, head, FOOTER, NAV, SITE, ROOT
 
 PATH = "/verse/new-year/guide/"
@@ -179,6 +180,7 @@ def render():
 <p>구절이 100가지 미만이면 같은 구절을 2~3장씩 섞어서 준비하면 됩니다. 같은 구절을 받은 사람끼리 나누는 시간을 가지면 오히려 교제의 계기가 되기도 합니다.</p>
 
 {CALC}
+{church_sample_block()}
 <h3>용지와 인쇄 팁</h3>
 <ul>
 <li>두꺼운 종이(120~200g)를 쓰면 접거나 상자에서 뽑을 때 편합니다.</li>
