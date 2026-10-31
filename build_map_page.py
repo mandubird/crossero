@@ -181,6 +181,7 @@ def write_llms(ENTRIES, GEO, SITE):
 - [성탄 성극 소품 도안]({SITE}/christmas/props.html): 별·왕관·양 머리띠·천사 날개·구유 등 A4 PDF 무료 도안
 - [오늘의 말씀]({SITE}/today/): 매일 바뀌는 한 구절과 해설
 - [말씀 뽑기]({SITE}/verse/): 주제별 구절 카드
+- [1분 쉼 묵상]({SITE}/quiet/): 말씀 한 구절과 호흡 안내, 1·3분 타이머로 조용히 쉬는 묵상 페이지
 - [새해 말씀 뽑기]({SITE}/verse/new-year/): 새해·송구영신에 맞는 구절을 뽑아 카드로 저장·인쇄
 - [송구영신 진행 가이드]({SITE}/verse/new-year/guide/): 송구영신예배에서 새해 말씀 뽑기를 진행하는 순서와 준비
 - [말씀 카드 갤러리]({SITE}/cards/): 새해·성탄·위로 등 성경 구절 카드 이미지 샘플
