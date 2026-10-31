@@ -303,7 +303,7 @@
     if (S.church && (isDonor() || !forExport)) {
       var cm = Math.min(w, h); x.font = Math.round(cm * 0.037) + 'px ' + fam; x.textAlign = 'center'; x.globalAlpha = 0.95; x.fillStyle = dark ? '#222' : '#fff';
       if (!dark) { x.shadowColor = 'rgba(0,0,0,.5)'; x.shadowBlur = cm * 0.008; }
-      x.fillText(S.church, w / 2, h - cm * ((S.bg.type === 'photo' && S.pcredit) ? 0.055 : 0.04)); x.shadowColor = 'transparent'; x.shadowBlur = 0; x.globalAlpha = 1;
+      x.fillText(S.church, w / 2, h - cm * (S.frame && S.frame !== 'none' ? 0.082 : ((S.bg.type === 'photo' && S.pcredit) ? 0.055 : 0.04))); x.shadowColor = 'transparent'; x.shadowBlur = 0; x.globalAlpha = 1;
     }
     if (S.mark && !isDonor()) { x.font = Math.round(Math.min(w, h) * 0.026) + 'px "Noto Sans KR",sans-serif'; x.textAlign = 'center'; x.globalAlpha = 0.7; x.fillStyle = dark ? '#333' : '#fff'; x.fillText('십자가로세로 · crossero.com', w / 2, h - Math.min(w, h) * 0.045); x.globalAlpha = 1; }
     else if (S.mark && isDonor() && false) { /* 후원자: 워터마크 없음 */ }
