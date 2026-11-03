@@ -280,7 +280,7 @@ def peek_html():
             '<span class="peek-b">후원 ❤️</span><img src="/images/mascot-peek.png" alt="" width="62" height="78"></a>'
             '<script>(function(){var e=document.getElementById("crsPeek");if(!e)return;'
             'try{if(sessionStorage.getItem("peekOff")){e.style.display="none";return}}catch(x){}'
-            'function pos(){var sn=document.querySelector(".subnav"),nv=document.querySelector(".nav"),el=sn||nv;if(!el)return;'
+            'function pos(){if(window.matchMedia&&matchMedia("(max-width:640px)").matches){e.style.top="";return}var sn=document.querySelector(".subnav"),nv=document.querySelector(".nav"),el=sn||nv;if(!el)return;'
             'var b=el.getBoundingClientRect().bottom,p=location.pathname,o=sn?22:(/^\\/(list|puzzle)/.test(p)?6:66);'
             'e.style.top=Math.max(48,b+o)+"px"}'
             'pos();window.addEventListener("resize",pos);window.addEventListener("load",pos)})();</script><!--/PEEK-->')
