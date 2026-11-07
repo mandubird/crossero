@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""말씀 카드 갤러리(샘플 카드) 계획. 실행: python3 cards_plan.py  → cards_plan.json
+"""말씀카드 갤러리(샘플 카드) 계획. 실행: python3 cards_plan.py  → cards_plan.json
 세트별로 구절을 고르고, 세트 분위기에 맞는 디자인(배경·글꼴·장식)을 정해 둔다.
 실제 이미지는 tools/gen_cards.js 가 스튜디오 코드(crsStudio.renderCard)로 그린다."""
 import json
@@ -22,34 +22,34 @@ HAND = ["Nanum Brush Script", "Nanum Pen Script", "Hi Melody"]
 
 # 세트: 키, 이름, 구절 출처, 장수, 사진 주제, 배경 장면, 장식, 테두리, 효과, 글꼴 풀
 SETS = [
-    dict(k="new-year", name="새해 말씀 카드", src=("season", "new-year"), n=36,
+    dict(k="new-year", name="새해 말씀카드", src=("season", "new-year"), n=36,
          photo=["night", "light", "sunrise", "mountain", "lake"], scene=["gold", "dawn", "ink", "bokeh", "pastel"],
          orn=["star", "cross", "olive", "anchor", None, None], frame=["double", "corner", None, None], fx=["sparkle", "rays", None, None], fonts=SERIF + SANS[:2]),
-    dict(k="christmas", name="성탄 말씀 카드", src=("season", "christmas"), n=24,
+    dict(k="christmas", name="성탄 말씀카드", src=("season", "christmas"), n=24,
          photo=["night", "light"], scene=["gold", "bokeh", "stained", "dawn", "parchment"],
          orn=["star", "dove", "cross", "flame", None], frame=["double", "corner", None], fx=["sparkle", "snow", None], fonts=SERIF),
-    dict(k="thanksgiving", name="추수감사 말씀 카드", src=("season", "thanksgiving"), n=24,
+    dict(k="thanksgiving", name="추수감사 말씀카드", src=("season", "thanksgiving"), n=24,
          photo=["field", "autumn", "bread", "flower"], scene=["parchment", "linen", "wc", "hanji"],
          orn=["wheat", "grapes", "olive", None, None], frame=["line", "corner", None], fx=[None, "rays", None], fonts=SERIF + SANS[2:]),
-    dict(k="comfort", name="위로의 말씀 카드", src=("topic", "위로"), n=24,
+    dict(k="comfort", name="위로의 말씀카드", src=("topic", "위로"), n=24,
          photo=["lake", "sea", "forest", "light"], scene=["wc", "mist", "pastel", "dawn", "marble"],
          orn=["dove", "olive", None, None], frame=["round", "line", None, None], fx=[None, "rays", None], fonts=SERIF + SANS[:2]),
-    dict(k="peace", name="평안의 말씀 카드", src=("topic", "평안"), n=19,
+    dict(k="peace", name="평안의 말씀카드", src=("topic", "평안"), n=19,
          photo=["lake", "water", "sea", "sky"], scene=["pastel", "wc", "hanji", "mist", "linen"],
          orn=["dove", "olive", "lily", None, None], frame=["line", None, None], fx=[None, None, "petals"], fonts=SERIF + SANS[:2]),
-    dict(k="courage", name="용기의 말씀 카드", src=("topic", "용기"), n=24,
+    dict(k="courage", name="용기의 말씀카드", src=("topic", "용기"), n=24,
          photo=["mountain", "light", "sea", "desert"], scene=["ink", "gold", "dawn", "marble"],
          orn=["anchor", "flame", "cross", None, None], frame=["double", None, None], fx=[None, "rays", None], fonts=SERIF[:3] + SANS[:2]),
-    dict(k="gratitude", name="감사의 말씀 카드", src=("topic", "감사"), n=21,
+    dict(k="gratitude", name="감사의 말씀카드", src=("topic", "감사"), n=21,
          photo=["flower", "field", "sunrise", "bread"], scene=["wc", "linen", "parchment", "pastel"],
          orn=["grapes", "wheat", "lily", None, None], frame=["corner", "round", None], fx=["petals", None, "sparkle"], fonts=SERIF + SANS[2:] + HAND[:1]),
-    dict(k="hope", name="소망의 말씀 카드", src=("topic", "소망"), n=20,
+    dict(k="hope", name="소망의 말씀카드", src=("topic", "소망"), n=20,
          photo=["sunrise", "light", "sky", "field"], scene=["dawn", "pastel", "gold", "wc"],
          orn=["star", "lily", "dove", None, None], frame=[None, "line", None], fx=["rays", "sparkle", None], fonts=SERIF + SANS[:2]),
-    dict(k="love", name="사랑의 말씀 카드", src=("topic", "사랑"), n=24,
+    dict(k="love", name="사랑의 말씀카드", src=("topic", "사랑"), n=24,
          photo=["flower", "sunrise", "lake"], scene=["wc", "marble", "bokeh", "pastel", "linen"],
          orn=["heart", "dove", "lily", None, None], frame=["round", "corner", None], fx=["petals", "sparkle", None], fonts=SERIF + SANS[2:] + HAND[:1]),
-    dict(k="faith", name="믿음의 말씀 카드", src=("topic", "믿음"), n=22,
+    dict(k="faith", name="믿음의 말씀카드", src=("topic", "믿음"), n=22,
          photo=["mountain", "light", "night", "sea"], scene=["ink", "gold", "stained", "parchment", "mist"],
          orn=["cross", "anchor", "flame", None], frame=["double", "line", None], fx=[None, "rays", "sparkle"], fonts=SERIF + SANS[:2]),
 ]

@@ -126,7 +126,7 @@ HELPER = '''<div id="tHelper" style="background:#f7faff;border:1px solid #cfe0f5
   var PZ=[['/teachers/sunday-school-puzzles.html','주일학교용 퍼즐','쉬운 인물·사건 퍼즐로 공과를 복습해요'],['/teachers/sunday-school-puzzles.html','주일학교용 퍼즐','쉬운 인물·사건 퍼즐로 공과를 복습해요'],['/teachers/sunday-school-puzzles.html','주일학교용 퍼즐','힌트를 함께 읽으며 풀기 좋아요'],['/teachers/youth-puzzles.html','중고등부용 퍼즐','조별 대결로 풀기 좋아요'],['/teachers/leader-puzzles.html','리더·구역용 퍼즐','모임을 여는 가벼운 활동으로 좋아요']];
   var ACT=[
    [['/today/','오늘의 말씀 한 구절','읽고 짝과 한 문장 나누기(10분)'],['/guide/bible-storytelling-for-children/','성경 이야기 들려주는 법','10분 안에 한 가지 메시지로 전하기']],
-   [['/verse/','말씀 카드 꾸미기','사진·글꼴을 골라 카드로 저장해요(20분)'],['/christmas/activities.html','활동지 모음','색칠·미로·OX 퀴즈 등을 골라 인쇄해요']],
+   [['/verse/','말씀카드 꾸미기','사진·글꼴을 골라 카드로 저장해요(20분)'],['/christmas/activities.html','활동지 모음','색칠·미로·OX 퀴즈 등을 골라 인쇄해요']],
    [['/guide/small-group-discussion-questions/','소그룹 질문 만들기','관찰·해석·적용 질문으로 나눔(20~40분)'],['/christmas/guide.html','성극 준비 가이드','일정·배역·소품과 인원별 계산기']]];
   var TIP=['인원이 적으면 모두 한 퍼즐을 함께 풀고 돌아가며 힌트를 읽어요.','10~30명이면 3~4조로 나눠 조별로 풀고, 조마다 한 사람이 발표해요.','인원이 많으면 조별 나눔 뒤 대표 발표로 시간을 맞추고, 인쇄물은 인원의 1.1배로 준비해요.'];
   function card(r,tag){return '<a class="card" href="'+r[0]+'" data-ga="thelper_click" data-ga-label="'+tag+'"><b>'+r[1]+'</b><span>'+r[2]+'</span></a>';}

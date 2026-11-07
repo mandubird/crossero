@@ -103,9 +103,9 @@ def render():
 </section>
 <section class="cd-info">
 <h2>예배에서 이렇게 쓰세요</h2>
-<ol><li>예배 화면 컴퓨터에서 이 페이지를 열고 '큰 화면 모드'를 누릅니다.</li><li>카운트다운이 진행되는 동안 새해 말씀이 한 구절씩 바뀌어 나옵니다. 함께 읽거나 조용히 묵상하는 시간으로 쓰세요.</li><li>0시가 되면 새해 인사와 새해 말씀 뽑기 주소가 나옵니다. 성도들은 휴대폰으로 각자 말씀을 뽑거나, 준비한 말씀 카드를 상자에서 뽑습니다.</li></ol>
+<ol><li>예배 화면 컴퓨터에서 이 페이지를 열고 '큰 화면 모드'를 누릅니다.</li><li>카운트다운이 진행되는 동안 새해 말씀이 한 구절씩 바뀌어 나옵니다. 함께 읽거나 조용히 묵상하는 시간으로 쓰세요.</li><li>0시가 되면 새해 인사와 새해 말씀 뽑기 주소가 나옵니다. 성도들은 휴대폰으로 각자 말씀을 뽑거나, 준비한 말씀카드를 상자에서 뽑습니다.</li></ol>
 <h2>자주 묻는 질문</h2><div class="faq">{faq_html}</div>
-<p><a href="/verse/new-year/guide/">⛪ 송구영신 말씀 뽑기 진행 가이드</a> · <a href="/verse/new-year/">🎍 새해 말씀 뽑기</a> · <a href="/cards/new-year/">🖼️ 새해 말씀 카드 갤러리</a></p>
+<p><a href="/verse/new-year/guide/">⛪ 송구영신 말씀 뽑기 진행 가이드</a> · <a href="/verse/new-year/">🎍 새해 말씀 뽑기</a> · <a href="/cards/new-year/">🖼️ 새해 말씀카드 갤러리</a></p>
 </section>
 </main>"""
     data_js = "<script>window.__CV=" + json.dumps(vs, ensure_ascii=False, separators=(",", ":")) + ";</script>"

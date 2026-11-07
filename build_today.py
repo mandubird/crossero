@@ -69,7 +69,7 @@ def render(day, data):
         sched[dd.isoformat()] = ref_for(dd, refs)
     path = "/today/"
     title = f"오늘의 말씀 {ko_date(day)} - {today_ref} | 십자가로세로"
-    desc = f"{ko_date(day)}의 말씀은 {today_ref}입니다. \"{cur['text'][:40]}…\" 오늘의 말씀 카드를 책갈피로 저장하고 나눠 보세요."
+    desc = f"{ko_date(day)}의 말씀은 {today_ref}입니다. \"{cur['text'][:40]}…\" 오늘의 말씀카드를 책갈피로 저장하고 나눠 보세요."
     ld = '<script type="application/ld+json">' + json.dumps({
         "@context": "https://schema.org", "@type": "WebPage", "name": "오늘의 말씀", "url": SITE + path,
         "inLanguage": "ko", "dateModified": day.isoformat(), "description": desc}, ensure_ascii=False) + "</script>" + \

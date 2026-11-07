@@ -1,4 +1,4 @@
-/* 십자가로세로 말씀 카드 스튜디오 - 배경(직접 그린 풍경·그라데이션·내 사진)·무료 글꼴·크기 프리셋으로 말씀 카드를 만든다.
+/* 십자가로세로 말씀카드 스튜디오 - 배경(직접 그린 풍경·그라데이션·내 사진)·무료 글꼴·크기 프리셋으로 말씀카드를 만든다.
    외부 이미지를 쓰지 않으므로 저작권 걱정이 없다. window.crsStudio.setVerse({ref,text,topic}) 로 말씀을 전달한다. */
 (function () {
   'use strict';
@@ -553,7 +553,7 @@
     $('vsShare').addEventListener('click', function () {
       exportBlob('image/png').then(function (b) {
         var f = new File([b], fname('png'), { type: 'image/png' });
-        if (navigator.canShare && navigator.canShare({ files: [f] })) { navigator.share({ files: [f], title: S.verse ? S.verse.ref : '말씀 카드', text: (S.verse ? S.verse.ref + ' ' : '') + '십자가로세로 crossero.com' }).catch(function () {}); pgDone(); track('studio_share', { via: 'native' }); }
+        if (navigator.canShare && navigator.canShare({ files: [f] })) { navigator.share({ files: [f], title: S.verse ? S.verse.ref : '말씀카드', text: (S.verse ? S.verse.ref + ' ' : '') + '십자가로세로 crossero.com' }).catch(function () {}); pgDone(); track('studio_share', { via: 'native' }); }
         else { download(b, fname('png')); alert('이 기기에서는 바로 공유가 어려워 이미지를 저장했어요. 카카오톡·인스타그램에서 저장된 사진을 올려 주세요.'); pgDone(); track('studio_share', { via: 'download' }); }
       });
     });
@@ -597,7 +597,7 @@
         : '이름을 입력하면 카드 위에서 <b>미리보기</b>로 볼 수 있어요. 저장·인쇄·공유한 이미지에 이름을 넣는 것은 후원 기능입니다.') + '</p>' +
         '<label for="vsChurchIn">교회·모임 이름</label><input type="text" id="vsChurchIn" maxlength="24" placeholder="예: 은혜교회 청년부">' +
         '<div class="vs-act" style="margin-top:10px"><button type="button" class="alt" id="vsChurchClr">이름 지우기</button></div>' +
-        (donor ? '' : '<div class="vs-lock" style="margin-top:10px">🔒 후원하시면 <b>우리 교회·모임 이름</b>이 저장·인쇄에 들어갑니다. 새해 말씀 카드를 교회명과 함께 한꺼번에 인쇄해 나눠 보세요.<br><a href="/support.html" data-ga="studio_church_to_support">후원 안내 보기 →</a></div>');
+        (donor ? '' : '<div class="vs-lock" style="margin-top:10px">🔒 후원하시면 <b>우리 교회·모임 이름</b>이 저장·인쇄에 들어갑니다. 새해 말씀카드를 교회명과 함께 한꺼번에 인쇄해 나눠 보세요.<br><a href="/support.html" data-ga="studio_church_to_support">후원 안내 보기 →</a></div>');
       var ci = $('vsChurchIn'); ci.value = S.church || '';
       ci.addEventListener('input', function () { S.church = ci.value.trim().slice(0, 24); touched = true; churchNote(); refresh(); });
       $('vsChurchClr').addEventListener('click', function () { ci.value = ''; S.church = ''; churchNote(); refresh(); });

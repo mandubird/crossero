@@ -139,7 +139,7 @@ def render_all(ctx):
             out.append(f'<a class="cx-card" href="/christmas/{sl}.html" data-ga="christmas_script" data-ga-label="{sl}"><b>{esc(s["title"])}</b><em>{s["minutes"]}분 · {esc(s["cast_n"])}</em><span>{esc(s["sub"])} — {esc(s["summary"][:70])}…</span></a>')
     out.append('<div class="note2">✱ 표시는 성경에 없는 상상 대사입니다. 성경 본문과 구별해 소개해 주세요. 대본은 교회·주일학교·가정에서 비상업적으로 인쇄해 쓰실 수 있고, 판매나 재배포는 하지 말아 주세요.</div>')
     out.append('<h2>함께 보면 좋은 자료</h2><div class="cards">'
-               '<a class="card" href="/verse/christmas/"><b>⭐ 성탄 말씀 뽑기</b><span>성탄 말씀 카드와 인쇄</span></a>'
+               '<a class="card" href="/verse/christmas/"><b>⭐ 성탄 말씀 뽑기</b><span>성탄 말씀카드와 인쇄</span></a>'
                '<a class="card" href="/dictionary/map/jesus-birth.html"><b>🗺️ 예수님 탄생과 유년기 경로</b><span>나사렛에서 베들레헴까지</span></a>'
                '<a class="card" href="/dictionary/birth-of-jesus.html"><b>예수님의 탄생</b><span>사건 해설</span></a>'
                '<a class="card" href="/dictionary/bethlehem.html"><b>베들레헴</b><span>오늘의 위치와 사진</span></a></div>')
@@ -290,7 +290,7 @@ def render_all(ctx):
     out.append("<h2>주제별 성탄 퍼즐</h2>")
     for k, t, lv, d_ in PZ:
         out.append(f'<a class="cx-card" href="/play.html?id={k}" data-ga="christmas_puzzle" data-ga-label="{k}"><b>{esc(t)}</b><em>{lv}</em><span>{esc(d_)} — 퍼즐 풀기 →</span></a>')
-    out.append('<h2>함께 쓰면 좋은 자료</h2><div class="cards"><a class="card" href="/christmas/"><b>🎭 성탄 성극 대본</b><span>13편</span></a><a class="card" href="/christmas/activities.html"><b>🎨 성탄 활동지</b><span>색칠·미로·퀴즈</span></a><a class="card" href="/christmas/props.html"><b>✂️ 소품 도안</b><span>별·왕관·구유</span></a><a class="card" href="/verse/christmas/"><b>⭐ 성탄 말씀 뽑기</b><span>말씀 카드</span></a></div>')
+    out.append('<h2>함께 쓰면 좋은 자료</h2><div class="cards"><a class="card" href="/christmas/"><b>🎭 성탄 성극 대본</b><span>13편</span></a><a class="card" href="/christmas/activities.html"><b>🎨 성탄 활동지</b><span>색칠·미로·퀴즈</span></a><a class="card" href="/christmas/props.html"><b>✂️ 소품 도안</b><span>별·왕관·구유</span></a><a class="card" href="/verse/christmas/"><b>⭐ 성탄 말씀 뽑기</b><span>말씀카드</span></a></div>')
     out.append('<h2>자주 묻는 질문</h2><div class="faq">' + "".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in faq) + "</div>")
     out.append("</main>")
     out.append(tail())
