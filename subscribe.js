@@ -2,6 +2,7 @@
    폼 주소·입력 이름·id는 스티비 '구독 화면 > 코드로 설치하기'의 공개 임베드 코드 그대로이고(스티비 스크립트가 id에 의존),
    스타일만 직접 입혔다. 스티비 스크립트는 폼이 화면에 가까워질 때 불러온다. */
 (function () {
+  if (!window.CRS_SUBSCRIBE_ENABLED) return; /* 2026-11-08 숨김: 월별 발송 콘텐츠가 준비되면 페이지에서 window.CRS_SUBSCRIBE_ENABLED=true 로 켠다(또는 이 줄 삭제) */
   function init() {
     if (document.getElementById('stb_subscribe_form')) return;
     var host = document.getElementById('crs-subscribe');
@@ -96,4 +97,54 @@
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
+})();
+
+/* 참여 후 구독 안내 — 글을 55% 이상 읽고 15초가 지났거나 퍼즐을 풀었을 때 아래에서 한 번만 올라온다.
+   닫으면 21일, 구독 제출 후에는 다시 뜨지 않는다. 퍼즐 풀이 중·스튜디오 화면에서는 뜨지 않는다. */
+(function () {
+  if (!window.CRS_SUBSCRIBE_ENABLED) return;
+  var KEY = 'crs_sub_prompt';
+  var path = location.pathname;
+  function store(get, v) { try { return get ? localStorage.getItem(KEY) : localStorage.setItem(KEY, v); } catch (e) { return null; } }
+  var until = parseInt(store(true) || '0', 10);
+  if (until > Date.now()) return;
+  var isPlay = /^\/play(2)?(\.html)?$/.test(path);
+  var content = /^\/(dictionary|posts|christmas|guide|teachers|today|cards|verse\/[^/]+)\//.test(path) && !/^\/cards\/make\//.test(path);
+  if (!isPlay && !content) return;
+  var shown = false, t0 = Date.now();
+  function show(msg, label) {
+    if (shown || !document.getElementById('crs-subscribe')) return;
+    shown = true;
+    var b = document.createElement('div');
+    b.id = 'crs-subprompt';
+    b.setAttribute('role', 'dialog');
+    b.innerHTML = '<style>#crs-subprompt{position:fixed;left:50%;bottom:14px;transform:translate(-50%,140%);z-index:96;width:calc(100% - 24px);max-width:460px;box-sizing:border-box;background:#fff;border:1px solid #bcd3f0;border-radius:14px;box-shadow:0 8px 28px rgba(0,40,90,.22);padding:14px 16px;transition:transform .4s ease;font-family:inherit}' +
+      '#crs-subprompt.on{transform:translate(-50%,0)}#crs-subprompt p{margin:0 0 10px;font-size:15px;line-height:1.55;color:#223}#crs-subprompt p b{color:#0b5cad}' +
+      '#crs-subprompt .r{display:flex;gap:8px}#crs-subprompt button{height:42px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}' +
+      '#crs-subprompt .go{flex:1;border:0;background:#0073e6;color:#fff}#crs-subprompt .no{padding:0 14px;border:1px solid #cfd8e6;background:#fff;color:#556}' +
+      '@media (prefers-reduced-motion:reduce){#crs-subprompt{transition:none}}</style>' +
+      '<p>' + msg + '</p><div class="r"><button class="go" type="button">메일로 받기</button><button class="no" type="button">나중에</button></div>';
+    document.body.appendChild(b);
+    requestAnimationFrame(function () { requestAnimationFrame(function () { b.classList.add('on'); }); });
+    if (window.crsTrack) window.crsTrack('subscribe_prompt_show', { label: label, page_path: path });
+    function close(days) { store(false, String(Date.now() + days * 864e5)); b.classList.remove('on'); setTimeout(function () { b.remove(); }, 450); }
+    b.querySelector('.no').onclick = function () { if (window.crsTrack) window.crsTrack('subscribe_prompt_dismiss', { label: label }); close(21); };
+    b.querySelector('.go').onclick = function () {
+      if (window.crsTrack) window.crsTrack('subscribe_prompt_click', { label: label, page_path: path });
+      close(60);
+      var h = document.getElementById('crs-subscribe');
+      if (h) { h.scrollIntoView({ behavior: 'smooth', block: 'center' }); setTimeout(function () { var i = document.getElementById('stb_email'); if (i) i.focus({ preventScroll: true }); }, 700); }
+    };
+  }
+  if (isPlay) {
+    window.addEventListener('crs-puzzle-complete', function () { setTimeout(function () { show('🎉 퍼즐 완성! 새 퍼즐과 <b>말씀카드</b> 소식을 <b>한 달에 두 번</b> 메일로 보내 드려요.', 'puzzle'); }, 1800); });
+  } else {
+    var check = function () {
+      var d = document.documentElement, sc = (window.scrollY + window.innerHeight) / Math.max(d.scrollHeight, 1);
+      if (sc >= 0.55 && Date.now() - t0 >= 15000) { window.removeEventListener('scroll', check); show('도움이 되셨나요? 새 퍼즐·말씀카드·교사 자료를 <b>한 달에 두 번</b> 메일로 보내 드려요. (무료)', 'read'); }
+    };
+    window.addEventListener('scroll', check, { passive: true });
+    setTimeout(check, 15500);
+  }
+  document.addEventListener('submit', function (e) { if (e.target && e.target.id === 'stb_subscribe_form') store(false, String(Date.now() + 3650 * 864e5)); }, true);
 })();

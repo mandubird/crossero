@@ -110,6 +110,8 @@ def render(day, data):
 <div id="tctx">{ctx}</div>
 <div style="margin-top:26px">{bv.season_banner()}</div>
 <p style="text-align:center;margin:18px 0 0"><a href="/quiet/" data-ga="today_to_quiet" style="font-weight:700;color:#0b5cad">🌿 이 말씀으로 1분 쉬어 가기 →</a></p>
+<p style="text-align:center;margin:10px 0 0"><a href="/meeting/" data-ga="today_to_meeting" style="font-weight:700;color:#0b5cad">🕯️ 친구들과 10분 모임으로 나누기 →</a></p>
+<p style="text-align:center;margin:10px 0 0"><a href="https://onsuim.vercel.app/?utm_source=crossero&utm_medium=today&utm_campaign=verse_card" target="_blank" rel="noopener" data-ga="onsuim_today_click" style="font-weight:700;color:#0b5cad">🏡 이 말씀을 들으며 온쉼에서 쉬어 가기 →</a></p>
 <a class="cta" href="/verse/" data-ga="today_to_draw" style="margin-top:8px">📖 다른 말씀도 뽑아 보기<small>위로·평안·용기·감사·소망 등 12가지 주제</small></a>
 <h2 style="text-align:left;margin-top:34px">지난 7일의 말씀</h2>
 <div class="cards past" style="text-align:left">{past}</div>

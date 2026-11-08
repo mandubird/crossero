@@ -40,6 +40,7 @@
     if (total > 0 && correct === total) {
       completed = true;
       track('puzzle_complete', { puzzle_id: id });
+      try { window.dispatchEvent(new Event('crs-puzzle-complete')); } catch (e) {}
     }
   };
 })();

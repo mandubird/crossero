@@ -28,6 +28,39 @@ User-agent: Bingbot
 Allow: /
 Disallow: /backup/
 
+# AI 검색·답변 서비스 크롤러(인용·출처 표기를 환영합니다. 안내: /llms.txt)
+User-agent: GPTBot
+Allow: /
+Disallow: /backup/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /backup/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /backup/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /backup/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /backup/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /backup/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /backup/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /backup/
+
 # 사이트맵 (검색엔진이 수집할 URL 목록) — non-www 통일 (301 없이 적용 쉬움)
 Sitemap: https://crossero.com/sitemap.xml
 Sitemap: https://crossero.com/posts.xml

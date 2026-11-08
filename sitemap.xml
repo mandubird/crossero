@@ -899,15 +899,6 @@
   </url>
   <!-- SEASON-END -->
 
-  <!-- TODAY-START -->
-  <url>
-    <loc>https://crossero.com/today/</loc>
-    <lastmod>2026-11-07</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <!-- TODAY-END -->
-
   <!-- NYGUIDE-START -->
   <url>
     <loc>https://crossero.com/verse/new-year/guide/</loc>
@@ -3111,4 +3102,46 @@
     <priority>0.7</priority>
   </url>
   <!-- DICT-END -->
+
+  <!-- TODAY-START -->
+  <url>
+    <loc>https://crossero.com/today/</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <!-- TODAY-END -->
+
+  <!-- MEETING-START -->
+  <url>
+    <loc>https://crossero.com/meeting/</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://crossero.com/meeting/week-1/</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://crossero.com/meeting/week-2/</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://crossero.com/meeting/week-3/</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://crossero.com/meeting/week-4/</loc>
+    <lastmod>2026-11-08</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <!-- MEETING-END -->
 </urlset>
