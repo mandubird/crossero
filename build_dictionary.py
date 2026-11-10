@@ -227,6 +227,14 @@ def render_entry(e):
     path = f"/dictionary/{e['slug']}.html"
     if e["type"] == "성경 책":
         title = f"{e['name']} 요약 - 핵심 내용·구절·핵심 메시지 | 성경사전 | 십자가로세로"
+    elif e["type"] == "인물":
+        title = f"{e['name']} - {e['sub']}, 생애와 핵심 구절 정리 | 성경사전 | 십자가로세로"
+    elif e["type"] == "사건":
+        title = f"{e['name']} - {e['sub']}, 사건 정리와 핵심 구절 | 성경사전 | 십자가로세로"
+    elif e["type"] == "지명":
+        title = f"{e['name']} 위치와 뜻 - {e['sub']} | 성경사전 | 십자가로세로"
+    elif e["type"] == "신앙 용어":
+        title = f"{e['name']} 뜻 - {e['sub']} | 성경사전 | 십자가로세로"
     else:
         title = f"{e['name']} - {e['sub']} | 성경사전 | 십자가로세로"
     desc = e["summary"][:140]

@@ -37,7 +37,7 @@ FOOT_COLS = [
                  ("✝️ 신앙 용어", "/dictionary/terms/"), ("📚 66권 요약", "/dictionary/books/"), ("⏳ 연대표", "/dictionary/timeline/"), ("👪 가계도", "/dictionary/genealogy/"), ("📖 구절로 찾기", "/dictionary/verses/"), ("🗺️ 성경 지도", "/dictionary/map/")]),
     ("말씀·묵상", [("🌿 1분 쉼 묵상", "/quiet/"), ("🕯️ 10분 모임 키트", "/meeting/"), ("📘 말씀카드 만들기", "/cards/make/"), ("🖼️ 말씀카드 갤러리", "/cards/"), ("📘 성경공부 가이드", "/guide/"), ("오늘의 말씀", "/today/"), ("말씀 뽑기", "/verse/"), ("🎭 성탄 성극 대본", "/christmas/"), ("✂️ 성극 소품 도안", "/christmas/props.html"), ("🎨 성탄 활동지", "/christmas/activities.html"), ("🧩 성탄 퍼즐", "/christmas/puzzles.html"), ("새해 말씀 뽑기", "/verse/new-year/"), ("송구영신 진행 가이드", "/verse/new-year/guide/"), ("⏱️ 송구영신 카운트다운", "/verse/new-year/countdown/"),
                  ("성탄 말씀 뽑기", "/verse/christmas/"), ("추수감사 말씀 뽑기", "/verse/thanksgiving/")]),
-    ("퍼즐·교사 자료", [("퍼즐 목록", "/list.html"), ("퍼즐 게시판", "/posts/index.html"), ("성경 십자말풀이", "/bible-crossword.html"),
+    ("퍼즐·교사 자료", [("퍼즐 목록", "/list.html"), ("🎯 성경 퀴즈 게임", "/quiz/"), ("⭕ 성경 OX 퀴즈", "/quiz/ox/"), ("👤 성경 인물 퀴즈", "/quiz/people/"), ("퍼즐 게시판", "/posts/index.html"), ("성경 십자말풀이", "/bible-crossword.html"),
                    ("십자말풀이 하는 법", "/how-to-crossword.html"), ("교사 허브", "/teachers/"), ("주일학교 자료", "/sunday-school-materials.html"),
                    ("교회·주일학교 활용", "/church-bulletin-puzzle.html")]),
     ("십자가로세로", [("서비스 소개", "/about.html"), ("후원하기", "/support.html"), ("⭐ 후원자", "/supporters.html"), ("FAQ", "/faq.html"),

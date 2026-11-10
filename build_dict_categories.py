@@ -34,6 +34,36 @@ def _cards(items, esc):
         f'<a class="card" href="/dictionary/{e["slug"]}.html"><b>{esc(e["name"])}</b><span>{esc(e["sub"])}</span></a>' for e in items) + "</div>"
 
 
+
+def _guide_block(ENTRIES, esc):
+    """허브 하단 안내(검색 의도별 소제목 + FAQ). 개수는 데이터에서 계산한다."""
+    n = {folder: len([e for e in ENTRIES if e["type"] == typ]) for typ, folder, label, icon, d in CATS}
+    faq = [
+        ("성경사전이란 무엇인가요?", "성경에 나오는 인물, 지명, 사건, 신앙 용어를 쉽게 풀어 정리한 참고 자료입니다. 십자가로세로 성경사전은 인물 %d개, 지명 %d개, 사건 %d개, 신앙 용어 %d개와 66권 요약을 담고 있습니다." % (n["people"], n["places"], n["events"], n["terms"])),
+        ("무료 온라인 성경사전은 어떻게 이용하나요?", "가입 없이 누구나 무료로 볼 수 있습니다. 위의 검색창에 이름이나 키워드(예: 예루살렘, 모세, 은혜)를 넣거나, 인물·지명·사건·용어·66권 요약 분류에서 골라 보세요."),
+        ("성경 인물이나 지명은 어떻게 찾나요?", "분류별 모음 페이지에서 목록으로 찾거나, '구절로 찾기'에 창세기 12:1처럼 구절을 입력하면 그 구절과 관련된 인물·사건·지명으로 연결됩니다."),
+        ("성경 본문도 함께 실려 있나요?", "각 항목은 성경 본문의 장·절 위치를 기준으로 정리했고, 본문 전체를 옮기지 않습니다. 본문은 가지고 계신 성경에서 해당 구절을 함께 읽어 보세요."),
+        ("해석이 갈리는 부분은 어떻게 다루나요?", "해석이 갈리는 부분은 그렇다고 밝혀 두었습니다. 작성 원칙은 콘텐츠 제작 원칙 페이지에서 볼 수 있습니다."),
+        ("주일학교 교사나 소그룹 인도자도 사용할 수 있나요?", "네. 수업 준비에서 인물과 사건의 배경을 확인하고, 항목과 연결된 가로세로 퍼즐로 복습 활동을 할 수 있습니다. 교사 허브에서 더 많은 자료를 볼 수 있습니다."),
+    ]
+    h = ['<section class="dguide">']
+    h.append('<h2>성경사전, 궁금한 것에 따라 이렇게 찾아보세요</h2>')
+    h.append('<h3>성경 인물이 궁금할 때</h3><p>아브라함, 모세, 다윗, 바울 등 <a href="/dictionary/people/">성경 인물 %d명</a>의 삶과 핵심 구절, 함께 읽을 본문을 정리했습니다.</p>' % n["people"])
+    h.append('<h3>성경 지명과 지도가 궁금할 때</h3><p><a href="/dictionary/places/">성경 지명 %d곳</a>은 지명의 뜻과 성경 속 사건, 오늘의 위치와 사진까지 볼 수 있고, <a href="/dictionary/map/">성경 지도</a>에서 한눈에 비교할 수 있습니다.</p>' % n["places"])
+    h.append('<h3>성경 사건의 흐름이 궁금할 때</h3><p><a href="/dictionary/events/">성경 사건 %d개</a>를 흐름으로 이해하고, <a href="/dictionary/timeline/">성경 연대표</a>에서 창조부터 초대교회까지 시대별로 이어서 볼 수 있습니다.</p>' % n["events"])
+    h.append('<h3>성경 66권을 한눈에 보고 싶을 때</h3><p>창세기부터 요한계시록까지 <a href="/dictionary/books/">66권 요약</a>으로 책별 핵심 내용과 구조를 확인하세요.</p>')
+    h.append('<h3>어려운 신앙 용어를 쉬운 말로</h3><p>구원, 은혜, 칭의, 성령처럼 자주 듣지만 풀기 어려운 <a href="/dictionary/terms/">신앙 용어 %d개</a>를 쉬운 말로 풀었습니다.</p>' % n["terms"])
+    h.append('<h3>구절에서 거꾸로 찾고 싶을 때</h3><p>설교나 묵상 본문의 구절을 알고 있다면 <a href="/dictionary/verses/">구절로 찾기</a>에서 관련 인물·사건·지명을 바로 찾을 수 있습니다.</p>')
+    h.append('<h2>무료 온라인 성경사전, 십자가로세로는 이렇게 다릅니다</h2><ul>'
+             '<li><b>지명을 오늘의 모습으로</b> — 옛 이름이 지금의 어디인지 위치와 사진, 지도로 확인합니다.</li>'
+             '<li><b>구절 위치 기준으로 직접 정리</b> — 해석이 갈리는 부분은 그렇다고 밝힙니다.</li>'
+             '<li><b>읽고 나서 퍼즐로 복습</b> — 항목과 연결된 가로세로 퍼즐로 내용을 다시 익힙니다.</li>'
+             '<li><b>가입 없이 무료</b> — 교회학교와 소그룹 수업 준비에도 자유롭게 쓸 수 있습니다.</li></ul>')
+    h.append('<h2>성경사전 자주 묻는 질문</h2><div class="faq">' + "".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in faq) + "</div></section>")
+    css = '<style>.dguide{margin:30px 0 10px;text-align:left}.dguide h2{font-size:20px;color:#16324f;margin:28px 0 8px}.dguide h3{font-size:16.5px;color:#0b3d73;margin:16px 0 4px}.dguide p,.dguide li{font-size:15.5px;line-height:1.85;margin:0 0 6px;word-break:keep-all}.dguide ul{padding-left:20px}</style>'
+    ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}
+    return css + "".join(h), '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + "</script>"
+
 def render_index(ctx):
     ENTRIES, BY_SLUG, head, esc, FOOTER, SITE, BOOKS, BOOK_GROUPS = (ctx[k] for k in ("ENTRIES", "BY_SLUG", "head", "esc", "FOOTER", "SITE", "BOOKS", "BOOK_GROUPS"))
     path = "/dictionary/"
@@ -42,7 +72,8 @@ def render_index(ctx):
     ld = '<script type="application/ld+json">' + json.dumps({
         "@context": "https://schema.org", "@type": "CollectionPage", "name": "성경사전", "description": desc, "inLanguage": "ko", "url": SITE + path,
         "hasPart": [{"@type": "Article", "name": e["name"], "url": f"{SITE}/dictionary/{e['slug']}.html"} for e in ENTRIES]}, ensure_ascii=False) + "</script>"
-    out = [head(title, desc, path, ld).replace("</head>", SEARCH_CSS + "\n</head>", 1), '<main class="wrap">']
+    guide_html, faq_ld = _guide_block(ENTRIES, esc)
+    out = [head(title, desc, path, ld + "\n" + faq_ld).replace("</head>", SEARCH_CSS + "\n</head>", 1), '<main class="wrap">']
     out.append('<div class="crumb"><a href="/">홈</a> › 성경사전</div>')
     out.append('<h1>성경사전</h1><div class="sub">지명 · 인물 · 사건 · 용어, 궁금한 것부터 찾아보세요</div>')
     out.append('<div class="dsearch"><input id="dq" type="search" placeholder="🔍 이름이나 키워드로 찾기 (예: 예루살렘, 모세, 은혜)" autocomplete="off"><div class="dres" id="dres"></div></div>')
@@ -65,6 +96,7 @@ def render_index(ctx):
         allh.append(f'<h3 style="margin:14px 0 6px">{icon} {label} ({len(its)})</h3><p style="line-height:2;font-size:14px;margin:0">' + " · ".join(
             f'<a href="/dictionary/{e["slug"]}.html">{esc(e["name"])}</a>' for e in its) + "</p>")
     out.append('<details style="margin:18px 0"><summary style="cursor:pointer;font-weight:700;font-size:16px">전체 항목 한눈에 보기 (%d)</summary>' % len(ENTRIES) + "".join(allh) + "</details>")
+    out.append(guide_html)
     out.append('<p style="font-size:14px;color:#556;line-height:1.8">각 항목은 성경 본문의 구절 위치를 기준으로 직접 정리했습니다. 읽고 나서 관련 가로세로 퍼즐로 복습할 수 있고, 해석이 갈리는 부분은 그렇다고 밝혀 두었습니다. 작성 원칙은 <a href="/editorial-policy.html">콘텐츠 제작 원칙</a>을 참고해 주세요.</p>')
     out.append("</main>")
     out.append(FOOTER)
