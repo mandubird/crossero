@@ -193,6 +193,25 @@ ALIGN_JS = ('<script>(function(){var m=document.querySelector("main")||document.
             'a();addEventListener("resize",a)})();</script>')
 
 
+XMAS_CARDS = [  # 아이콘, 제목, 설명, href
+    ("🎁", "성탄 말씀 뽑기", "나에게 주시는 성탄 말씀 한 구절", "/verse/christmas/"),
+    ("🖼️", "성탄 말씀카드", "사진·글꼴을 골라 무료로 만들어요", "/cards/christmas/"),
+    ("🎤", "성탄 인터뷰", "성탄 인물들의 이야기를 들어요", "/christmas/interview.html"),
+    ("📖", "성탄 진행 가이드", "교회학교 성탄 행사 준비", "/christmas/guide.html"),
+    ("🧩", "성탄 퍼즐", "성탄 말씀 가로세로 퍼즐", "/christmas/puzzles.html"),
+    ("🌿", "1분 쉼 묵상", "말씀 한 구절과 호흡으로 쉬기", "/quiet/"),
+    ("🕯️", "10분 모임 키트", "소그룹·기도모임 10분 순서", "/meeting/"),
+]
+
+
+def xmas_html(path):
+    """성탄 페이지끼리 서로 이어 주는 블록: 말씀 뽑기·말씀카드·인터뷰·가이드·퍼즐로 연결(자기 자신은 제외)."""
+    me = "/" + path.replace("index.html", "")
+    cards = [c for c in XMAS_CARDS if c[3] != me][:6]
+    g = "".join(f'<a class="sm-card" href="{h}" data-ga="xmas_more_click" data-ga-label="{t}"><b>{ic} {t}</b><span>{d}</span></a>' for ic, t, d, h in cards)
+    return f'<!--XMAS--><section class="site-more"><h2>성탄 자료 더 보기</h2><div class="sm-grid">{g}</div></section><!--/XMAS-->'
+
+
 def more_html(key, path=""):
     if key == "home":  # 홈은 위 허브와 겹치므로 전폭 후원 띠 한 장만
         return ('<!--MORE--><section class="support-band"><div class="sb-in"><h2>🙏 이 사역을 함께해 주세요</h2>'
@@ -370,6 +389,11 @@ def apply(path, s):
     s = _strip(s, "PILGRIM")
     if not path.startswith(("play.html", "play2.html", "support.html", "supporters.html", "sponsor.html")) and "</body>" in s:
         s = s.replace("</body>", pilgrim_html() + "\n</body>", 1)
+    # 성탄 페이지 묶음 연결(성탄 허브·하위 페이지·말씀 뽑기·말씀카드)
+    s = _strip(s, "XMAS")
+    if path.startswith("christmas/") or path in ("verse/christmas/index.html", "cards/christmas/index.html"):
+        f0 = s.find("<footer")
+        s = s[:f0] + xmas_html(path) + "\n" + s[f0:]
     # 계속 둘러보기(푸터 바로 위, 게임 화면 제외)
     s = _strip(s, "MORE")
     if not path.startswith(("play.html", "play2.html")):
