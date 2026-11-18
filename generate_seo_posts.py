@@ -181,7 +181,7 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 <h3>📚 더 많은 퍼즐</h3>
 <div class="related-grid">
 <a href="../list.html" class="related-link">📋 전체 목록</a>
-<a href="../index.html" class="related-link">🏠 홈</a>
+<a href="/" class="related-link">🏠 홈</a>
 <a href="../about.html" class="related-link">소개</a>
 </div>
 </div>

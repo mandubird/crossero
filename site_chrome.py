@@ -6,8 +6,9 @@ import os
 import re
 
 NAV_ITEMS = [  # (key, label, href)
-    ("home", "홈", "/index.html"),
+    ("home", "홈", "/"),
     ("puzzle", "퍼즐", "/list.html"),
+    ("quiz", "성경퀴즈", "/quiz/"),
     ("dict", "성경사전", "/dictionary/"),
     ("map", "성경지도", "/dictionary/map/"),
     ("teacher", "교사허브", "/teachers/"),
@@ -28,7 +29,7 @@ ACTIVE_RULES = [  # (경로 접두어/이름, key) 위에서부터 첫 일치
     ("index.html", "home"), ("dictionary/map/", "map"), ("christmas/", "today"), ("dictionary/", "dict"),
     ("play.html", "puzzle"), ("play2.html", "puzzle"), ("list.html", "puzzle"), ("posts/", "puzzle"),
     ("bible-crossword", "puzzle"), ("how-to-crossword", "puzzle"),
-    ("today/", "today"), ("verse/new-year/guide", "guide"), ("verse/", "today"), ("guide/", "guide"), ("cards/", "cards"),
+    ("quiz/", "quiz"), ("today/", "today"), ("verse/new-year/guide", "guide"), ("verse/", "today"), ("guide/", "guide"), ("cards/", "cards"),
     ("teachers/", "teacher"), ("sunday-school", "teacher"), ("church-bulletin", "teacher"),
 ]
 
@@ -37,7 +38,7 @@ FOOT_COLS = [
                  ("✝️ 신앙 용어", "/dictionary/terms/"), ("📚 66권 요약", "/dictionary/books/"), ("⏳ 연대표", "/dictionary/timeline/"), ("👪 가계도", "/dictionary/genealogy/"), ("📖 구절로 찾기", "/dictionary/verses/"), ("🗺️ 성경 지도", "/dictionary/map/")]),
     ("말씀·묵상", [("🌿 1분 쉼 묵상", "/quiet/"), ("🕯️ 10분 모임 키트", "/meeting/"), ("📘 말씀카드 만들기", "/cards/make/"), ("🖼️ 말씀카드 갤러리", "/cards/"), ("📘 성경공부 가이드", "/guide/"), ("오늘의 말씀", "/today/"), ("말씀 뽑기", "/verse/"), ("🎭 성탄 성극 대본", "/christmas/"), ("✂️ 성극 소품 도안", "/christmas/props.html"), ("🎨 성탄 활동지", "/christmas/activities.html"), ("🧩 성탄 퍼즐", "/christmas/puzzles.html"), ("새해 말씀 뽑기", "/verse/new-year/"), ("송구영신 진행 가이드", "/verse/new-year/guide/"), ("⏱️ 송구영신 카운트다운", "/verse/new-year/countdown/"),
                  ("성탄 말씀 뽑기", "/verse/christmas/"), ("추수감사 말씀 뽑기", "/verse/thanksgiving/")]),
-    ("퍼즐·교사 자료", [("퍼즐 목록", "/list.html"), ("🎯 성경 퀴즈 게임", "/quiz/"), ("⭕ 성경 OX 퀴즈", "/quiz/ox/"), ("👤 성경 인물 퀴즈", "/quiz/people/"), ("퍼즐 게시판", "/posts/index.html"), ("성경 십자말풀이", "/bible-crossword.html"),
+    ("퍼즐·교사 자료", [("퍼즐 목록", "/list.html"), ("🎯 성경 퀴즈 게임", "/quiz/"), ("⭕ 성경 OX 퀴즈", "/quiz/ox/"), ("👤 성경 인물 퀴즈", "/quiz/people/"), ("퍼즐 게시판", "/posts/"), ("성경 십자말풀이", "/bible-crossword.html"),
                    ("십자말풀이 하는 법", "/how-to-crossword.html"), ("교사 허브", "/teachers/"), ("주일학교 자료", "/sunday-school-materials.html"),
                    ("교회·주일학교 활용", "/church-bulletin-puzzle.html")]),
     ("십자가로세로", [("서비스 소개", "/about.html"), ("후원하기", "/support.html"), ("⭐ 후원자", "/supporters.html"), ("FAQ", "/faq.html"),
@@ -232,14 +233,17 @@ def season_html():
 
 
 def hub_html():
-    cards = [("🧩", "퍼즐 풀기", "가로세로 낱말 퍼즐", "/list.html"), ("📍", "성경 지명", "오늘의 위치와 사진", "/dictionary/places/"),
-             ("👤", "성경 인물", "삶과 핵심 구절", "/dictionary/people/"), ("📜", "성경 사건", "흐름으로 이해", "/dictionary/events/"),
-             ("🗺️", "성경 지도", "지명이 지금은?", "/dictionary/map/"), ("🧑‍🏫", "교사 허브", "주일학교 자료", "/teachers/"),
-             ("📅", "오늘의 말씀", "매일 새로운 구절", "/today/"), ("📖", "말씀 뽑기", "내게 주시는 말씀", "/verse/"),
-             ("🌿", "1분 쉼", "말씀과 호흡으로 쉬기", "/quiet/"), ("🕊️", "송구영신", "카운트다운·말씀 뽑기", "/verse/new-year/countdown/"),
-             ("🖼️", "말씀카드", "샘플과 직접 만들기", "/cards/"), ("📘", "성경공부 가이드", "읽는 법·교사 자료", "/guide/"),
-             ("🕯️", "10분 모임 키트", "기도모임·소그룹 순서", "/meeting/"), ("🏡", "온쉼 기도 마을", "잠시 쉬어가는 3D 마을", "https://onsuim.vercel.app/?utm_source=crossero&utm_medium=home_hub&utm_campaign=hub_card"),
-             ("⏳", "성경 연대표", "시대별 흐름", "/dictionary/timeline/"), ("🔎", "구절로 찾기", "구절에 얽힌 인물·사건", "/dictionary/verses/")]
+    cards = [("🧩", "퍼즐 풀기", "가로세로 낱말 퍼즐", "/list.html"), ("📖", "성경사전", "인물·지명·사건·66권 요약", "/dictionary/"),
+             ("🎯", "성경 퀴즈", "OX 퀴즈·인물 퀴즈", "/quiz/"), ("🗺️", "성경 지도", "지명이 지금은 어디에?", "/dictionary/map/"),
+             ("📅", "오늘의 말씀", "매일 새로운 구절", "/today/"), ("🎴", "말씀 뽑기", "내게 주시는 말씀", "/verse/"),
+             ("🖼️", "말씀카드", "샘플과 직접 만들기", "/cards/"), ("🧑‍🏫", "교사 허브", "주일학교 자료 모음", "/teachers/"),
+             ("📍", "성경 지명", "오늘의 위치와 사진", "/dictionary/places/"), ("👤", "성경 인물", "삶과 핵심 구절", "/dictionary/people/"),
+             ("📜", "성경 사건", "흐름으로 이해", "/dictionary/events/"), ("📚", "66권 요약", "책별 핵심 요약", "/dictionary/books/"),
+             ("⏳", "성경 연대표", "시대별 흐름", "/dictionary/timeline/"), ("🔎", "구절로 찾기", "구절에 얽힌 인물·사건", "/dictionary/verses/"),
+             ("📘", "성경공부 가이드", "읽는 법·교사 자료", "/guide/"), ("🌿", "1분 쉼", "말씀과 호흡으로 쉬기", "/quiet/"),
+             ("🕯️", "10분 모임 키트", "기도모임·소그룹 순서", "/meeting/"), ("🎄", "성탄 자료", "성극 대본·활동지·말씀", "/christmas/"),
+             ("🕊️", "송구영신", "카운트다운·말씀 뽑기", "/verse/new-year/countdown/"),
+             ("🏡", "온쉼 기도 마을", "잠시 쉬어가는 3D 마을", "https://onsuim.vercel.app/?utm_source=crossero&utm_medium=home_hub&utm_campaign=hub_card")]
     g = "".join(f'<a class="hh-card" href="{h}" data-ga="home_hub_click" data-ga-label="{t}"><i>{ic}</i><b>{t}</b><span>{d}</span></a>' for ic, t, d, h in cards)
     return f'<!--HUB--><section class="home-hub">{season_html()}<h2>무엇을 찾으세요?</h2><div class="hh-grid">{g}</div></section><!--/HUB-->'
 

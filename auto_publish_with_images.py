@@ -428,7 +428,7 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 </head>
 <body>
 <nav class="nav">
-  <a href="../index.html" class="nav-item">홈</a>
+  <a href="/" class="nav-item">홈</a>
   <a href="../play.html" class="nav-item">퍼즐하기</a>
   <a href="../list.html" class="nav-item">퍼즐목록</a>
   <a href="../dictionary/" class="nav-item">성경사전</a>
@@ -481,7 +481,7 @@ footer a {{ color: #0073e6; text-decoration: none; }}
 <a href="../list.html" class="related-link">📋 전체 목록</a>
 <a href="index.html" class="related-link">📋 게시판</a>
 <a href="../sunday-school-materials.html" class="related-link">🧑‍🏫 주일학교 자료 모음</a>
-<a href="../index.html" class="related-link">🏠 홈</a>
+<a href="/" class="related-link">🏠 홈</a>
 <a href="../about.html" class="related-link">소개</a>
 </div>
 </div>
@@ -624,7 +624,7 @@ main {{ max-width: 820px; margin: 0 auto; padding: 40px 20px; }}
 </head>
 <body>
 <nav class="nav">
-  <a href="../index.html" class="nav-item">홈</a>
+  <a href="/" class="nav-item">홈</a>
   <a href="../play.html" class="nav-item">퍼즐하기</a>
   <a href="../list.html" class="nav-item">퍼즐목록</a>
   <a href="../dictionary/" class="nav-item">성경사전</a>

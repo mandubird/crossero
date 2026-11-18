@@ -12,6 +12,16 @@
       "permanent": true
     },
     {
+      "source": "/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*/index.html",
+      "destination": "/:path*/",
+      "permanent": true
+    },
+    {
       "source": "/bible-quiz/genesis(\\.html)?",
       "destination": "/play.html?id=gen_001",
       "permanent": true
